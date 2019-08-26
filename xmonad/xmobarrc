@@ -1,0 +1,54 @@
+Config {
+ -- appearance
+   font     = "-*-terminus-medium-r-*-*-16-*-*-*-*-*-*-*"
+ , bgColor  = "#663300"
+ , fgColor  = "#ff8000"
+ , position = Top
+ , border   = NoBorder
+
+ -- layout
+ , sepChar  = "%"
+ , alignSep = "}{"
+ , template = "%StdinReader% }{ %multicpu% | %coretemp% | %memory% | %dynnetwork% | %date%"
+
+ -- general behaviour
+ , lowerOnStart     = True  -- send to the bottom of window stack
+ , hideOnStart      = False -- start with window unmapped
+ , allDesktops      = True  -- show on all destops
+ , overrideRedirect = False
+ , pickBroadest     = False -- choose widest display
+ , persistent       = True  -- True to disable hiding
+ , commands =
+   [ Run DynNetwork [ "--template" , "<dev>: <tx>kB/s|<rx>kB/s"
+                    , "--Low"      , "500000"
+                    , "--High"     , "2000000"
+                    , "--low"      , "green"
+                    , "--normal"   , "darkorange"
+                    , "--high"     , "red"
+                    ] 10
+   , Run MultiCpu   [ "--template" , "Cpu: <total0>-<total1>-<total2>-<total3>-<total4>-<total5>-<total6>-<total7>%"
+                    , "--Low"      , "50"
+                    , "--High"     , "90"
+                    , "--low"      , "green"
+                    , "--normal"   , "darkorange"
+                    , "--high"     , "red"
+                    ] 10
+   , Run CoreTemp   [ "--template" , "Temp: <core0>-<core1>-<core2>-<core3>°C"
+                    , "--Low"      , "65"
+                    , "--High"     , "85"
+                    , "--low"      , "green"
+                    , "--normal"   , "darkorange"
+                    , "--high"     , "red"
+                    ] 50
+   , Run Memory     [ "--template" , "Mem: <usedratio>%"
+                    , "--Low"      , "20"
+                    , "--High"     , "90"
+                    , "--low"      , "green"
+                    , "--normal"   , "darkorange"
+                    , "--high"     , "red"
+                    ] 10
+    , Run Date      "%F (%a) %T" "date" 10
+    , Run StdinReader
+    ]
+}
+
