@@ -52,9 +52,11 @@ modkey = mod4Mask
 
 mlayout = Full ||| tiled ||| Circle
  where tiled   = renamed [Replace "Tiled"] inter
-       inter   = spacing 3 $ mastered delta ratio $ toggleLayouts Accordion $ Column 1
+       inter   = spacingRaw False (mkBord 0) False (mkBord 10) True
+               $ mastered delta ratio $ toggleLayouts Accordion $ Column 1
        ratio   = 0.5 -- Change to golden ratio
        delta   = 3/100
+       mkBord  = \n -> Border n n n n
 
 mworkspaces = ["r1", "l1", "l4", "l3", "l2", "music", "misc", "r2", "r3", "r4"]
 wkkeys = [xK_j, xK_f, xK_q, xK_s, xK_d, xK_g, xK_h, xK_k, xK_l, xK_m]
@@ -97,17 +99,20 @@ keybinds = M.fromList $ foldl kwk
          , ((modkey .|. shiftMask, k), windows $ W.shift wk)]
 
 loghk xmp = dynamicLogWithPP xmobarPP
-          { ppOutput = hPutStrLn xmp
-          , ppTitle  = xmobarColor "yellow" "" . shorten 100
-          , ppLayout = const "" -- to disable layout info on xmobar
-          , ppSep    = " | "
+          { ppOutput  = hPutStrLn xmp
+          , ppTitle   = xmobarColor "#d7c8bc" "" . shorten 100 . xmobarRaw
+          , ppLayout  = const "" -- to disable layout info on xmobar
+          , ppSep     = " | "
+          , ppCurrent = xmobarColor "#ca7f32" ""
+          , ppVisible = xmobarColor "#e0ac16" ""
+          , ppHidden  = xmobarColor "#d7c8bc" ""
           }
 
-mconfig xmp1 = def
+mconfig xmp1 = docks $ def
         { borderWidth        = 2
         , terminal           = "st"
-        , normalBorderColor  = "#663300" -- brown
-        , focusedBorderColor = "#ff6600" -- orange
+        , normalBorderColor  = "#b4a490"
+        , focusedBorderColor = "#6eb958"
         , modMask            = modkey
         , layoutHook         = avoidStruts $ mlayout
         , workspaces         = mworkspaces
