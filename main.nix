@@ -1,24 +1,27 @@
-self:
-
 { pkgs, ... }:
 
-let lib = import ./lib.nix; in
+self:
+
+let lib     = import ./lib.nix;                                in
+let recdata = lib.mergeMod (lib.mayAccess [ "modules" ] self); in
+let args    = { inherit pkgs self recdata; };                  in
 
 {
-  home.packages = import ./packages.nix { inherit pkgs self; };
+  home.packages = import ./packages.nix args;
 
-  programs.home-manager = {
-    enable = true;
-    path = https://github.com/rycee/home-manager/archive/release-19.03.tar.gz;
+  programs = {
+    home-manager = import programs/home-manager args;
+    zsh          = import programs/zsh          args;
+    git          = import programs/git          args;
+    firefox      = import programs/firefox      args;
   };
 
-  programs.zsh     = import programs/zsh     { inherit pkgs self; };
-  programs.git     = import programs/git     { inherit pkgs self; };
-  programs.firefox = import programs/firefox { inherit pkgs self; };
+  modules = {
+    xinit  = import modules/xinit  args;
+    xmonad = import modules/xmonad args;
+  };
 
-  home.file.".xinitrc".source = ./xinitrc;
-  home.file.".xmonad".source = ./xmonad;
-  home.file.".xmonad".recursive = true;
-
+  home.file = lib.mayAccess [ "home" "file" ] recdata;
+  inherit recdata;
 }
 
