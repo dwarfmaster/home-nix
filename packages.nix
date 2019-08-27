@@ -92,9 +92,8 @@ let packages = with pkgs; [
   # Haskell
   cabal-install
   (haskellPackages.ghcWithHoogle
-    (hpkgs: with hpkgs; [ xmobar xmonad xmonad-contrib xmonad-extras ]
-      ++ builtins.concatLists (builtins.map (f: f hpkgs)
-                                            (lib.defAccess [ "haskellPackages" ] recdata [ ])))    
+    (hpkgs: builtins.concatLists (builtins.map (f: f hpkgs)
+                                               (lib.defAccess [ "haskellPackages" ] recdata [ ])))    
   )
 
   # Idris
@@ -146,8 +145,6 @@ let packages = with pkgs; [
   # |____/ \___||___/_|\_\\__\___/| .__/ 
   #                               |_|    
   # Window manager
-  haskellPackages.xmonad # Window manager
-  haskellPackages.xmobar # Status bar
   dmenu                  # Application launcher
 
   # Utilities

@@ -1,7 +1,0 @@
-{ ... }:
-
-{
-  enable = true;
-  enableIcedTea = true;
-}
-
