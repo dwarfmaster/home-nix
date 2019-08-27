@@ -1,0 +1,3 @@
+[submodule "modules/zsh/spaceship-prompt"]
+	path = modules/zsh/custom/themes/spaceship-prompt
+	url = https://github.com/denysdovhan/spaceship-prompt

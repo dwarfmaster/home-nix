@@ -32,14 +32,17 @@ let
     if n == 0 then x
               else iterate (n - 1) f (f x);
 
-  # [string] -> {...} -> ...
-  mayAccess = attrs: set:
+  # [string] -> {...} -> a -> ...
+  defAccess = attrs: set: def:
     if builtins.length attrs == 0
       then set
       else let attr = builtins.head attrs; in
            if builtins.hasAttr attr set
              then mayAccess (builtins.tail attrs) set.${builtins.head attrs}
-             else { };
+             else def;
+
+  # [string] -> {...} -> ...
+  mayAccess = attrs: set: defAccess attrs set { };
 
   # (a -> b -> c) -> b -> a -> c
   flip = f: x: y: f y x;
@@ -48,6 +51,6 @@ let
   removeAttrs = flip builtins.removeAttrs;
 
 in {
-  inherit fix fold updateElem mergeConcat mergeMod iterate mayAccess removeAttrs;
+  inherit fix fold updateElem mergeConcat mergeMod iterate defAccess mayAccess removeAttrs;
 }
 
