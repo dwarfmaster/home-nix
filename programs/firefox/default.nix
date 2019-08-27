@@ -1,0 +1,7 @@
+{ ... }:
+
+{
+  enable = true;
+  enableIcedTea = true;
+}
+

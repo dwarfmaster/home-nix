@@ -1,4 +1,4 @@
-pkgs:
+{ pkgs, ... }:
 
 let base = with pkgs; [
   openssh
