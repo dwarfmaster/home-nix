@@ -70,9 +70,11 @@ let packages = with pkgs; [
   figlet           # Font ASCII art
   cmatrix          # Cascade of letters, matrix style
   cowsay           # ASCII art of a cow speaking
+  asciiquarium     # ASCII art aquarium
   sl               # ASCII art train
   beep             # Play sounds on the terminal
   powerline-fonts  # Fonts with icons
+  nerdfonts        # Fonts with icons
   spaceship-prompt # Oh-my-zsh theme
 
   #  ____                                                _             
@@ -217,7 +219,6 @@ let packages = with pkgs; [
   abiword                  # Graphical text editor
   sc-im                    # NCurses spreadsheet
   links                    # Terminal web browser
-  st                       # Simple terminal emulator
   graphviz                 # Graph drawing
   python27Packages.dot2tex # Convert graphviz graphs to LaTeX
 
