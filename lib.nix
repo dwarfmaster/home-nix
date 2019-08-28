@@ -50,7 +50,60 @@ let
   # [string] -> {...} -> {...}
   removeAttrs = flip builtins.removeAttrs;
 
+
+  # Convert a NIX expression to JSON in a very basic way
+  toJSON = toJSONid 0;
+
+  toJSONid = n: obj: with builtins;
+         if isAttrs obj  then attrJSON n obj
+    else if isBool obj   then boolJSON n obj
+    else if isInt obj    then intJSON  n obj
+    else if isList obj   then listJSON n obj
+    else if isString obj then strJSON  n obj
+    else abort "Tried to convert invalid type to JSON";
+
+  tabs = n: if n == 0 then ""
+                      else "  " + tabs (n - 1);
+
+  boolJSON = n: b:
+    if b then "true" else "false";
+
+  intJSON = n: i: "\"" + builtins.toString i + "\"";
+
+  strJSON = n: str: "\"" + str + "\"";
+
+  attrJSONhlp = n: set: attrs: with builtins;
+    if length attrs == 0
+      then ""
+      else let hd = head attrs; tl = tail attrs;
+           in tabs n + ", \"" + hd + "\" : " + toJSONid (n + 1) set.${hd} + "\n"
+                     + attrJSONhlp n set tl;
+
+  attrJSON = n: set: with builtins;
+    let attrs = attrNames set; in
+    if length attrs == 0
+      then "{ }"
+      else let hd = head attrs; tl = tail attrs;
+           in "{\n" + tabs n + "  \"" + hd + "\" : " + toJSONid (n + 1) set.${hd} + "\n"
+            + attrJSONhlp n set tl
+            + tabs n + "}";
+
+  listJSONhlp = n: lst: with builtins;
+    if length lst == 0
+      then ""
+      else let hd = head lst; tl = tail lst;
+           in tabs n + ", " + toJSONid (n + 1) hd + "\n"
+                     + listJSONhlp n tl;
+
+  listJSON = n: lst: with builtins;
+    if length lst == 0
+      then "[ ]"
+      else let hd = head lst; tl = tail lst;
+           in "[\n" + tabs n + "  " + toJSONid (n + 1) hd + "\n"
+            + listJSONhlp n tl
+            + tabs n + "]";
+
 in {
-  inherit fix fold updateElem mergeConcat mergeMod iterate defAccess mayAccess removeAttrs;
+  inherit fix fold updateElem mergeConcat mergeMod iterate defAccess mayAccess removeAttrs toJSON;
 }
 
