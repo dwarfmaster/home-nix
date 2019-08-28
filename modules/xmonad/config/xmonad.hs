@@ -100,7 +100,7 @@ keybinds = M.fromList $ foldl kwk
 
 loghk xmp = dynamicLogWithPP xmobarPP
           { ppOutput  = hPutStrLn xmp
-          , ppTitle   = xmobarColor "#d7c8bc" "" . shorten 100 . xmobarRaw
+          , ppTitle   = xmobarColor "#d7c8bc" "" . shorten 100
           , ppLayout  = const "" -- to disable layout info on xmobar
           , ppSep     = " | "
           , ppCurrent = xmobarColor "#ca7f32" ""

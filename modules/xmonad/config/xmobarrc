@@ -1,6 +1,6 @@
 Config {
  -- appearance
-   font     = "-*-terminus-medium-r-*-*-16-*-*-*-*-*-*-*"
+   font     = "xft:FuraCode Nerd Font:style=Bold:pixelsize=12:antialias=true"
  , bgColor  = "#48413a"
  , fgColor  = "#d7c8bc"
  , position = Top
@@ -19,28 +19,28 @@ Config {
  , pickBroadest     = False -- choose widest display
  , persistent       = True  -- True to disable hiding
  , commands =
-   [ Run DynNetwork [ "--template" , "<dev>: <tx>kB/s|<rx>kB/s"
+   [ Run DynNetwork [ "--template" , "<fc=#ca7f32>祝</fc><tx>kB/s <fc=#ca7f32></fc><rx>kB/s"
                     , "--Low"      , "500000"
                     , "--High"     , "2000000"
                     , "--low"      , "#6eb958"
                     , "--normal"   , "#ca7f32"
                     , "--high"     , "#d35c5c"
                     ] 10
-   , Run MultiCpu   [ "--template" , "Cpu: <total0>-<total1>-<total2>-<total3>-<total4>-<total5>-<total6>-<total7>-<total8>-<total9>-<total10>-<total11>%"
+   , Run MultiCpu   [ "--template" , "<fc=#ca7f32></fc> <total0>-<total1>-<total2>-<total3>-<total4>-<total5>-<total6>-<total7>-<total8>-<total9>-<total10>-<total11>%"
                     , "--Low"      , "50"
                     , "--High"     , "90"
                     , "--low"      , "#6eb958"
                     , "--normal"   , "#ca7f32"
                     , "--high"     , "#d35c5c"
                     ] 10
-   , Run CoreTemp   [ "--template" , "Temp: <core0>-<core1>-<core2>-<core3>-<core4>-<core5>°C"
+   , Run CoreTemp   [ "--template" , "<fc=#ca7f32></fc> <core0>-<core1>-<core2>-<core3>-<core4>-<core5>°C"
                     , "--Low"      , "65"
                     , "--High"     , "85"
                     , "--low"      , "#6eb958"
                     , "--normal"   , "#ca7f32"
                     , "--high"     , "#d35c5c"
                     ] 50
-   , Run Memory     [ "--template" , "Mem: <usedratio>%"
+   , Run Memory     [ "--template" , "<fc=#ca7f32></fc> <usedratio>%"
                     , "--Low"      , "20"
                     , "--High"     , "90"
                     , "--low"      , "#6eb958"
