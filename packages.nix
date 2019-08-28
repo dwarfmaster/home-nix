@@ -205,14 +205,6 @@ let packages = with pkgs; [
 
   # Editors
   bvi # Hexadecimal editor
-  (vim_configurable.override {
-    config.vim = {
-      ruby = true;
-      perl = true;
-      lua  = true;
-    };
-    inherit ruby perl lua;
-  })
 
   # Office
   gnumeric                 # Graphical spreadsheet
