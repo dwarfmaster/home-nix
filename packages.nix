@@ -42,6 +42,7 @@ let packages = with pkgs; [
   bridge-utils # Create and manage bridge devices
   binutils     # Misc binary utilites (include objdump, ld and as)
   alsaUtils    # Sound card control
+  cachix       # Nix binary caches handling
 
 
   #  ____  _          _ _ 
