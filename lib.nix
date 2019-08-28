@@ -52,7 +52,7 @@ let
 
 
   # Convert a NIX expression to JSON in a very basic way
-  toJSON = toJSONid 0;
+  toJSON = set: toJSONid 0 set + "\n\n";
 
   toJSONid = n: obj: with builtins;
          if isAttrs obj  then attrJSON n obj

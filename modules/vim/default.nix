@@ -1,8 +1,12 @@
 { pkgs, recdata, ... }:
 
-{
+let
+  myplugins = import ./plugins.nix { inherit pkgs; };
+  lib = import ../../lib.nix;
+in {
   programs.neovim = {
     enable      = true;
+    withNodeJs  = true;
     withPython  = true;
     withPython3 = true;
     withRuby    = true;
@@ -12,24 +16,33 @@
     configure = {
       customRC = builtins.readFile ./vimrc;
 
-      packages.myVimPackage = with pkgs.vimPlugins; {
-        # Loaded on launch
-        start = [
-            # Apparence
-            base16-vim    # Base16 color schemes
-            lightline-vim # Status line
+      plug.plugins = with pkgs.vimPlugins; with myplugins; [
+        # Apparence
+        base16-vim           # Base16 color schemes
+        lightline-vim        # Status line
+        base16-vim-lightline # Base16 color schemes for lightline
 
-            # QOL
-            vim-multiple-cursors # Brings multiple cursors to vim
+        # QOL
+        vim-multiple-cursors # Brings multiple cursors to vim
+        fzfWrapper
+        fzf-vim              # Fuzzy finder for new files
+        vim-gitgutter        # Display git information in the gutter
+        sandwich             # Operations on sandwiched expressions (parens, brackets ...)
 
-            # Languages
-            vim-addon-nix # Nix support in vim
-        ];
+        # Intellisense
+        coc # Generic intellisense engine
 
-        # Load on demand with ':packadd $pkgname'
-        opt = [ ];
-      };
+        # Languages
+        vim-polyglot # Support for 144 languages
+      ];
     };
   };
+
+  packages = with pkgs; [
+    nodejs # For coc
+  ];
+
+  xdg.configFile."nvim/coc-settings.json".text =
+    let cocConfig = import ./coc-config.nix { inherit pkgs; }; in lib.toJSON cocConfig;
 }
 
