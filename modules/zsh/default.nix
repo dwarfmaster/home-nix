@@ -32,7 +32,7 @@ let lib = import ../../lib.nix; in
         "dirpersist"            # Saves dir stack across zsh reboots
         "extract"               # Define a function extract that can extract any archive
         "pass"                  # Autocompletion for pass
-        "per-directory-history" # Save history per directory, allow switching with ^G
+        # "per-directory-history" # Save history per directory, allow switching with ^G
         "fasd"                  # Add a f command that select files based on "frecency", and a j command to cd
         "jump"                  # Allow to mark directories and jump to them
         "gitignore"             # Add a gi command to download templates from gitignore.io

@@ -19,6 +19,7 @@ let args    = { inherit pkgs self recdata; };                  in
     firefox      = import modules/firefox      args;
     st           = import modules/st           args;
     vim          = import modules/vim          args;
+    fzf          = import modules/fzf          args;
   };
 
   home.file = lib.mayAccess [ "home" "file" ] recdata;
