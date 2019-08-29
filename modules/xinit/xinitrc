@@ -23,6 +23,10 @@ xset b off
 
 # redshift ?
 
+# X settings
+imlibsetroot -x e -s f $XDG_CONFIG_HOME/bg/bg.png > /dev/null 2>&1 &
+xrandr --output eDP-1 --brightness 0.77
+
 # XMonad
 xmonad
 
