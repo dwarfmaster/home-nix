@@ -94,6 +94,7 @@ let packages = with pkgs; [
 
   # Haskell
   cabal-install
+  cabal2nix
   (haskellPackages.ghcWithHoogle
     (hpkgs: builtins.concatLists (builtins.map (f: f hpkgs)
                                                (lib.defAccess [ "haskellPackages" ] recdata [ ])))    
