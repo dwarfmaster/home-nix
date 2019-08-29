@@ -61,10 +61,14 @@ mlayout = Full ||| tiled ||| Circle
 mworkspaces = ["r1", "l1", "l4", "l3", "l2", "music", "misc", "r2", "r3", "r4"]
 wkkeys = [xK_j, xK_f, xK_q, xK_s, xK_d, xK_g, xK_h, xK_k, xK_l, xK_m]
 
+rofi_clip = "rofi -modi \"clipboard:greenclip print\" -show clipboard -run-command '{cmd}'"
+rofi_calc = "rofi -plugin-path '/home/luc/.nix-profile/share/rofi/plugins/' -show calc -modi calc -no-show-match -no-sort -calc-command \"echo '{result}' | xclip\""
+
 keybinds = M.fromList $ foldl kwk
          [ ((modkey, xK_Return),           spawn "st")
          , ((modkey, xK_r),                spawn "rofi -show run")
-         , ((modkey, xK_v),                spawn "rofi -modi \"clipboard:greenclip print\" -show clipboard -run-command '{cmd}'")
+         , ((modkey, xK_v),                spawn rofi_clip)
+         , ((modkey, xK_c),                spawn rofi_calc)
          -- TODO : , ((modkey, xK_c), spawn "") calcul utility
          , ((modkey, xK_p),                spawn "scrlock")
          , ((modkey .|. shiftMask, xK_n),  io (exitWith ExitSuccess))

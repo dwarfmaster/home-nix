@@ -1,6 +1,8 @@
 { pkgs, recdata, ... }:
 
-{
+let
+  mpkgs = import ./packages.nix { inherit pkgs; };
+in {
   programs.rofi = {
     enable   = true;
     cycle    = true;
@@ -20,5 +22,14 @@
   };
 
   xdg.configFile."rofi/theme.rasi".source = ./theme.rasi;
+
+  packages = with pkgs; with mpkgs; [
+    rofi-calc    # Necessary for the XMonad shortcut, but not elegant
+    libqalculate # For rofi-calc
+  ];
+
+  shellAliases = {
+    rofi-calc = "rofi -plugin-path '${mpkgs.rofi-calc}/share/rofi/plugins/' -show calc -modi calc -no-show-match -no-sort -calc-command \"echo '{result}' | xclip\"";
+  };
 }
 
