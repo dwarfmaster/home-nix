@@ -43,9 +43,11 @@ let lib = import ../../lib.nix; in
     };
   };
 
-  xdg.configFile."zsh-custom".source = ./custom;
+  xdg.configFile."zsh-custom"    .source = ./custom;
+  xdg.configFile."zsh/dircolors" .source = ./dircolors;
 
   shellVariables = {
+    EDITOR    = "vim";
 
     #  ____                       ____  _     _       
     # / ___| _ __   __ _  ___ ___/ ___|| |__ (_)_ __  

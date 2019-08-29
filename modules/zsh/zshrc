@@ -13,3 +13,6 @@ function reupload() {
 		-F "file=@$1;filename=$1;type=application/pdf"
 }
 
+# LS_COLORS setting
+eval $(dircolors $XDG_CONFIG_HOME/zsh/dircolors)
+
