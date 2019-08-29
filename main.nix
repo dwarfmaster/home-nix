@@ -21,10 +21,12 @@ let args    = { inherit pkgs self recdata; };                  in
     vim          = import modules/vim          args;
     fzf          = import modules/fzf          args;
     rofi         = import modules/rofi         args;
+    clipboard    = import modules/clipboard    args;
   };
 
   home.file = lib.mayAccess [ "home" "file" ] recdata;
   xdg       = lib.mayAccess [ "xdg" ] recdata // { enable = true; };
   programs  = lib.mayAccess [ "programs" ] recdata;
+  systemd   = lib.mayAccess [ "systemd" ] recdata;
 }
 

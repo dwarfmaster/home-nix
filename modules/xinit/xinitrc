@@ -20,6 +20,7 @@ fi
 # WM-independent config
 xmodmap -e "keycode 65 = space space space space" # shift+space <- 4*space
 xset b off
+systemctl --user start greenclip
 
 # redshift ?
 
@@ -29,4 +30,7 @@ xrandr --output eDP-1 --brightness 0.77
 
 # XMonad
 xmonad
+
+# Clean up when closing X
+systemctl --user stop greenclip
 
