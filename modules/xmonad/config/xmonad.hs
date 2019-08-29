@@ -63,7 +63,7 @@ wkkeys = [xK_j, xK_f, xK_q, xK_s, xK_d, xK_g, xK_h, xK_k, xK_l, xK_m]
 
 keybinds = M.fromList $ foldl kwk
          [ ((modkey, xK_Return),           spawn "st")
-         , ((modkey, xK_r),                spawn "dmenu_run")
+         , ((modkey, xK_r),                spawn "rofi -show run")
          -- TODO : , ((modkey, xK_c), spawn "") calcul utility
          , ((modkey, xK_p),                spawn "scrlock")
          , ((modkey .|. shiftMask, xK_n),  io (exitWith ExitSuccess))

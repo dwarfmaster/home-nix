@@ -20,6 +20,7 @@ let args    = { inherit pkgs self recdata; };                  in
     st           = import modules/st           args;
     vim          = import modules/vim          args;
     fzf          = import modules/fzf          args;
+    rofi         = import modules/rofi         args;
   };
 
   home.file = lib.mayAccess [ "home" "file" ] recdata;
