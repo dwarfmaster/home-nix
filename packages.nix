@@ -156,6 +156,7 @@ let packages = with pkgs; [
   lighthouse             # Application launcher and multi purpose menu
   i3lock                 # Screen locker
   imlibsetroot           # Background picture setter
+  gnome3.dconf-editor    # GTK configuration editor
 
   # System
   xorg.xev    # X11 event querying

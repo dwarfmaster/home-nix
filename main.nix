@@ -31,5 +31,6 @@ let args    = { inherit pkgs self recdata; };                  in
   systemd   = lib.mayAccess [ "systemd" ] recdata;
   qt        = import modules/qt args;
   gtk       = lib.mayAccess [ "gtk" ] recdata;
+  dconf     = lib.mayAccess [ "dconf" ] recdata;
 }
 

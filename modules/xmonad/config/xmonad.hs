@@ -113,6 +113,10 @@ loghk xmp = dynamicLogWithPP xmobarPP
           , ppHidden  = xmobarColor "#d7c8bc" ""
           }
 
+myManageHook = composeAll
+    [ role =? "GtkFileChooserDialog" --> doFloat
+    ]
+
 mconfig xmp1 = docks $ def
         { borderWidth        = 2
         , terminal           = "st"
@@ -122,7 +126,7 @@ mconfig xmp1 = docks $ def
         , layoutHook         = avoidStruts $ mlayout
         , workspaces         = mworkspaces
         , keys               = const keybinds
-        , manageHook         = manageDocks <+> manageHook def
+        , manageHook         = manageDocks <+> myManageHook <+> manageHook def
         , logHook            = loghk xmp1 >> updatePointer (0.5,0.5) (0,0)
         }
 
