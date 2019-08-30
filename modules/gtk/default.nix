@@ -19,6 +19,8 @@ with pkgs; {
 
   packages = [ gnome3.dconf ];
 
+  # Tell firefox and other XDG-complient utilities to use my directories
+  xdg.configFile."user-dirs.dirs".source = ./dirs;
   # Necessary to fix gtk file chooser dialog window bigger than screen
   # TODO doesn't work
   xdf.configFile."gtk-2.0/gtkFileChooser.ini".source = gtkFileChooser.ini;

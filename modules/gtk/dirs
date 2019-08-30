@@ -1,0 +1,7 @@
+XDG_DESKTOP_DIR="$HOME/"
+XDG_DOCUMENT_DIR="$HOME/"
+XDG_DOWNLOAD_DIR="$HOME/downloads/"
+XDG_MUSIC_DIR="$HOME/div/music/"
+XDG_PICTURES_DIR="$HOME/div/images/"
+XDG_VIDEOS_DIR="$HOME/dev/movies/"
+
