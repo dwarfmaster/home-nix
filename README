@@ -1,0 +1,20 @@
+
+Setup of a new PC~:
+
+clone this to ~/.config/nixpkgs
+run 'home-manager switch'
+Setup in two git-annex in the data partition, one for files and one for comics
+Create a downloads partition there
+Link the data partition to ~/data
+Link ~/data/annex/div/comics -> ~/data/comics
+     ~/div       -> ~/data/annex/div
+     ~/hobbies   -> ~/data/annex/hobbies
+     ~/irl       -> ~/data/annex/irl
+     ~/school    -> ~/data/annex/school
+     ~/downloads -> ~/data/downloads
+
+Copy the ssh keys to ~/.ssh
+Copy the gnupg keys to ~/.gnupg
+Copy the pass store to ~/.password-store
+Copy the calendar files to $XDG_DATA_HOME/remind
+
