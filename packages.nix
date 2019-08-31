@@ -218,11 +218,13 @@ let packages = with pkgs; [
   python27Packages.dot2tex # Convert graphviz graphs to LaTeX
 
   # Misc
-  remind                # CLI advanced calendar
-  wyrd                  # NCurses interface to remind (TODO deprecated ?)
-  pass                  # CLI password manager
-  gitAndTools.git-annex # Files manager
-  newsboat              # RSS feed manager
+  remind                       # CLI advanced calendar
+  wyrd                         # NCurses interface to remind (TODO deprecated ?)
+  pass                         # CLI password manager
+  gitAndTools.git-annex        # Files manager
+  newsboat                     # RSS feed manager
+  python37Packages.mps-youtube # NCurses youtube music player
+  haskellPackages.hledger      # Accounting software
 
 
   #   ____                           
