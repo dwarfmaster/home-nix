@@ -1,11 +1,17 @@
 { pkgs, recdata, ... }:
 
 let
+
   myplugins = import ./plugins.nix { inherit pkgs; };
+
   lib = import ../../lib.nix;
+
+  mypkgs = import ./packages.nix { inherit pkgs; };
+
 in {
   programs.neovim = {
     enable      = true;
+    package     = mypkgs.neovim-nightly;
     withNodeJs  = true;
     withPython  = true;
     withPython3 = true;
@@ -18,7 +24,7 @@ in {
 
       plug.plugins = with pkgs.vimPlugins; with myplugins; [
         # Apparence
-        base16-vim           # Base16 color schemes
+        base16-vim-recent    # Base16 color schemes (fixed for neovim nightly)
         lightline-vim        # Status line
         base16-vim-lightline # Base16 color schemes for lightline
 

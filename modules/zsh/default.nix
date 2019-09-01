@@ -48,6 +48,7 @@ let lib = import ../../lib.nix; in
 
   shellVariables = {
     EDITOR    = "vim";
+    NIX_PATH  = "$NIX_PATH:$HOME/.nix-defexpr/channels";
 
     #  ____                       ____  _     _       
     # / ___| _ __   __ _  ___ ___/ ___|| |__ (_)_ __  

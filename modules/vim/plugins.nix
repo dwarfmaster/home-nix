@@ -14,6 +14,19 @@ with pkgs; {
     };
   };
 
+  # Necessary while waiting for nixpkgs to update its version of base16-vim
+  # Indeed, the nixpkgs version is broken with neovim nightly
+  base16-vim-recent = buildPlugin {
+    pname = "base16-vim-recent";
+    version = "2019-06-07";
+    src = fetchFromGitHub {
+      owner  = "chriskempson";
+      repo   = "base16-vim";
+      rev    = "6191622d5806d4448fa2285047936bdcee57a098";
+      sha256 = "1qz21jizcy533mqk9wff1wqchhixkcfkysqcqs0x35wwpbri6nz8";
+    };
+  };
+
   sandwich = buildPlugin {
     pname = "vim-sandwich";
     version = "2019-06-11";
