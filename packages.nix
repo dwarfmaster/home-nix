@@ -66,6 +66,7 @@ let packages = with pkgs; [
   file   # Misc information about a file
   bc     # Terminal calculator
   telnet # Unsecure direct download
+  sqlite # SQlite database access and manipulation
 
   # Misc
   figlet           # Font ASCII art
