@@ -9,7 +9,7 @@ Config {
  -- layout
  , sepChar  = "%"
  , alignSep = "}{"
- , template = "%StdinReader% }{ %multicpu% | %coretemp% | %memory% | %dynnetwork% | %date%"
+ , template = "<fc=#ca7f32></fc> %StdinReader% }{ %multicpu% | %coretemp% | %memory% | %dynnetwork% | %battery% | %date%"
 
  -- general behaviour
  , lowerOnStart     = True  -- send to the bottom of window stack
@@ -19,7 +19,26 @@ Config {
  , pickBroadest     = False -- choose widest display
  , persistent       = True  -- True to disable hiding
  , commands =
-   [ Run DynNetwork [ "--template" , "<fc=#ca7f32>祝</fc><tx>kB/s <fc=#ca7f32></fc><rx>kB/s"
+   [ Run BatteryP   [ "BAT1" ]
+                    [ "--template" , "<acstatus>"
+                    , "--Low"      , "15"        -- units: %
+                    , "--High"     , "85"        -- units: %
+                    , "--low"      , "#d35c5c"
+                    , "--normal"   , "#ca7f32"
+                    , "--high"     , "#6eb958"
+
+                    , "--" -- battery specific options
+                           -- discharging status
+                           , "-o"	, "<fc=#ca7f32></fc> <left>% (<timeleft>)"
+                           -- AC "on" status
+                           , "-O"	, "<fc=#ca7f32></fc> <left>%"
+                           -- charged status
+                           , "-i"	, "<fc=#6eb958></fc>"
+                           -- Command to run when the battery gets low (for example notification)
+                           -- The threshold in percents is set by the -A command
+                           -- , " a ", "some command"
+                    ] 50
+   , Run DynNetwork [ "--template" , "<fc=#ca7f32>祝</fc><tx>kB/s <fc=#ca7f32></fc><rx>kB/s"
                     , "--Low"      , "500000"
                     , "--High"     , "2000000"
                     , "--low"      , "#6eb958"
