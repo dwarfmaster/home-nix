@@ -23,11 +23,13 @@ let args    = { inherit pkgs self recdata; };                  in
     rofi         = import modules/rofi         args;
     clipboard    = import modules/clipboard    args;
     gtk          = import modules/gtk          args;
+    dunst        = import modules/dunst        args;
   };
 
   home.file = lib.mayAccess [ "home" "file" ] recdata;
   xdg       = lib.mayAccess [ "xdg" ] recdata // { enable = true; };
   programs  = lib.mayAccess [ "programs" ] recdata;
+  services  = lib.mayAccess [ "services" ] recdata;
   systemd   = lib.mayAccess [ "systemd" ] recdata;
   qt        = import modules/qt args;
   gtk       = lib.mayAccess [ "gtk" ] recdata;
