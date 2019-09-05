@@ -24,6 +24,7 @@ let args    = { inherit pkgs self recdata; };                  in
     clipboard    = import modules/clipboard    args;
     gtk          = import modules/gtk          args;
     dunst        = import modules/dunst        args;
+    music        = import modules/music        args;
   };
 
   home.file = lib.mayAccess [ "home" "file" ] recdata;

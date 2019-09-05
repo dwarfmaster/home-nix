@@ -224,7 +224,6 @@ let packages = with pkgs; [
   pass                         # CLI password manager
   gitAndTools.git-annex        # Files manager
   newsboat                     # RSS feed manager
-  python37Packages.mps-youtube # NCurses youtube music player
   haskellPackages.hledger      # Accounting software
 
 
