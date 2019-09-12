@@ -1,7 +1,12 @@
 { pkgs, self, recdata, ... }:
 
-let lib = import ./lib.nix; in
-let packages = with pkgs; [
+let
+
+  lib = import ./lib.nix;
+
+  msi-perkeyrgb = import ./pkgs/msi-perkeyrgb { inherit pkgs; };
+
+in let packages = with pkgs; [
   #  ____            _                 
   # / ___| _   _ ___| |_ ___ _ __ ___  
   # \___ \| | | / __| __/ _ \ '_ ` _ \ 
@@ -158,6 +163,8 @@ let packages = with pkgs; [
   i3lock                 # Screen locker
   imlibsetroot           # Background picture setter
   gnome3.dconf-editor    # GTK configuration editor
+  ckb-next               # Configure corsair devices lights
+  msi-perkeyrgb          # Configure keyboard lights
 
   # System
   xorg.xev    # X11 event querying
@@ -240,7 +247,7 @@ let packages = with pkgs; [
   armagetronad
   gltron
   (dwarf-fortress.override {
-    enableDFHack = true; # does not work as of now 2016-09-13
+    enableDFHack = true;
     themes       = {};
     theme        = null;
   })
@@ -248,6 +255,7 @@ let packages = with pkgs; [
   wesnoth
   hedgewars
   rogue
+
 ]; in
 
 packages ++ lib.defAccess [ "packages" ] recdata [ ]
