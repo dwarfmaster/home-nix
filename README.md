@@ -21,12 +21,19 @@ These instruction are for me.
    + ~/div       -> ~/data/annex/div
    + ~/hobbies   -> ~/data/annex/hobbies
    + ~/irl       -> ~/data/annex/irl
-   +  ~/school    -> ~/data/annex/school
+   + ~/school    -> ~/data/annex/school
    + ~/downloads -> ~/data/downloads
  - Copy the ssh keys to ~/.ssh
  - Copy the gnupg keys to ~/.gnupg
  - Copy the pass store to ~/.password-store
  - Copy the calendar files to $XDG_DATA_HOME/remind
+
+## Internet connection
+
+To add an eduroam connection type:
+TODO fix (doesn't work !)
+ - nmcli connection add type wifi con-name eduroam ifname wlo1 ssid "eduroam" -- wifi-sec.key-mgmt wpa-eap 802-1x.eap ttls 802-1x.identity [CUT]@ens.fr 802-1x.phase2-auth mschapv2 802-1x.domain-suffix-match anonymous@ens.fr
+ - nmcli connection up eduroam --ask
 
 
 
