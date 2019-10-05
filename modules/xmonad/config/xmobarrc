@@ -36,7 +36,9 @@ Config {
                            , "-i"	, "<fc=#6eb958></fc>"
                            -- Command to run when the battery gets low (for example notification)
                            -- The threshold in percents is set by the -A command
-                           -- , " a ", "some command"
+                           -- Only available from version 0.30 of xmobar
+                           -- , "-A" , "5"
+                           -- , "-a" , "notify-send -u critial \"Battery Alert\" \"Battery low\""
                     ] 50
    , Run DynNetwork [ "--template" , "<fc=#ca7f32>祝</fc><tx>kB/s <fc=#ca7f32></fc><rx>kB/s"
                     , "--Low"      , "500000"
