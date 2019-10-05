@@ -4,7 +4,7 @@ let
 
   myplugins = import ./plugins.nix { inherit pkgs; };
 
-  lib = import ../../lib.nix;
+  lib = import ../../../lib/lib.nix;
 
   mypkgs = import ./packages.nix { inherit pkgs; };
 

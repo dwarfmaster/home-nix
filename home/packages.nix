@@ -2,7 +2,7 @@
 
 let
 
-  lib = import ./lib.nix;
+  lib = import ../lib/lib.nix;
 
   msi-perkeyrgb = import ./pkgs/msi-perkeyrgb { inherit pkgs; };
 
@@ -48,6 +48,7 @@ in let packages = with pkgs; [
   binutils     # Misc binary utilites (include objdump, ld and as)
   alsaUtils    # Sound card control
   cachix       # Nix binary caches handling
+  nixops       # Nix-based deployement
 
 
   #  ____  _          _ _ 

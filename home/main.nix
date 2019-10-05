@@ -2,7 +2,7 @@
 
 self:
 
-let lib     = import ./lib.nix;                                in
+let lib     = import ../lib/lib.nix;                                in
 let recdata = lib.mergeMod (lib.mayAccess [ "modules" ] self); in
 let args    = { inherit pkgs self recdata; };                  in
 

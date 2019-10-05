@@ -1,6 +1,6 @@
 { pkgs, self, recdata, ... }:
 
-let lib = import ../../lib.nix; in
+let lib = import ../../../lib/lib.nix; in
 {
   programs.zsh = {
     enable = true;

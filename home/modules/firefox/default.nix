@@ -1,7 +1,7 @@
 { pkgs, ... }:
 
 let
-  lib   = import ../../lib.nix;
+  lib   = import ../../../lib/lib.nix;
   mpkgs = import ./packages.nix { inherit pkgs; };
 in {
   programs.firefox = {
