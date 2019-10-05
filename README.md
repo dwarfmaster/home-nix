@@ -46,7 +46,8 @@ TODO fix (doesn't work !)
  - [ ] Make rofi-tab-switcher work
  - [ ] Improve my mail workflow (local copy of notmuch + muchsync)
  - [ ] Setup a RSS reader
- - [ ] Setup hledger
+ - [X] Setup hledger
  - [ ] Improve my remind workflow
- - [ ] Setup MPD
+ - [X] Setup MPD
+ - [ ] Configure Conky
 
