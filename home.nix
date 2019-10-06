@@ -1,3 +1,7 @@
 
-import ./home/home.nix
+let
+
+  configs = import ./home/home.nix;
+
+in configs.main
 
