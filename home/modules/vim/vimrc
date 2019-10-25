@@ -65,6 +65,14 @@ set showbreak=+++ " Prefix long line return with
 au BufNewFile,BufRead *.pde setfiletype cpp
 au BufNewFile,BufRead *.ino setfiletype cpp
 
+" Coq files
+function InitCoqfiles()
+    call coquille#Commands()
+    execute ":UpdateRemotePlugins"
+    call coquille#FNMapping()
+endfunction
+" au FileType coq call InitCoqfiles()
+
 
 "  ____              _             
 " / ___| _   _ _ __ | |_ __ ___  __

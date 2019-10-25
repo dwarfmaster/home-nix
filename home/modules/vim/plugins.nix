@@ -48,5 +48,17 @@ with pkgs; {
       sha256 = "1s4nib2mnhagd0ymx254vf7l1iijwrh2xdqn3bdm4f1jnip81r10";
     };
   };
+
+  coquille = buildPlugin rec {
+    pname = "coquille";
+    version = "fc1a9b52d1b6fc61a9c1cc3006b8411aa5367adb";
+    src = fetchFromGitLab {
+      domain = "framagit.org";
+      owner  = "tyreunom";
+      repo   = "coquille";
+      rev    = "fc1a9b52d1b6fc61a9c1cc3006b8411aa5367adb";
+      sha256 = "1n0a3qvynk9hnmm9s9dgwlm40wsvp51c06dgp0j940236kvcy9za";
+    };
+  };
 }
 

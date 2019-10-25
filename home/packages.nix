@@ -111,6 +111,9 @@ in let packages = with pkgs; [
   idris
   idrisPackages.lightyear
 
+  # Proof assistants
+  coq
+
   # Stage M1
   openjdk8               # JAVA implementation
   ccl                    # Clozure CL, common lisp implementation
