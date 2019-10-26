@@ -25,6 +25,7 @@ let args    = { inherit pkgs self recdata; };                  in
     gtk          = import modules/gtk          args;
     dunst        = import modules/dunst        args;
     music        = import modules/music        args;
+    taskwarrior  = import modules/taskwarrior  args;
   };
 
   home.file = lib.mayAccess [ "home" "file" ] recdata;

@@ -1,0 +1,102 @@
+###############################################################################
+#
+# Copyright 2006 - 2019, Paul Beckingham, Federico Hernandez.
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included
+# in all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+# OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+# THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+#
+# https://www.opensource.org/licenses/mit-license.php
+#
+###############################################################################
+# TODO make it base16 compatible
+
+rule.precedence.color=deleted,completed,active,keyword.,tag.,project.,overdue,scheduled,due.today,due,blocked,blocking,recurring,tagged,uda.
+
+# General decoration
+color.label=
+color.label.sort=
+color.alternate=
+color.header=color3
+color.footnote=color3
+color.warning=color1
+color.error=color7 on color1
+color.debug=color4
+
+# Task state
+color.completed=
+color.deleted=
+color.active=color0 on color14
+color.recurring=color5
+color.scheduled=color6
+color.until=
+color.blocked=color0 on color7
+color.blocking=color9
+
+# Project
+color.project.none=
+
+# Priority
+color.uda.priority.H=color15
+color.uda.priority.M=color7
+color.uda.priority.L=
+
+# Tags
+color.tag.next=color8
+color.tag.none=
+color.tagged=color2
+
+# Due
+color.due=color1
+color.due.today=color1
+color.overdue=bold color1
+
+# UDA
+#color.uda.X=
+
+# Report: burndown
+color.burndown.done=on color2
+color.burndown.pending=on color1
+color.burndown.started=on color3
+
+# Report: history
+color.history.add=color0 on color1
+color.history.delete=color0 on color3
+color.history.done=color0 on color2
+
+# Report: summary
+color.summary.background=color7 on color0
+color.summary.bar=color0 on color2
+
+# Command: calendar
+color.calendar.due=color7 on color1
+color.calendar.due.today=color15 on color1
+color.calendar.holiday=color0 on color13
+color.calendar.overdue=color0 on color9
+color.calendar.today=bold color7 on color12
+color.calendar.weekend=color7 on color11
+color.calendar.weeknumber=color4
+
+# Command: sync
+color.sync.added=color2
+color.sync.changed=color3
+color.sync.rejected=color1
+
+# Command: undo
+color.undo.after=color2
+color.undo.before=color1
+
