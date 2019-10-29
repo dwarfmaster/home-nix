@@ -97,7 +97,6 @@ in let packages = with pkgs; [
   python3     # Python 3 interperter
   ruby        # Ruby interpreter
   julia       # Julia interpreter
-  ghostscript # PostScript interpreter
 
   # Haskell
   cabal-install
@@ -222,12 +221,13 @@ in let packages = with pkgs; [
   bvi # Hexadecimal editor
 
   # Office
-  gnumeric                 # Graphical spreadsheet
-  abiword                  # Graphical text editor
-  sc-im                    # NCurses spreadsheet
-  links                    # Terminal web browser
-  graphviz                 # Graph drawing
-  python27Packages.dot2tex # Convert graphviz graphs to LaTeX
+  gnumeric                     # Graphical spreadsheet
+  abiword                      # Graphical text editor
+  sc-im                        # NCurses spreadsheet
+  links                        # Terminal web browser
+  graphviz                     # Graph drawing
+  python27Packages.dot2tex     # Convert graphviz graphs to LaTeX
+  texlive.combined.scheme-full # All of texlive (including LaTeX and ConTEXt)
 
   # Misc
   remind                       # CLI advanced calendar
@@ -256,7 +256,7 @@ in let packages = with pkgs; [
     theme        = null;
   })
   dwarf-therapist
-  wesnoth
+  # wesnoth
   hedgewars
   rogue
 
