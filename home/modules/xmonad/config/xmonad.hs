@@ -114,7 +114,8 @@ loghk xmp = dynamicLogWithPP xmobarPP
           }
 
 myManageHook = composeAll
-    [ -- role =? "GtkFileChooserDialog" --> doFloat -- role is not defined
+    [ title =? "Property Browser — SolveSpace" --> doFloat
+    --, role =? "GtkFileChooserDialog" --> doFloat -- role is not defined
     ]
 
 mconfig xmp1 = docks $ def
