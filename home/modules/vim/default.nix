@@ -8,6 +8,8 @@ let
 
   mypkgs = import ./packages.nix { inherit pkgs; };
 
+  unstable = import <nixos-unstable> { };
+
 in {
   programs.neovim = {
     enable      = true;
@@ -18,6 +20,8 @@ in {
     withRuby    = true;
     viAlias     = true;
     vimAlias    = true;
+
+    extraPython3Packages = ppkgs: [ (mypkgs.python-tasklib ppkgs) ];
 
     extraConfig = builtins.readFile ./vimrc;
     plugins = with pkgs.vimPlugins; with myplugins; [
@@ -39,6 +43,10 @@ in {
       # Languages
       vim-polyglot # Support for 144 languages
       coquille     # Coq support
+
+      # Org-mode lite
+      vimwiki
+      taskwiki
     ];
   };
 

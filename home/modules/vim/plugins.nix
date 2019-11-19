@@ -60,5 +60,16 @@ with pkgs; {
       sha256 = "1n0a3qvynk9hnmm9s9dgwlm40wsvp51c06dgp0j940236kvcy9za";
     };
   };
+
+  taskwiki = buildPlugin rec {
+    pname = "taskwiki";
+    version = "7b823ace5b12b1719ec85ec976dd7c72560239eb";
+    src = fetchFromGitHub {
+      owner  = "tbabej";
+      repo   = "taskwiki";
+      rev    = "${version}";
+      sha256 = "0xbwbn5zh1djniwj263j9dwrxrqf3yx5nyjlybmqkavghpvzll5j";
+    };
+  };
 }
 
