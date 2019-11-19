@@ -6,6 +6,8 @@ let
 
   msi-perkeyrgb = import ./pkgs/msi-perkeyrgb { inherit pkgs; };
 
+  unstable = import <nixos-unstable> { };
+
 in let packages = with pkgs; [
   #  ____            _                 
   # / ___| _   _ ___| |_ ___ _ __ ___  
@@ -93,8 +95,14 @@ in let packages = with pkgs; [
   #                  |___/                                       |___/ 
   # Scripting
   perl        # Perl interpreter
-  python2     # Python 2 interpreter
-  python3     # Python 3 interperter
+  (python2.withPackages
+    (ppkgs: builtins.concatLists (builtins.map (f: f ppkgs)
+                                               (lib.defAccess [ "python2Packages" ] recdata [ ])))
+  )
+  (python3.withPackages
+    (ppkgs: builtins.concatLists (builtins.map (f: f ppkgs)
+                                               (lib.defAccess [ "python3Packages" ] recdata [ ])))
+  )
   ruby        # Ruby interpreter
   julia       # Julia interpreter
 
