@@ -43,6 +43,7 @@ in {
       # Languages
       vim-polyglot # Support for 144 languages
       coquille     # Coq support
+      dhall-vim    # Dhall support
 
       # Org-mode lite
       vimwiki

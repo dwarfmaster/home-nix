@@ -75,6 +75,7 @@ in let packages = with pkgs; [
   bc     # Terminal calculator
   telnet # Unsecure direct download
   sqlite # SQlite database access and manipulation
+  dhall  # Better json
 
   # Misc
   figlet           # Font ASCII art
