@@ -1,6 +1,8 @@
-{ pkgs, ... }:
+general:
 
-{
+let
+  pkgs = general.pkgs.main;
+in {
   home.file.".xmonad".source = ./config;
   home.file.".xmonad".recursive = true;
 

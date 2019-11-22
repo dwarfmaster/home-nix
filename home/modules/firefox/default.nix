@@ -1,8 +1,7 @@
-{ pkgs, ... }:
+general@{ lib, ... }:
 
 let
-  lib   = import ../../../lib/lib.nix;
-  mpkgs = import ./packages.nix { inherit pkgs; };
+  mpkgs = import ./packages.nix general;
 in {
   programs.firefox = {
     enable = true;

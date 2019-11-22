@@ -1,7 +1,8 @@
-{ pkgs, ... }:
+general:
 
 let
-  all-hies-gen = import (fetchTarball "https://github.com/infinisil/all-hies/tarball/master") {};
+  pkgs = general.pkgs.main;
+  all-hies-gen = general.pkgs.hies;
   all-hies = all-hies-gen.selection { selector = p: { inherit (p) ghc864 ghc863; }; };
 in {
   "coc.preferences" = {

@@ -1,8 +1,9 @@
-{ pkgs, ... }:
+general:
 
-let buildPlugin = (pkgs.vimUtils.override { vim = pkgs.vim; }).buildVimPluginFrom2Nix; in
-
-with pkgs; {
+let
+  pkgs = general.pkgs.main;
+  buildPlugin = (pkgs.vimUtils.override { vim = pkgs.vim; }).buildVimPluginFrom2Nix;
+in with pkgs; {
   base16-vim-lightline = buildPlugin {
     pname = "base16-vim-lightline";
     version = "2019-06-24";

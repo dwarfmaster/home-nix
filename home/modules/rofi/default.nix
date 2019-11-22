@@ -1,7 +1,8 @@
-{ pkgs, recdata, ... }:
+general@{ recdata, ... }:
 
 let
-  mpkgs = import ./packages.nix { inherit pkgs; };
+  pkgs  = general.pkgs.main; 
+  mpkgs = import ./packages.nix general;
 in {
   programs.rofi = {
     enable   = true;

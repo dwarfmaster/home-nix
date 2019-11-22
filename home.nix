@@ -1,7 +1,10 @@
+{ ... }:
 
 let
 
-  configs = import ./home/home.nix;
+  general = import ./default.nix { };
+
+  configs = import ./home/home.nix general;
 
 in configs.main
 

@@ -1,12 +1,14 @@
-{ pkgs, self, recdata, ... }:
+general@{ lib, self, recdata, ... }:
 
 let
 
-  lib = import ../lib/lib.nix;
+  msi-perkeyrgb = import ./pkgs/msi-perkeyrgb general;
 
-  msi-perkeyrgb = import ./pkgs/msi-perkeyrgb { inherit pkgs; };
+  unstable = general.pkgs.nixpkgs.nixos-unstable;
 
-  unstable = import <nixos-unstable> { };
+  unfree = general.pkgs.unfree-main;
+
+  pkgs = general.pkgs.main;
 
 in let packages = with pkgs; [
   #  ____            _                 
@@ -23,9 +25,9 @@ in let packages = with pkgs; [
   cryptsetup       # Setup DM encrypted disks
 
   # Compression
-  unrar # RAR decompression
-  p7zip # Terminal implementation of 7zip
-  unzip # ZIP compression and decompression
+  unfree.unrar # RAR decompression
+  p7zip        # Terminal implementation of 7zip
+  unzip        # ZIP compression and decompression
 
   # Libraries
   librsvg # SVG rendering library (TODO why is it necessary ?)
@@ -259,12 +261,12 @@ in let packages = with pkgs; [
   superTux
   armagetronad
   gltron
-  (dwarf-fortress.override {
+  (unfree.dwarf-fortress.override {
     enableDFHack = true;
     themes       = {};
     theme        = null;
   })
-  dwarf-therapist
+  unfree.dwarf-therapist
   # wesnoth
   hedgewars
   rogue

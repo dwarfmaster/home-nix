@@ -1,7 +1,7 @@
-{ pkgs, ... }:
+general:
 
 let
-  pkg = pkgs.haskellPackages.greenclip;
+  pkg = general.pkgs.main.haskellPackages.greenclip;
 in {
   packages = [ pkg ];
   xdg.configFile."greenclip.cfg".source = ./gc.cfg;

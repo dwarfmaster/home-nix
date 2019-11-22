@@ -1,6 +1,8 @@
-{ pkgs, ... }:
+general:
 
-with pkgs; {
+let
+  pkgs = general.pkgs.main;
+in with pkgs; {
   rofi-calc = stdenv.mkDerivation rec {
     name = "rofi-calc-${version}";
     version = "7b1084cb3983f0a069a1113d29bc5af894f948ce";

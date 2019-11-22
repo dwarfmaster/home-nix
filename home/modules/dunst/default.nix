@@ -1,6 +1,8 @@
-{ pkgs, ... }:
+general:
 
-{
+let
+  pkgs = general.pkgs.main;
+in {
   services.dunst = {
     enable = true;
     settings = {

@@ -1,7 +1,8 @@
-{ pkgs, self, recdata, ... }:
+general@{ lib, self, recdata, ... }:
 
-let lib = import ../../../lib/lib.nix; in
-{
+let
+  pkgs = general.pkgs.main;
+in {
   programs.zsh = {
     enable = true;
     enableAutosuggestions = true;

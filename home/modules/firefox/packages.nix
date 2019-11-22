@@ -1,6 +1,8 @@
-{ pkgs, ... }:
+general:
 
-with pkgs; {
+let
+  pkgs = general.pkgs.main;
+in with pkgs; {
   rofi-tab-switcher = stdenv.mkDerivation rec {
     name = "rofi-tab-switcher-${version}";
     version = "403f3a243ff90181a356c92c3855de16d8256b8a";

@@ -1,6 +1,7 @@
-{ pkgs, ... }:
+general:
 
 let
+  pkgs = general.pkgs.main;
   mpdPort = 6600;
 in {
   # Music player daemon

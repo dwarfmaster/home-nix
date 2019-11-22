@@ -1,7 +1,9 @@
 
 let
 
-  mlib = import ../lib/lib.nix;
+  general = import ../default.nix { };
+
+  mlib = general.lib;
 
 in {
 

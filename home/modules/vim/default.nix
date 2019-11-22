@@ -1,14 +1,14 @@
-{ pkgs, recdata, ... }:
+general@{ lib, recdata, ... }:
 
 let
 
-  myplugins = import ./plugins.nix { inherit pkgs; };
+  myplugins = import ./plugins.nix general;
 
-  lib = import ../../../lib/lib.nix;
+  mypkgs = import ./packages.nix general;
 
-  mypkgs = import ./packages.nix { inherit pkgs; };
+  unstable = general.pkgs.nixpkgs.nixos-unstable;
 
-  unstable = import <nixos-unstable> { };
+  pkgs = general.pkgs.main;
 
 in {
   programs.neovim = {
@@ -56,6 +56,6 @@ in {
   ];
 
   xdg.configFile."nvim/coc-settings.json".text =
-    let cocConfig = import ./coc-config.nix { inherit pkgs; }; in lib.toJSON cocConfig;
+    let cocConfig = import ./coc-config.nix general; in lib.toJSON cocConfig;
 }
 

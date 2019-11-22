@@ -1,8 +1,10 @@
-{ pkgs, self, recdata, ... }:
+general@{ self, recdata, ... }:
 
 let
 
   lib = import ../lib/lib.nix;
+
+  pkgs = general.pkgs.main;
 
 in let packages = with pkgs; [
   #  ____            _                 

@@ -1,6 +1,8 @@
-{ pkgs, ... }:
+general:
 
-{
+let
+  pkgs = general.pkgs.main;
+in {
   programs.taskwarrior = {
     enable = true;
     colorTheme = ./color.theme;

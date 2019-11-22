@@ -1,11 +1,13 @@
+general:
+
 let
 
-  lib = import ../lib/lib.nix;
+  lib = general.lib;
 
-  build = path: { pkgs, ... }@args:
+  build = path:
       lib.removeAttrs
         [ "modules" "recdata" ]
-        (lib.iterate 3 (import path args) { }); # 2 iterations would probably be enough
+        (lib.iterate 3 (import path general) { }); # 2 iterations would probably be enough
 
 in {
 

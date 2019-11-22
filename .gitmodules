@@ -1,3 +1,9 @@
 [submodule "modules/zsh/spaceship-prompt"]
 	path = home/modules/zsh/custom/themes/spaceship-prompt
 	url = https://github.com/denysdovhan/spaceship-prompt
+[submodule "pkgs/nixpkgs/nixos-19.03"]
+	path = pkgs/nixpkgs/master
+	url = https://github.com/NixOS/nixpkgs
+[submodule "pkgs/hies"]
+	path = pkgs/hie/hies
+	url = https://github.com/Infinisil/all-hies

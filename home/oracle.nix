@@ -1,14 +1,12 @@
-{ pkgs, ... }:
+general@{ lib, ... }:
 
 self:
 
-let lib     = import ../lib/lib.nix;                                in
 let recdata = lib.mergeMod (lib.mayAccess [ "modules" ] self); in
-let args    = { inherit pkgs self recdata; };                  in
+let args    = general // { inherit self recdata; };            in
 
 {
   home.packages = import ./oracle-packages.nix args;
-  nixpkgs.config = { allowUnfree = true; }; # For unrar
 
   modules = {
     zsh          = import modules/zsh          args;

@@ -1,7 +1,7 @@
 { pkgs, ... }:
 
 # TODO Not enough !
-with pkgs; python35Packages.buildPythonPackage rec {
+with pkgs.main; python35Packages.buildPythonPackage rec {
   name = "msi-perkeyrgb-${version}";
   version = "1.4";
 

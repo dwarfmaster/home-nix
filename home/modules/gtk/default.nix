@@ -1,6 +1,8 @@
-{ pkgs, ... }:
+general:
 
-with pkgs; {
+let
+  pkgs = general.pkgs.main;
+in with pkgs; {
   gtk = {
     enable = true;
     font = {
