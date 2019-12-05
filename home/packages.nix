@@ -2,7 +2,8 @@ general@{ lib, self, recdata, ... }:
 
 let
 
-  msi-perkeyrgb = import ./pkgs/msi-perkeyrgb general;
+  msi-perkeyrgb   = import ./pkgs/msi-perkeyrgb   general;
+  project-manager = import ./pkgs/project-manager general;
 
   unstable = general.pkgs.nixpkgs.nixos-unstable;
 
@@ -247,6 +248,7 @@ in let packages = with pkgs; [
   gitAndTools.git-annex        # Files manager
   newsboat                     # RSS feed manager
   haskellPackages.hledger      # Accounting software
+  project-manager              # Tool for managing projects
 
 
   #   ____                           
