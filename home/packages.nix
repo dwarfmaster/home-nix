@@ -20,6 +20,7 @@ in let packages = with pkgs; [
   #        |___/                       
   # Cryptography
   openssh          # Misc cryptographic utilities
+  mosh             # Better SSH for bad connections
   gnupg            # GNU pgp implementation
   gnupg1           # GNU pgp implementation (TODO why is it necessary ?)
   pinentry_ncurses # Save password input for gpg
