@@ -41,9 +41,11 @@ in {
       coc # Generic intellisense engine
 
       # Languages
-      vim-polyglot # Support for 144 languages
-      coquille     # Coq support
-      dhall-vim    # Dhall support
+      vim-polyglot      # Support for 144 languages
+      dhall-vim         # Dhall support
+      vim-pandoc-syntax # Pandoc syntax
+      vim-pandoc        # Advanced pandoc support
+      vim-pandoc-after  # Compatibility layer between vim-pandoc and other plugins
 
       # Org-mode lite
       vimwiki
