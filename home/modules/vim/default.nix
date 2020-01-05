@@ -49,8 +49,7 @@ in {
       vim-pandoc-after  # Compatibility layer between vim-pandoc and other plugins
 
       # Org-mode lite
-      vimwiki
-      taskwiki
+      # Using a well configured vim-pandoc instead of vimwiki
       vim-table-mode # Advanced edition of tables
     ];
   };

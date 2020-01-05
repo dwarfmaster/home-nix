@@ -347,14 +347,10 @@ endfunction
 "  \ V /| | '  \ V  V / | / / |
 "   \_/ |_|_|_|_\_/\_/|_|_\_\_|
 "                              
-" Use pandoc syntax with vimwiki
-let g:vimwiki_list = [{ 'path': '~/vimwiki',
-                      \ 'syntax': 'markdown',
-                      \ 'ext': '.md'}]
-" Enable vimwiki only on md files in ~/vimwiki
-let g:vimwiki_global_ext=0
-" Use markdown syntax with taskwiki
-let g:taskwiki_markup_syntax = "markdown"
+" Use vim-pandoc with some bindings instead of vimwiki
+nmap <return> ,gl
+nmap <backspace> ,gb
+nmap <leader>ww :e /home/luc/vimwiki/index.pd<return>:cd %:p:h<return>
 
 "  ___              _         
 " | _ \__ _ _ _  __| |___  __ 
