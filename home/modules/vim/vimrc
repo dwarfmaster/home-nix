@@ -26,6 +26,7 @@ set guicursor=                          " Disable cursor change in insert mode
 set hidden                              " Can open new buffer while the current one is not saved
 colorscheme base16-woodland             " Set the colorscheme, make the background option useless
 let mapleader=' '                       " Leader key is space
+let maplocalleader=','                  " Local leader is ,
 
 
 "  ____                      _     
@@ -360,8 +361,26 @@ let g:taskwiki_markup_syntax = "markdown"
 " |  _/ _` | ' \/ _` / _ \/ _|
 " |_| \__,_|_||_\__,_\___/\__|
 "                             
+" TODO fix E20... error on md files
+" Prevent polyglot from handling markdown files
+let g:polyglot_disabled = [ "markdown" ]
+let g:pandoc#modules#disabled          = [ "command"
+                                       \ , "bibliographies"
+                                       \ , "completion"
+                                       \ , "menu"
+                                       \ , "autocomplete" ]
 " Enable pandoc for markdown files
-let g:pandoc#filetypes#handled = ["pandoc","markdown"]
+let g:pandoc#filetypes#handled         = [ "pandoc", "markdown" ]
+let g:pandoc#filetypes#pandoc_markdown = 1
+let g:pandoc#formatting#mode           = 'hA'
+let g:pandoc#formatting#textwidth      = 80
+let g:pandoc#spell#enabled             = 0
+let g:pandoc#folding#fold_yaml         = 1
+let g:pandoc#folding#fastfolds         = 1
+let g:pandoc#keyboard#use_default_mappings = 1
+let g:pandoc#keyboard#sections#header_style = 'a'
+let g:pandoc#hypertext#create_if_no_alternates_exists = 1
+au Filetype pandoc set colorcolumn=80
 
 
 "  ___ _ _   _____   __  __
