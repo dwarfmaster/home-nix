@@ -18,9 +18,10 @@ in {
       share = true;
     };
 
-    localVariables = lib.mayAccess [ "shellVariables" ] recdata;
-    shellAliases   = lib.mayAccess [ "shellAliases"   ] recdata;
-    initExtra      = builtins.readFile ./zshrc;
+    sessionVariables = lib.mayAccess [ "globalVariables" ] recdata;
+    localVariables   = lib.mayAccess [ "shellVariables"  ] recdata;
+    shellAliases     = lib.mayAccess [ "shellAliases"    ] recdata;
+    initExtra        = builtins.readFile ./zshrc;
 
     oh-my-zsh = {
       enable = true;
@@ -47,10 +48,13 @@ in {
   xdg.configFile."zsh-custom"    .source = ./custom;
   xdg.configFile."zsh/dircolors" .source = ./dircolors;
 
-  shellVariables = {
+  globalVariables = {
     EDITOR    = "vim";
     NIX_PATH  = "$NIX_PATH:$HOME/.nix-defexpr/channels";
+    DIRSTACKSIZE = 16;
+  };
 
+  shellVariables = {
     #  ____                       ____  _     _       
     # / ___| _ __   __ _  ___ ___/ ___|| |__ (_)_ __  
     # \___ \| '_ \ / _` |/ __/ _ \___ \| '_ \| | '_ \ 
@@ -88,16 +92,6 @@ in {
     SPACESHIP_VI_MODE_SHOW     = true;
     SPACESHIP_JOBS_SHOW        = true;
     SPACESHIP_EXIT_CODE_SHOW   = true;
-
-
-    #  __  __ _          
-    # |  \/  (_)___  ___ 
-    # | |\/| | / __|/ __|
-    # | |  | | \__ \ (__ 
-    # |_|  |_|_|___/\___|
-    #                    
-    DIRSTACKSIZE = 16;
-
   };
 
   shellAliases = {
