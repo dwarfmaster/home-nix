@@ -36,6 +36,7 @@ in {
       fzf-vim              # Fuzzy finder for new files
       vim-gitgutter        # Display git information in the gutter
       sandwich             # Operations on sandwiched expressions (parens, brackets ...)
+      narrow-region        # Allow to select a part of a file and edit it in a separate buffer
 
       # Intellisense
       coc # Generic intellisense engine

@@ -72,5 +72,16 @@ in with pkgs; {
       sha256 = "0xbwbn5zh1djniwj263j9dwrxrqf3yx5nyjlybmqkavghpvzll5j";
     };
   };
+
+  narrow-region = buildPlugin rec {
+    pname = "NrrwRgn";
+    version = "8a2930141ada6719aae6c53bf4e4a8dfc3f8dbed";
+    src = fetchFromGitHub {
+      owner  = "chrisbra";
+      repo   = "NrrwRgn";
+      rev    = "${version}";
+      sha256 = "0mns43i7jj0kragylfhpawbkd9wwky8fbyvwx33406193ymyn3y3";
+    };
+  };
 }
 
