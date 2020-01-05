@@ -363,3 +363,49 @@ let g:taskwiki_markup_syntax = "markdown"
 " Enable pandoc for markdown files
 let g:pandoc#filetypes#handled = ["pandoc","markdown"]
 
+
+"  ___ _ _   _____   __  __
+" | _ |_) |_|_   _|__\ \/ /
+" | _ \ | '_ \| |/ -_)>  < 
+" |___/_|_.__/|_|\___/_/\_\
+"                          
+" Use fzf-bibtex to easily insert references to papers
+" In normal mode, use <leader>c to cite, and <leader>m to insert a pretty
+" printed display of the citation. In insert mode, use @@ to insert a
+" citation.
+" Taken from https://github.com/msprev/fzf-bibtex README
+function! s:bibtex_cite_sink(lines)
+    let r=system("bibtex-cite ", a:lines)
+    execute ':normal! a' . r
+endfunction
+
+function! s:bibtex_markdown_sink(lines)
+    let r=system("bibtex-markdown ", a:lines)
+    execute ':normal! a' . r
+endfunction
+
+nnoremap <silent> <leader>c :call fzf#run({
+                        \ 'source': 'bibtex-ls',
+                        \ 'sink*': function('<sid>bibtex_cite_sink'),
+                        \ 'up': '40%',
+                        \ 'options': '--ansi --layout=reverse-list --multi --prompt "Cite> "'})<CR>
+
+nnoremap <silent> <leader>m :call fzf#run({
+                        \ 'source': 'bibtex-ls',
+                        \ 'sink*': function('<sid>bibtex_markdown_sink'),
+                        \ 'up': '40%',
+                        \ 'options': '--ansi --layout=reverse-list --multi --prompt "Markdown> "'})<CR>
+
+function! s:bibtex_cite_sink_insert(lines)
+    let r=system("bibtex-cite ", a:lines)
+    execute ':normal! a' . r
+    call feedkeys('a', 'n')
+endfunction
+
+inoremap <silent> @@ <c-g>u<c-o>:call fzf#run({
+                        \ 'source': 'bibtex-ls',
+                        \ 'sink*': function('<sid>bibtex_cite_sink_insert'),
+                        \ 'up': '40%',
+                        \ 'options': '--ansi --layout=reverse-list --multi --prompt "Cite> "'})<CR>
+
+
