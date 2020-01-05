@@ -24,6 +24,7 @@ let args    = general // { inherit self recdata; };            in
     dunst        = import modules/dunst        args;
     music        = import modules/music        args;
     taskwarrior  = import modules/taskwarrior  args;
+    bibliography = import modules/bibliography args;
   };
 
   home.file = lib.mayAccess [ "home" "file" ] recdata;
