@@ -51,6 +51,7 @@ in {
       # Org-mode lite
       vimwiki
       taskwiki
+      vim-table-mode # Advanced edition of tables
     ];
   };
 
