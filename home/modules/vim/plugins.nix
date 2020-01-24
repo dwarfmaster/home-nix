@@ -52,13 +52,13 @@ in with pkgs; {
 
   coquille = buildPlugin rec {
     pname = "coquille";
-    version = "fc1a9b52d1b6fc61a9c1cc3006b8411aa5367adb";
+    version = "81cea3080eb781216c4f3ab14dc7a1673d6688f6";
     src = fetchFromGitLab {
       domain = "framagit.org";
       owner  = "tyreunom";
       repo   = "coquille";
-      rev    = "fc1a9b52d1b6fc61a9c1cc3006b8411aa5367adb";
-      sha256 = "1n0a3qvynk9hnmm9s9dgwlm40wsvp51c06dgp0j940236kvcy9za";
+      rev    = "${version}";
+      sha256 = "0r0nx5jnjkfx3n1y3lplvsn35iw7gqsbgm7r150559sdbag1ahw0";
     };
   };
 

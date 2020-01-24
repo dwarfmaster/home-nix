@@ -47,6 +47,7 @@ in {
       vim-pandoc-syntax # Pandoc syntax
       vim-pandoc        # Advanced pandoc support
       vim-pandoc-after  # Compatibility layer between vim-pandoc and other plugins
+      coquille          # COQ support
 
       # Org-mode lite
       # Using a well configured vim-pandoc instead of vimwiki
