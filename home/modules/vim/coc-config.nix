@@ -13,8 +13,8 @@ in {
     # C/C++ server
     ccls = {
       command      = "${pkgs.ccls}/bin/ccls";
-      filetypes    = [ "c" "cpp" ];
-      rootPatterns = [ ".ccls" ".git/" ];
+      filetypes    = [ "c" "cpp" "cc" ];
+      # rootPatterns = [ ".ccls" "compile_commands.json" ".git/" ];
       initializationOptions.cache.directory = "/tmp/ccls";
     };
 

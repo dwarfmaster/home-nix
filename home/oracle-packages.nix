@@ -57,6 +57,8 @@ in let packages = with pkgs; [
   bc     # Terminal calculator
   telnet # Unsecure direct download
   sqlite # SQlite database access and manipulation
+  htop   # Display system information
+  gotop  # A variant of htop
 
   # Misc
   figlet           # Font ASCII art
@@ -65,8 +67,6 @@ in let packages = with pkgs; [
   asciiquarium     # ASCII art aquarium
   sl               # ASCII art train
   beep             # Play sounds on the terminal
-  powerline-fonts  # Fonts with icons
-  nerdfonts        # Fonts with icons
   spaceship-prompt # Oh-my-zsh theme
 
   #  ____                                                _             
@@ -81,7 +81,6 @@ in let packages = with pkgs; [
   python3     # Python 3 interperter
   ruby        # Ruby interpreter
   julia       # Julia interpreter
-  ghostscript # PostScript interpreter
 
   # Haskell
   cabal-install
@@ -111,6 +110,8 @@ in let packages = with pkgs; [
   gnum4    # Macro preprocessor
   mr       # Multiple repository management
   ctags    # Objects indexer for many languages
+  gradle   # Build system for java
+  mercurial
 
 
   #  __  __       _ _   _                    _ _       
@@ -122,7 +123,7 @@ in let packages = with pkgs; [
   # Conversion
   imagemagick                 # Convert any image format to any other
   qpdf                        # Content preserving pdf transformations
-  pandoc                      # Markdown converter
+  inkscape
 
   # Editors
   bvi # Hexadecimal editor
@@ -131,7 +132,12 @@ in let packages = with pkgs; [
   sc-im                    # NCurses spreadsheet
   links                    # Terminal web browser
   graphviz                 # Graph drawing
+  gnuplot                  # Scientific plotting
+  gephi                    # Interactive graph visualizer
   python27Packages.dot2tex # Convert graphviz graphs to LaTeX
+  zathura
+  xpdf
+  texlive.combined.scheme-full
 
 ]; in
 

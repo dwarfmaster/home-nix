@@ -11,7 +11,6 @@ let
 in {
   programs.neovim = {
     enable      = true;
-    package     = mypkgs.neovim-nightly;
     withNodeJs  = true;
     withPython  = true;
     withPython3 = true;
@@ -34,12 +33,15 @@ in {
         fzf-vim              # Fuzzy finder for new files
         vim-gitgutter        # Display git information in the gutter
         sandwich             # Operations on sandwiched expressions (parens, brackets ...)
+        vim-easy-align       # Alignement operations
 
         # Intellisense
-        coc # Generic intellisense engine
+        coc        # Generic intellisense engine
+        vim-pandoc # Support for pandoc
 
         # Languages
-        vim-polyglot # Support for 144 languages
+        vim-polyglot      # Support for 144 languages
+        vim-pandoc-syntax # Syntax for pandoc
       ];
     };
   };

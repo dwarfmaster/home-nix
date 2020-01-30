@@ -3,5 +3,5 @@ let
 
   configs = import ./home/home.nix;
 
-in configs.main
+in configs.oracle
 

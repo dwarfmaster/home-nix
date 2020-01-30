@@ -24,6 +24,7 @@ set listchars+=nbsp:~,tab:>.            " Show unbreakable spaces in list mode
 set completeopt=longest,menuone,preview " Completing window option
 set guicursor=                          " Disable cursor change in insert mode
 set hidden                              " Can open new buffer while the current one is not saved
+set scrolloff=5                         " Keep 5 lines between cursor and border of screen
 colorscheme base16-woodland             " Set the colorscheme, make the background option useless
 let mapleader=' '                       " Leader key is space
 

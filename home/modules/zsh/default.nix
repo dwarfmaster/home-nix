@@ -56,7 +56,7 @@ let lib = import ../../../lib/lib.nix; in
     #  ___) | |_) | (_| | (_|  __/___) | | | | | |_) |
     # |____/| .__/ \__,_|\___\___|____/|_| |_|_| .__/ 
     #       |_|                                |_|    
-    SPACESHIP_PROMPT_ORDER  = [ "dir" "git" "ruby" "rust" "haskell" "julia"
+    SPACESHIP_PROMPT_ORDER  = [ "dir" "ruby" "rust" "haskell" "julia"
                                 "line_sep" "vi_mode" "jobs" "exit_code" "char" ];
     SPACESHIP_RPROMPT_ORDER = [ "exec_time" "battery" "user" "host" "time" ];
     SPACESHIP_PROMPT_ADD_NEWLINE       = true;
@@ -107,6 +107,7 @@ let lib = import ../../../lib/lib.nix; in
     lld     = "ll /dev/sd*";
     rm      = "rm --preserve-root -i";
     mrannex = "mr -c ~/data/annex/mrconfig";
+    mvim    = "/nix/store/2y4al725pvk13ar5kjssm7gwir8arzqg-neovim-e29b89ca54e20b1f3430b43b1c57bd72ccadf954/bin/nvim";
   };
 }
 

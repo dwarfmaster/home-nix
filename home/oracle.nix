@@ -16,6 +16,9 @@ let args    = { inherit pkgs self recdata; };                  in
     git          = import modules/git          args;
     vim          = import modules/vim          args;
     fzf          = import modules/fzf          args;
+    others       = {
+      haskellPackages = [ (hpkgs: [hpkgs.pandoc-citeproc]) ];
+    };
   };
 
   home.file = lib.mayAccess [ "home" "file" ] recdata;
