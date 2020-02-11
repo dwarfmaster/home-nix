@@ -133,6 +133,7 @@ in let packages = with pkgs; [
   links                    # Terminal web browser
   graphviz                 # Graph drawing
   gnuplot                  # Scientific plotting
+  asymptote
   gephi                    # Interactive graph visualizer
   python27Packages.dot2tex # Convert graphviz graphs to LaTeX
   zathura
