@@ -42,6 +42,7 @@ in {
         # Languages
         vim-polyglot      # Support for 144 languages
         vim-pandoc-syntax # Syntax for pandoc
+        des-syntax        # Datalog syntax
       ];
     };
   };
