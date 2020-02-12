@@ -42,7 +42,6 @@ in {
         # Languages
         vim-polyglot      # Support for 144 languages
         vim-pandoc-syntax # Syntax for pandoc
-        des-syntax        # Datalog syntax
       ];
     };
   };
@@ -53,5 +52,6 @@ in {
 
   xdg.configFile."nvim/coc-settings.json".text =
     let cocConfig = import ./coc-config.nix { inherit pkgs; }; in lib.toJSON cocConfig;
+  xdg.configFile."nvim/parfait-datalog.vim".source = ./parfait-datalog.vim;
 }
 
