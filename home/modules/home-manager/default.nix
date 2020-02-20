@@ -1,15 +1,10 @@
-{ ... }:
+args:
 
 let
 
-  home-manager-pkgs = import <home-manager> { };
+  pkgs = args.pkgs.main;
 
 in {
-  packages = [ home-manager-pkgs.home-manager ];
-
-  # programs.home-manager = {
-  #   enable = true;
-  #   path = https://github.com/rycee/home-manager/archive/release-19.03.tar.gz;
-  # };
+  packages = [ pkgs.home-manager ];
 }
 
