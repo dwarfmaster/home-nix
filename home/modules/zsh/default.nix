@@ -50,7 +50,7 @@ in {
 
   globalVariables = {
     EDITOR    = "vim";
-    NIX_PATH  = "$NIX_PATH:$HOME/.nix-defexpr/channels";
+    NIX_PATH  = "nixpkgs=$HOME/.config/nixpkgs/pkgs/exposed.nix";
     DIRSTACKSIZE = 16;
   };
 
