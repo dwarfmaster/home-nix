@@ -13,8 +13,8 @@
     nixPath = [ "nixpkgs=http://nixos.org/channels/nixos-19.03/nixexprs.tar.xz" ];
     useSandbox = true;
   };
-  nixpkgs.config.allowUnfree = true; # Necessary for some drivers
-  system.stateVersion = "19.03";
+  nixpkgs.config.allowUnfree = false;
+  system.stateVersion = "19.09";
 
   # Basic networking configuration
   networking = {
