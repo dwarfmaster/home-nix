@@ -3,7 +3,7 @@ general:
 let
   pkgs = general.pkgs.main;
   all-hies-gen = general.pkgs.hies;
-  all-hies = all-hies-gen.selection { selector = p: { inherit (p) ghc864 ghc863; }; };
+  all-hies = all-hies-gen.selection { selector = p: { inherit (p) ghc865 ghc864 ghc863; }; };
 in {
   "coc.preferences" = {
     timeout = 1000;

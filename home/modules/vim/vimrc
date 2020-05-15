@@ -68,22 +68,8 @@ let g:polyglot_disabled = [ 'markdown' ]
 au BufNewFile,BufRead *.pde setfiletype cpp
 au BufNewFile,BufRead *.ino setfiletype cpp
 
-" Markdown files -> pandoc
-" TODO doesn't work
-au BufNewFile,BufRead,BufFilePre *.md, *.markdown setfiletype=pandoc
-
 " Coq files
-" function InitCoqfiles()
-"     call coquille#Commands()
-"     execute ":UpdateRemotePlugins"
-"     call coquille#FNMapping()
-" endfunction
-" au FileType coq call InitCoqfiles()
-
-" Prevent runtime/filetype.vim to run on coq files
-" au BufNewFile,BufRead *.v autocmd! filetypedetect
-" au FileType coq let w:coquille_running='false'
-
+au BufNewFile,BufRead *.coq call coquille#FNMapping()
 
 "  ____              _             
 " / ___| _   _ _ __ | |_ __ ___  __

@@ -21,7 +21,7 @@ in {
     viAlias     = true;
     vimAlias    = true;
 
-    extraPython3Packages = ppkgs: [ (mypkgs.python-tasklib ppkgs) ];
+    extraPython3Packages = ppkgs: [ ];
 
     extraConfig = builtins.readFile ./vimrc;
     plugins = with pkgs.vimPlugins; with myplugins; [

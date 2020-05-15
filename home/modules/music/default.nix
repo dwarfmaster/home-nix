@@ -16,7 +16,7 @@ in {
 
   # Support for MPRIS2, a standard D-BUS interface for music players
   services.mpdris2 = {
-    enable         = true;
+    enable         = false; # Seems not to be working
     multimediaKeys = true; # Enable support for multimedia keys
     notifications  = true; # Enable song change notifications
     mpd = {
