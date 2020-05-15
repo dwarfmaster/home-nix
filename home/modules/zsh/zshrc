@@ -16,3 +16,6 @@ function reupload() {
 # LS_COLORS setting
 eval $(dircolors $XDG_CONFIG_HOME/zsh/dircolors)
 
+# Print calendar
+remind -w$(stty size | cut -d" " -f2) -b1 -cau+ ~/.local/share/remind/reminders
+
