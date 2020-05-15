@@ -14,8 +14,8 @@ let
         src = fetchFromGitHub {
           owner  = "dwarfmaster";
           repo   = "project-manager";
-          rev    = "4287470cd3efb1f8656bafc000ceb9f8d9df178b";
-          sha256 = "1d9i96r0kv2r8cxyrpii8xfalbni50gsamad76yrhplyk0ziwaix";
+          rev    = "edd3b72911a45cf11a2d6391e3879bb7e73dcaad";
+          sha256 = "0cszzidjniw04cn8495jmy759741xl94gjvp7wpppnc6xnz5hqn9";
         };
         isLibrary = false;
         isExecutable = true;
