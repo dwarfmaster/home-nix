@@ -25,6 +25,8 @@ let args    = general // { inherit self recdata; };            in
     music        = import modules/music        args;
     taskwarrior  = import modules/taskwarrior  args;
     bibliography = import modules/bibliography args;
+    haskell      = import modules/haskell      args;
+    emacs        = import modules/emacs        args;
   };
 
   home.file = lib.mayAccess [ "home" "file" ] recdata;
