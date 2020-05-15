@@ -9,6 +9,8 @@ let
 
   unfree = general.pkgs.unfree-main;
 
+  unstable-unfree = general.pkgs.nixpkgs-unfree.nixos-unstable;
+
   pkgs = general.pkgs.main;
 
 in let packages = with pkgs; [
@@ -42,6 +44,7 @@ in let packages = with pkgs; [
   pciutils     # Misc pci informations (contains lspci)
   lsof         # List users of a device
   wireshark    # Networks packets reading
+  usbutils     # for lsusb
 
   # Utilities
   gparted      # Partition editing
@@ -116,12 +119,12 @@ in let packages = with pkgs; [
   cabal2nix
   (haskellPackages.ghcWithHoogle
     (hpkgs: builtins.concatLists (builtins.map (f: f hpkgs)
-                                               (lib.defAccess [ "haskellPackages" ] recdata [ ])))    
+                                               (lib.defAccess [ "haskellPackages" ] recdata [ ])))
   )
 
   # Idris
-  idris
-  idrisPackages.lightyear
+  (idrisPackages.with-packages
+    (with idrisPackages; [ lightyear contrib ]))
 
   # Proof assistants
   coq
@@ -131,13 +134,14 @@ in let packages = with pkgs; [
   ccl                    # Clozure CL, common lisp implementation
   lispPackages.quicklisp # Library manager for common lisp
 
-  # PDRE
+  # Ocaml
   opam
   ocaml
   gmp
   jbuilder
   obuild
   ocamlPackages.camlp4
+  ocamlPackages.camlp5
   ocamlPackages.ansiterminal
   ocamlPackages.cppo
   ocamlPackages.ocsigen_deriving
@@ -145,6 +149,7 @@ in let packages = with pkgs; [
   ocamlPackages.findlib
   ocamlPackages.apron
   ocamlPackages.utop
+  ocamlPackages.num
 
   # C/C++
   gcc       # C/C++ compiler
@@ -162,6 +167,8 @@ in let packages = with pkgs; [
   gnum4    # Macro preprocessor
   mr       # Multiple repository management
   ctags    # Objects indexer for many languages
+  autoconf # Makefile generator
+  automake # Same
 
 
   #  ____            _    _              
@@ -183,10 +190,11 @@ in let packages = with pkgs; [
   msi-perkeyrgb          # Configure keyboard lights
 
   # System
-  xorg.xev    # X11 event querying
-  xorg.xprop  # X11 properties querying
-  xclip       # X11 copy-paste from the console
-  glxinfo     # OpenGL info
+  xorg.xev            # X11 event querying
+  xorg.xprop          # X11 properties querying
+  xclip               # X11 copy-paste from the console
+  glxinfo             # OpenGL info
+  xorg.xf86videointel # For intel-virtual-output, handling hdmi monitors
 
 
   #  ____            _             
@@ -241,6 +249,7 @@ in let packages = with pkgs; [
   graphviz                     # Graph drawing
   python27Packages.dot2tex     # Convert graphviz graphs to LaTeX
   texlive.combined.scheme-full # All of texlive (including LaTeX and ConTEXt)
+  libreoffice
 
   # Misc
   remind                       # CLI advanced calendar
@@ -250,6 +259,10 @@ in let packages = with pkgs; [
   newsboat                     # RSS feed manager
   haskellPackages.hledger      # Accounting software
   project-manager              # Tool for managing projects
+  unstable-unfree.zoom-us      # Video meeting
+  unfree.discord               # Audio and chat
+  fractal                      # Chat client for matrix
+  nheko                        # Idem
 
 
   #   ____                           
@@ -273,6 +286,11 @@ in let packages = with pkgs; [
   # wesnoth
   hedgewars
   rogue
+  cataclysm-dda-git
+  (unfree.factorio.override {
+    username = "dwarfmaster";
+    token = "1e93e5acafd5b3705ba732be54952a";
+  })
 
 ]; in
 
