@@ -9,10 +9,10 @@ in with pkgs; {
       package = null; # NERD font already installed
       name    = "FuraCode Nerd Font 14";
     };
-    # iconTheme = {
-    #   package = papirus-icon-theme;
-    #   name    = "Papirus";
-    # };
+    iconTheme = {
+      package = papirus-icon-theme;
+      name    = "Papirus";
+    };
     theme = {
       package = equilux-theme;
       name    = "Equilux";
