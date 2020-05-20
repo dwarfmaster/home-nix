@@ -33,6 +33,8 @@ in {
       projectile
       helm-projectile
       magit
+      org
+      helm-org
     ];
   };
 

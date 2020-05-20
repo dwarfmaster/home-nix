@@ -1,4 +1,6 @@
 
+;; TODO bind ESC to keyboard-quit in all buffers 
+
 ;; Small utility
 (defun load-local-file (path)
   "Load file from path relative to current file"
@@ -19,6 +21,28 @@
   (map-keymap '(lambda (key value)
 		 (dwarfmaster/select-normal-and-unbind map key value))
 	      (symbol-value map)))
+
+;; Color scheme, using the base16 package
+;; https://github.com/belak/base16-emacs
+(require 'base16-theme)
+(load-theme 'base16-woodland t)
+(defvar dwarfmaster/colors base16-woodland-colors)
+(defvar dwarfmaster/c0     (plist-get dwarfmaster/colors :base00))
+(defvar dwarfmaster/c1     (plist-get dwarfmaster/colors :base01))
+(defvar dwarfmaster/c2     (plist-get dwarfmaster/colors :base02))
+(defvar dwarfmaster/c3     (plist-get dwarfmaster/colors :base03))
+(defvar dwarfmaster/c4     (plist-get dwarfmaster/colors :base04))
+(defvar dwarfmaster/c5     (plist-get dwarfmaster/colors :base05))
+(defvar dwarfmaster/c6     (plist-get dwarfmaster/colors :base06))
+(defvar dwarfmaster/c7     (plist-get dwarfmaster/colors :base07))
+(defvar dwarfmaster/c8     (plist-get dwarfmaster/colors :base08))
+(defvar dwarfmaster/c9     (plist-get dwarfmaster/colors :base09))
+(defvar dwarfmaster/ca     (plist-get dwarfmaster/colors :base0A))
+(defvar dwarfmaster/cb     (plist-get dwarfmaster/colors :base0B))
+(defvar dwarfmaster/cc     (plist-get dwarfmaster/colors :base0C))
+(defvar dwarfmaster/cd     (plist-get dwarfmaster/colors :base0D))
+(defvar dwarfmaster/ce     (plist-get dwarfmaster/colors :base0E))
+(defvar dwarfmaster/cf     (plist-get dwarfmaster/colors :base0F))
 
 ;;; Vim emulation
 ;; __     ___           
@@ -69,6 +93,20 @@
   :prefix "SPC p")
 (general-create-definer vcs-leader-def
   :prefix "SPC v")
+(general-create-definer org-leader-def
+  :prefix "SPC o")
+(general-create-definer org-table-leader-def
+  :prefix "SPC o t")
+(general-create-definer org-displace-leader-def
+  :prefix "SPC o m")
+(general-create-definer org-insert-leader-def
+  :prefix "SPC o i")
+(general-create-definer org-property-leader-def
+  :prefix "SPC o p")
+(general-create-definer clock-leader-def
+  :prefix "SPC c")
+(general-create-definer org-agenda-leader-def
+  :prefix "SPC a")
 
 ;; Autocompletion
 (require 'company)
@@ -391,6 +429,309 @@
   "DEL" 'magit-diff-show-or-scroll-down
   )
 
+;;; Wiki
+;; __        ___ _    _ 
+;; \ \      / (_) | _(_)
+;;  \ \ /\ / /| | |/ / |
+;;   \ V  V / | |   <| |
+;;    \_/\_/  |_|_|\_\_|
+;;                      
+(require 'org)
+(require 'helm-org)
+
+;; TODO get a more recent org mode and enable dynamic header numbering
+
+;; When doing an edit commant on an invisible region, make it visible and only
+;; do the edit if it feels predictible
+(setq org-catch-invisible-edits 'smart)
+;; Hide block by default when opening a new file
+(setq org-hide-block-startup t)
+;; Never split line when using meta ret
+(setq org-M-RET-may-split-line '((default . nil)))
+;; Choose what to unfold depending on jump method
+;; See the documentation of the variable for more details on what that means
+(setq org-show-context-detail
+      '((agenda . local)
+        (bookmark-jump . lineage)
+        (isearch . ancestors)
+        (occur-tree . local)
+        (default . lineage)))
+;; Increment integers when copying down
+(setq org-table-copy-increment t)
+;; TODO setup some standard link abbreviations :
+;;    https://orgmode.org/manual/Link-Abbreviations.html#Link-Abbreviations
+;; Define the differents stages of a TODO
+;; Multiple sequences can be defined
+;; TODO define meaningful sequences
+(setq org-todo-keywords
+      '((sequence "IDEA(i!)" "TODO(t!)" "INPROGRESS(i!)" "PAUSED(p!)" "|" "DONE(d@)")
+	(sequence "|" "CANCELED(c@)"))) 
+;; Colors and decorations for stages of TODO
+(setq org-todo-keyword-faces
+      `(("IDEA"       . (:foreground ,dwarfmaster/ca
+			 :background ,dwarfmaster/c2
+			 :weight bold))
+	("TODO"       . (:foreground ,dwarfmaster/c8
+			 :background ,dwarfmaster/c2
+			 :weight bold))
+	("INPROGRESS" . (:foreground ,dwarfmaster/c1
+			 :background ,dwarfmaster/ce
+			 :weight bold))
+	("PAUSED"     . (:foreground ,dwarfmaster/c9
+			 :background ,dwarfmaster/c2
+			 :weight bold))
+	("DONE"       . (:foreground ,dwarfmaster/cc
+			 :background ,dwarfmaster/c2
+			 :weight bold))
+	("CANCELED"   . (:foreground ,dwarfmaster/c1
+			 :background ,dwarfmaster/cf))))
+;; When couting subtasks, count all of them and not just direct ones
+(setq org-hierarchical-todo-statistics nil)
+;; The list of usual tags
+;; TODO fill it, and describe the tags
+;; Tags can also be grouped in a hierarchical manner
+(setq org-tag-alist '((:startgroup . nil) ; Start a group of mutually exclusive tags
+		      ("@work" . ?w) ("@home" . ?h) ("hackens" . ?k)
+		      (:endgroup . nil)
+		      ("internship-brisbane" . ?B) ("internship-montreal" . ?M)))
+;; Warn for upcomming deadlines 7 days in advance
+(setq org-deadline-warning-days 7)
+;; Save clock histroy across emacs sessions
+(setq org-clock-persist 'history)
+(org-clock-persistence-insinuate)
+;; Ask for clock resolution after 15 minutes of idleness
+(setq org-clock-idle-time 15)
+;; Archive in another file in current directory with .org_archive extension
+(setq org-archive-location "%s_archive::")
+;; Set org directory
+(setq org-directory "~/data/annex/wiki")
+;; Set default notes file for capture
+(setq org-default-notes-file (concat org-directory "/notes.org"))
+;; Always set the org-capture-last-stored bookmark
+(setq org-capture-bookmark t)
+;; When opening agenda, open it in another window next ot current one
+(setq org-agenda-window-setup 'reorganize-frame)
+;; Restore windows after leaving the agenda view
+(setq org-agenda-restore-windows-after-quit t)
+;; Start agenda view on sunday
+(setq org-agenda-start-on-weekday 0)
+;; Span of the agenda view
+(setq org-agenda-span 'week)
+;; Set the sorting algorithm in agenda views
+(setq org-agenda-sorting-strategy
+      '((agenda habit-down time-up priority-down category-up)
+	(todo priority-down category-up)
+	(tags priority-down category-up)
+	(search category-up)))
+;; Display inline images
+(setq org-startup-with-inline-images t)
+;; Ask for confirmation before running babel, shell link or elisp link
+(setq org-confirm-babel-evaluate t)
+(setq org-confirm-elisp-link-function 'yes-or-no-p)
+(setq org-confirm-shell-link-function 'yes-or-no-p)
+
+;; TODO setup LaTeX preview
+;; TODO configure capture
+(fancy-leader-def
+  :states 'normal
+  "l"   'org-store-link
+  "c"   'org-capture
+  )
+(general-define-key
+ :states 'normal
+ :keymaps 'org-mode-map
+ "RET"  'org-open-at-point
+ "TAB"  'org-cycle
+ "DEL"  'org-mark-ring-goto  ; Jump to previous org mark
+ )
+(org-leader-def
+ :states 'normal
+ :keymaps 'org-mode-map
+ "Z"   'org-set-startup-visibility     ; Reset visibility to start
+ "z"   'org-reveal                     ; Reveal context around point  
+ "U"   'outline-show-all               ; Unfold everything
+ "O"   'org-tree-to-indirect-buffer    ; Open current subtree in an indirect buffer
+ "h"   'outline-up-heading             ; Move to the buffer above
+ "j"   'org-next-visible-heading       ; Move to next heading
+ "k"   'org-previous-visible-heading   ; Move to previous heading
+ "s"   'helm-org-in-buffer-heading     ; Find heading in buffer
+ "RET" 'org-meta-ret                   ; Insert new heading/item/table row
+ "<"   'org-do-promote                 ; Promote current heading by a level
+ ">"   'org-do-demote                  ; Demote current heading by a level
+ "@"   'org-mark-subtree               ; Select current subtree
+ "/"   'org-sparse-tree                ; Create sparse tree for match
+ "n"   'next-error                     ; Jump to next sparse tree match
+ "p"   'previous-error                 ; Jump to previous sparse tree match
+ "%"   'org-mark-ring-push             ; Push current position in org mark ring
+ "t"   'org-todo                       ; Toggle the todo mark along a sequence
+ "T"   'org-todo-list                  ; Display the window as sparse tree with
+				       ; only TODO headers
+ "+"   'org-update-statistics-cookies  ; Update statistics for current entry
+ "#"   '(lambda () (interactive) (org-update-statistics-cookies t))
+                                       ; Update statistics in the whole file
+ "c"   'org-toggle-checkbox            ; Toggle checkbox state
+ "P"   'org-priority                   ; Set priority for current TODO item
+ "'"   'org-set-tags-command           ; Set tags for current heading
+ "u"   'org-dblock-update              ; Update dblock at point
+ "U"   'org-update-all-dblocks         ; Update all dblocks in file
+ "e"   'org-set-effort                 ; Set the effort estimate for a task
+ "p"   'org-toggle-pretty-entities     ; Toggle the pretifying
+ "E"   'org-edit-special               ; Edit the source code example at point in its native mode
+ )
+(org-leader-def
+ :states '(normal visual)
+ :keymaps 'org-mode-map
+ "S"   'org-sort              ; Sort same-level entries
+ "*"   'org-toggle-heading    ; Toggle heading on line (or selected lines)
+ "L"   'org-insert-link       ; Insert link at current position (or over current text)
+ )
+;; Enable the org table editor mode on other modes by calling 'turn-on-orgtbl when
+;; loading other modes. Can be automated with
+;;    (add-hook 'message-mode-hook 'turn-on-orgtbl)
+(org-table-leader-def
+ :states '(normal visual)
+ :keymaps 'orgtbl-mode-map
+ "C"   'org-table-create-or-convert-from-region  ; Convert region to table
+ "a"   'org-table-align          ; Re-align table
+ "h"   'org-table-previous-field
+ "j"   'org-table-next-row
+ ;; TODO find a previous row command
+ "l"   'org-table-next-field
+ "^"   'org-table-beginning-of-field
+ "$"   'org-table-end-of-field
+ "i"   'org-table-import          ; Import file as table
+ ":"   'org-table-export          ; Export a table as file
+ "z"   'org-table-shrink          ; Shrink all columns with size
+ "Z"   'org-table-expand          ; Expand all columns
+ "TAB" 'org-table-toggle-column-width
+ "}"   'org-table-toggle-coordinate-overlays ; Display an overlay with fields coordinates
+
+ ;; Editing commands
+ "H"   'org-table-move-column-left
+ "J"   'org-table-move-row-down
+ "K"   'org-table-move-row-up
+ "L"   'org-table-move-column-right
+ "i"   'org-table-insert-column
+ "r"   'org-table-insert-row
+ "-"   'org-table-insert-hline
+ "d"   'org-table-kill-row
+ "S"   'org-table-sort-lines
+ "e"   'org-table-edit-field      ; Edit field in another buffer
+ "C-a" 'org-table-copy-down       ; Copy current field down, incrementing integers
+ "="   'org-table-eval-formula    ; Insert formula for current field
+
+ ;; Cut-copy-paste
+ "x"   'org-table-cut-region
+ "y"   'org-table-copy-region
+ "p"   'org-table-paste-rectangle
+
+ ;; Calculations
+ "+"   'org-table-sum         ; Sum all numbers in current region or column
+ "*"   'org-table-recalculate ; Recalculate current row
+ "#"   'org-table-iterate     ; Recalculate current table until it stabilies
+ "|"   'org-table-recalculate-buffer-tables ; Recalculate all tables in buffer
+ )
+(org-displace-leader-def
+ :states 'normal
+ :keymaps 'org-mode-map
+ "<"    'org-promote-subtree      ; Promote current subtree
+ ">"    'org-demote-subtree       ; Demote current subtree
+ "J"    'org-move-subtree-down
+ "K"    'org-move-subtree-up
+ "d"    'org-cut-subtree          ; Cut current subtree
+ "y"    'org-copy-subtree         ; Copy current subtree
+ "p"    'org-paste-subtree        ; Cleverly paste current subtree, adapting level
+ "j"    'org-move-item-down       ; Move list item down
+ "k"    'org-move-item-up         ; Move list item up
+ "A"    'org-archive-subtree      ; Archive subtree
+ ;; TODO find commands to shift indents in list item and bind them to h,l
+ ;; TODO find commands to change item bullet and bind them to *
+ ;; TODO investigate refiling mecanisms
+ )
+(org-insert-leader-def
+ :states 'normal
+ :keymaps 'org-mode-map
+ "h"    'org-insert-heading                      ; Insert heading at point
+ "H"    'org-insert-heading-respect-content      ; Insert heading after subtree
+ "t"    'org-insert-todo-heading                 ; Insert todo at point
+ "T"    'org-insert-todo-heading-respect-content ; Insert todo after subtree
+ "s"    'org-time-stamp                          ; Insert timestamp
+ "S"    'org-time-stamp-inactive                 ; Insert inactive timestamp
+ "d"    'org-schedule                            ; Insert schedule entry
+ "D"    'org-deadline                            ; Insert deadline entry
+ )
+(org-property-leader-def
+ :states 'normal
+ :keymaps 'org-mode-map
+ "s"    'org-set-property               ; Set a property
+ "i"    'org-insert-drawer              ; Insert a property drawer for current entry
+ "a"    'org-property-action            ; Execute property command
+ "c"    'org-compute-property-at-point  ; Compute property at point
+ "h"    'org-property-previous-allowed-value
+ "l"    'org-property-next-allowed-value
+ "d"    'org-delete-property            ; Remove a property from current entry
+ "D"    'org-delete-property-globally   ; Remove a property from all entries in current file
+ "C"    'org-columns                    ; Start column view
+ "b"    'org-insert-columns-dblock      ; Insert a column dynamic block
+ )
+(clock-leader-def
+ :states 'normal
+ :keymaps 'org-mode-map
+ ;; Clock
+ "s"    'org-clock-in                     ; Start the clock on the current item
+ "u"    'org-evaluate-time-range          ; Recompute the time interval after editing a timestamp
+ "j"    'org-clock-timestamps-down        ; Decrease both start and end of a CLOCK line by same duration
+ "k"    'org-clock-timestamps-up          ; Decrease both start and end of a CLOCK line by same duration
+ "C"    'org-clock-cancel                 ; Cancel current clock
+ "d"    'org-clock-display                ; Display overlay with clock information on header lines
+ "e"    'org-clock-modify-effort-estimate ; Modify the effort estimate of the clocked item
+
+ ;; timer
+ "t"    'org-timer                        ; Print relative timer value, start it if it wasn't started
+ "T"    'org-timer-set-timer              ; Start a decreasing timer
+ "-"    'org-timer-item                   ; Insert list item with relative timer value
+ "r"    'org-timer-start                  ; (Re)Start relative timer with value 0
+ "R"    'org-timer-stop                   ; Stop relative timer
+ "p"    'org-timer-pause-or-continue      ; Pause/Continue relative timer
+ )
+(clock-leader-def
+ :states 'normal
+ "e"    'org-clock-out       ; Stop the clock
+ "S"    'org-clock-in-last   ; Re-clock the last closed task
+ )
+(org-agenda-leader-def
+ :states '(normal visual)
+ "o"     'org-agenda                        ; Open the agenda dispatcher
+ "w"     'org-agenda-list                   ; Open the agenda for the current week
+ "t"     'org-todo-list                     ; Open the global todo list
+ "T"     '(lambda () (interactive) (org-tags-view 'TODO-ONLY))
+                                            ; Select todos matching specific tags
+ "s"     'org-tags-view                     ; List all headers matching a tag
+ "S"     'org-search-view                   ; General text search ability for org mode entries
+ ;; TODO investigate stuck projects
+ )
+(org-agenda-leader-def
+ :states 'normal
+ :keymaps 'org-mode-map
+ "A"    'org-agenda-file-to-front           ; Add current file to list of agendas
+ "D"    'org-remove-file                    ; Remove current file from list of agendas
+ "n"    'org-cycle-agenda-files             ; Move to the next agenda file
+ ;; TODO bind p to the previous agenda file
+ "<"    'org-agenda-set-restriction-lock    ; Restrict agenda to current subtree
+ ">"    'org-agenda-remove-restriction-lock ; Remove restriction lock
+ )
+(language-leader-def
+  :states 'normal
+  :keymaps 'org-mode-map
+  "r"    'org-babel-execute-src-block       ; Execute block at point
+  "R"    'org-babel-execute-buffer          ; Execute all blocks in buffer
+  "t"    'org-babel-tangle                  ; Tangle block at point
+  "T"    'org-babel-tangle-file             ; Tangle buffer
+  "n"    'org-babel-next-src-block          ; Move to next block
+  "p"    'org-babel-previous-src-block      ; Move to previous src block
+  "g"    'org-babel-goto-src-block-result   ; Go to block result
+  "z"    'org-babel-expand-src-block        ; Unfold src block
+  )
 
 
 ;;; Interface
@@ -401,19 +742,13 @@
 ;; |___|_| |_|\__\___|_|  |_|  \__,_|\___\___|
 ;;                                            
 
-;; Color scheme, using the base16 package
-;; https://github.com/belak/base16-emacs
-(require 'base16-theme)
-(load-theme 'base16-woodland t)
-(defvar my/base16-colors base16-woodland-colors)
-
 ;; Set the cursor color based on the evil state
-(setq evil-emacs-state-cursor   `(,(plist-get my/base16-colors :base0D) box)
-      evil-insert-state-cursor  `(,(plist-get my/base16-colors :base0D) bar)
-      evil-motion-state-cursor  `(,(plist-get my/base16-colors :base0E) box)
-      evil-normal-state-cursor  `(,(plist-get my/base16-colors :base0B) box)
-      evil-replace-state-cursor `(,(plist-get my/base16-colors :base08) bar)
-      evil-visual-state-cursor  `(,(plist-get my/base16-colors :base09) box))
+(setq evil-emacs-state-cursor   `(,(plist-get dwarfmaster/colors :base0D) box)
+      evil-insert-state-cursor  `(,(plist-get dwarfmaster/colors :base0D) bar)
+      evil-motion-state-cursor  `(,(plist-get dwarfmaster/colors :base0E) box)
+      evil-normal-state-cursor  `(,(plist-get dwarfmaster/colors :base0B) box)
+      evil-replace-state-cursor `(,(plist-get dwarfmaster/colors :base08) bar)
+      evil-visual-state-cursor  `(,(plist-get dwarfmaster/colors :base09) box))
 
 ;; Configure the GUI
 (if window-system
@@ -425,7 +760,7 @@
 
 ;; Set the font
 (add-to-list 'default-frame-alist
-             '(font . "FuraCode Nerd Font Mono-12:weight=bold"))
+             '(font . "FuraCode Nerd Font Mono-11:weight=bold"))
 
 ;; Miscellaneous interface
 (global-font-lock-mode 1)          ; Syntax highlighting
