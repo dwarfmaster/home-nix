@@ -35,6 +35,7 @@ in {
       magit
       org
       helm-org
+      hydra
     ];
   };
 
