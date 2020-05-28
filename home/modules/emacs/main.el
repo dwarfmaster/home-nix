@@ -115,6 +115,9 @@
 ; | |_| |  __/ | | |  __/ | | (_| | |
 ;  \____|\___|_| |_|\___|_|  \__,_|_|
 ;                                    
+;; Set file for saving customs
+(setq custom-file "~/workflow/config/emacs-custom.el")
+(load custom-file)
 
 ;; Helm, ie navigation
 ;  _  _     _       
@@ -287,27 +290,98 @@
 ;; Multiple sequences can be defined
 ;; TODO define meaningful sequences
 (setq org-todo-keywords
-      '((sequence "IDEA(i!)" "TODO(t!)" "INPROGRESS(i!)" "PAUSED(p!)" "|" "DONE(d@)")
-	(sequence "|" "CANCELED(c@)"))) 
+        ;; Sequences for tasks
+      '((sequence "TODO(!)" "NEXT(!)" "STARTED(!)" "WAITING(@)" "PAUSED(!)" "|" "DONE(@)")
+	(sequence "|" "STOPPED(@)")
+        ;; Sequences for projects
+        (sequence "IDEA(!)" "PROJECT(!)" "|" "FINISHED(@)" "CANCELLED(@)")
+	;; Sequences for meetings, once they've passed they move to the next sequence
+	(sequence "MEETING(!)" "ATTEND(!)" "|" "ATTENDED(@)")
+	;; Sequences for books/articles/blog posts/... ie content
+	(sequence "INTERESTING(!)" "TOCONSUME(!)" "CONSUMING(!)" "|" "CONSUMED(@)" "SKIP(@)")
+	;; Sequences for problems
+	(sequence "PROBLEM(!)" "TASKED(!)" "|" "SOLVED(@)" "IRRELEVANT(@)")))
 ;; Colors and decorations for stages of TODO
 (setq org-todo-keyword-faces
-      `(("IDEA"       . (:foreground ,dwarfmaster/ca
+        ;; Tasks
+      `(("TODO"       . (:foreground ,dwarfmaster/c9
 			 :background ,dwarfmaster/c2
 			 :weight bold))
-	("TODO"       . (:foreground ,dwarfmaster/c8
+	("NEXT"       . (:foreground ,dwarfmaster/c2
+			 :background ,dwarfmaster/c9
+			 :weight bold))
+	("STARTED"    . (:foreground ,dwarfmaster/ca
 			 :background ,dwarfmaster/c2
 			 :weight bold))
-	("INPROGRESS" . (:foreground ,dwarfmaster/c1
+	("WAITING"    . (:foreground ,dwarfmaster/c2
+			 :background ,dwarfmaster/ca
+			 :weight bold))
+	("PAUSED"     . (:foreground ,dwarfmaster/c2
+			 :background ,dwarfmaster/cf
+			 :weight bold))
+	("DONE"       . (:foreground ,dwarfmaster/c2
+			 :background ,dwarfmaster/cb
+			 :weight bold))
+	("STOPPED"    . (:foreground ,dwarfmaster/c8
+			 :background ,dwarfmaster/c2
+			 :weight bold))
+
+	;; Projects
+	("IDEA"       . (:foreground ,dwarfmaster/ce
+			 :background ,dwarfmaster/c2
+			 :weight bold))
+	("PROJECT"    . (:foreground ,dwarfmaster/c2
 			 :background ,dwarfmaster/ce
 			 :weight bold))
-	("PAUSED"     . (:foreground ,dwarfmaster/c9
+	("FINISHED"   . (:foreground ,dwarfmaster/c2
+			 :background ,dwarfmaster/cc
+			 :weight bold))
+	("CANCELLED"  . (:foreground ,dwarfmaster/c8
+			 :background ,dwarfmaster/cf
+			 :weight bold))
+
+	;; Meetings
+	("MEETING"    . (:foreground ,dwarfmaster/cd
 			 :background ,dwarfmaster/c2
 			 :weight bold))
-	("DONE"       . (:foreground ,dwarfmaster/cc
-			 :background ,dwarfmaster/c2
+	("ATTEND"     . (:foreground ,dwarfmaster/c2
+			 :background ,dwarfmaster/cd
 			 :weight bold))
-	("CANCELED"   . (:foreground ,dwarfmaster/c1
-			 :background ,dwarfmaster/cf))))
+	("ATTENDED"   . (:foreground ,dwarfmaster/cd
+			 :background ,dwarfmaster/cf
+			 :weight bold))
+	
+	;; Content
+	("INTERESTING" . (:foreground ,dwarfmaster/cd
+                          :background ,dwarfmaster/c2
+		          :weight bold))
+	("TOCONSUME"   . (:foreground ,dwarfmaster/c9
+			  :background ,dwarfmaster/c2
+			  :weight bold))
+	("CONSUMING"   . (:foreground ,dwarfmaster/c2
+			  :background ,dwarfmaster/c9
+			  :weight bold))
+	("CONSUMED"    . (:foreground ,dwarfmaster/c2
+			  :background ,dwarfmaster/cb
+			  :weight bold))
+	("SKIP"        . (:foreground ,dwarfmaster/c8
+                          :background ,dwarfmaster/c2
+                          :weight bold))
+
+	;; Problems
+	("PROBLEM"     . (:foreground ,dwarfmaster/c8
+                          :background ,dwarfmaster/c2
+                          :weight bold))
+	("TASKED"      . (:foreground ,dwarfmaster/c8
+                          :background ,dwarfmaster/c2
+                          :weight bold))
+	("SOLVED"      . (:foreground ,dwarfmaster/c8
+                          :background ,dwarfmaster/c2
+                          :weight bold))
+	("IRRELEVANT"  . (:foreground ,dwarfmaster/c8
+                          :background ,dwarfmaster/c2
+                          :weight bold))))
+
 ;; When couting subtasks, count all of them and not just direct ones
 (setq org-hierarchical-todo-statistics nil)
 ;; The list of usual tags
@@ -361,9 +435,11 @@
 ;; Set the targets for refiling
 (setq org-refile-targets
       '((nil . (:maxlevel . 2)) ; Up to level 2 in current file
-	("/home/luc/wiki/index.org" . (:maxlevel . 6))))
+	("/home/luc/wiki/index.org" . (:maxlevel . 9))))
 ;; Better handling for multiple subheaders with same name
 (setq org-refile-use-outline-path t)
+;; Do dot complete path in steps
+(setq org-outline-path-complete-in-steps nil)
 
 (defun dwarfmaster/org/update-all-stats ()
   "Update all statistics in org buffer"
@@ -381,6 +457,43 @@
   "Select only some todos in org agenda"
   (interactive)
   (org-tags-view 'TODO-ONLY))
+
+(defmacro dwarfmaster/org/make-todo-switcher (todo)
+ "Create a function dwarfmaster/org/todo-swith-%todo that switches
+  the header to the right todo"
+ (let ((fname (intern (concat "dwarfmaster/org/todo-switch-" (downcase todo)))))
+   `(defun ,fname ()
+      ,(concat "Switch current header to TODO state " todo)
+      (interactive)
+      (org-todo ,todo))))
+;; Tasks
+(dwarfmaster/org/make-todo-switcher "TODO")
+(dwarfmaster/org/make-todo-switcher "NEXT")
+(dwarfmaster/org/make-todo-switcher "STARTED")
+(dwarfmaster/org/make-todo-switcher "WAITING")
+(dwarfmaster/org/make-todo-switcher "PAUSED")
+(dwarfmaster/org/make-todo-switcher "DONE")
+(dwarfmaster/org/make-todo-switcher "STOPPED")
+;; Projects
+(dwarfmaster/org/make-todo-switcher "IDEA")
+(dwarfmaster/org/make-todo-switcher "PROJECT")
+(dwarfmaster/org/make-todo-switcher "FINISHED")
+(dwarfmaster/org/make-todo-switcher "CANCELLED")
+;; Meetings
+(dwarfmaster/org/make-todo-switcher "MEETING")
+(dwarfmaster/org/make-todo-switcher "ATTEND")
+(dwarfmaster/org/make-todo-switcher "ATTENDED")
+;; Content
+(dwarfmaster/org/make-todo-switcher "INTERESTING")
+(dwarfmaster/org/make-todo-switcher "TOCONSUME")
+(dwarfmaster/org/make-todo-switcher "CONSUMING")
+(dwarfmaster/org/make-todo-switcher "CONSUMED")
+(dwarfmaster/org/make-todo-switcher "SKIP")
+;; Problems
+(dwarfmaster/org/make-todo-switcher "PROBLEM")
+(dwarfmaster/org/make-todo-switcher "TASKED")
+(dwarfmaster/org/make-todo-switcher "SOLVED")
+(dwarfmaster/org/make-todo-switcher "IRRELEVANT")
   
 
 ;; TODO setup LaTeX preview
@@ -388,6 +501,36 @@
 ;; Enable the org table editor mode on other modes by calling 'turn-on-orgtbl when
 ;; loading other modes. Can be automated with
 ;;    (add-hook 'message-mode-hook 'turn-on-orgtbl)
+
+
+;; LaTeX theorems
+;;  _        _____   __  __  _____ _                             
+;; | |   __ |_   _|__\ \/ / |_   _| |_  ___ ___ _ _ ___ _ __  ___
+;; | |__/ _` || |/ -_)>  <    | | | ' \/ -_) _ \ '_/ -_) '  \(_-<
+;; |____\__,_||_|\___/_/\_\   |_| |_||_\___\___/_| \___|_|_|_/__/
+(defun dwarfmaster/org/insert-env (name)
+  "Insert a LaTeX block with title"
+  (forward-line 1)
+  (insert (concat "#+ATTR_LATEX: :options ["
+		  (read-string (concat name " name:"))
+		  "]\n"))
+  (insert (concat "#+BEGIN_" name "\n\n#+END_" name "\n")))
+(defmacro dwarfmaster/org/make-insert-env (name)
+  "Create a dwarfmaster/org/insert-,name interactive function"
+  (let ((fname (concat "dwarfmaster/org/insert-" name)))
+    `(defun ,(intern fname) ()
+       ,(concat "Insert a " name " block")
+       (interactive)
+       (dwarfmaster/org/insert-env ,name))))
+;; Define all the specific environments
+(dwarfmaster/org/make-insert-env "theorem")
+(dwarfmaster/org/make-insert-env "lemma")
+(dwarfmaster/org/make-insert-env "prop")
+(dwarfmaster/org/make-insert-env "definition")
+(dwarfmaster/org/make-insert-env "property")
+(dwarfmaster/org/make-insert-env "remark")
+ 
+
 
 
 
@@ -1013,16 +1156,16 @@ Org displacement
 Org insert
 
 ^Heading^                    ^Timestamp^            ^Misc
-^^^^^^---------------------------------------------------
-[_h_] At point               [_s_] Timestamp        [_d_] Schedule
-[_H_] After subtree          [_S_] Inactive         [_D_] Deadline
-[_t_] TODO at point          ^ ^                    [_RET_] Contextual insert
-[_T_] TODO after subtree     ^ ^                    [_l_] Link
+^^^^^^-----------------------------------------------------------------------
+[_H_] At point               [_s_] Timestamp        [_d_] Schedule
+[_h_] After subtree          [_S_] Inactive         [_D_] Deadline
+[_T_] TODO at point          ^ ^                    [_RET_] Contextual insert
+[_t_] TODO after subtree     ^ ^                    [_l_] Link
 "
- ("h"    org-insert-heading)                      ; Insert heading at point
- ("H"    org-insert-heading-respect-content)      ; Insert heading after subtree
- ("t"    org-insert-todo-heading)                 ; Insert todo at point
- ("T"    org-insert-todo-heading-respect-content) ; Insert todo after subtree
+ ("H"    org-insert-heading)                      ; Insert heading at point
+ ("h"    org-insert-heading-respect-content)      ; Insert heading after subtree
+ ("T"    org-insert-todo-heading)                 ; Insert todo at point
+ ("t"    org-insert-todo-heading-respect-content) ; Insert todo after subtree
  ("s"    org-time-stamp)                          ; Insert timestamp
  ("S"    org-time-stamp-inactive)                 ; Insert inactive timestamp
  ("d"    org-schedule)                            ; Insert schedule entry
@@ -1030,6 +1173,33 @@ Org insert
  ("RET"  org-meta-ret)                            ; Insert new heading/item/table row
  ("l"    org-insert-link)                         ; Insert link at current position (or over current text)
  )
+
+;; Org Math
+;;   ___             __  __      _   _       
+;;  / _ \ _ _ __ _  |  \/  |__ _| |_| |_  ___
+;; | (_) | '_/ _` | | |\/| / _` |  _| ' \(_-<
+;;  \___/|_| \__, | |_|  |_\__,_|\__|_||_/__/
+;;           |___/                           
+(defhydra dwarfmaster/hydra/org/maths (:color blue :hint nil)
+  "
+Org Mathematics
+
+^Insertion^
+^^----------------
+[_t_] Theorem
+[_l_] Lemma
+[_p_] Property
+[_P_] Proposition
+[_r_] Remark
+[_d_] Definition
+"
+  ("t"    dwarfmaster/org/insert-theorem)
+  ("l"    dwarfmaster/org/insert-lemma)
+  ("p"    dwarfmaster/org/insert-property)
+  ("P"    dwarfmaster/org/insert-prop)
+  ("r"    dwarfmaster/org/insert-remark)
+  ("d"    dwarfmaster/org/insert-definition)
+  )
 
 ;; Org Property
 ;   ___             ___                       _        
@@ -1058,6 +1228,129 @@ Org property
  ("C"    org-columns)                    ; Start column view
  ("b"    org-insert-columns-dblock)      ; Insert a column dynamic block
  )
+
+;; TODOS
+;;  _____ ___  ___   ___  ___ 
+;; |_   _/ _ \|   \ / _ \/ __|
+;;   | || (_) | |) | (_) \__ \
+;;   |_| \___/|___/ \___/|___/
+
+;; Tasks and projects
+(defhydra dwarfmaster/hydra/org/todo/tasks (:color blue :hint nil)
+  "
+TODO switcher
+
+^Tasks^            ^Projects
+^^^^------------------------------
+[_t_] Todo         [_I_] Idea
+[_n_] Next         [_P_] Project
+[_s_] Started      ^ ^
+[_w_] Waiting      ^ ^
+[_p_] Paused       ^ ^
+^^^^------------------------------
+[_d_] Done         [_F_] Finished
+[_S_] Stopped      [_C_] Cancelled
+
+[_!_] Switch sequence
+"
+  ("t"    dwarfmaster/org/todo-switch-todo)
+  ("n"    dwarfmaster/org/todo-switch-next)
+  ("s"    dwarfmaster/org/todo-switch-started)
+  ("w"    dwarfmaster/org/todo-switch-waiting)
+  ("p"    dwarfmaster/org/todo-switch-paused)
+  ("d"    dwarfmaster/org/todo-switch-done)
+  ("S"    dwarfmaster/org/todo-switch-stopped)
+  ("I"    dwarfmaster/org/todo-switch-idea)
+  ("P"    dwarfmaster/org/todo-switch-project)
+  ("F"    dwarfmaster/org/todo-switch-finihsed)
+  ("C"    dwarfmaster/org/todo-switch-cancelled)
+  ("!"    dwarfmaster/hydra/org/todo/switch-sequence/body)
+  ("<escape>"  nil :color blue)
+  )
+;; Meetings and content
+(defhydra dwarfmaster/hydra/org/todo/content (:color blue :hint nil)
+  "
+TODO switcher
+
+^Content^            ^Meetings
+^^^^-------------------------------
+[_i_] Interesting    [_m_] Meeting
+[_t_] To consume     [_a_] Attend
+[_c_] Consuming      ^ ^
+^^^^-------------------------------
+[_C_] Consumed       [_A_] Attended
+[_s_] Skip           ^ ^
+
+[_!_] Switch sequence
+"
+  ("i"     dwarfmaster/org/todo-switch-interesting)
+  ("t"     dwarfmaster/org/todo-switch-toconsume)
+  ("c"     dwarfmaster/org/todo-switch-consuming)
+  ("C"     dwarfmaster/org/todo-switch-consumed)
+  ("s"     dwarfmaster/org/todo-switch-skip)
+  ("m"     dwarfmaster/org/todo-switch-meeting)
+  ("a"     dwarfmaster/org/todo-switch-attend)
+  ("A"     dwarfmaster/org/todo-switch-attended)
+  ("!"     dwarfmaster/hydra/org/todo/switch-sequence/body)
+  ("<escape>"  nil :color blue)
+  )
+;; Problems
+(defhydra dwarfmaster/hydra/org/todo/problems (:color blue :hint nil)
+  "
+TODO switcher
+
+^Problems
+^^--------------
+[_p_] Problem
+[_t_] Tasked
+^^--------------
+[_s_] Solved
+[_i_] Irrelevant
+
+[_!_] Switch sequence
+"
+  ("p"     dwarfmaster/org/todo-switch-problem)
+  ("t"     dwarfmaster/org/todo-switch-tasked)
+  ("s"     dwarfmaster/org/todo-switch-solved)
+  ("i"     dwarfmaster/org/todo-switch-irrelevant)
+  ("!"     dwarfmaster/hydra/org/todo/switch-sequence/body)
+  ("<escape>"  nil :color blue)
+  )
+;; Switcher
+(defhydra dwarfmaster/hydra/org/todo/switch-sequence (:color blue :hint nil)
+  "
+TODO switcher
+
+^Sequence
+^^---------
+[_t_] Projects and tasks
+[_c_] Content and meetings
+[_p_] Problems
+
+"
+  ("t"     dwarfmaster/hydra/org/todo/tasks/body)
+  ("c"     dwarfmaster/hydra/org/todo/content/body)
+  ("p"     dwarfmaster/hydra/org/todo/problems/body)
+  ("<escape>"  nil :color blue)
+  )
+
+(defun dwarfmaster/org/todo-switch-dwim ()
+  "Open the right hydra depending on the sequence at point"
+  (interactive)
+  (let ((todo-at-point (org-get-todo-state))
+	(tasks-todos    '("TODO" "NEXT" "STARTED" "WAITING" "PAUSED" "DONE" "STOPPED"
+			  "IDEA" "PROJECT" "FINISHED" "CANCELLED"))
+	(content-todos  '("MEETING" "ATTEND" "ATTENDED"
+			  "INTERESTING" "TOCONSUME" "CONSUMING" "CONSUMED" "SKIP"))
+	(problems-todos '("PROBLEM" "TASKED" "SOLVED" "IRRELEVANT")))
+    (cond
+      ((member todo-at-point tasks-todos)
+         (dwarfmaster/hydra/org/todo/tasks/body))
+      ((member todo-at-point content-todos)
+         (dwarfmaster/hydra/org/todo/content/body))
+      ((member todo-at-point problems-todos)
+         (dwarfmaster/hydra/org/todo/problems/body))
+      (t (dwarfmaster/hydra/org/todo/switch-sequence/body)))))
 
 ;; Org mode
 ;   ___             __  __         _
@@ -1088,6 +1381,7 @@ Org mode
 ^ ^                      ^ ^                      [_[_] Prev sparse match       ^ ^                  [_m_] Displacement mode
 ^ ^                      ^ ^                      [_%_] Push pos to org ring    ^ ^                  [_P_] Properties mode 
 ^ ^                      ^ ^                      ^ ^                           ^ ^                  [_i_] Insert mode
+^ ^                      ^ ^                      ^ ^                           ^ ^                  [_M_] Maths mode
 "
  ;; Visibility
  ("Z"   org-set-startup-visibility)               ; Reset visibility to start
@@ -1097,12 +1391,12 @@ Org mode
  ("/"   org-sparse-tree :color blue)              ; Create sparse tree for match
 
  ;; TODOs
- ("!"   org-todo)                          ; Toggle the todo mark along a sequence
- ("$"   org-todo-list)                     ; Display the window as sparse tree with
-                                           ; only TODO buffers
- ("c"   org-toggle-checkbox)               ; Toggle checkbox state
- ("p"   org-priority :color blue)          ; Set priority for current TODO item
- ("e"   org-set-effort :color blue)        ; Set the effort estimate for a task
+ ("!"   dwarfmaster/org/todo-switch-dwim :color blue)  ; Toggle the todo mark along a sequence
+ ("$"   org-todo-list)                                 ; Display the window as sparse tree with
+                                                       ; only TODO buffers
+ ("c"   org-toggle-checkbox)                           ; Toggle checkbox state
+ ("p"   org-priority :color blue)                      ; Set priority for current TODO item
+ ("e"   org-set-effort :color blue)                    ; Set the effort estimate for a task
 
  ;; Navigation
  ("h"   outline-up-heading)                      ; Move to the buffer above
@@ -1129,6 +1423,7 @@ Org mode
  ("m"   dwarfmaster/hydra/org/displacement/body :color blue)
  ("P"   dwarfmaster/hydra/org/property/body :color blue)
  ("i"   dwarfmaster/hydra/org/insert/body  :color blue)
+ ("M"   dwarfmaster/hydra/org/maths/body   :color blue)
 
  ("<escape>"  nil :color blue)
  )
