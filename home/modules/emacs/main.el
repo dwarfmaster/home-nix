@@ -44,6 +44,32 @@
 (defvar dwarfmaster/ce     (plist-get dwarfmaster/colors :base0E))
 (defvar dwarfmaster/cf     (plist-get dwarfmaster/colors :base0F))
 
+;; Library to deal with timestamps
+(require 'ts)
+
+(defun dwarfmaster/ts/range-expand-days (start end inter &optional filter hour)
+  "Expand a timestamp range [start; end], filtering out some dates"
+  (let* ((filterf (if filter filter (lambda (ts) t)))
+ 	 (startTS (ts-parse-org start))
+	 (endTS   (ts-parse-org end))
+	 (current startTS)
+	 (output  ""))
+    (while (ts<= current endTS)
+      (if (funcall filterf current)
+	  (setq output
+		(format "%s<%04d-%02d-%02d %s%s>\n"
+			output
+			(ts-year current)
+			(ts-month current)
+			(ts-day-of-month-num current)
+			(ts-day-of-week-abbr current)
+			(if hour (format " %02d:%02d"
+					 (ts-hour current)
+					 (ts-minute current)) ""))))
+      (setq current (ts-adjust 'day inter current)))
+    output))
+;; (dwarfmaster/ts/range-expand-days "<2015-08-31 Mon 08:00>" "<2015-10-06 Tue>" 7)
+
 ;;; Vim emulation
 ;; __     ___           
 ;; \ \   / (_)_ __ ___  

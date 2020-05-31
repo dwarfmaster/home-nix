@@ -36,6 +36,7 @@ in {
       org
       helm-org
       hydra
+      ts
     ];
   };
 
