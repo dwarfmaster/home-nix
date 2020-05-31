@@ -312,101 +312,74 @@
 (setq org-table-copy-increment t)
 ;; TODO setup some standard link abbreviations :
 ;;    https://orgmode.org/manual/Link-Abbreviations.html#Link-Abbreviations
-;; Define the differents stages of a TODO
-;; Multiple sequences can be defined
-;; TODO define meaningful sequences
+
 (setq org-todo-keywords
-        ;; Sequences for tasks
-      '((sequence "TODO(!)" "NEXT(!)" "STARTED(!)" "WAITING(@)" "PAUSED(!)" "|" "DONE(@)")
-	(sequence "|" "STOPPED(@)")
-        ;; Sequences for projects
-        (sequence "IDEA(!)" "PROJECT(!)" "|" "FINISHED(@)" "CANCELLED(@)")
-	;; Sequences for meetings, once they've passed they move to the next sequence
-	(sequence "MEETING(!)" "ATTEND(!)" "|" "ATTENDED(@)")
-	;; Sequences for books/articles/blog posts/... ie content
-	(sequence "INTERESTING(!)" "TOCONSUME(!)" "CONSUMING(!)" "|" "CONSUMED(@)" "SKIP(@)")
-	;; Sequences for problems
-	(sequence "PROBLEM(!)" "TASKED(!)" "|" "SOLVED(@)" "IRRELEVANT(@)")))
+      ;; Sequences for projects
+      '((sequence "IDEA(!)" "TODO(!)" "PROBLEM(!)")
+	(sequence "PROJECT(!)" "POSTPONNED(@)" "SUPPORT(!)")
+	(sequence "|" "DISCARDED(@)" "COMPLETED(@)")
+       ;; Sequences for tasks
+	(sequence "CONSIDER(!)" "TASK(!)" "NEXT(!)")
+	(sequence "STARTED(!)" "WAITING(@)" "PAUSED(@)")
+	(sequence "DONT(@)" "FAILED(@)" "DONE(!)")))
 ;; Colors and decorations for stages of TODO
 (setq org-todo-keyword-faces
-        ;; Tasks
-      `(("TODO"       . (:foreground ,dwarfmaster/c9
-			 :background ,dwarfmaster/c2
-			 :weight bold))
-	("NEXT"       . (:foreground ,dwarfmaster/c2
-			 :background ,dwarfmaster/c9
-			 :weight bold))
-	("STARTED"    . (:foreground ,dwarfmaster/ca
-			 :background ,dwarfmaster/c2
-			 :weight bold))
-	("WAITING"    . (:foreground ,dwarfmaster/c2
-			 :background ,dwarfmaster/ca
-			 :weight bold))
-	("PAUSED"     . (:foreground ,dwarfmaster/c2
-			 :background ,dwarfmaster/cf
-			 :weight bold))
-	("DONE"       . (:foreground ,dwarfmaster/c2
-			 :background ,dwarfmaster/cb
-			 :weight bold))
-	("STOPPED"    . (:foreground ,dwarfmaster/c8
-			 :background ,dwarfmaster/c2
-			 :weight bold))
-
-	;; Projects
-	("IDEA"       . (:foreground ,dwarfmaster/ce
-			 :background ,dwarfmaster/c2
-			 :weight bold))
-	("PROJECT"    . (:foreground ,dwarfmaster/c2
-			 :background ,dwarfmaster/ce
-			 :weight bold))
-	("FINISHED"   . (:foreground ,dwarfmaster/c2
-			 :background ,dwarfmaster/cc
-			 :weight bold))
-	("CANCELLED"  . (:foreground ,dwarfmaster/c8
-			 :background ,dwarfmaster/cf
-			 :weight bold))
-
-	;; Meetings
-	("MEETING"    . (:foreground ,dwarfmaster/cd
-			 :background ,dwarfmaster/c2
-			 :weight bold))
-	("ATTEND"     . (:foreground ,dwarfmaster/c2
+        ;; Projects
+      `(("IDEA"       . (:foreground ,dwarfmaster/c2
 			 :background ,dwarfmaster/cd
 			 :weight bold))
-	("ATTENDED"   . (:foreground ,dwarfmaster/cd
+        ("TODO"       . (:foreground ,dwarfmaster/c2
+			 :background ,dwarfmaster/cd
+			 :weight bold))
+        ("PROBLEM"    . (:foreground ,dwarfmaster/c2
+			 :background ,dwarfmaster/cd
+			 :weight bold))
+        ("PROJECT"    . (:foreground ,dwarfmaster/c2
+			 :background ,dwarfmaster/ce
+			 :weight bold))
+        ("POSTPONNED" . (:foreground ,dwarfmaster/c0
 			 :background ,dwarfmaster/cf
 			 :weight bold))
-	
-	;; Content
-	("INTERESTING" . (:foreground ,dwarfmaster/cd
-                          :background ,dwarfmaster/c2
-		          :weight bold))
-	("TOCONSUME"   . (:foreground ,dwarfmaster/c9
-			  :background ,dwarfmaster/c2
-			  :weight bold))
-	("CONSUMING"   . (:foreground ,dwarfmaster/c2
-			  :background ,dwarfmaster/c9
-			  :weight bold))
-	("CONSUMED"    . (:foreground ,dwarfmaster/c2
-			  :background ,dwarfmaster/cb
-			  :weight bold))
-	("SKIP"        . (:foreground ,dwarfmaster/c8
-                          :background ,dwarfmaster/c2
-                          :weight bold))
+        ("SUPPORT"    . (:foreground ,dwarfmaster/ce
+			 :background ,dwarfmaster/c2
+			 :weight bold))
+        ("DISCARDED"  . (:foreground ,dwarfmaster/c2
+			 :background ,dwarfmaster/c9
+			 :weight bold))
+        ("COMPLETED"  . (:foreground ,dwarfmaster/ce
+			 :background ,dwarfmaster/c2
+			 :weight bold))
 
-	;; Problems
-	("PROBLEM"     . (:foreground ,dwarfmaster/c8
-                          :background ,dwarfmaster/c2
-                          :weight bold))
-	("TASKED"      . (:foreground ,dwarfmaster/c8
-                          :background ,dwarfmaster/c2
-                          :weight bold))
-	("SOLVED"      . (:foreground ,dwarfmaster/c8
-                          :background ,dwarfmaster/c2
-                          :weight bold))
-	("IRRELEVANT"  . (:foreground ,dwarfmaster/c8
-                          :background ,dwarfmaster/c2
-                          :weight bold))))
+	;; Tasks
+        ("CONSIDER"   . (:foreground ,dwarfmaster/ca
+			 :background ,dwarfmaster/c2
+			 :weight bold))
+        ("TASK"       . (:foreground ,dwarfmaster/c9
+			 :background ,dwarfmaster/c2
+			 :weight bold))
+        ("NEXT"       . (:foreground ,dwarfmaster/c2
+			 :background ,dwarfmaster/c9
+			 :weight bold))
+        ("STARTED"    . (:foreground ,dwarfmaster/c2
+			 :background ,dwarfmaster/cb
+			 :weight bold))
+        ("WAITING"    . (:foreground ,dwarfmaster/cb
+			 :background ,dwarfmaster/c2
+			 :weight bold))
+        ("PAUSED"     . (:foreground ,dwarfmaster/cb
+			 :background ,dwarfmaster/c2
+			 :weight bold))
+        ("DONT"       . (:foreground ,dwarfmaster/c8
+			 :background ,dwarfmaster/c2
+			 :weight bold))
+        ("FAILED"     . (:foreground ,dwarfmaster/c2
+			 :background ,dwarfmaster/c8
+			 :weight bold))
+        ("DONE"       . (:foreground ,dwarfmaster/c2
+			 :background ,dwarfmaster/cc
+			 :weight bold))))
+;; When dealing with repeated TODOs, repeat to previous task when marked as done
+(setq org-todo-repeat-to-state t)
 
 ;; When couting subtasks, count all of them and not just direct ones
 (setq org-hierarchical-todo-statistics nil)
@@ -492,34 +465,25 @@
       ,(concat "Switch current header to TODO state " todo)
       (interactive)
       (org-todo ,todo))))
-;; Tasks
+;; Projects
+(dwarfmaster/org/make-todo-switcher "IDEA")
 (dwarfmaster/org/make-todo-switcher "TODO")
+(dwarfmaster/org/make-todo-switcher "PROBLEM")
+(dwarfmaster/org/make-todo-switcher "PROJECT")
+(dwarfmaster/org/make-todo-switcher "POSTPONNED")
+(dwarfmaster/org/make-todo-switcher "SUPPORT")
+(dwarfmaster/org/make-todo-switcher "DISCARDED")
+(dwarfmaster/org/make-todo-switcher "COMPLETED")
+;; Tasks
+(dwarfmaster/org/make-todo-switcher "CONSIDER")
+(dwarfmaster/org/make-todo-switcher "TASK")
 (dwarfmaster/org/make-todo-switcher "NEXT")
 (dwarfmaster/org/make-todo-switcher "STARTED")
 (dwarfmaster/org/make-todo-switcher "WAITING")
 (dwarfmaster/org/make-todo-switcher "PAUSED")
+(dwarfmaster/org/make-todo-switcher "DONT")
+(dwarfmaster/org/make-todo-switcher "FAILED")
 (dwarfmaster/org/make-todo-switcher "DONE")
-(dwarfmaster/org/make-todo-switcher "STOPPED")
-;; Projects
-(dwarfmaster/org/make-todo-switcher "IDEA")
-(dwarfmaster/org/make-todo-switcher "PROJECT")
-(dwarfmaster/org/make-todo-switcher "FINISHED")
-(dwarfmaster/org/make-todo-switcher "CANCELLED")
-;; Meetings
-(dwarfmaster/org/make-todo-switcher "MEETING")
-(dwarfmaster/org/make-todo-switcher "ATTEND")
-(dwarfmaster/org/make-todo-switcher "ATTENDED")
-;; Content
-(dwarfmaster/org/make-todo-switcher "INTERESTING")
-(dwarfmaster/org/make-todo-switcher "TOCONSUME")
-(dwarfmaster/org/make-todo-switcher "CONSUMING")
-(dwarfmaster/org/make-todo-switcher "CONSUMED")
-(dwarfmaster/org/make-todo-switcher "SKIP")
-;; Problems
-(dwarfmaster/org/make-todo-switcher "PROBLEM")
-(dwarfmaster/org/make-todo-switcher "TASKED")
-(dwarfmaster/org/make-todo-switcher "SOLVED")
-(dwarfmaster/org/make-todo-switcher "IRRELEVANT")
   
 
 ;; TODO setup LaTeX preview
@@ -1264,119 +1228,69 @@ Org property
 ;; Tasks and projects
 (defhydra dwarfmaster/hydra/org/todo/tasks (:color blue :hint nil)
   "
-TODO switcher
+Task switcher
 
-^Tasks^            ^Projects
-^^^^------------------------------
-[_t_] Todo         [_I_] Idea
-[_n_] Next         [_P_] Project
-[_s_] Started      ^ ^
-[_w_] Waiting      ^ ^
-[_p_] Paused       ^ ^
-^^^^------------------------------
-[_d_] Done         [_F_] Finished
-[_S_] Stopped      [_C_] Cancelled
+^Starting^        ^Continuing^      ^Stopping
+^^^^^^------------------------------------------
+[_c_] Consider    [_s_] Started     [_d_] Done
+[_t_] Task        [_w_] Waiting     [_f_] Failed
+[_n_] Next        [_p_] Paused      [_D_] Don't
 
-[_!_] Switch sequence
+[_!_] Switch to projects
 "
-  ("t"    dwarfmaster/org/todo-switch-todo)
+  ("c"    dwarfmaster/org/todo-switch-consider)
+  ("t"    dwarfmaster/org/todo-switch-task)
   ("n"    dwarfmaster/org/todo-switch-next)
   ("s"    dwarfmaster/org/todo-switch-started)
   ("w"    dwarfmaster/org/todo-switch-waiting)
   ("p"    dwarfmaster/org/todo-switch-paused)
   ("d"    dwarfmaster/org/todo-switch-done)
-  ("S"    dwarfmaster/org/todo-switch-stopped)
-  ("I"    dwarfmaster/org/todo-switch-idea)
-  ("P"    dwarfmaster/org/todo-switch-project)
-  ("F"    dwarfmaster/org/todo-switch-finihsed)
-  ("C"    dwarfmaster/org/todo-switch-cancelled)
-  ("!"    dwarfmaster/hydra/org/todo/switch-sequence/body)
+  ("f"    dwarfmaster/org/todo-switch-failed)
+  ("D"    dwarfmaster/org/todo-switch-dont)
+  ("!"    dwarfmaster/hydra/org/todo/projects/body)
   ("<escape>"  nil :color blue)
   )
-;; Meetings and content
-(defhydra dwarfmaster/hydra/org/todo/content (:color blue :hint nil)
+;; Projects
+(defhydra dwarfmaster/hydra/org/todo/projects (:color blue :hint nil)
   "
-TODO switcher
+Project switcher
 
-^Content^            ^Meetings
-^^^^-------------------------------
-[_i_] Interesting    [_m_] Meeting
-[_t_] To consume     [_a_] Attend
-[_c_] Consuming      ^ ^
-^^^^-------------------------------
-[_C_] Consumed       [_A_] Attended
-[_s_] Skip           ^ ^
+^Starting^        ^Continuing^      ^Stopping
+^^^^^^---------------------------------------------
+[_i_] Idea        [_p_] Project     [_c_] Completed
+[_t_] Todo        [_P_] Postponned  [_d_] Discarded
+[_r_] Problem
 
-[_!_] Switch sequence
+[_!_] Switch to tasks
 "
-  ("i"     dwarfmaster/org/todo-switch-interesting)
-  ("t"     dwarfmaster/org/todo-switch-toconsume)
-  ("c"     dwarfmaster/org/todo-switch-consuming)
-  ("C"     dwarfmaster/org/todo-switch-consumed)
-  ("s"     dwarfmaster/org/todo-switch-skip)
-  ("m"     dwarfmaster/org/todo-switch-meeting)
-  ("a"     dwarfmaster/org/todo-switch-attend)
-  ("A"     dwarfmaster/org/todo-switch-attended)
-  ("!"     dwarfmaster/hydra/org/todo/switch-sequence/body)
-  ("<escape>"  nil :color blue)
-  )
-;; Problems
-(defhydra dwarfmaster/hydra/org/todo/problems (:color blue :hint nil)
-  "
-TODO switcher
-
-^Problems
-^^--------------
-[_p_] Problem
-[_t_] Tasked
-^^--------------
-[_s_] Solved
-[_i_] Irrelevant
-
-[_!_] Switch sequence
-"
-  ("p"     dwarfmaster/org/todo-switch-problem)
-  ("t"     dwarfmaster/org/todo-switch-tasked)
-  ("s"     dwarfmaster/org/todo-switch-solved)
-  ("i"     dwarfmaster/org/todo-switch-irrelevant)
-  ("!"     dwarfmaster/hydra/org/todo/switch-sequence/body)
-  ("<escape>"  nil :color blue)
-  )
-;; Switcher
-(defhydra dwarfmaster/hydra/org/todo/switch-sequence (:color blue :hint nil)
-  "
-TODO switcher
-
-^Sequence
-^^---------
-[_t_] Projects and tasks
-[_c_] Content and meetings
-[_p_] Problems
-
-"
-  ("t"     dwarfmaster/hydra/org/todo/tasks/body)
-  ("c"     dwarfmaster/hydra/org/todo/content/body)
-  ("p"     dwarfmaster/hydra/org/todo/problems/body)
+  ("i"     dwarfmaster/org/todo-switch-idea)
+  ("t"     dwarfmaster/org/todo-switch-todo)
+  ("r"     dwarfmaster/org/todo-switch-problem)
+  ("p"     dwarfmaster/org/todo-switch-project)
+  ("P"     dwarfmaster/org/todo-switch-postponned)
+  ("c"     dwarfmaster/org/todo-switch-completed)
+  ("d"     dwarfmaster/org/todo-switch-discarded)
+  ("!"     dwarfmaster/hydra/org/todo/tasks/body)
   ("<escape>"  nil :color blue)
   )
 
+;; TODO
 (defun dwarfmaster/org/todo-switch-dwim ()
   "Open the right hydra depending on the sequence at point"
   (interactive)
   (let ((todo-at-point (org-get-todo-state))
-	(tasks-todos    '("TODO" "NEXT" "STARTED" "WAITING" "PAUSED" "DONE" "STOPPED"
-			  "IDEA" "PROJECT" "FINISHED" "CANCELLED"))
-	(content-todos  '("MEETING" "ATTEND" "ATTENDED"
-			  "INTERESTING" "TOCONSUME" "CONSUMING" "CONSUMED" "SKIP"))
-	(problems-todos '("PROBLEM" "TASKED" "SOLVED" "IRRELEVANT")))
+	(tasks-todos    '("CONSIDER" "TASK" "NEXT"
+			  "STARTED" "WAITING" "PAUSED"
+			  "DONE" "FAILED" "DONT"))
+	(projects-todos '("IDEA" "TODO" "PROBLEM"
+			  "PROJECT" "POSTPONNED"
+			  "COMPLETED" "DISCARDED")))
     (cond
       ((member todo-at-point tasks-todos)
          (dwarfmaster/hydra/org/todo/tasks/body))
-      ((member todo-at-point content-todos)
-         (dwarfmaster/hydra/org/todo/content/body))
-      ((member todo-at-point problems-todos)
-         (dwarfmaster/hydra/org/todo/problems/body))
-      (t (dwarfmaster/hydra/org/todo/switch-sequence/body)))))
+      ((member todo-at-point projects-todos)
+         (dwarfmaster/hydra/org/todo/projects/body))
+      (t (dwarfmaster/hydra/org/todo/tasks/body)))))
 
 ;; Org mode
 ;   ___             __  __         _
