@@ -9,10 +9,7 @@ let
   all-hies-gen = general.pkgs.hies;
   all-hies = all-hies-gen.selection { selector = p: { inherit (p) ghc865 ghc864 ghc863; }; };
 
-in {
-  programs.emacs = {
-    enable = true;
-    extraPackages = epkgs: with epkgs; [
+  epkgs = epkgs: with epkgs; [
       evil
       evil-surround
       base16-theme
@@ -37,7 +34,14 @@ in {
       helm-org
       hydra
       ts
-    ];
+      org-roam
+  ];
+
+in {
+  programs.emacs = {
+    enable = true;
+    # Workaround because of https://github.com/rycee/home-manager/issues/1300
+    package = unstable.emacsWithPackages epkgs;
   };
 
   home.file.".emacs".source = ./home.el;
@@ -48,6 +52,7 @@ in {
     (setq nix/figlet "${pkgs.figlet}/bin/figlet")
     (setq nix/curl "${pkgs.curl}/bin/curl")
     (setq nix/coqtop "${pkgs.coq}/bin/coqtop")
+    (setq nix/sqlite3-bin-dir "${pkgs.sqlite}/bin")
   '';
 }
 

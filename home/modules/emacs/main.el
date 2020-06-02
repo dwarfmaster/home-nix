@@ -13,7 +13,9 @@
 ; TODO improve logic
 (defun dwarfmaster/select-normal-and-unbind (map key value)
   "If key is alphanumeric, unbind it from map"
-  (if (number-or-marker-p key)
+  (if (and (number-or-marker-p key)
+	   (>= key 0)
+	   (<= key 255))
       (define-key (symbol-value map) (byte-to-string key) nil)))
 
 (defun dwarfmaster/unbind-normal-keys (map)
@@ -519,6 +521,22 @@
 (dwarfmaster/org/make-insert-env "definition")
 (dwarfmaster/org/make-insert-env "property")
 (dwarfmaster/org/make-insert-env "remark")
+
+
+;; Org roam
+;;   ___             ___                 
+;;  / _ \ _ _ __ _  | _ \___  __ _ _ __  
+;; | (_) | '_/ _` | |   / _ \/ _` | '  \ 
+;;  \___/|_| \__, | |_|_\___/\__,_|_|_|_|
+;;           |___/                       
+;; Org roam needs access to sqlite3
+(setq exec-path (append exec-path nix/sqlite3-bin-dir))
+(require 'org-roam)
+;; Use wiki as org roam main directory
+(setq org-roam-directory "~/wiki/")
+;; Start/update the org-roam database on init
+(add-hook 'after-init-hook 'org-roam-mode)
+
  
 
 
