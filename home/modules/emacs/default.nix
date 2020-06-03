@@ -36,6 +36,9 @@ let
       ts
       org-roam
       company-org-roam
+      org-ref
+      helm-bibtex
+      org-roam-bibtex
   ];
 
 in {
@@ -54,6 +57,8 @@ in {
     (setq nix/curl "${pkgs.curl}/bin/curl")
     (setq nix/coqtop "${pkgs.coq}/bin/coqtop")
     (setq nix/sqlite3-bin-dir "${pkgs.sqlite}/bin")
+    (setq nix/zathura "${pkgs.zathura}/bin/zathura")
+    (setq nix/firefox "${pkgs.firefox}/bin/zathura")
   '';
 }
 

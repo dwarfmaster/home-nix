@@ -593,7 +593,56 @@
 (dwarfmaster/capture/make-function "p" "Problem")
 	
 
+;; Bibliography
+;;  ___ _ _    _ _                         _        
+;; | _ |_) |__| (_)___  __ _ _ _ __ _ _ __| |_ _  _ 
+;; | _ \ | '_ \ | / _ \/ _` | '_/ _` | '_ \ ' \ || |
+;; |___/_|_.__/_|_\___/\__, |_| \__,_| .__/_||_\_, |
+;;                     |___/         |_|       |__/ 
+;; Set the dialect to biblatex (biber ?)
+(bibtex-set-dialect 'biblatex)
+;; Default bibliography
+(setq bibtex-completion-bibliography '("~/data/annex/references.bib"))
+(setq org-ref-default-bibliography '("~/data/annex/references.bib"))
+;; Where to store the downloaded pdfs
+(setq bibtex-completion-library-path '("~/data/annex/papers"))
+(setq org-ref-pdf-directory "~/data/annex/papers")
+;; Bibtex key configuration
+(setq bibtex-autokey-year-length 4
+	bibtex-autokey-name-year-separator "-"
+	bibtex-autokey-year-title-separator "-"
+	bibtex-autokey-titleword-separator "-"
+	bibtex-autokey-titlewords 2
+	bibtex-autokey-titlewords-stretch 1
+	bibtex-autokey-titleword-length 5)
+;; Use helm in org-ref
+(setq org-ref-completion-library 'org-ref-helm-bibtex)
+;; Symbol indicating that the pdf is present
+(setq bibtex-completion-pdf-symbol "")
+;; Symbol indication that a note is present
+(setq bibtex-completion-notes-symbol "")
+;; Open PDFs with zathura
+(setq bibtex-completion-pdf-open-function
+      (lambda (fpath)
+	(call-process nix/zathura nil 0 nil fpath)))
+;; Handle pdf, djvu and epub 
+(setq bibtex-completion-pdf-extension '("pdf" "djvu" "epub"))
+;; Use firefox for opening links
+(setq bibtex-completion-browser-function
+      (lambda (url _) (start-process "firefox" "firefox*" nix/firefox url)))
+;; Template used by org-roam-bibtex
+(setq orb-templates
+      '(("r" "ref" plain (function org-roam-capture--get-point) ""
+	 :file-name "refs/${citekey}"
+	 :head "#+TITLE: ${citekey}: ${title}\n#+ROAM_KEY: ${ref}\n#+TAGS: ${keywords}\n"
+	 :unnarrowed t)))
 
+(require 'helm-bibtex)
+(require 'org-ref)
+(require 'doi-utils)
+(require 'org-ref-isbn)
+(require 'org-ref-arxiv)
+(require 'org-roam-bibtex)
 
 
 ;;; Interface
@@ -915,6 +964,28 @@ Coq - Proof General
   :states 'normal
   :keymaps 'coq-mode-map
   "i" 'dwarfmaster/hydra/language/coq
+  )
+(defhydra dwarfmaster/hydra/language/bib (:color blue :hint nil)
+  "
+BibTex
+
+^Import^               ^Navigation^        ^Misc
+^^^^^^--------------------------------------------------------------
+[_d_] DOI              [_j_] Next entry    [_o_] Misc
+[_q_] Crossref query   [_k_] Prev entry    [_i_] New entry
+[_b_] ISBN             ^ ^                 [_f_] Act on file
+[_x_] Arxiv            ^ ^                 [_X_] Download from Arxiv
+"
+  ("d"  doi-utils-add-bibtex-entry-from-doi)
+  ("q"  doi-utils-add-entry-from-crossref-query)
+  ("j"  org-ref-bibtex-next-entry :color red)
+  ("k"  org-ref-bibtex-prev-entry :color red)
+  ("o"  org-ref-bibtex-hydra/body)
+  ("i"  org-ref-bibtex-new-entry/body)
+  ("f"  org-ref-bibtex-file/body)
+  ("b"  isbn-to-bibtex)
+  ("x"  arxiv-add-bibtex-entry)
+  ("X"  arxiv-get-pdf)
   )
 
 
@@ -1243,11 +1314,11 @@ Org insert
 
 ^Heading^                    ^Timestamp^            ^Misc
 ^^^^^^-----------------------------------------------------------------------
-[_H_] At point               [_s_] Timestamp        [_d_] Schedule
-[_h_] After subtree          [_S_] Inactive         [_D_] Deadline
-[_T_] TODO at point          ^ ^                    [_RET_] Contextual insert
-[_t_] TODO after subtree     ^ ^                    [_l_] Link
-^ ^                          ^ ^                    [_r_] Link to roam note
+[_H_] At point               [_s_] Timestamp        [_RET_] Contextual insert
+[_h_] After subtree          [_S_] Inactive         [_l_] Link
+[_T_] TODO at point          [_d_] Schedule         [_r_] Link to roam note
+[_t_] TODO after subtree     [_D_] Deadline         [_c_] Citation
+^ ^                          ^ ^                    ^ ^
 "
  ("H"    org-insert-heading)                      ; Insert heading at point
  ("h"    org-insert-heading-respect-content)      ; Insert heading after subtree
@@ -1260,6 +1331,7 @@ Org insert
  ("RET"  org-meta-ret)                            ; Insert new heading/item/table row
  ("l"    org-insert-link)                         ; Insert link at current position (or over current text)
  ("r"    org-roam-insert)                         ; Insert link to roam note
+ ("c"    helm-bibtex)                             ; Insert a citation from bibtex
  )
 
 ;; Org Math
@@ -1419,7 +1491,7 @@ Org mode
 [_B_] Roam backlinks     ^ ^                      [_[_] Prev sparse match       [_D_] Roam DB        [_m_] Displacement mode
 ^ ^                      ^ ^                      [_%_] Push pos to org ring    ^ ^                  [_P_] Properties mode 
 ^ ^                      ^ ^                      [_o_] Open roam note          ^ ^                  [_i_] Insert mode
-^ ^                      ^ ^                      ^ ^                           ^ ^                  [_M_] Maths mode
+^ ^                      ^ ^                      [_b_] Bibtex link menu        ^ ^                  [_M_] Maths mode
 "
  ;; Visibility
  ("Z"   org-set-startup-visibility)               ; Reset visibility to start
@@ -1446,6 +1518,7 @@ Org mode
  ("["   previous-error :color amaranth)               ; Jump to previous sparse tree match
  ("%"   org-mark-ring-push :color amaranth)           ; Push current position in org mark ring
  ("o"   org-roam-find-file :color blue)               ; Open roam note
+ ("b"   org-ref-bibtex-hydra/body :color blue)        ; Contextual menu on cite link
 
  ;; Dynamic
  ("+"   org-update-statistics-cookies)      ; Update statistics for current entry
