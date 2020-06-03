@@ -403,10 +403,6 @@
 (setq org-archive-location "%s_archive::")
 ;; Set org directory
 (setq org-directory "~/data/annex/wiki")
-;; Set default notes file for capture
-(setq org-default-notes-file (concat org-directory "/notes.org"))
-;; Always set the org-capture-last-stored bookmark
-(setq org-capture-bookmark t)
 ;; When opening agenda, open it in another window next ot current one
 (setq org-agenda-window-setup 'reorganize-frame)
 ;; Restore windows after leaving the agenda view
@@ -489,7 +485,6 @@
   
 
 ;; TODO setup LaTeX preview
-;; TODO configure capture
 ;; Enable the org table editor mode on other modes by calling 'turn-on-orgtbl when
 ;; loading other modes. Can be automated with
 ;;    (add-hook 'message-mode-hook 'turn-on-orgtbl)
@@ -533,11 +528,60 @@
 (setq exec-path (append exec-path nix/sqlite3-bin-dir))
 (require 'org-roam)
 ;; Use wiki as org roam main directory
-(setq org-roam-directory "~/wiki/")
+(setq org-roam-directory "~/wiki")
+;; Set the index file
+(setq org-roam-index-file (concat org-roam-directory "/index.org"))
 ;; Start/update the org-roam database on init
 (add-hook 'after-init-hook 'org-roam-mode)
+;; Store the database in $XDG_CACHE_HOME/org-roam/db.sqlite3
+(setq org-roam-db-location (concat (getenv "XDG_CACHE_HOME")
+				   "/org-roam/db.sqlite3"))
+;; Position of the backlinks buffer
+(setq org-roam-buffer-position 'right)
+;; Width of the buffer
+(setq org-roam-buffer-width 80)
+;; Use helm
+(setq org-roam-completion-system 'helm)
 
- 
+
+;; Capture
+;;   ___           _                
+;;  / __|__ _ _ __| |_ _  _ _ _ ___ 
+;; | (__/ _` | '_ \  _| || | '_/ -_)
+;;  \___\__,_| .__/\__|\_,_|_| \___|
+;;           |_|                    
+;; Set default notes file for capture
+(setq org-default-notes-file (concat org-directory "/inbox.org"))
+;; Always set the org-capture-last-stored bookmark
+(setq org-capture-bookmark t)
+;; Templates
+(setq org-capture-templates
+      '(("i" "Idea" entry (file "")
+	 "* IDEA %^{Idea: } %^G
+            <%T>"
+	 :empty-lines 1 :clock-resume :immediate-finish)
+        ("t" "Todo" entry (file "")
+	 "* TODO %^{Idea: } %^G
+            <%T>"
+	 :empty-lines 1 :clock-resume :immediate-finish)
+        ("p" "Problem" entry (file "")
+	 "* PROBLEM %^{Idea: } %^G
+            <%T>"
+	 :empty-lines 1 :clock-resume :immediate-finish)
+	))
+
+(defmacro dwarfmaster/capture/make-function (key name)
+  "Make a function for capture key"
+  (let ((fname (intern (concat "dwarfmaster/capture/" key))))
+    `(defun ,fname ()
+       ,(concat "Launch capture " (downcase name))
+       (interactive)
+       (org-capture nil ,key)
+       )))
+(dwarfmaster/capture/make-function "i" "Idea")
+(dwarfmaster/capture/make-function "t" "Todo")
+(dwarfmaster/capture/make-function "p" "Problem")
+	
 
 
 
@@ -873,11 +917,11 @@ Coq - Proof General
   "
 Miscellaneous
 
-^Figlet^            ^Org^              ^Misc
-^^^^^----------------------------------------------------
-[_f_] Figlet        [_l_] Store link   [_h_] All commands
-[_F_] Figlet small  [_c_] Capture      [_R_] Select color
-^ ^                 ^ ^                [_C_] Calcul
+^Figlet^            ^Org^              ^Doc^            ^Misc
+^^^^^^^----------------------------------------------------
+[_f_] Figlet        [_l_] Store link   [_s_] Symbol     [_h_] All commands
+[_F_] Figlet small  [_c_] Capture      [_v_] Variable   [_R_] Select color
+^ ^                 ^ ^                [_b_] Bindings   [_C_] Calcul
 "
   ("f" dwarfmaster/make-figlet-text-normal)
   ("F" dwarfmaster/make-figlet-text-small)
@@ -885,11 +929,35 @@ Miscellaneous
   ("R" helm-color)             ; Select and previous colors
   ("C" helm-calcul-expression) ; Helm interface to the calc command
   ("l" org-store-link)
-  ("c" org-capture)
+  ("c" dwarfmaster/hydra/capture/body)
+  ("s" describe-symbol)
+  ("v" describe-variable)
+  ("b" describe-bindings)
   )
 (leader-def
   :states 'normal
   "w"  'dwarfmaster/hydra/misc/body
+  )
+
+;; Capture sub-hydra
+;;   ___           _                
+;;  / __|__ _ _ __| |_ _  _ _ _ ___ 
+;; | (__/ _` | '_ \  _| || | '_/ -_)
+;;  \___\__,_| .__/\__|\_,_|_| \___|
+;;           |_|                    
+(defhydra dwarfmaster/hydra/capture (:color blue :hint nil)
+  "
+Capture
+
+^Tasks
+^^-----------
+[_i_] Idea
+[_t_] Todo
+[_p_] Problem
+"
+  ("i"  dwarfmaster/capture/i)
+  ("t"  dwarfmaster/capture/t)
+  ("p"  dwarfmaster/capture/p)
   )
 
 ;; Helm
@@ -1169,6 +1237,7 @@ Org insert
 [_h_] After subtree          [_S_] Inactive         [_D_] Deadline
 [_T_] TODO at point          ^ ^                    [_RET_] Contextual insert
 [_t_] TODO after subtree     ^ ^                    [_l_] Link
+^ ^                          ^ ^                    [_r_] Link to roam note
 "
  ("H"    org-insert-heading)                      ; Insert heading at point
  ("h"    org-insert-heading-respect-content)      ; Insert heading after subtree
@@ -1180,6 +1249,7 @@ Org insert
  ("D"    org-deadline)                            ; Insert deadline entry
  ("RET"  org-meta-ret)                            ; Insert new heading/item/table row
  ("l"    org-insert-link)                         ; Insert link at current position (or over current text)
+ ("r"    org-roam-insert)                         ; Insert link to roam note
  )
 
 ;; Org Math
@@ -1325,7 +1395,7 @@ Project switcher
  "DEL"  'org-mark-ring-goto  ; Jump to previous org mark
  )
 
-(defhydra dwarfmaster/hydra/org-mode (:color amaranth :hint nil)
+(defhydra dwarfmaster/hydra/org-mode (:color blue :hint nil)
   "
 Org mode
 
@@ -1336,9 +1406,9 @@ Org mode
 [_U_] Unfold all         [_c_] Toggle checkbox    [_k_] Prev heading            [_u_] DBlock         [_,_] Toggle pretty
 [_O_] Tree in buffer     [_p_] Set priority       [_s_] Select heading          [_U_] All dblocks    [_*_] Toggle heading
 [_/_] Sparse tree        [_e_] Set effort         [_]_] Next sparse match       [_R_] Refile cache   [_t_] Table mode
-^ ^                      ^ ^                      [_[_] Prev sparse match       ^ ^                  [_m_] Displacement mode
+[_B_] Roam backlinks     ^ ^                      [_[_] Prev sparse match       [_D_] Roam DB        [_m_] Displacement mode
 ^ ^                      ^ ^                      [_%_] Push pos to org ring    ^ ^                  [_P_] Properties mode 
-^ ^                      ^ ^                      ^ ^                           ^ ^                  [_i_] Insert mode
+^ ^                      ^ ^                      [_o_] Open roam note          ^ ^                  [_i_] Insert mode
 ^ ^                      ^ ^                      ^ ^                           ^ ^                  [_M_] Maths mode
 "
  ;; Visibility
@@ -1347,6 +1417,7 @@ Org mode
  ("U"   outline-show-all)                         ; Unfold everything
  ("O"   org-tree-to-indirect-buffer :color blue)  ; Open current subtree in an indirect buffer
  ("/"   org-sparse-tree :color blue)              ; Create sparse tree for match
+ ("B"   org-roam)                                 ; Toggle backlinks
 
  ;; TODOs
  ("!"   dwarfmaster/org/todo-switch-dwim :color blue)  ; Toggle the todo mark along a sequence
@@ -1357,13 +1428,14 @@ Org mode
  ("e"   org-set-effort :color blue)                    ; Set the effort estimate for a task
 
  ;; Navigation
- ("h"   outline-up-heading)                      ; Move to the buffer above
- ("j"   org-next-visible-heading)                ; Move to next heading
- ("k"   org-previous-visible-heading)            ; Move to previous heading
- ("s"   helm-org-in-buffer-heading :color blue)  ; Find heading in buffer
- ("]"   next-error)                              ; Jump to next sparse tree match
- ("["   previous-error)                          ; Jump to previous sparse tree match
- ("%"   org-mark-ring-push)                      ; Push current position in org mark ring
+ ("h"   outline-up-heading :color amaranth)           ; Move to the buffer above
+ ("j"   org-next-visible-heading :color amaranth)     ; Move to next heading
+ ("k"   org-previous-visible-heading :color amaranth) ; Move to previous heading
+ ("s"   helm-org-in-buffer-heading :color blue)       ; Find heading in buffer
+ ("]"   next-error :color amaranth)                   ; Jump to next sparse tree match
+ ("["   previous-error :color amaranth)               ; Jump to previous sparse tree match
+ ("%"   org-mark-ring-push :color amaranth)           ; Push current position in org mark ring
+ ("o"   org-roam-find-file :color blue)               ; Open roam note
 
  ;; Dynamic
  ("+"   org-update-statistics-cookies)      ; Update statistics for current entry
@@ -1371,6 +1443,7 @@ Org mode
  ("u"   org-dblock-update)                  ; Update dblock at point
  ("U"   org-update-all-dblocks)             ; Update all dblocks in file
  ("R"   dwarfmaster/org/refile-cache-clear) ; Reset the refile destination cache
+ ("D"   org-roam-db-build-cache)            ; Rebuild org roam cache
 
  ;; Misc
  ("@"   org-mark-subtree :color blue)                  ; Select current subtree
