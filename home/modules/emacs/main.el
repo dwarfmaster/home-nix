@@ -542,6 +542,13 @@
 (setq org-roam-buffer-width 80)
 ;; Use helm
 (setq org-roam-completion-system 'helm)
+;; Default capture
+(setq org-roam-capture-templates
+      '(("d" "default" plain (function org-roam--capture-get-point)
+	 "%?"
+	 :file-name "%<%Y-%m>/%<%d_%H-%M-%S>-${slug}"
+	 :head "#+TITLE: ${title}\n"
+	 :unnarrowed t)))
 
 
 ;; Capture
