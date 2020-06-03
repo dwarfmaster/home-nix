@@ -550,6 +550,9 @@
 	 :head "#+TITLE: ${title}\n"
 	 :unnarrowed t)))
 
+(require 'company-org-roam)
+(push 'company-org-roam company-backends)
+
 
 ;; Capture
 ;;   ___           _                

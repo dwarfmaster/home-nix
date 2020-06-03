@@ -35,6 +35,7 @@ let
       hydra
       ts
       org-roam
+      company-org-roam
   ];
 
 in {
