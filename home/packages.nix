@@ -25,7 +25,7 @@ in let packages = with pkgs; [
   mosh             # Better SSH for bad connections
   gnupg            # GNU pgp implementation
   gnupg1           # GNU pgp implementation (TODO why is it necessary ?)
-  pinentry_ncurses # Save password input for gpg
+  pinentry-curses  # Save password input for gpg
   cryptsetup       # Setup DM encrypted disks
 
   # Compression

@@ -1,4 +1,4 @@
 args:
 
-(import ./nixpkgs args).nixos-19-09
+(import ./nixpkgs args).nixos-20-03
 
