@@ -403,6 +403,8 @@
 (setq org-archive-location "%s_archive::")
 ;; Set org directory
 (setq org-directory "~/data/annex/wiki")
+;; Set the agenda files
+(setq org-agenda-files '("~/wiki/index.org" "~/wiki/projects/" "~/wiki/support/"))
 ;; When opening agenda, open it in another window next ot current one
 (setq org-agenda-window-setup 'reorganize-frame)
 ;; Restore windows after leaving the agenda view
@@ -423,6 +425,8 @@
 (setq org-confirm-babel-evaluate t)
 (setq org-confirm-elisp-link-function 'yes-or-no-p)
 (setq org-confirm-shell-link-function 'yes-or-no-p)
+;; Do not indent the content of header
+(setq org-adapt-indentation nil)
 
 (defun dwarfmaster/org/update-all-stats ()
   "Update all statistics in org buffer"
@@ -525,21 +529,21 @@
       '(("d" "default" plain (function org-roam--capture-get-point)
 	 "%?"
 	 :file-name "notes/%<%Y-%m>/%<%d_%H-%M-%S>-${slug}"
-	 :head "#+TITLE: ${title}\n"
+	 :head "#+TITLE: ${title}\n\n"
 	 :unnarrowed t)
         ("p" "project" plain (function org-roam--capture-get-point)
 	 "* PROJECT ${title}
   [%t]
 %?"
 	 :file-name "projects/${slug}"
-	 :head "#+TITLE: ${title}\n#+ROAM_TAGS: project"
+	 :head "#+TITLE: ${title}\n#+ROAM_TAGS: project\n\n"
 	 :unnarrowed t)
         ("s" "support" plain (function org-roam--capture-get-point)
 	 "* SUPPORT ${title}
   [%t]
 %?"
 	 :file-name "support/${slug}"
-	 :head "#+TITLE: ${title}\n#+ROAM_TAGS: project"
+	 :head "#+TITLE: ${title}\n#+ROAM_TAGS: project\n\n"
 	 :unnarrowed t)
 	))
 
@@ -678,9 +682,9 @@
 ;; TODO improve selection using notdeft
 (setq org-refile-targets
       '((nil . (:maxlevel . 2)) ; Up to level 2 in current file
-	("/home/luc/wiki/" . (:maxlevel . 9))))
-;; Better handling for multiple subheaders with same name
-(setq org-refile-use-outline-path t)
+	(org-agenda-files . (:maxlevel . 9))))
+;; Better handling for multiple subheaders with same name, and allow refiling to top level
+(setq org-refile-use-outline-path 'file)
 ;; Do dot complete path in steps
 (setq org-outline-path-complete-in-steps nil)
                                
