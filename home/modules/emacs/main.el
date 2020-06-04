@@ -533,14 +533,14 @@
 	 :unnarrowed t)
         ("p" "project" plain (function org-roam--capture-get-point)
 	 "* PROJECT ${title}
-  [%t]
+  %u
 %?"
 	 :file-name "projects/${slug}"
 	 :head "#+TITLE: ${title}\n#+ROAM_TAGS: project\n\n"
 	 :unnarrowed t)
         ("s" "support" plain (function org-roam--capture-get-point)
 	 "* SUPPORT ${title}
-  [%t]
+  %u
 %?"
 	 :file-name "support/${slug}"
 	 :head "#+TITLE: ${title}\n#+ROAM_TAGS: project\n\n"
