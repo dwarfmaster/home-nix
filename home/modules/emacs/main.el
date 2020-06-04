@@ -423,33 +423,11 @@
 (setq org-confirm-babel-evaluate t)
 (setq org-confirm-elisp-link-function 'yes-or-no-p)
 (setq org-confirm-shell-link-function 'yes-or-no-p)
-;; Cache refile destinations
-(setq org-refile-use-cache t)
-;; Log timestamp when refiling entries
-(setq org-log-refile 'time)
-;; New notes (or refiled notes) are at the end
-(setq org-reverse-note-order nil)
-;; Set the targets for refiling
-(setq org-refile-targets
-      '((nil . (:maxlevel . 2)) ; Up to level 2 in current file
-	("/home/luc/wiki/index.org" . (:maxlevel . 9))))
-;; Better handling for multiple subheaders with same name
-(setq org-refile-use-outline-path t)
-;; Do dot complete path in steps
-(setq org-outline-path-complete-in-steps nil)
 
 (defun dwarfmaster/org/update-all-stats ()
   "Update all statistics in org buffer"
   (interactive)
   (org-update-statistics-cookies t))
-(defun dwarfmaster/org/refile-to-clock ()
-  "Refile to currently clocked task"
-  (interactive)
-  (org-refile 2))
-(defun dwarfmaster/org/refile-cache-clear ()
-  "Clear the refile cache"
-  (interactive)
-  (org-refile-cache-clear))
 (defun dwarfmaster/agenda/todos-only ()
   "Select only some todos in org agenda"
   (interactive)
@@ -546,9 +524,24 @@
 (setq org-roam-capture-templates
       '(("d" "default" plain (function org-roam--capture-get-point)
 	 "%?"
-	 :file-name "%<%Y-%m>/%<%d_%H-%M-%S>-${slug}"
+	 :file-name "notes/%<%Y-%m>/%<%d_%H-%M-%S>-${slug}"
 	 :head "#+TITLE: ${title}\n"
-	 :unnarrowed t)))
+	 :unnarrowed t)
+        ("p" "project" plain (function org-roam--capture-get-point)
+	 "* PROJECT ${title}
+  [%t]
+%?"
+	 :file-name "projects/${slug}"
+	 :head "#+TITLE: ${title}\n#+ROAM_TAGS: project"
+	 :unnarrowed t)
+        ("s" "support" plain (function org-roam--capture-get-point)
+	 "* SUPPORT ${title}
+  [%t]
+%?"
+	 :file-name "support/${slug}"
+	 :head "#+TITLE: ${title}\n#+ROAM_TAGS: project"
+	 :unnarrowed t)
+	))
 
 (require 'company-org-roam)
 (push 'company-org-roam company-backends)
@@ -643,6 +636,54 @@
 (require 'org-ref-isbn)
 (require 'org-ref-arxiv)
 (require 'org-roam-bibtex)
+
+;; NotDeft, for quick navigation
+;;  _  _     _   ___       __ _   
+;; | \| |___| |_|   \ ___ / _| |_ 
+;; | .` / _ \  _| |) / -_)  _|  _|
+;; |_|\_\___/\__|___/\___|_|  \__|
+;; Set NotDeft directory
+(setq notdeft-directories '("~/wiki"))
+;; Extension of file notdeft is looking for
+(setq notdeft-extension "org")
+
+;; TODO when notdeft is available on nixos
+;; (require 'notdeft)
+
+
+;; Refiling
+;;  ___      __ _ _ _           
+;; | _ \___ / _(_) (_)_ _  __ _ 
+;; |   / -_)  _| | | | ' \/ _` |
+;; |_|_\___|_| |_|_|_|_||_\__, |
+;;                        |___/ 
+;; Refile to currently clocked item
+(defun dwarfmaster/org/refile-to-clock ()
+  "Refile to currently clocked task"
+  (interactive)
+  (org-refile 2))
+;; Clear the refile cache
+(defun dwarfmaster/org/refile-cache-clear ()
+  "Clear the refile cache"
+  (interactive)
+  (org-refile-cache-clear))
+
+;; Cache refile destinations
+(setq org-refile-use-cache t)
+;; Log timestamp when refiling entries
+(setq org-log-refile 'time)
+;; New notes (or refiled notes) are at the end
+(setq org-reverse-note-order nil)
+;; Set the targets for refiling
+;; TODO improve selection using notdeft
+(setq org-refile-targets
+      '((nil . (:maxlevel . 2)) ; Up to level 2 in current file
+	("/home/luc/wiki/" . (:maxlevel . 9))))
+;; Better handling for multiple subheaders with same name
+(setq org-refile-use-outline-path t)
+;; Do dot complete path in steps
+(setq org-outline-path-complete-in-steps nil)
+                               
 
 
 ;;; Interface
