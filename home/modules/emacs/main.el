@@ -274,9 +274,6 @@
 (setq auto-revert-verbose t)
 
 
-; TODO improve managing sections movement and folding keybinds
-; such that they are uniform with org-mode
-
 
 
 
@@ -323,7 +320,7 @@
        ;; Sequences for tasks
 	(sequence "CONSIDER(!)" "TASK(!)" "NEXT(!)")
 	(sequence "STARTED(!)" "WAITING(@)" "PAUSED(@)")
-	(sequence "DONT(@)" "FAILED(@)" "DONE(!)")))
+	(sequence "|" "DONT(@)" "FAILED(@)" "DONE(!)")))
 ;; Colors and decorations for stages of TODO
 (setq org-todo-keyword-faces
         ;; Projects
@@ -404,21 +401,10 @@
 ;; Set org directory
 (setq org-directory "~/data/annex/wiki")
 ;; Set the agenda files
-(setq org-agenda-files '("~/wiki/index.org" "~/wiki/projects/" "~/wiki/support/"))
-;; When opening agenda, open it in another window next ot current one
-(setq org-agenda-window-setup 'reorganize-frame)
-;; Restore windows after leaving the agenda view
-(setq org-agenda-restore-windows-after-quit t)
-;; Start agenda view on sunday
-(setq org-agenda-start-on-weekday 0)
-;; Span of the agenda view
-(setq org-agenda-span 'week)
-;; Set the sorting algorithm in agenda views
-(setq org-agenda-sorting-strategy
-      '((agenda habit-down time-up priority-down category-up)
-	(todo priority-down category-up)
-	(tags priority-down category-up)
-	(search category-up)))
+(setq org-agenda-files (list "~/wiki/index.org"
+			     "~/wiki/inbox.org"
+			     "~/wiki/projects/"
+			     "~/wiki/support/"))
 ;; Display inline images
 (setq org-startup-with-inline-images t)
 ;; Ask for confirmation before running babel, shell link or elisp link
@@ -470,6 +456,75 @@
 ;; Enable the org table editor mode on other modes by calling 'turn-on-orgtbl when
 ;; loading other modes. Can be automated with
 ;;    (add-hook 'message-mode-hook 'turn-on-orgtbl)
+
+;; Org Agenda
+;;   ___               _                    _      
+;;  / _ \ _ _ __ _    /_\  __ _ ___ _ _  __| |__ _ 
+;; | (_) | '_/ _` |  / _ \/ _` / -_) ' \/ _` / _` |
+;;  \___/|_| \__, | /_/ \_\__, \___|_||_\__,_\__,_|
+;;           |___/        |___/                    
+;; When opening agenda, maximize it
+(setq org-agenda-window-setup 'only-window)
+;; Restore windows after leaving the agenda view
+(setq org-agenda-restore-windows-after-quit t)
+;; Start agenda view on sunday
+(setq org-agenda-start-on-weekday 0)
+;; Span of the agenda view
+(setq org-agenda-span 'week)
+;; Set the sorting algorithm in agenda views
+(setq org-agenda-sorting-strategy
+      '((agenda habit-down time-up priority-down category-up)
+	(todo priority-down category-up)
+	(tags priority-down category-up)
+	(search category-up)))
+;; Define stuck projects
+(setq org-stuck-projects
+      '("TODO=\"PROJECT\"" ("NEXT" "WAITING" "STARTED") nil "")) 
+;; Define sorting strategy
+(setq org-agenda-sorting-strategy
+      ;; Show higher priority lower effort first, and them alphabetically
+      ;; (to make it predictable)
+      '(priority-down effort-up alpha-up))
+;; Ignore scheduled, deadlined and tasks with timestamps in general
+(setq org-agenda-todo-ignore-with-date t)
+;; TODO configure org-agenda-prefix-format
+
+;; Define some custom views
+(setq org-agenda-custom-commands
+      '(("d" "Default view, show week and active tasks"
+         ;; This one is the working view, used to know what task is next
+	 ;; and to schedule tasks
+	 ((agenda "")
+	  (todo "STARTED")
+	  (todo "NEXT")
+	  (todo "WAITING")
+	  (todo "CONSIDER")))
+	("i" "Show stuck projects, ideas, problems and todos"
+	 ;; This one should be empty after each review
+	 ((todo "TODO")
+	  (todo "IDEA")
+	  (todo "PROBLEM")
+	  (stuck)))
+	("p" "Show all projects and supports"
+	 ;; Overview of current and postponned projects
+	 ((todo "PROJECT")
+	  (todo "SUPPORT")
+	  (todo "POSTPONNED")))
+	))
+
+(defun dwarfmaster/agenda/default ()
+  "Open the default weekly agenda view"
+  (interactive)
+  (org-agenda nil "d"))
+(defun dwarfmaster/agenda/review ()
+  "Open the agenda view with things to review"
+  (interactive)
+  (org-agenda nil "i"))
+(defun dwarfmaster/agenda/projects ()
+  "Open the agenda view with project overview"
+  (interactive)
+  (org-agenda nil "p"))
+
 
 
 ;; LaTeX theorems
@@ -1657,27 +1712,26 @@ Clocking time : [_e_] Stop clock    [_S_] Re-clock last
   "
 Org Agenda
 
-^Views^                    ^Querying^                      ^Manage files^
-^^^^^^------------------------------------------------------------------------------
-[_o_] Agenda               [_T_] Select some TODOs         [_A_] Add current file
-[_w_] Agenda for week      [_s_] Select headers by tag     [_D_] Remove current file
-[_t_] TODOlist             [_S_] Generic search            [_n_] Cycle files
+^Views^                    ^Querying^                    ^Time^
+^^^^^^----------------------------------------------------------------
+[_a_] Agenda               [_T_] Select some TODOs       [_Y_] Yearly
+[_i_] To review            [_s_] Select headers by tag   [_M_] Monthly
+[_p_] Projects overview    [_S_] Generic search          [_W_] Weekly
 [_<_] Restrict to subtree
 [_>_] Remove restriction
 "
- ("o"     org-agenda)                        ; Open the agenda dispatcher
- ("w"     org-agenda-list)                   ; Open the agenda for the current week
- ("t"     org-todo-list)                     ; Open the global todo list
- ("T"     dwarfmaster/agenda/todos-only)     ; Select todos matching specific tags
- ("s"     org-tags-view)                     ; List all headers matching a tag
- ("S"     org-search-view)                   ; General text search ability for org mode entries
- ;; TODO investigate stuck projects
- ("A"    org-agenda-file-to-front)           ; Add current file to list of agendas
- ("D"    org-remove-file)                    ; Remove current file from list of agendas
- ("n"    org-cycle-agenda-files)             ; Move to the next agenda file
- ;; TODO bind p to the previous agenda file
- ("<"    org-agenda-set-restriction-lock)    ; Restrict agenda to current subtree
- (">"    org-agenda-remove-restriction-lock) ; Remove restriction lock
+  ("a"     dwarfmaster/agenda/default)
+  ("i"     dwarfmaster/agenda/review)
+  ("p"     dwarfmaster/agenda/projects)
+  ("T"     dwarfmaster/agenda/todos-only)     ; Select todos matching specific tags
+  ("s"     org-tags-view)                     ; List all headers matching a tag
+  ("S"     org-search-view)                   ; General text search ability for org mode entries
+  ;; TODO bind p to the previous agenda file
+  ("<"     org-agenda-set-restriction-lock)    ; Restrict agenda to current subtree
+  (">"     org-agenda-remove-restriction-lock) ; Remove restriction lock
+  ("Y"     org-agenda-year-view)
+  ("M"     org-agenda-month-view)
+  ("W"     org-agenda-week-view)
  )
 (leader-def
  :states '(normal visual)
