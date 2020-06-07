@@ -60,5 +60,17 @@ in {
     (setq nix/zathura "${pkgs.zathura}/bin/zathura")
     (setq nix/firefox "${pkgs.firefox}/bin/zathura")
   '';
+
+  # Set emacsclient as the org-protocol:// url handler
+  # TODO use finalPackage
+  xdg.dataFile."applications/org-protocol.desktop".text = ''
+    [Desktop Entry]
+    Name=org-protocol
+    Exec=emacsclient %u
+    Type=Application
+    Terminal=false
+    Categories=System;
+    MimeType=x-scheme-handler/org-protocol;
+  '';
 }
 

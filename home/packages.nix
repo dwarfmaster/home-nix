@@ -188,6 +188,7 @@ in let packages = with pkgs; [
   gnome3.dconf-editor    # GTK configuration editor
   ckb-next               # Configure corsair devices lights
   msi-perkeyrgb          # Configure keyboard lights
+  desktop-file-utils     # Manage desktop files
 
   # System
   xorg.xev            # X11 event querying

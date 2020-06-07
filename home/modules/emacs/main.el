@@ -1,6 +1,10 @@
 
 ;; TODO bind ESC to keyboard-quit in all buffers 
 
+;; Start the emacs server
+(server-start)
+(require 'org-protocol)
+
 ;; Small utility
 (defun load-local-file (path)
   "Load file from path relative to current file"
@@ -612,24 +616,59 @@
 ;; | (__/ _` | '_ \  _| || | '_/ -_)
 ;;  \___\__,_| .__/\__|\_,_|_| \___|
 ;;           |_|                    
+(require 'org-capture)
 ;; Set default notes file for capture
 (setq org-default-notes-file (concat org-directory "/inbox.org"))
 ;; Always set the org-capture-last-stored bookmark
 (setq org-capture-bookmark t)
+;; Use template F when capturing from org-protocol
+(setq org-protocol-default-template-key "F")
+
+(defun dwarfmaster/format-html-title (title)
+  "Change an arbitrary html title so that it can safely be inserted in an org link"
+  (concat
+   (mapcar #'(lambda (c) (if (equal c ?[) ?\( (if (equal c ?]) ?\) c))) title)))
+(defun dwarfmaster/capture/prepare-keys (keys)
+  "Unhex URL"
+  (mapcar #'(lambda (c) (if (char-or-string-p c) (url-unhex-string c) c))
+	  keys))
+(defun dwarfmaster/capture/protocol (fun &rest rest)
+  "Call org-protocol-capture with unhexed url"
+  (apply fun (dwarfmaster/capture/prepare-keys (car rest)) (cdr rest)))
+(advice-add 'org-protocol-capture :around #'dwarfmaster/capture/protocol)
+
 ;; Templates
 (setq org-capture-templates
-      '(("i" "Idea" entry (file "")
-	 "* IDEA %^{Idea: } %^G
-            <%T>"
+      '(
+	;; Templates to use from emacs
+	("i" "Idea" entry (file+headline "" "Captured")
+	 "
+** IDEA %^{Idea: } %^G
+   %U"
 	 :empty-lines 1 :clock-resume :immediate-finish)
-        ("t" "Todo" entry (file "")
-	 "* TODO %^{Idea: } %^G
-            <%T>"
+        ("t" "Todo" entry (file+headline "" "Captured")
+	 "
+** TODO %^{Idea: } %^G
+   %U"
 	 :empty-lines 1 :clock-resume :immediate-finish)
-        ("p" "Problem" entry (file "")
-	 "* PROBLEM %^{Idea: } %^G
-            <%T>"
+        ("P" "Problem" entry (file+headline "" "Captured")
+	 "
+** PROBLEM %^{Idea: } %^G
+   %U"
 	 :empty-lines 1 :clock-resume :immediate-finish)
+        ;; Templates for 
+        ("F" "Protocol" entry (file+headline "" "Firefox")
+	 "
+** [[%:link][%(dwarfmaster/format-html-title \"%:description\")]]
+   %U
+
+#+BEGIN_QUOTE
+%:initial
+#+END_QUOTE"
+	 :empty-lines 1)
+ 	("G" "Protocol link" entry (file+headline "" "Firefox")
+ 	 "** [[%:link][%(dwarfmaster/format-html-title \"%:description\")]]\n   %U"
+	 :empty-lines 1)
 	))
 
 (defmacro dwarfmaster/capture/make-function (key name)
@@ -642,8 +681,8 @@
        )))
 (dwarfmaster/capture/make-function "i" "Idea")
 (dwarfmaster/capture/make-function "t" "Todo")
-(dwarfmaster/capture/make-function "p" "Problem")
-	
+(dwarfmaster/capture/make-function "P" "Problem")
+
 
 ;; Bibliography
 ;;  ___ _ _    _ _                         _        
@@ -1138,7 +1177,7 @@ Capture
 "
   ("i"  dwarfmaster/capture/i)
   ("t"  dwarfmaster/capture/t)
-  ("p"  dwarfmaster/capture/p)
+  ("p"  dwarfmaster/capture/P)
   )
 
 ;; Helm
