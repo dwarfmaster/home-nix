@@ -48,9 +48,13 @@ in {
     package = unstable.emacsWithPackages epkgs;
   };
 
-  home.file.".emacs".source = ./home.el;
+  home.file.".emacs".text = ''
+    (add-to-list 'load-path "/home/luc/.config/emacs/")
+    (require 'main)
+  '';
 
   xdg.configFile."emacs/main.el".source = ./main.el;
+  xdg.configFile."emacs/ob-hledger.el".source = ./ob-hledger.el;
   xdg.configFile."emacs/nixpaths.el".text = ''
     (setq nix/hie-wrapper "${all-hies}/bin/hie-wrapper")
     (setq nix/figlet "${pkgs.figlet}/bin/figlet")
@@ -59,6 +63,9 @@ in {
     (setq nix/sqlite3-bin-dir "${pkgs.sqlite}/bin")
     (setq nix/zathura "${pkgs.zathura}/bin/zathura")
     (setq nix/firefox "${pkgs.firefox}/bin/zathura")
+    (setq nix/hledger "${pkgs.hledger}/bin/hledger")
+
+    (provide 'nixpaths)
   '';
 
   # Set emacsclient as the org-protocol:// url handler

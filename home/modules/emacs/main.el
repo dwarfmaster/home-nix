@@ -5,13 +5,8 @@
 (server-start)
 (require 'org-protocol)
 
-;; Small utility
-(defun load-local-file (path)
-  "Load file from path relative to current file"
-  (load-file (expand-file-name path (file-name-directory load-file-name))))
-
 ;; Load nix constants
-(load-local-file "./nixpaths.el")
+(require 'nixpaths)
 
 ;; Unbind normal keys
 ; TODO improve logic
@@ -417,6 +412,11 @@
 (setq org-confirm-shell-link-function 'yes-or-no-p)
 ;; Do not indent the content of header
 (setq org-adapt-indentation nil)
+;; Activate emacs lisp and hledger
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((emacs-lisp . t)
+   (hledger . t)))
 
 (defun dwarfmaster/org/update-all-stats ()
   "Update all statistics in org buffer"
@@ -727,6 +727,10 @@
 	 :file-name "refs/${citekey}"
 	 :head "#+TITLE: ${citekey}: ${title}\n#+ROAM_KEY: ${ref}\n#+TAGS: ${keywords}\n"
 	 :unnarrowed t)))
+;; Open pdfs with zathura
+(setq helm-bibtex-pdf-open-function
+      (lambda (fpath)
+	(start-process "zathura" "*helm-bibtex-zathura*" nix/zathura fpath))) 
 
 (require 'helm-bibtex)
 (require 'org-ref)
@@ -1102,7 +1106,7 @@ Coq - Proof General
 (leader-def
   :states 'normal
   :keymaps 'coq-mode-map
-  "i" 'dwarfmaster/hydra/language/coq
+  "i" 'dwarfmaster/hydra/language/coq/body
   )
 (defhydra dwarfmaster/hydra/language/bib (:color blue :hint nil)
   "
@@ -1125,6 +1129,11 @@ BibTex
   ("b"  isbn-to-bibtex)
   ("x"  arxiv-add-bibtex-entry)
   ("X"  arxiv-get-pdf)
+  )
+(leader-def
+  :states 'normal
+  :keymaps 'bibtex-mode-map
+  "i" 'dwarfmaster/hydra/language/bib/body
   )
 
 
@@ -1776,3 +1785,6 @@ Org Agenda
  :states '(normal visual)
  "a"   'dwarfmaster/hydra/agenda/body
  )
+
+
+(provide 'main)
