@@ -39,6 +39,9 @@ let
       org-ref
       helm-bibtex
       org-roam-bibtex
+      elfeed
+      elfeed-org
+      elfeed-goodies
   ];
 
 in {

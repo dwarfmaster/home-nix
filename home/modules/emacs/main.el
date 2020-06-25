@@ -795,6 +795,27 @@
 (setq org-mobile-inbox-for-pull "inbox.org")
 
 
+
+;;; RSS
+;;  ___  ___ ___ 
+;; | _ \/ __/ __|
+;; |   /\__ \__ \
+;; |_|_\|___/___/
+
+(require 'elfeed)
+(setq elfeed-curl-program-name nix/curl)
+
+(require 'elfeed-goodies)
+(elfeed-goodies/setup)
+
+(require 'elfeed-org)
+;; Start elfeed-org
+(elfeed-org)
+;; Set file to look for feeds in
+(setq rmh-elfeed-org-files (list "~/wiki/support/feeds.org"))
+              
+
+
 ;;; Interface
 ;;  ___       _             __                
 ;; |_ _|_ __ | |_ ___ _ __ / _| __ _  ___ ___ 
@@ -986,11 +1007,13 @@
   "F" 'helm-find-files        ; Find files
   "f" 'helm-projectile        ; Find file/buffer in current project, or switch project
  )
+(leader-def
+  :keymaps 'elfeed-search-mode
+  "b" 'helm-mini
+  )
 
 
 
-
-;; Will replace :
 
 ;; Language leader
 ;  _                                      
@@ -1142,6 +1165,36 @@ BibTex
   :keymaps 'bibtex-mode-map
   "i" 'dwarfmaster/hydra/language/bib/body
   )
+;; Elfeed
+(defhydra dwarfmaster/hydra/language/elfeed (:color blue :hint nil)
+  "
+Elfeed RSS Reader
+
+^Item^                 ^Search^         ^Misc^
+^^^^^-----------------
+[_i_] Show             [_s_] Search     [_u_] Refresh
+[_t_] Tag              [_c_] Clear      [_U_] Fetch
+[_T_] Untag            ^ ^              [_q_] Quit
+[_r_] Mark as read
+[_R_] Mark as unread
+
+"
+  ("i" elfeed-search-show-entry)
+  ("t" elfeed-search-tag-all)
+  ("T" elfeed-search-untag-all)
+  ("r" elfeed-search-untag-all-unread)
+  ("R" elfeed-search-tag-all-unread)
+  ("s" elfeed-search-live-filter)
+  ("c" elfeed-search-clear-filter)
+  ("u" elfeed-search-update--force)
+  ("U" elfeed-search-fetch)
+  ("q" elfeed-search-quit-window)
+  )
+(leader-def
+  :states 'normal
+  :keymaps 'elfeed-search-mode-map
+  "i" 'dwarfmaster/hydra/language/elfeed/body)
+
 
 
 ;; Miscellaneous
@@ -1153,11 +1206,12 @@ BibTex
   "
 Miscellaneous
 
-^Figlet^            ^Org^              ^Doc^            ^Misc
-^^^^^^^----------------------------------------------------
-[_f_] Figlet        [_l_] Store link   [_s_] Symbol     [_h_] All commands
-[_F_] Figlet small  [_c_] Capture      [_v_] Variable   [_R_] Select color
-^ ^                 ^ ^                [_b_] Bindings   [_C_] Calcul
+^Org^              ^Doc^              ^Misc^                   ^Programs
+^^^^^^^--------------------------------------------------------------------
+[_l_] Store link   [_s_] Symbol         [_h_] All commands     [_e_] Elfeed
+[_c_] Capture      [_v_] Variable       [_R_] Select color     [_C_] Calcul
+^ ^                [_b_] Bindings       [_f_] Figlet
+^ ^                [_h_] All commands   [_F_] Figlet small
 "
   ("f" dwarfmaster/make-figlet-text-normal)
   ("F" dwarfmaster/make-figlet-text-small)
@@ -1169,6 +1223,7 @@ Miscellaneous
   ("s" describe-symbol)
   ("v" describe-variable)
   ("b" describe-bindings)
+  ("e" elfeed)
   )
 (leader-def
   :states 'normal
