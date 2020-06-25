@@ -401,7 +401,6 @@
 (setq org-directory "~/data/annex/wiki")
 ;; Set the agenda files
 (setq org-agenda-files (list "~/wiki/index.org"
-			     "~/wiki/inbox.org"
 			     "~/wiki/projects/"
 			     "~/wiki/support/"))
 ;; Display inline images
@@ -785,7 +784,15 @@
 (setq org-refile-use-outline-path 'file)
 ;; Do dot complete path in steps
 (setq org-outline-path-complete-in-steps nil)
-                               
+
+;; Syncing
+;;  ___              _           
+;; / __|_  _ _ _  __(_)_ _  __ _ 
+;; \__ \ || | ' \/ _| | ' \/ _` |
+;; |___/\_, |_||_\__|_|_||_\__, |
+;;      |__/               |___/ 
+(setq org-mobile-directory "/davs:dwarfmaster@org.dwarfmaster.net:/")
+(setq org-mobile-inbox-for-pull "inbox.org")
 
 
 ;;; Interface
@@ -1760,10 +1767,10 @@ Clocking time : [_e_] Stop clock    [_S_] Re-clock last
   "
 Org Agenda
 
-^Views^                    ^Querying^                    ^Time^
-^^^^^^----------------------------------------------------------------
-[_a_] Agenda               [_T_] Select some TODOs       [_Y_] Yearly
-[_i_] To review            [_s_] Select headers by tag   [_M_] Monthly
+^Views^                    ^Querying^                    ^Time^          ^Syncing^
+^^^^^^^^---------------------------------------------------------------------------
+[_a_] Agenda               [_T_] Select some TODOs       [_Y_] Yearly    [_P_] Push
+[_i_] To review            [_s_] Select headers by tag   [_M_] Monthly   [_L_] Pull
 [_p_] Projects overview    [_S_] Generic search          [_W_] Weekly
 [_<_] Restrict to subtree
 [_>_] Remove restriction
@@ -1780,6 +1787,8 @@ Org Agenda
   ("Y"     org-agenda-year-view)
   ("M"     org-agenda-month-view)
   ("W"     org-agenda-week-view)
+  ("P"     org-mobile-push)
+  ("L"     org-mobile-pull)
  )
 (leader-def
  :states '(normal visual)

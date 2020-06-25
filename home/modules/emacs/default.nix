@@ -79,5 +79,13 @@ in {
     Categories=System;
     MimeType=x-scheme-handler/org-protocol;
   '';
+
+  packages = with pkgs; [
+    gvfs # Necessary for TRAMP support for webdav
+  ];
+
+  shellVariables = {
+    GIO_EXTRA_MODULES = "${pkgs.gvfs}/lib/gio/modules";
+  };
 }
 
