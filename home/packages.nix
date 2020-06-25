@@ -32,6 +32,7 @@ in let packages = with pkgs; [
   unfree.unrar # RAR decompression
   p7zip        # Terminal implementation of 7zip
   unzip        # ZIP compression and decompression
+  zip
 
   # Libraries
   librsvg # SVG rendering library (TODO why is it necessary ?)
@@ -58,6 +59,7 @@ in let packages = with pkgs; [
   alsaUtils    # Sound card control
   cachix       # Nix binary caches handling
   nixops       # Nix-based deployement
+  signal-cli   # Access signal messages
 
 
   #  ____  _          _ _ 
@@ -94,6 +96,7 @@ in let packages = with pkgs; [
   powerline-fonts  # Fonts with icons
   nerdfonts        # Fonts with icons
   spaceship-prompt # Oh-my-zsh theme
+  magic-wormhole   # File sharing
 
   #  ____                                                _             
   # |  _ \ _ __ ___   __ _ _ __ __ _ _ __ ___  _ __ ___ (_)_ __   __ _ 
