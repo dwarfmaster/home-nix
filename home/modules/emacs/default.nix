@@ -42,6 +42,7 @@ let
       elfeed
       elfeed-org
       elfeed-goodies
+      tramp
   ];
 
 in {

@@ -1,6 +1,9 @@
 
 ;; TODO bind ESC to keyboard-quit in all buffers 
 
+;; TRAMP
+(require 'tramp)
+
 ;; Start the emacs server
 (server-start)
 (require 'org-protocol)
@@ -415,7 +418,8 @@
 (org-babel-do-load-languages
  'org-babel-load-languages
  '((emacs-lisp . t)
-   (hledger . t)))
+   (hledger . t)
+   (shell . t)))
 
 (defun dwarfmaster/org/update-all-stats ()
   "Update all statistics in org buffer"
@@ -513,6 +517,9 @@
 	 ((todo "PROJECT")
 	  (todo "SUPPORT")
 	  (todo "POSTPONNED")))
+	("M" "Show all headers with mobile tag"
+	 tags "+mobile"
+	 ((org-use-tag-inheritance nil)))
 	))
 
 (defun dwarfmaster/agenda/default ()
@@ -527,6 +534,23 @@
   "Open the agenda view with project overview"
   (interactive)
   (org-agenda nil "p"))
+(defun dwarfmaster/agenda/mobile ()
+  "Open the agenda view with mobile headers"
+  (interactive)
+  (org-agenda nil "M"))
+
+
+;; Org IDs
+;;   ___             ___ ___  
+;;  / _ \ _ _ __ _  |_ _|   \ 
+;; | (_) | '_/ _` |  | || |) |
+;;  \___/|_| \__, | |___|___/ 
+;;           |___/            
+(require 'org-id)
+;; Use IDs when storing a link current entry
+(setq org-id-link-to-org-use-id t)
+;; Update ID file
+(org-id-update-id-locations)
 
 
 
@@ -791,10 +815,119 @@
 ;; \__ \ || | ' \/ _| | ' \/ _` |
 ;; |___/\_, |_||_\__|_|_||_\__, |
 ;;      |__/               |___/ 
-(setq org-mobile-directory "/davs:dwarfmaster@org.dwarfmaster.net:/")
-(setq org-mobile-inbox-for-pull "inbox.org")
+
+(defconst *org-sync-remote* "/scp:org@dwarfmaster.net:/srv/http/org/mobile.org")
+(defconst *org-sync-temp*   "/tmp/luc/mobile.org")
+(defconst *org-sync-dir*    "/data/luc/annex/")
+(defconst *org-sync-tag*    "mobile")
+
+(defun dwarfmaster/org/sync/kill-temp-buffer ()
+  "Kill buffer opended on temp file if it exists"
+  (let ((buf (get-file-buffer *org-sync-temp*)))
+    (when (not (null buf)) (kill-buffer buf))))
+
+;; Pushing
+;;  , _                            
+;; /|/ \       ,  |)   o        _, 
+;;  |__/|  |  / \_|/\  | /|/|  / | 
+;;  |    \/|_/ \/ |  |/|/ | |_/\/|/
+;;                              (| 
+
+(defun dwarfmaster/org/sync/push/process-subtree (tag file)
+  "If the subtree at point has tag, then copy it to file"
+  (let ((tags (org-get-tags)))
+    (when (member tag tags)
+      (org-id-get-create)
+      (org-copy-subtree)
+      (with-temp-buffer
+	(find-file file)
+	(goto-char (point-max))
+	(org-paste-subtree 1)
+	(save-buffer)))))
+
+(defun dwarfmaster/org/sync/push/collates-all-with-tag (tag file)
+  "Copy all subtress in the current buffer with a specific tag to file"
+  (org-map-entries (lambda () (dwarfmaster/org/sync/push/process-subtree tag file))
+		   nil 'agenda))
+
+(defun dwarfmaster/org/sync/push/do ()
+  "Synchronise subtress to phone"
+  (interactive)
+  (with-temp-buffer
+    (delete-file *org-sync-temp*)
+    (dwarfmaster/org/sync/push/collates-all-with-tag *org-sync-tag* *org-sync-temp*)
+    (copy-file *org-sync-temp* *org-sync-remote* t)
+    (dwarfmaster/org/sync/kill-temp-buffer)
+    (delete-file *org-sync-temp*)))
 
 
+;; Pulling
+;;  , _                         
+;; /|/ \      |\ |\ o        _, 
+;;  |__/|  |  |/ |/ | /|/|  / | 
+;;  |    \/|_/|_/|_/|/ | |_/\/|/
+;;                           (| 
+
+(defun dwarfmaster/org/sync/pull/dispatch-to-inbox ()
+  "Dispatch current subtree to inbox"
+  (org-copy-subtree)
+  (message "Dispatching \"%s\" to inbox !\n" (thing-at-point 'line t))
+  (with-temp-buffer
+    (find-file org-default-notes-file)
+    (goto-char (point-min))
+    (re-search-forward "^* Mobile")
+    (move-end-of-line nil)
+    (open-line 1)
+    (next-line 1)
+    (org-paste-subtree 2)
+    (save-buffer)))
+
+(defun dwarfmaster/org/sync/pull/dispatch-to-id (id)
+  "Replace subtree with id by the subtree at point"
+  (let ((ntree (org-id-find id))
+	(lvl   0))
+    (if (null ntree) (dwarfmaster/org/sync/pull/dispatch-to-inbox)
+      (org-copy-subtree)
+      (message "Dispatching \"%s\" to old position !\n" (thing-at-point 'line t))
+      (with-temp-buffer
+	(find-file (car ntree))
+	(goto-char (cdr ntree))
+	(setq lvl (org-outline-level))
+	(org-mark-subtree)
+	(kill-region (region-beginning) (region-end))
+	(current-kill 1)
+	(org-paste-subtree lvl)
+	(save-buffer)))))
+
+(defun dwarfmaster/org/sync/pull/dispatch-subtree ()
+  "Dispatch the subtree at point to the correct place"
+  (let ((id (org-entry-get (point) "ID")))
+    (message "Dispatching entry with id : %s\n" id)
+    (if (null id)
+	(dwarfmaster/org/sync/pull/dispatch-to-inbox)
+      (dwarfmaster/org/sync/pull/dispatch-to-id id))))
+
+(defun dwarfmaster/org/sync/pull/dispatch-file (file)
+  "Dispatch all subtress in file with IDs to the relevant place"
+  (with-temp-buffer
+    (find-file file)
+    (org-map-entries 'dwarfmaster/org/sync/pull/dispatch-subtree "LEVEL=1")))
+
+(defun dwarfmaster/org/sync/pull/do ()
+  "Synchronize subtrees from phone"
+  (interactive)
+  (let ((local  *org-sync-temp*)
+	(remote *org-sync-remote*)
+	(mgit   *org-sync-dir*))
+    (with-temp-buffer
+      (cd mgit)
+      (when (or (not (null (magit-unstaged-files)))
+		(not (null (magit-staged-files))))
+	(magit-stash-both "Saving for mobile synchronisation"))
+      (copy-file remote local t)
+      (dwarfmaster/org/sync/pull/dispatch-file local)
+      (dwarfmaster/org/sync/kill-temp-buffer)
+      (delete-file local))))
 
 ;;; RSS
 ;;  ___  ___ ___ 
@@ -1826,7 +1959,7 @@ Org Agenda
 ^^^^^^^^---------------------------------------------------------------------------
 [_a_] Agenda               [_T_] Select some TODOs       [_Y_] Yearly    [_P_] Push
 [_i_] To review            [_s_] Select headers by tag   [_M_] Monthly   [_L_] Pull
-[_p_] Projects overview    [_S_] Generic search          [_W_] Weekly
+[_p_] Projects overview    [_S_] Generic search          [_W_] Weekly    [_M_] List
 [_<_] Restrict to subtree
 [_>_] Remove restriction
 "
@@ -1842,8 +1975,9 @@ Org Agenda
   ("Y"     org-agenda-year-view)
   ("M"     org-agenda-month-view)
   ("W"     org-agenda-week-view)
-  ("P"     org-mobile-push)
-  ("L"     org-mobile-pull)
+  ("P"     dwarfmaster/org/sync/push/do)
+  ("L"     dwarfmaster/org/sync/pull/do)
+  ("M"     dwarfmaster/agenda/mobile)
  )
 (leader-def
  :states '(normal visual)
