@@ -253,6 +253,7 @@
 ; |_|  |_\__,_\__, |_|\__|
 ;             |___/       
 (require 'magit)
+(require 'magit-annex)
 ; Enable key mapping in non-magit buffers
 (setq global-magit-file-mode t)
 ; Make magit-diff-buffer-file use a dedicated buffer
@@ -1609,11 +1610,13 @@ Projects
   "r"   'magit-rebase
   "s"   'magit-stage
   "t"   'magit-tag
+  "u"   'magit-unstage
   "v"   'magit-revert-no-commit
   "w"   'magit-am
   "x"   'magit-reset-quickly
   "y"   'magit-show-refs
   "z"   'magit-stash
+  "@"   'magit-annex-dispatch-or-init
   "DEL" 'magit-diff-show-or-scroll-down
   )
 

@@ -44,6 +44,7 @@ let
       elfeed-goodies
       tramp
       orgit
+      magit-annex
   ];
 
 in {
