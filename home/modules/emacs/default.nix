@@ -68,6 +68,7 @@ in {
     (setq nix/zathura "${pkgs.zathura}/bin/zathura")
     (setq nix/firefox "${pkgs.firefox}/bin/zathura")
     (setq nix/hledger "${pkgs.hledger}/bin/hledger")
+    (setq nix/git "${pkgs.git}/bin/git")
 
     (provide 'nixpaths)
   '';

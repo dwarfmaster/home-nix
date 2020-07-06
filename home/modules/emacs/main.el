@@ -6,7 +6,6 @@
 
 ;; Start the emacs server
 (server-start)
-(require 'org-protocol)
 
 ;; Load nix constants
 (require 'nixpaths)
@@ -287,12 +286,8 @@
 ;;   \ V  V / | |   <| |
 ;;    \_/\_/  |_|_|\_\_|
 ;;                      
-(require 'org)
-(require 'helm-org)
 
 ;; TODO get a more recent org mode and enable dynamic header numbering
-;; TODO add a binding for fill paragraph and try to make autofillmode work
-;; properly with org-mode
 
 ;; When doing an edit commant on an invisible region, make it visible and only
 ;; do the edit if it feels predictible
@@ -495,6 +490,11 @@
 ;; Ignore scheduled, deadlined and tasks with timestamps in general
 (setq org-agenda-todo-ignore-with-date t)
 ;; TODO configure org-agenda-prefix-format
+;; Enforce dependencies between tasks
+(setq org-enforce-todo-dependencies t)
+(setq org-enforce-todo-checkbox-dependencies t)
+;; Don't dim blocked tasks in general
+(setq org-agenda-dim-blocked-tasks 'invisible)
 
 ;; Define some custom views
 (setq org-agenda-custom-commands
@@ -546,7 +546,6 @@
 ;; | (_) | '_/ _` |  | || |) |
 ;;  \___/|_| \__, | |___|___/ 
 ;;           |___/            
-(require 'org-id)
 ;; Use IDs when storing a link current entry
 (setq org-id-link-to-org-use-id t)
 ;; Update ID file
@@ -640,7 +639,6 @@
 ;;           |___/                       
 ;; Org roam needs access to sqlite3
 (setq exec-path (append exec-path nix/sqlite3-bin-dir))
-(require 'org-roam)
 ;; Use wiki as org roam main directory
 (setq org-roam-directory "~/wiki")
 ;; Set the index file
@@ -679,8 +677,6 @@
 	 :unnarrowed t)
 	))
 
-(require 'company-org-roam)
-(push 'company-org-roam company-backends)
 
 
 ;; Capture
@@ -689,7 +685,6 @@
 ;; | (__/ _` | '_ \  _| || | '_/ -_)
 ;;  \___\__,_| .__/\__|\_,_|_| \___|
 ;;           |_|                    
-(require 'org-capture)
 ;; Set default notes file for capture
 (setq org-default-notes-file (concat org-directory "/inbox.org"))
 ;; Always set the org-capture-last-stored bookmark
@@ -700,7 +695,7 @@
 (defun dwarfmaster/format-html-title (title)
   "Change an arbitrary html title so that it can safely be inserted in an org link"
   (concat
-   (mapcar #'(lambda (c) (if (equal c ?[) ?\( (if (equal c ?]) ?\) c))) title)))
+   (mapcar #'(lambda (c) (if (equal c ?\[) ?\( (if (equal c ?\]) ?\) c))) title)))
 (defun dwarfmaster/capture/prepare-keys (keys)
   "Unhex URL"
   (mapcar #'(lambda (c) (if (char-or-string-p c) (url-unhex-string c) c))
@@ -805,12 +800,6 @@
       (lambda (fpath)
 	(start-process "zathura" "*helm-bibtex-zathura*" nix/zathura fpath))) 
 
-(require 'helm-bibtex)
-(require 'org-ref)
-(require 'doi-utils)
-(require 'org-ref-isbn)
-(require 'org-ref-arxiv)
-(require 'org-roam-bibtex)
 
 ;; NotDeft, for quick navigation
 ;;  _  _     _   ___       __ _   
@@ -978,6 +967,30 @@
       (dwarfmaster/org/sync/pull/dispatch-file local)
       (dwarfmaster/org/sync/kill-temp-buffer)
       (delete-file local))))
+
+;; All requires for org
+;;  ___               _            
+;; | _ \___ __ _ _  _(_)_ _ ___ ___
+;; |   / -_) _` | || | | '_/ -_|_-<
+;; |_|_\___\__, |\_,_|_|_| \___/__/
+;;            |_|                  
+(require 'org)
+(require 'org-id)
+(require 'org-attach)
+(require 'org-protocol)
+(require 'org-capture)
+
+(require 'helm-org)
+(require 'org-roam)
+(require 'company-org-roam)
+(push 'company-org-roam company-backends)
+
+(require 'org-ref)
+(require 'doi-utils)
+(require 'org-ref-isbn)
+(require 'org-ref-arxiv)
+(require 'org-roam-bibtex)
+(require 'helm-bibtex)
 
 ;;; RSS
 ;;  ___  ___ ___ 
