@@ -554,6 +554,56 @@
 
 
 
+;; Org Attach
+;;   ___               _  _   _           _    
+;;  / _ \ _ _ __ _    /_\| |_| |_ __ _ __| |_  
+;; | (_) | '_/ _` |  / _ \  _|  _/ _` / _| ' \ 
+;;  \___/|_| \__, | /_/ \_\__|\__\__,_\__|_||_|
+;;           |___/                             
+(setq org-attach-directory "/data/luc/annex/data")
+(setq org-attach-method 'mv)
+(setq org-attach-auto-tag "attach")
+;; Stores a link to the file when attaching it
+(setq org-attach-store-link-p t)
+(setq org-attach-archive-delete nil)
+;; Ask before getting git annexed files
+(setq org-attach-annex-auto-get 'ask)
+;; Inherit DIR properties
+(setq org-attach-allow-inheritance t)
+;; Property used to list attached file, not necessary
+(setq org-attach-file-list-property "attached")
+;; Do not commit attachements with git ! Will use a special hook
+(setq org-attach-commit nil)
+;; Add support for attachement link
+(push '("att" . org-attach-expand-link) org-link-abbrev-alist)
+
+(defun dwarfmaster/org/attach/commit-org-attachment (file)
+  "git (annex) add file if it is a file, recurse into it if it is a directory"
+  (if (file-directory-p file)
+      (dwarfmaster/org/attach/commit-org-dir file)
+    (let ((file-info (shell-command-to-string (concat "file -ihb " file))))
+      (if (string-match-p "^text" file-info)
+	  (shell-command (concat nix/git " add " file))
+	(shell-command (concat nix/git " annex add " file))))))
+
+(defun dwarfmaster/org/attach/commit-org-dir (dir)
+  "git (annex) add all files in directory"
+  (cd dir)
+  (mapcar 'dwarfmaster/org/attach/commit-org-attachment (directory-files dir t "^[^\\.]")))
+
+(defun dwarfmaster/org/attach/commit-org-subtree ()
+  "git (annex) add all attachements of the subtree at point"
+  (let ((dir (org-attach-dir)))
+    (when (and (not (null dir))
+	       (file-directory-p dir))
+      (dwarfmaster/org/attach/commit-org-dir dir))))
+
+(defun dwarfmaster/org/attach/pre-commit (path)
+  "git add or git annex add all attachements of the selected org file"
+  (with-temp-buffer
+    (find-file path)
+    (org-map-entries 'dwarfmaster/org/attach/commit-org-subtree)))
+
 ;; LaTeX theorems
 ;;  _        _____   __  __  _____ _                             
 ;; | |   __ |_   _|__\ \/ / |_   _| |_  ___ ___ _ _ ___ _ __  ___
@@ -1805,12 +1855,40 @@ Project switcher
          (dwarfmaster/hydra/org/todo/projects/body))
       (t (dwarfmaster/hydra/org/todo/tasks/body)))))
 
+;; Org Attach
+;;   ___               _  _   _           _    
+;;  / _ \ _ _ __ _    /_\| |_| |_ __ _ __| |_  
+;; | (_) | '_/ _` |  / _ \  _|  _/ _` / _| ' \ 
+;;  \___/|_| \__, | /_/ \_\__|\__\__,_\__|_||_|
+;;           |___/                             
+(defhydra dwarfmaster/hydra/org/attach (:color blue :hint nil)
+  "
+Org Attach
+
+^Attach^      ^Open^            ^Misc
+^^^^^^-----------------------------------------
+[_a_] Mv      [_o_] One         [_z_] Sync
+[_c_] Cp      [_d_] Directory   [_s_] Set dir
+[_D_] Delete  ^ ^               [_S_] Unset dir
+"
+  ("a"   org-attach-attach-mv)
+  ("c"   org-attach-attach-cp)
+  ("D"   org-attach-delete-one)
+  ("o"   org-attach-open)
+  ("d"   org-attach-reveal)
+  ("z"   org-attach-sync)
+  ("s"   org-attach-set-directory)
+  ("S"   org-attach-unset-directory)
+  
+  ("<escape>"  nil :color blue)
+  )
+
 ;; Org mode
-;   ___             __  __         _
-;  / _ \ _ _ __ _  |  \/  |___  __| |___
-; | (_) | '_/ _` | | |\/| / _ \/ _` / -_)
-;  \___/|_| \__, | |_|  |_\___/\__,_\___|
-;           |___/                        
+;;   ___             __  __         _
+;;  / _ \ _ _ __ _  |  \/  |___  __| |___
+;; | (_) | '_/ _` | | |\/| / _ \/ _` / -_)
+;;  \___/|_| \__, | |_|  |_\___/\__,_\___|
+;;           |___/                        
 ;; Generic bindings, not in hydra
 (general-define-key
  :states 'normal
@@ -1835,6 +1913,7 @@ Org mode
 ^ ^                      ^ ^                      [_%_] Push pos to org ring    ^ ^                  [_P_] Properties mode 
 ^ ^                      ^ ^                      [_o_] Open roam note          ^ ^                  [_i_] Insert mode
 ^ ^                      ^ ^                      [_b_] Bibtex link menu        ^ ^                  [_M_] Maths mode
+^ ^                      ^ ^                      ^ ^                           ^ ^                  [_a_] Attach
 "
  ;; Visibility
  ("Z"   org-set-startup-visibility)               ; Reset visibility to start
@@ -1881,6 +1960,7 @@ Org mode
  ("P"   dwarfmaster/hydra/org/property/body :color blue)
  ("i"   dwarfmaster/hydra/org/insert/body  :color blue)
  ("M"   dwarfmaster/hydra/org/maths/body   :color blue)
+ ("a"   dwarfmaster/hydra/org/attach/body  :color blue)
 
  ("<escape>"  nil :color blue)
  )
