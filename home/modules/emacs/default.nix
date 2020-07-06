@@ -43,6 +43,7 @@ let
       elfeed-org
       elfeed-goodies
       tramp
+      orgit
   ];
 
 in {

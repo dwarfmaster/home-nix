@@ -992,6 +992,8 @@
 (require 'org-roam-bibtex)
 (require 'helm-bibtex)
 
+(require 'orgit)
+
 ;;; RSS
 ;;  ___  ___ ___ 
 ;; | _ \/ __/ __|
