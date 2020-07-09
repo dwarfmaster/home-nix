@@ -97,6 +97,7 @@ in let packages = with pkgs; [
   nerdfonts        # Fonts with icons
   spaceship-prompt # Oh-my-zsh theme
   magic-wormhole   # File sharing
+  croc             # Same but better
 
   #  ____                                                _             
   # |  _ \ _ __ ___   __ _ _ __ __ _ _ __ ___  _ __ ___ (_)_ __   __ _ 
