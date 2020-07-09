@@ -706,6 +706,22 @@
   (apply fun (dwarfmaster/capture/prepare-keys (car rest)) (cdr rest)))
 (advice-add 'org-protocol-capture :around #'dwarfmaster/capture/protocol)
 
+(defun dwarfmaster/capture/build-roam-candidates ()
+  "Return a completion list for helm with all org roam candidates"
+  (mapcar (lambda (cand)
+	    `(,(car cand)
+	      . ,(concat "[[" (plist-get (cdr cand) :path)
+			 "][" (plist-get (cdr cand) :title)
+			 "]]")))
+	  (org-roam--get-title-path-completions)))
+
+(defun dwarfmaster/capture/find-roam-note ()
+  "Use helm to find a roam note and return a org link to it"
+  (interactive)
+  (helm :buffer "*helm capture note*"
+	:sources (helm-build-sync-source "roam notes"
+		   :candidates (dwarfmaster/capture/build-roam-candidates))))
+
 ;; Templates
 (setq org-capture-templates
       '(
@@ -724,6 +740,14 @@
 	 "
 ** PROBLEM %^{Idea: } %^G
    %U"
+	 :empty-lines 1 :clock-resume :immediate-finish)
+	("b" "book" entry (file+headline "" "Captured")
+	 "
+*** %(dwarfmaster/capture/find-roam-note)
+:PROPERTIES:
+:STATUS: %^{Rating: }
+:DIFFICULTY: %^{Difficulty: }
+:END:"
 	 :empty-lines 1 :clock-resume :immediate-finish)
         ;; Templates for 
         ("F" "Protocol" entry (file+headline "" "Firefox")
@@ -751,6 +775,7 @@
 (dwarfmaster/capture/make-function "i" "Idea")
 (dwarfmaster/capture/make-function "t" "Todo")
 (dwarfmaster/capture/make-function "P" "Problem")
+(dwarfmaster/capture/make-function "b" "Book")
 
 
 ;; Bibliography
@@ -1444,10 +1469,12 @@ Capture
 [_i_] Idea
 [_t_] Todo
 [_p_] Problem
+[_b_] Book
 "
   ("i"  dwarfmaster/capture/i)
   ("t"  dwarfmaster/capture/t)
   ("p"  dwarfmaster/capture/P)
+  ("b"  dwarfmaster/capture/b)
   )
 
 ;; Helm
