@@ -110,8 +110,10 @@
 (add-hook 'after-init-hook 'global-company-mode)
 
 ;; Miscellaneous features
-(setq indent-tabs-mode nil)
-(setq tab-width 4)
+(setq-default indent-tabs-mode nil)
+(setq-default tab-width 4)
+(defvaralias 'c-basic-offset 'tab-width)
+(defvaralias 'cperl-indent-level 'tab-width)
 
 ;; Figlet integration
 ;  ___ _      _     _   
