@@ -1,5 +1,11 @@
 
-;; TODO bind ESC to keyboard-quit in all buffers 
+;; esc always quits
+(define-key minibuffer-local-map [escape] 'keyboard-escape-quit)
+(define-key minibuffer-local-ns-map [escape] 'keyboard-escape-quit)
+(define-key minibuffer-local-completion-map [escape] 'keyboard-escape-quit)
+(define-key minibuffer-local-must-match-map [escape] 'keyboard-escape-quit)
+(define-key minibuffer-local-isearch-map [escape] 'keyboard-escape-quit)
+(global-set-key [escape] 'keyboard-escape-quit)
 
 ;; TRAMP
 (require 'tramp)
@@ -136,7 +142,6 @@
   "Figletify a queried string with small font"
   (interactive)
   (dwarfmaster/make-figlet-text t))
-; TODO Add visual mode support to figletify selected string
 
 
 ;; General
@@ -290,8 +295,6 @@
 ;;    \_/\_/  |_|_|\_\_|
 ;;                      
 
-;; TODO get a more recent org mode and enable dynamic header numbering
-
 ;; When doing an edit commant on an invisible region, make it visible and only
 ;; do the edit if it feels predictible
 (setq org-catch-invisible-edits 'smart)
@@ -309,8 +312,6 @@
         (default . lineage)))
 ;; Increment integers when copying down
 (setq org-table-copy-increment t)
-;; TODO setup some standard link abbreviations :
-;;    https://orgmode.org/manual/Link-Abbreviations.html#Link-Abbreviations
 
 (setq org-todo-keywords
       ;; Sequences for projects
