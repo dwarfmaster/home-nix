@@ -21,15 +21,15 @@
 (defun dwarfmaster/select-normal-and-unbind (map key value)
   "If key is alphanumeric, unbind it from map"
   (if (and (number-or-marker-p key)
-	   (>= key 0)
-	   (<= key 255))
+       (>= key 0)
+       (<= key 255))
       (define-key (symbol-value map) (byte-to-string key) nil)))
 
 (defun dwarfmaster/unbind-normal-keys (map)
   "Select alphanumeric keys and unbind them from map"
   (map-keymap '(lambda (key value)
-		 (dwarfmaster/select-normal-and-unbind map key value))
-	      (symbol-value map)))
+         (dwarfmaster/select-normal-and-unbind map key value))
+          (symbol-value map)))
 
 ;; Color scheme, using the base16 package
 ;; https://github.com/belak/base16-emacs
@@ -59,22 +59,22 @@
 (defun dwarfmaster/ts/range-expand-days (start end inter &optional filter hour)
   "Expand a timestamp range [start; end], filtering out some dates"
   (let* ((filterf (if filter filter (lambda (ts) t)))
- 	 (startTS (ts-parse-org start))
-	 (endTS   (ts-parse-org end))
-	 (current startTS)
-	 (output  ""))
+     (startTS (ts-parse-org start))
+     (endTS   (ts-parse-org end))
+     (current startTS)
+     (output  ""))
     (while (ts<= current endTS)
       (if (funcall filterf current)
-	  (setq output
-		(format "%s<%04d-%02d-%02d %s%s>\n"
-			output
-			(ts-year current)
-			(ts-month current)
-			(ts-day-of-month-num current)
-			(ts-day-of-week-abbr current)
-			(if hour (format " %02d:%02d"
-					 (ts-hour current)
-					 (ts-minute current)) ""))))
+      (setq output
+        (format "%s<%04d-%02d-%02d %s%s>\n"
+            output
+            (ts-year current)
+            (ts-month current)
+            (ts-day-of-month-num current)
+            (ts-day-of-week-abbr current)
+            (if hour (format " %02d:%02d"
+                     (ts-hour current)
+                     (ts-minute current)) ""))))
       (setq current (ts-adjust 'day inter current)))
     output))
 ;; (dwarfmaster/ts/range-expand-days "<2015-08-31 Mon 08:00>" "<2015-10-06 Tue>" 7)
@@ -238,12 +238,12 @@
 ; Configure which extension to jump to
 (setq projectile-other-file-alist
       '(("cpp" "hpp" "h")
-	("hpp" "h" "cpp")
-	("h" "c" "cpp" "hpp")
-	("c" "h" "hpp")
-	("vert" "frag")
-	("frag" "vert")
-	))
+    ("hpp" "h" "cpp")
+    ("h" "c" "cpp" "hpp")
+    ("c" "h" "hpp")
+    ("vert" "frag")
+    ("frag" "vert")
+    ))
 
 
 (projectile-mode +1)
@@ -316,68 +316,68 @@
 (setq org-todo-keywords
       ;; Sequences for projects
       '((sequence "IDEA(!)" "TODO(!)" "PROBLEM(!)")
-	(sequence "PROJECT(!)" "POSTPONNED(@)" "SUPPORT(!)")
-	(sequence "|" "DISCARDED(@)" "COMPLETED(@)")
+    (sequence "PROJECT(!)" "POSTPONNED(@)" "SUPPORT(!)")
+    (sequence "|" "DISCARDED(@)" "COMPLETED(@)")
        ;; Sequences for tasks
-	(sequence "CONSIDER(!)" "TASK(!)" "NEXT(!)")
-	(sequence "STARTED(!)" "WAITING(@)" "PAUSED(@)")
-	(sequence "|" "DONT(@)" "FAILED(@)" "DONE(!)")))
+    (sequence "CONSIDER(!)" "TASK(!)" "NEXT(!)")
+    (sequence "STARTED(!)" "WAITING(@)" "PAUSED(@)")
+    (sequence "|" "DONT(@)" "FAILED(@)" "DONE(!)")))
 ;; Colors and decorations for stages of TODO
 (setq org-todo-keyword-faces
         ;; Projects
       `(("IDEA"       . (:foreground ,dwarfmaster/c2
-			 :background ,dwarfmaster/cd
-			 :weight bold))
+             :background ,dwarfmaster/cd
+             :weight bold))
         ("TODO"       . (:foreground ,dwarfmaster/c2
-			 :background ,dwarfmaster/cd
-			 :weight bold))
+             :background ,dwarfmaster/cd
+             :weight bold))
         ("PROBLEM"    . (:foreground ,dwarfmaster/c2
-			 :background ,dwarfmaster/cd
-			 :weight bold))
+             :background ,dwarfmaster/cd
+             :weight bold))
         ("PROJECT"    . (:foreground ,dwarfmaster/c2
-			 :background ,dwarfmaster/ce
-			 :weight bold))
+             :background ,dwarfmaster/ce
+             :weight bold))
         ("POSTPONNED" . (:foreground ,dwarfmaster/c0
-			 :background ,dwarfmaster/cf
-			 :weight bold))
+             :background ,dwarfmaster/cf
+             :weight bold))
         ("SUPPORT"    . (:foreground ,dwarfmaster/ce
-			 :background ,dwarfmaster/c2
-			 :weight bold))
+             :background ,dwarfmaster/c2
+             :weight bold))
         ("DISCARDED"  . (:foreground ,dwarfmaster/c2
-			 :background ,dwarfmaster/c9
-			 :weight bold))
+             :background ,dwarfmaster/c9
+             :weight bold))
         ("COMPLETED"  . (:foreground ,dwarfmaster/ce
-			 :background ,dwarfmaster/c2
-			 :weight bold))
+             :background ,dwarfmaster/c2
+             :weight bold))
 
-	;; Tasks
+    ;; Tasks
         ("CONSIDER"   . (:foreground ,dwarfmaster/ca
-			 :background ,dwarfmaster/c2
-			 :weight bold))
+             :background ,dwarfmaster/c2
+             :weight bold))
         ("TASK"       . (:foreground ,dwarfmaster/c9
-			 :background ,dwarfmaster/c2
-			 :weight bold))
+             :background ,dwarfmaster/c2
+             :weight bold))
         ("NEXT"       . (:foreground ,dwarfmaster/c2
-			 :background ,dwarfmaster/c9
-			 :weight bold))
+             :background ,dwarfmaster/c9
+             :weight bold))
         ("STARTED"    . (:foreground ,dwarfmaster/c2
-			 :background ,dwarfmaster/cb
-			 :weight bold))
+             :background ,dwarfmaster/cb
+             :weight bold))
         ("WAITING"    . (:foreground ,dwarfmaster/cb
-			 :background ,dwarfmaster/c2
-			 :weight bold))
+             :background ,dwarfmaster/c2
+             :weight bold))
         ("PAUSED"     . (:foreground ,dwarfmaster/cb
-			 :background ,dwarfmaster/c2
-			 :weight bold))
+             :background ,dwarfmaster/c2
+             :weight bold))
         ("DONT"       . (:foreground ,dwarfmaster/c8
-			 :background ,dwarfmaster/c2
-			 :weight bold))
+             :background ,dwarfmaster/c2
+             :weight bold))
         ("FAILED"     . (:foreground ,dwarfmaster/c2
-			 :background ,dwarfmaster/c8
-			 :weight bold))
+             :background ,dwarfmaster/c8
+             :weight bold))
         ("DONE"       . (:foreground ,dwarfmaster/c2
-			 :background ,dwarfmaster/cc
-			 :weight bold))))
+             :background ,dwarfmaster/cc
+             :weight bold))))
 ;; When dealing with repeated TODOs, repeat to previous task when marked as done
 (setq org-todo-repeat-to-state t)
 
@@ -387,9 +387,9 @@
 ;; TODO fill it, and describe the tags
 ;; Tags can also be grouped in a hierarchical manner
 (setq org-tag-alist '((:startgroup . nil) ; Start a group of mutually exclusive tags
-		      ("@work" . ?w) ("@home" . ?h) ("hackens" . ?k)
-		      (:endgroup . nil)
-		      ("internship-brisbane" . ?B) ("internship-montreal" . ?M)))
+              ("@work" . ?w) ("@home" . ?h) ("hackens" . ?k)
+              (:endgroup . nil)
+              ("internship-brisbane" . ?B) ("internship-montreal" . ?M)))
 ;; Warn for upcomming deadlines 7 days in advance
 (setq org-deadline-warning-days 7)
 ;; Save clock histroy across emacs sessions
@@ -403,8 +403,8 @@
 (setq org-directory "~/data/annex/wiki")
 ;; Set the agenda files
 (setq org-agenda-files (list "~/wiki/index.org"
-			     "~/wiki/projects/"
-			     "~/wiki/support/"))
+                 "~/wiki/projects/"
+                 "~/wiki/support/"))
 ;; Display inline images
 (setq org-startup-with-inline-images t)
 ;; Ask for confirmation before running babel, shell link or elisp link
@@ -480,9 +480,9 @@
 ;; Set the sorting algorithm in agenda views
 (setq org-agenda-sorting-strategy
       '((agenda habit-down time-up priority-down category-up)
-	(todo priority-down category-up)
-	(tags priority-down category-up)
-	(search category-up)))
+    (todo priority-down category-up)
+    (tags priority-down category-up)
+    (search category-up)))
 ;; Define stuck projects
 (setq org-stuck-projects
       '("TODO=\"PROJECT\"" ("NEXT" "WAITING" "STARTED") nil "")) 
@@ -504,27 +504,27 @@
 (setq org-agenda-custom-commands
       '(("d" "Default view, show week and active tasks"
          ;; This one is the working view, used to know what task is next
-	 ;; and to schedule tasks
-	 ((agenda "")
-	  (todo "STARTED")
-	  (todo "NEXT")
-	  (todo "WAITING")
-	  (todo "CONSIDER")))
-	("i" "Show stuck projects, ideas, problems and todos"
-	 ;; This one should be empty after each review
-	 ((todo "TODO")
-	  (todo "IDEA")
-	  (todo "PROBLEM")
-	  (stuck)))
-	("p" "Show all projects and supports"
-	 ;; Overview of current and postponned projects
-	 ((todo "PROJECT")
-	  (todo "SUPPORT")
-	  (todo "POSTPONNED")))
-	("M" "Show all headers with mobile tag"
-	 tags "+mobile"
-	 ((org-use-tag-inheritance nil)))
-	))
+     ;; and to schedule tasks
+     ((agenda "")
+      (todo "STARTED")
+      (todo "NEXT")
+      (todo "WAITING")
+      (todo "CONSIDER")))
+    ("i" "Show stuck projects, ideas, problems and todos"
+     ;; This one should be empty after each review
+     ((todo "TODO")
+      (todo "IDEA")
+      (todo "PROBLEM")
+      (stuck)))
+    ("p" "Show all projects and supports"
+     ;; Overview of current and postponned projects
+     ((todo "PROJECT")
+      (todo "SUPPORT")
+      (todo "POSTPONNED")))
+    ("M" "Show all headers with mobile tag"
+     tags "+mobile"
+     ((org-use-tag-inheritance nil)))
+    ))
 
 (defun dwarfmaster/agenda/default ()
   "Open the default weekly agenda view"
@@ -586,8 +586,8 @@
       (dwarfmaster/org/attach/commit-org-dir file)
     (let ((file-info (shell-command-to-string (concat "file -ihb " file))))
       (if (string-match-p "^text" file-info)
-	  (shell-command (concat nix/git " add " file))
-	(shell-command (concat nix/git " annex add " file))))))
+      (shell-command (concat nix/git " add " file))
+    (shell-command (concat nix/git " annex add " file))))))
 
 (defun dwarfmaster/org/attach/commit-org-dir (dir)
   "git (annex) add all files in directory"
@@ -598,7 +598,7 @@
   "git (annex) add all attachements of the subtree at point"
   (let ((dir (org-attach-dir)))
     (when (and (not (null dir))
-	       (file-directory-p dir))
+           (file-directory-p dir))
       (dwarfmaster/org/attach/commit-org-dir dir))))
 
 (defun dwarfmaster/org/attach/pre-commit (path)
@@ -616,8 +616,8 @@
   "Insert a LaTeX block with title"
   (forward-line 1)
   (insert (concat "#+ATTR_LATEX: :options ["
-		  (read-string (concat name " name:"))
-		  "]\n"))
+          (read-string (concat name " name:"))
+          "]\n"))
   (insert (concat "#+BEGIN_" name "\n\n#+END_" name "\n")))
 (defmacro dwarfmaster/org/make-insert-env (name)
   "Create a dwarfmaster/org/insert-,name interactive function"
@@ -651,7 +651,7 @@
 (add-hook 'after-init-hook 'org-roam-mode)
 ;; Store the database in $XDG_CACHE_HOME/org-roam/db.sqlite3
 (setq org-roam-db-location (concat (getenv "XDG_CACHE_HOME")
-				   "/org-roam/db.sqlite3"))
+                   "/org-roam/db.sqlite3"))
 ;; Position of the backlinks buffer
 (setq org-roam-buffer-position 'right)
 ;; Width of the buffer
@@ -661,25 +661,25 @@
 ;; Default capture
 (setq org-roam-capture-templates
       '(("d" "default" plain (function org-roam--capture-get-point)
-	 "%?"
-	 :file-name "notes/%<%Y-%m>/%<%d_%H-%M-%S>-${slug}"
-	 :head "#+TITLE: ${title}\n\n"
-	 :unnarrowed t)
+     "%?"
+     :file-name "notes/%<%Y-%m>/%<%d_%H-%M-%S>-${slug}"
+     :head "#+TITLE: ${title}\n\n"
+     :unnarrowed t)
         ("p" "project" plain (function org-roam--capture-get-point)
-	 "* PROJECT ${title}
+     "* PROJECT ${title}
   %u
 %?"
-	 :file-name "projects/${slug}"
-	 :head "#+TITLE: ${title}\n#+ROAM_TAGS: project\n\n"
-	 :unnarrowed t)
+     :file-name "projects/${slug}"
+     :head "#+TITLE: ${title}\n#+ROAM_TAGS: project\n\n"
+     :unnarrowed t)
         ("s" "support" plain (function org-roam--capture-get-point)
-	 "* SUPPORT ${title}
+     "* SUPPORT ${title}
   %u
 %?"
-	 :file-name "support/${slug}"
-	 :head "#+TITLE: ${title}\n#+ROAM_TAGS: project\n\n"
-	 :unnarrowed t)
-	))
+     :file-name "support/${slug}"
+     :head "#+TITLE: ${title}\n#+ROAM_TAGS: project\n\n"
+     :unnarrowed t)
+    ))
 
 
 
@@ -703,7 +703,7 @@
 (defun dwarfmaster/capture/prepare-keys (keys)
   "Unhex URL"
   (mapcar #'(lambda (c) (if (char-or-string-p c) (url-unhex-string c) c))
-	  keys))
+      keys))
 (defun dwarfmaster/capture/protocol (fun &rest rest)
   "Call org-protocol-capture with unhexed url"
   (apply fun (dwarfmaster/capture/prepare-keys (car rest)) (cdr rest)))
@@ -712,60 +712,60 @@
 (defun dwarfmaster/capture/build-roam-candidates ()
   "Return a completion list for helm with all org roam candidates"
   (mapcar (lambda (cand)
-	    `(,(car cand)
-	      . ,(concat "[[" (plist-get (cdr cand) :path)
-			 "][" (plist-get (cdr cand) :title)
-			 "]]")))
-	  (org-roam--get-title-path-completions)))
+        `(,(car cand)
+          . ,(concat "[[" (plist-get (cdr cand) :path)
+             "][" (plist-get (cdr cand) :title)
+             "]]")))
+      (org-roam--get-title-path-completions)))
 
 (defun dwarfmaster/capture/find-roam-note ()
   "Use helm to find a roam note and return a org link to it"
   (interactive)
   (helm :buffer "*helm capture note*"
-	:sources (helm-build-sync-source "roam notes"
-		   :candidates (dwarfmaster/capture/build-roam-candidates))))
+    :sources (helm-build-sync-source "roam notes"
+           :candidates (dwarfmaster/capture/build-roam-candidates))))
 
 ;; Templates
 (setq org-capture-templates
       '(
-	;; Templates to use from emacs
-	("i" "Idea" entry (file+headline "" "Captured")
-	 "
+    ;; Templates to use from emacs
+    ("i" "Idea" entry (file+headline "" "Captured")
+     "
 ** IDEA %^{Idea: } %^G
    %U"
-	 :empty-lines 1 :clock-resume :immediate-finish)
+     :empty-lines 1 :clock-resume :immediate-finish)
         ("t" "Todo" entry (file+headline "" "Captured")
-	 "
+     "
 ** TODO %^{Idea: } %^G
    %U"
-	 :empty-lines 1 :clock-resume :immediate-finish)
+     :empty-lines 1 :clock-resume :immediate-finish)
         ("P" "Problem" entry (file+headline "" "Captured")
-	 "
+     "
 ** PROBLEM %^{Idea: } %^G
    %U"
-	 :empty-lines 1 :clock-resume :immediate-finish)
-	("b" "book" entry (file+headline "" "Captured")
-	 "
+     :empty-lines 1 :clock-resume :immediate-finish)
+    ("b" "book" entry (file+headline "" "Captured")
+     "
 *** %(dwarfmaster/capture/find-roam-note)
 :PROPERTIES:
 :STATUS: %^{Rating: }
 :DIFFICULTY: %^{Difficulty: }
 :END:"
-	 :empty-lines 1 :clock-resume :immediate-finish)
+     :empty-lines 1 :clock-resume :immediate-finish)
         ;; Templates for 
         ("F" "Protocol" entry (file+headline "" "Firefox")
-	 "
+     "
 ** [[%:link][%(dwarfmaster/format-html-title \"%:description\")]]
    %U
 
 #+BEGIN_QUOTE
 %:initial
 #+END_QUOTE"
-	 :empty-lines 1)
- 	("G" "Protocol link" entry (file+headline "" "Firefox")
- 	 "** [[%:link][%(dwarfmaster/format-html-title \"%:description\")]]\n   %U"
-	 :empty-lines 1)
-	))
+     :empty-lines 1)
+    ("G" "Protocol link" entry (file+headline "" "Firefox")
+     "** [[%:link][%(dwarfmaster/format-html-title \"%:description\")]]\n   %U"
+     :empty-lines 1)
+    ))
 
 (defmacro dwarfmaster/capture/make-function (key name)
   "Make a function for capture key"
@@ -797,12 +797,12 @@
 (setq org-ref-pdf-directory "~/data/annex/papers")
 ;; Bibtex key configuration
 (setq bibtex-autokey-year-length 4
-	bibtex-autokey-name-year-separator "-"
-	bibtex-autokey-year-title-separator "-"
-	bibtex-autokey-titleword-separator "-"
-	bibtex-autokey-titlewords 2
-	bibtex-autokey-titlewords-stretch 1
-	bibtex-autokey-titleword-length 5)
+    bibtex-autokey-name-year-separator "-"
+    bibtex-autokey-year-title-separator "-"
+    bibtex-autokey-titleword-separator "-"
+    bibtex-autokey-titlewords 2
+    bibtex-autokey-titlewords-stretch 1
+    bibtex-autokey-titleword-length 5)
 ;; Use helm in org-ref
 (setq org-ref-completion-library 'org-ref-helm-bibtex)
 ;; Symbol indicating that the pdf is present
@@ -812,7 +812,7 @@
 ;; Open PDFs with zathura
 (setq bibtex-completion-pdf-open-function
       (lambda (fpath)
-	(call-process nix/zathura nil 0 nil fpath)))
+    (call-process nix/zathura nil 0 nil fpath)))
 ;; Handle pdf, djvu and epub 
 (setq bibtex-completion-pdf-extension '("pdf" "djvu" "epub"))
 ;; Use firefox for opening links
@@ -821,13 +821,13 @@
 ;; Template used by org-roam-bibtex
 (setq orb-templates
       '(("r" "ref" plain (function org-roam-capture--get-point) ""
-	 :file-name "refs/${citekey}"
-	 :head "#+TITLE: ${citekey}: ${title}\n#+ROAM_KEY: ${ref}\n#+TAGS: ${keywords}\n"
-	 :unnarrowed t)))
+     :file-name "refs/${citekey}"
+     :head "#+TITLE: ${citekey}: ${title}\n#+ROAM_KEY: ${ref}\n#+TAGS: ${keywords}\n"
+     :unnarrowed t)))
 ;; Open pdfs with zathura
 (setq helm-bibtex-pdf-open-function
       (lambda (fpath)
-	(start-process "zathura" "*helm-bibtex-zathura*" nix/zathura fpath))) 
+    (start-process "zathura" "*helm-bibtex-zathura*" nix/zathura fpath))) 
 
 
 ;; NotDeft, for quick navigation
@@ -871,7 +871,7 @@
 ;; TODO improve selection using notdeft
 (setq org-refile-targets
       '((nil . (:maxlevel . 2)) ; Up to level 2 in current file
-	(org-agenda-files . (:maxlevel . 9))))
+    (org-agenda-files . (:maxlevel . 9))))
 ;; Better handling for multiple subheaders with same name, and allow refiling to top level
 (setq org-refile-use-outline-path 'file)
 ;; Do dot complete path in steps
@@ -908,15 +908,15 @@
       (org-id-get-create)
       (org-copy-subtree)
       (with-temp-buffer
-	(find-file file)
-	(goto-char (point-max))
-	(org-paste-subtree 1)
-	(save-buffer)))))
+    (find-file file)
+    (goto-char (point-max))
+    (org-paste-subtree 1)
+    (save-buffer)))))
 
 (defun dwarfmaster/org/sync/push/collates-all-with-tag (tag file)
   "Copy all subtress in the current buffer with a specific tag to file"
   (org-map-entries (lambda () (dwarfmaster/org/sync/push/process-subtree tag file))
-		   nil 'agenda))
+           nil 'agenda))
 
 (defun dwarfmaster/org/sync/push/do ()
   "Synchronise subtress to phone"
@@ -953,26 +953,26 @@
 (defun dwarfmaster/org/sync/pull/dispatch-to-id (id)
   "Replace subtree with id by the subtree at point"
   (let ((ntree (org-id-find id))
-	(lvl   0))
+    (lvl   0))
     (if (null ntree) (dwarfmaster/org/sync/pull/dispatch-to-inbox)
       (org-copy-subtree)
       (message "Dispatching \"%s\" to old position !\n" (thing-at-point 'line t))
       (with-temp-buffer
-	(find-file (car ntree))
-	(goto-char (cdr ntree))
-	(setq lvl (org-outline-level))
-	(org-mark-subtree)
-	(kill-region (region-beginning) (region-end))
-	(current-kill 1)
-	(org-paste-subtree lvl)
-	(save-buffer)))))
+    (find-file (car ntree))
+    (goto-char (cdr ntree))
+    (setq lvl (org-outline-level))
+    (org-mark-subtree)
+    (kill-region (region-beginning) (region-end))
+    (current-kill 1)
+    (org-paste-subtree lvl)
+    (save-buffer)))))
 
 (defun dwarfmaster/org/sync/pull/dispatch-subtree ()
   "Dispatch the subtree at point to the correct place"
   (let ((id (org-entry-get (point) "ID")))
     (message "Dispatching entry with id : %s\n" id)
     (if (null id)
-	(dwarfmaster/org/sync/pull/dispatch-to-inbox)
+    (dwarfmaster/org/sync/pull/dispatch-to-inbox)
       (dwarfmaster/org/sync/pull/dispatch-to-id id))))
 
 (defun dwarfmaster/org/sync/pull/dispatch-file (file)
@@ -985,13 +985,13 @@
   "Synchronize subtrees from phone"
   (interactive)
   (let ((local  *org-sync-temp*)
-	(remote *org-sync-remote*)
-	(mgit   *org-sync-dir*))
+    (remote *org-sync-remote*)
+    (mgit   *org-sync-dir*))
     (with-temp-buffer
       (cd mgit)
       (when (or (not (null (magit-unstaged-files)))
-		(not (null (magit-staged-files))))
-	(magit-stash-both "Saving for mobile synchronisation"))
+        (not (null (magit-staged-files))))
+    (magit-stash-both "Saving for mobile synchronisation"))
       (copy-file remote local t)
       (dwarfmaster/org/sync/pull/dispatch-file local)
       (dwarfmaster/org/sync/kill-temp-buffer)
@@ -1890,12 +1890,12 @@ Project switcher
   "Open the right hydra depending on the sequence at point"
   (interactive)
   (let ((todo-at-point (org-get-todo-state))
-	(tasks-todos    '("CONSIDER" "TASK" "NEXT"
-			  "STARTED" "WAITING" "PAUSED"
-			  "DONE" "FAILED" "DONT"))
-	(projects-todos '("IDEA" "TODO" "PROBLEM"
-			  "PROJECT" "POSTPONNED"
-			  "COMPLETED" "DISCARDED")))
+    (tasks-todos    '("CONSIDER" "TASK" "NEXT"
+              "STARTED" "WAITING" "PAUSED"
+              "DONE" "FAILED" "DONT"))
+    (projects-todos '("IDEA" "TODO" "PROBLEM"
+              "PROJECT" "POSTPONNED"
+              "COMPLETED" "DISCARDED")))
     (cond
       ((member todo-at-point tasks-todos)
          (dwarfmaster/hydra/org/todo/tasks/body))
