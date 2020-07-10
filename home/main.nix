@@ -28,6 +28,7 @@ let args    = general // { inherit self recdata; };            in
     haskell      = import modules/haskell      args;
     emacs        = import modules/emacs        args;
     xdg          = import modules/xdg          args;
+    direnv       = import modules/direnv       args;
   };
 
   home.file = lib.mayAccess [ "home" "file" ] recdata;

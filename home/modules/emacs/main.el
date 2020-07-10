@@ -1094,6 +1094,22 @@
 (smooth-scrolling-mode 1)          ; Scroll line by line
 (setq smooth-scroll-margin 5)      ; Keep 5 visible line around cursor when scrolling
 
+;;; Context support (aka nix with direnv)
+;;   ____            _            _   
+;;  / ___|___  _ __ | |_ _____  _| |_ 
+;; | |   / _ \| '_ \| __/ _ \ \/ / __|
+;; | |__| (_) | | | | ||  __/>  <| |_ 
+;;  \____\___/|_| |_|\__\___/_/\_\\__|
+;; Show context summary when switching context
+(setq direnv-always-show-summary t)
+;; Hide path names in summary to make it shorter
+(setq direnv-show-paths-in-summary nil)
+;; Fontify the summary
+(setq direnv-use-faces-in-summary t)
+(require 'direnv)
+(direnv-mode)
+                                   
+
 
 ;;; Language support
 ;;  _                                                  
@@ -1103,6 +1119,10 @@
 ;; |_____\__,_|_| |_|\__, |\__,_|\__,_|\__, |\___||___/
 ;;                   |___/             |___/           
 
+;; Do not watch direnv and git files
+(setq lsp-file-watch-ignored
+      '("[/\\\\]\\.direnv$"
+        "[/\\\\]\\.git$"))
 ;; Language server protocol (LSP) support
 (require 'lsp-mode)
 ; Add lsp diagnostic statistics to modeline
@@ -1450,10 +1470,10 @@ Elfeed RSS Reader
 Miscellaneous
 
 ^Org^              ^Doc^              ^Misc^                   ^Programs
-^^^^^^^--------------------------------------------------------------------
+^^^^^^^--------------------------------------------------------------------------
 [_l_] Store link   [_s_] Symbol         [_h_] All commands     [_e_] Elfeed
 [_c_] Capture      [_v_] Variable       [_R_] Select color     [_C_] Calcul
-^ ^                [_b_] Bindings       [_f_] Figlet
+^ ^                [_b_] Bindings       [_f_] Figlet           [_A_] Direnv allow
 ^ ^                [_h_] All commands   [_F_] Figlet small
 "
   ("f" dwarfmaster/make-figlet-text-normal)
@@ -1467,6 +1487,7 @@ Miscellaneous
   ("v" describe-variable)
   ("b" describe-bindings)
   ("e" elfeed)
+  ("A" direnv-allow)
   )
 (leader-def
   :states 'normal

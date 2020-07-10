@@ -45,6 +45,7 @@ let
       tramp
       orgit
       magit-annex
+      direnv
   ];
 
 in {
