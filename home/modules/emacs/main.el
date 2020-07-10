@@ -1909,6 +1909,17 @@ Project switcher
 ;; | (_) | '_/ _` |  / _ \  _|  _/ _` / _| ' \ 
 ;;  \___/|_| \__, | /_/ \_\__|\__\__,_\__|_||_|
 ;;           |___/                             
+(defmacro dwarfmaster/attach/make-attacher (action)
+  "Create an attach function using the downloads directory as default"
+  `(defun ,(intern (concat "dwarfmaster/attach/" action)) ()
+     ,(concat "Attach a file from /home/luc/downloads/ using " action)
+     (interactive)
+     (let ((org-attach-method (quote ,(intern action))))
+       (org-attach-attach
+        (helm-read-file-name "Attach :" :initial-input "/home/luc/downloads/")))))
+(dwarfmaster/attach/make-attacher "mv")
+(dwarfmaster/attach/make-attacher "cp")
+
 (defhydra dwarfmaster/hydra/org/attach (:color blue :hint nil)
   "
 Org Attach
@@ -1919,8 +1930,8 @@ Org Attach
 [_c_] Cp      [_d_] Directory   [_s_] Set dir
 [_D_] Delete  ^ ^               [_S_] Unset dir
 "
-  ("a"   org-attach-attach-mv)
-  ("c"   org-attach-attach-cp)
+  ("a"   dwarfmaster/attach/mv)
+  ("c"   dwarfmaster/attach/cp)
   ("D"   org-attach-delete-one)
   ("o"   org-attach-open)
   ("d"   org-attach-reveal)
