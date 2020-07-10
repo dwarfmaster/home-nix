@@ -71,6 +71,7 @@ in {
     (setq nix/firefox "${pkgs.firefox}/bin/zathura")
     (setq nix/hledger "${pkgs.hledger}/bin/hledger")
     (setq nix/git "${pkgs.git}/bin/git")
+    (setq nix/xdg-open "${pkgs.xdg_utils}/bin/xdg-open")
 
     (provide 'nixpaths)
   '';

@@ -419,6 +419,22 @@
  '((emacs-lisp . t)
    (hledger . t)
    (shell . t)))
+;; Files to open with applications
+(setq org-file-apps
+      `((auto-mode . emacs)
+        ;; Documents
+        ("\\.pdf\\'"  . ,(concat nix/xdg-open " \"%s\""))
+        ("\\.pdf::\\([0-9]+\\)\\'" . ,(concat nix/xdg-open " \"%s\" -p %1"))
+        ;; Videos
+        ("\\.mp4\\'"  . ,(concat nix/xdg-open " \"%s\""))
+        ("\\.mkv\\'"  . ,(concat nix/xdg-open " \"%s\""))
+        ;; Pictures
+        ("\\.png\\'"  . ,(concat nix/xdg-open " \"%s\""))
+        ("\\.jpg\\'"  . ,(concat nix/xdg-open " \"%s\""))
+        ("\\.JPG\\'"  . ,(concat nix/xdg-open " \"%s\""))
+        ("\\.jpeg\\'" . ,(concat nix/xdg-open " \"%s\""))
+        ("\\.bmp\\'"  . ,(concat nix/xdg-open " \"%s\""))
+        ("\\.gif\\'"  . ,(concat nix/xdg-open " \"%s\""))))
 
 (defun dwarfmaster/org/update-all-stats ()
   "Update all statistics in org buffer"
@@ -604,7 +620,7 @@
 (defun dwarfmaster/org/attach/pre-commit (path)
   "git add or git annex add all attachements of the selected org file"
   (with-temp-buffer
-    (find-file path)
+    (insert-file-contents path)
     (org-map-entries 'dwarfmaster/org/attach/commit-org-subtree)))
 
 ;; LaTeX theorems
@@ -908,10 +924,10 @@
       (org-id-get-create)
       (org-copy-subtree)
       (with-temp-buffer
-    (find-file file)
-    (goto-char (point-max))
-    (org-paste-subtree 1)
-    (save-buffer)))))
+        (insert-file-contents file)
+        (goto-char (point-max))
+        (org-paste-subtree 1)
+        (save-buffer)))))
 
 (defun dwarfmaster/org/sync/push/collates-all-with-tag (tag file)
   "Copy all subtress in the current buffer with a specific tag to file"
@@ -941,7 +957,7 @@
   (org-copy-subtree)
   (message "Dispatching \"%s\" to inbox !\n" (thing-at-point 'line t))
   (with-temp-buffer
-    (find-file org-default-notes-file)
+    (insert-file-contents org-default-notes-file)
     (goto-char (point-min))
     (re-search-forward "^* Mobile")
     (move-end-of-line nil)
@@ -953,19 +969,19 @@
 (defun dwarfmaster/org/sync/pull/dispatch-to-id (id)
   "Replace subtree with id by the subtree at point"
   (let ((ntree (org-id-find id))
-    (lvl   0))
+        (lvl   0))
     (if (null ntree) (dwarfmaster/org/sync/pull/dispatch-to-inbox)
       (org-copy-subtree)
       (message "Dispatching \"%s\" to old position !\n" (thing-at-point 'line t))
       (with-temp-buffer
-    (find-file (car ntree))
-    (goto-char (cdr ntree))
-    (setq lvl (org-outline-level))
-    (org-mark-subtree)
-    (kill-region (region-beginning) (region-end))
-    (current-kill 1)
-    (org-paste-subtree lvl)
-    (save-buffer)))))
+        (insert-file-contents (car ntree))
+        (goto-char (cdr ntree))
+        (setq lvl (org-outline-level))
+        (org-mark-subtree)
+        (kill-region (region-beginning) (region-end))
+        (current-kill 1)
+        (org-paste-subtree lvl)
+        (save-buffer)))))
 
 (defun dwarfmaster/org/sync/pull/dispatch-subtree ()
   "Dispatch the subtree at point to the correct place"
@@ -978,7 +994,7 @@
 (defun dwarfmaster/org/sync/pull/dispatch-file (file)
   "Dispatch all subtress in file with IDs to the relevant place"
   (with-temp-buffer
-    (find-file file)
+    (insert-file-contents file)
     (org-map-entries 'dwarfmaster/org/sync/pull/dispatch-subtree "LEVEL=1")))
 
 (defun dwarfmaster/org/sync/pull/do ()

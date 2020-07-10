@@ -27,6 +27,7 @@ let args    = general // { inherit self recdata; };            in
     bibliography = import modules/bibliography args;
     haskell      = import modules/haskell      args;
     emacs        = import modules/emacs        args;
+    xdg          = import modules/xdg          args;
   };
 
   home.file = lib.mayAccess [ "home" "file" ] recdata;
