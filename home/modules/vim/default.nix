@@ -13,7 +13,7 @@ let
 in {
   programs.neovim = {
     enable      = true;
-    package     = mypkgs.neovim-nightly;
+    package     = pkgs.neovim;
     withNodeJs  = true;
     withPython  = true;
     withPython3 = true;

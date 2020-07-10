@@ -1,4 +1,4 @@
-VERSIONS=release-19.09
+VERSIONS=release-19.09 release-20.03
 
 init: $(VERSIONS)
 
