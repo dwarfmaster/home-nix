@@ -924,7 +924,7 @@
       (org-id-get-create)
       (org-copy-subtree)
       (with-temp-buffer
-        (insert-file-contents file)
+        (find-file file)
         (goto-char (point-max))
         (org-paste-subtree 1)
         (save-buffer)))))
@@ -932,7 +932,7 @@
 (defun dwarfmaster/org/sync/push/collates-all-with-tag (tag file)
   "Copy all subtress in the current buffer with a specific tag to file"
   (org-map-entries (lambda () (dwarfmaster/org/sync/push/process-subtree tag file))
-           nil 'agenda))
+                   nil 'agenda))
 
 (defun dwarfmaster/org/sync/push/do ()
   "Synchronise subtress to phone"
@@ -957,7 +957,7 @@
   (org-copy-subtree)
   (message "Dispatching \"%s\" to inbox !\n" (thing-at-point 'line t))
   (with-temp-buffer
-    (insert-file-contents org-default-notes-file)
+    (find-file org-default-notes-file)
     (goto-char (point-min))
     (re-search-forward "^* Mobile")
     (move-end-of-line nil)
@@ -974,7 +974,7 @@
       (org-copy-subtree)
       (message "Dispatching \"%s\" to old position !\n" (thing-at-point 'line t))
       (with-temp-buffer
-        (insert-file-contents (car ntree))
+        (find-file (car ntree))
         (goto-char (cdr ntree))
         (setq lvl (org-outline-level))
         (org-mark-subtree)
@@ -994,7 +994,7 @@
 (defun dwarfmaster/org/sync/pull/dispatch-file (file)
   "Dispatch all subtress in file with IDs to the relevant place"
   (with-temp-buffer
-    (insert-file-contents file)
+    (find-file file)
     (org-map-entries 'dwarfmaster/org/sync/pull/dispatch-subtree "LEVEL=1")))
 
 (defun dwarfmaster/org/sync/pull/do ()
@@ -1123,6 +1123,8 @@
 (setq lsp-file-watch-ignored
       '("[/\\\\]\\.direnv$"
         "[/\\\\]\\.git$"))
+;; Better UI for lsp-mode
+(require 'lsp-ui)
 ;; Language server protocol (LSP) support
 (require 'lsp-mode)
 ; Add lsp diagnostic statistics to modeline
@@ -1131,22 +1133,22 @@
   (setq lsp-diagnostics-modeline-scope :project)
   (add-hook 'lsp-managed-mode-hook 'lsp-diagnostics-modeline-mode))
 ; TODO bind LSP keys under <leader>m
-; TODO install and configure lsp-ui
 
-; Integration with company-mode
-(require 'company-lsp)
-(push 'company-lsp company-backends)
+(setq lsp-ui-sideline-show-diagnostics t)
+(setq lsp-ui-sideline-show-hover t)
+(setq lsp-ui-sideline-update-mode 'line)
+(setq lsp-ui-sideline-delay 1)
+;; TODO keep going
 
 ;; Haskell
-;  _  _         _       _ _ 
-; | || |__ _ __| |_____| | |
-; | __ / _` (_-< / / -_) | |
-; |_||_\__,_/__/_\_\___|_|_|
+;;  _  _         _       _ _ 
+;; | || |__ _ __| |_____| | |
+;; | __ / _` (_-< / / -_) | |
+;; |_||_\__,_/__/_\_\___|_|_|
+(require 'haskell-mode)
 (require 'lsp-haskell)
 (add-hook 'haskell-mode-hook #'lsp)
-; Can't get hie to work :'(
-; lsp-haskell still gives some without it, so I keep it
-; (setq lsp-haskell-process-path-hie nix/hie-wrapper)
+(setq lsp-haskell-process-path-hie nix/hie-wrapper)
 
 
 ;; Nix

@@ -16,13 +16,11 @@ let
       smooth-scrolling
       lsp-mode
       lsp-ui
-      lsp-haskell
       epkgs.general
       nix-mode
       helm
       hledger-mode
       company
-      company-lsp
       idris-mode
       helm-idris
       proof-general
@@ -46,6 +44,10 @@ let
       orgit
       magit-annex
       direnv
+
+      # Haskell
+      lsp-haskell
+      haskell-mode
   ];
 
 in {
