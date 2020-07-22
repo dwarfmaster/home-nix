@@ -221,7 +221,10 @@ in let packages = with pkgs; [
   freecad    # generic CAD
 
   # Misc
-  leocad # LEGO models designer
+  leocad     # LEGO models designer
+
+  # Maps
+  viking     # GPS traces editor
 
   #  __  __       _ _   _                    _ _       
   # |  \/  |_   _| | |_(_)_ __ ___   ___  __| (_) __ _ 
