@@ -95,6 +95,8 @@ in let packages = with pkgs; [
   beep             # Play sounds on the terminal
   powerline-fonts  # Fonts with icons
   nerdfonts        # Fonts with icons
+  iosevka          # Good font
+  font-manager     # Preview fonts
   spaceship-prompt # Oh-my-zsh theme
   magic-wormhole   # File sharing
   croc             # Same but better

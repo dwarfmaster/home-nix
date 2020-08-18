@@ -12,7 +12,6 @@ let
   epkgs = epkgs: with epkgs; [
       evil
       evil-surround
-      base16-theme
       smooth-scrolling
       lsp-mode
       lsp-ui
@@ -48,6 +47,10 @@ let
       # Haskell
       lsp-haskell
       haskell-mode
+
+      # Color scheme
+      base16-theme
+      cyberpunk-theme
   ];
 
 in {

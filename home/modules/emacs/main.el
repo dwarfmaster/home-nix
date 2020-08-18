@@ -31,27 +31,25 @@
          (dwarfmaster/select-normal-and-unbind map key value))
           (symbol-value map)))
 
-;; Color scheme, using the base16 package
-;; https://github.com/belak/base16-emacs
-(require 'base16-theme)
-(load-theme 'base16-woodland t)
-(defvar dwarfmaster/colors base16-woodland-colors)
-(defvar dwarfmaster/c0     (plist-get dwarfmaster/colors :base00))
-(defvar dwarfmaster/c1     (plist-get dwarfmaster/colors :base01))
-(defvar dwarfmaster/c2     (plist-get dwarfmaster/colors :base02))
-(defvar dwarfmaster/c3     (plist-get dwarfmaster/colors :base03))
-(defvar dwarfmaster/c4     (plist-get dwarfmaster/colors :base04))
-(defvar dwarfmaster/c5     (plist-get dwarfmaster/colors :base05))
-(defvar dwarfmaster/c6     (plist-get dwarfmaster/colors :base06))
-(defvar dwarfmaster/c7     (plist-get dwarfmaster/colors :base07))
-(defvar dwarfmaster/c8     (plist-get dwarfmaster/colors :base08))
-(defvar dwarfmaster/c9     (plist-get dwarfmaster/colors :base09))
-(defvar dwarfmaster/ca     (plist-get dwarfmaster/colors :base0A))
-(defvar dwarfmaster/cb     (plist-get dwarfmaster/colors :base0B))
-(defvar dwarfmaster/cc     (plist-get dwarfmaster/colors :base0C))
-(defvar dwarfmaster/cd     (plist-get dwarfmaster/colors :base0D))
-(defvar dwarfmaster/ce     (plist-get dwarfmaster/colors :base0E))
-(defvar dwarfmaster/cf     (plist-get dwarfmaster/colors :base0F))
+;; Colors
+(setq dwarfmaster/c0 "#231e18")
+(setq dwarfmaster/c1 "#302b25")
+(setq dwarfmaster/c2 "#48413a")
+(setq dwarfmaster/c3 "#9d8b70")
+(setq dwarfmaster/c4 "#b4a490")
+(setq dwarfmaster/c5 "#cabcb1")
+(setq dwarfmaster/c6 "#d7c8bc")
+(setq dwarfmaster/c7 "#e4d4c8")
+(setq dwarfmaster/c8 "#d35c5c")
+(setq dwarfmaster/c9 "#ca7f32")
+(setq dwarfmaster/ca "#e0ac16")
+(setq dwarfmaster/cb "#b7ba53")
+(setq dwarfmaster/cc "#6eb958")
+(setq dwarfmaster/cd "#88a4d3")
+(setq dwarfmaster/ce "#bb90e2")
+(setq dwarfmaster/cf "#b49368")
+
+
 
 ;; Library to deal with timestamps
 (require 'ts)
@@ -79,6 +77,55 @@
     output))
 ;; (dwarfmaster/ts/range-expand-days "<2015-08-31 Mon 08:00>" "<2015-10-06 Tue>" 7)
 
+;; Themes
+;;  _____ _                              
+;; |_   _| |__   ___ _ __ ___   ___  ___ 
+;;   | | | '_ \ / _ \ '_ ` _ \ / _ \/ __|
+;;   | | | | | |  __/ | | | | |  __/\__ \
+;;   |_| |_| |_|\___|_| |_| |_|\___||___/
+;;                                       
+
+;; Manage all color them
+(require 'base16-theme)
+(require 'cyberpunk-theme)
+
+(load-theme 'base16-woodland t t)
+(load-theme 'cyberpunk       t t)
+(setq dwarfmaster/default-theme 'cyberpunk)
+(setq dwarfmaster/all-themes
+      (list 'cyberpunk
+            'base16-woodland))
+
+(setq dwarfmaster/agenda-files
+      (list "~/wiki/index.org"
+            "~/wiki/projects/"
+            "~/wiki/support/"))
+
+(defun dwarfmaster/disable-all-themes ()
+  "Disable all custom themes"
+  (interactive)
+  (mapcar #'disable-theme custom-enabled-themes))
+
+(defun dwarfmaster/set-default-color-theme ()
+  "Set default theme"
+  (interactive)
+  (dwarfmaster/disable-all-themes)
+  (setq dwarfmaster/ordered-themes dwarfmaster/all-themes)
+  (enable-theme (car dwarfmaster/ordered-themes))
+  (setq org-agenda-files dwarfmaster/agenda-files))
+
+(defun dwarfmaster/cycle-theme ()
+  "Cycle to the next theme"
+  (interactive)
+  (dwarfmaster/disable-all-themes)
+  (setq dwarfmaster/ordered-themes (cdr dwarfmaster/ordered-themes))
+  (if (null dwarfmaster/ordered-themes)
+      (setq dwarfmaster/ordered-themes dwarfmaster/all-themes))
+  (enable-theme (car dwarfmaster/ordered-themes))
+  (setq org-agenda-files dwarfmaster/agenda-files))
+
+(dwarfmaster/set-default-color-theme)
+  
 ;;; Vim emulation
 ;; __     ___           
 ;; \ \   / (_)_ __ ___  
@@ -402,9 +449,7 @@
 ;; Set org directory
 (setq org-directory "~/data/annex/wiki")
 ;; Set the agenda files
-(setq org-agenda-files (list "~/wiki/index.org"
-                 "~/wiki/projects/"
-                 "~/wiki/support/"))
+(setq org-agenda-files dwarfmaster/agenda-files)
 ;; Display inline images
 (setq org-startup-with-inline-images t)
 ;; Ask for confirmation before running babel, shell link or elisp link
@@ -1045,8 +1090,9 @@
 ;; |   /\__ \__ \
 ;; |_|_\|___/___/
 
-(require 'elfeed)
 (setq elfeed-curl-program-name nix/curl)
+(setq elfeed-search-filter "-webcomics @6-month-ago +unread")
+(require 'elfeed)
 
 (require 'elfeed-goodies)
 (elfeed-goodies/setup)
@@ -1133,6 +1179,18 @@
     (insert summary)
     (org-table-align)))
 
+(defmacro dwarfmaster/elfeed/make-search (name query)
+  "Create a saved elfeed search"
+  `(defun ,(intern (concat "dwarfmaster/elfeed/search-" name)) ()
+     ,(concat "Elfeed search with query " query)
+     (interactive)
+     (elfeed-search-set-filter ,(concat elfeed-search-filter " " query))))
+(dwarfmaster/elfeed/make-search "news" "+news")
+(dwarfmaster/elfeed/make-search "div" "+div")
+(dwarfmaster/elfeed/make-search "sciency" "+sciency")
+(dwarfmaster/elfeed/make-search "science" "+science")
+(dwarfmaster/elfeed/make-search "misc" "+misc")
+
               
 
 
@@ -1145,12 +1203,12 @@
 ;;                                            
 
 ;; Set the cursor color based on the evil state
-(setq evil-emacs-state-cursor   `(,(plist-get dwarfmaster/colors :base0D) box)
-      evil-insert-state-cursor  `(,(plist-get dwarfmaster/colors :base0D) bar)
-      evil-motion-state-cursor  `(,(plist-get dwarfmaster/colors :base0E) box)
-      evil-normal-state-cursor  `(,(plist-get dwarfmaster/colors :base0B) box)
-      evil-replace-state-cursor `(,(plist-get dwarfmaster/colors :base08) bar)
-      evil-visual-state-cursor  `(,(plist-get dwarfmaster/colors :base09) box))
+(setq evil-emacs-state-cursor   `(box)
+      evil-insert-state-cursor  `(bar)
+      evil-motion-state-cursor  `(box)
+      evil-normal-state-cursor  `(box)
+      evil-replace-state-cursor `(bar)
+      evil-visual-state-cursor  `(box))
 
 ;; Configure the GUI
 (if window-system
@@ -1160,9 +1218,12 @@
   )
 )
 
-;; Set the font
+;; Set the fonts
 (add-to-list 'default-frame-alist
              '(font . "FuraCode Nerd Font Mono-11:weight=bold"))
+;; (set-face-attribute 'default nil :family "FuraCode Nerd Font Mono-11:weight=bold")
+;; (set-face-attribute 'fixed-pitch nil :family "FuraCode Nerd Font Mono-11:weight=bold")
+;; (set-face-attribute 'variable-pitch nil :family "FuraCode Nerd Font Mono-11:weight=bold")
 
 ;; Miscellaneous interface
 (global-font-lock-mode 1)          ; Syntax highlighting
@@ -1512,13 +1573,14 @@ BibTex
   "
 Elfeed RSS Reader
 
-^Item^                 ^Search^         ^Misc^
-^^^^^-----------------
-[_i_] Show             [_s_] Search     [_u_] Refresh
-[_t_] Tag              [_c_] Clear      [_U_] Fetch
-[_T_] Untag            ^ ^              [_q_] Quit
-[_r_] Mark as read
-[_R_] Mark as unread
+^Item^                 ^Search^         ^Misc^           ^Categories^
+^^^^^^^-------------------------------------------------------------
+[_i_] Show             [_s_] Search     [_u_] Refresh    [_N_] News
+[_t_] Tag              [_c_] Clear      [_U_] Fetch      [_S_] Science
+[_T_] Untag            ^ ^              [_q_] Quit       [_D_] Div
+[_r_] Mark as read     ^ ^              ^ ^              [_Y_] Sciency
+[_R_] Mark as unread   ^ ^              ^ ^              [_M_] Misc
+[_o_] Open url
 
 "
   ("i" elfeed-search-show-entry)
@@ -1531,6 +1593,12 @@ Elfeed RSS Reader
   ("u" elfeed-search-update--force)
   ("U" elfeed-search-fetch)
   ("q" elfeed-search-quit-window)
+  ("N" dwarfmaster/elfeed/search-news)
+  ("Y" dwarfmaster/elfeed/search-sciency)
+  ("D" dwarfmaster/elfeed/search-div)
+  ("S" dwarfmaster/elfeed/search-science)
+  ("M" dwarfmaster/elfeed/search-misc)
+  ("o" elfeed-search-browse-url)
   )
 (leader-def
   :states 'normal
@@ -1548,10 +1616,10 @@ Elfeed RSS Reader
   "
 Miscellaneous
 
-^Org^              ^Doc^              ^Misc^                   ^Programs
-^^^^^^^--------------------------------------------------------------------------
-[_l_] Store link   [_s_] Symbol         [_h_] All commands     [_e_] Elfeed
-[_c_] Capture      [_v_] Variable       [_R_] Select color     [_C_] Calcul
+^Org^              ^Doc^              ^Misc^                   ^Programs^          ^Theme
+^^^^^^^-----------------------------------------------------------------------------------------------
+[_l_] Store link   [_s_] Symbol         [_h_] All commands     [_e_] Elfeed        [_t_] Cycle theme 
+[_c_] Capture      [_v_] Variable       [_R_] Select color     [_C_] Calcul        [_T_] Reset default
 ^ ^                [_b_] Bindings       [_f_] Figlet           [_A_] Direnv allow
 ^ ^                [_h_] All commands   [_F_] Figlet small
 "
@@ -1567,6 +1635,8 @@ Miscellaneous
   ("b" describe-bindings)
   ("e" elfeed)
   ("A" direnv-allow)
+  ("t" dwarfmaster/cycle-theme)
+  ("T" dwarfmaster/set-default-color-theme)
   )
 (leader-def
   :states 'normal
@@ -2214,7 +2284,7 @@ Org Agenda
 ^^^^^^^^---------------------------------------------------------------------------
 [_a_] Agenda               [_T_] Select some TODOs       [_Y_] Yearly    [_P_] Push
 [_i_] To review            [_s_] Select headers by tag   [_M_] Monthly   [_L_] Pull
-[_p_] Projects overview    [_S_] Generic search          [_W_] Weekly    [_M_] List
+[_p_] Projects overview    [_S_] Generic search          [_W_] Weekly    [_m_] List
 [_<_] Restrict to subtree
 [_>_] Remove restriction
 "
@@ -2232,7 +2302,7 @@ Org Agenda
   ("W"     org-agenda-week-view)
   ("P"     dwarfmaster/org/sync/push/do)
   ("L"     dwarfmaster/org/sync/pull/do)
-  ("M"     dwarfmaster/agenda/mobile)
+  ("m"     dwarfmaster/agenda/mobile)
  )
 (leader-def
  :states '(normal visual)
