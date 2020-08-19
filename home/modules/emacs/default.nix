@@ -6,9 +6,6 @@ let
 
   pkgs = general.pkgs.main;
 
-  all-hies-gen = general.pkgs.hies;
-  all-hies = all-hies-gen.selection { selector = p: { inherit (p) ghc865 ghc864 ghc863; }; };
-
   epkgs = epkgs: with epkgs; [
       evil
       evil-surround
@@ -43,10 +40,14 @@ let
       orgit
       magit-annex
       direnv
+      use-package
+      flycheck
+      attrap
 
       # Haskell
-      lsp-haskell
       haskell-mode
+      dante
+      structured-haskell-mode
 
       # Color scheme
       base16-theme
@@ -68,7 +69,6 @@ in {
   xdg.configFile."emacs/main.el".source = ./main.el;
   xdg.configFile."emacs/ob-hledger.el".source = ./ob-hledger.el;
   xdg.configFile."emacs/nixpaths.el".text = ''
-    (setq nix/hie-wrapper "${all-hies}/bin/hie-wrapper")
     (setq nix/figlet "${pkgs.figlet}/bin/figlet")
     (setq nix/curl "${pkgs.curl}/bin/curl")
     (setq nix/coqtop "${pkgs.coq}/bin/coqtop")
@@ -96,6 +96,7 @@ in {
 
   packages = with pkgs; [
     gvfs # Necessary for TRAMP support for webdav
+    haskellPackages.structured-haskell-mode
   ];
 
   shellVariables = {

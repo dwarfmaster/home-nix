@@ -1,4 +1,7 @@
 
+(require 'use-package)
+
+;;; Misc
 ;; esc always quits
 (define-key minibuffer-local-map [escape] 'keyboard-escape-quit)
 (define-key minibuffer-local-ns-map [escape] 'keyboard-escape-quit)
@@ -149,6 +152,10 @@
 (my-move-key evil-motion-state-map evil-normal-state-map (kbd "SPC"))
 (general-unbind 'normal "SPC")
 (general-unbind 'normal "RET")
+(general-create-definer leader-def
+  ;; :prefix leader
+  :prefix "SPC")
+
 
 ;; Evil surround, implement support for handling surrounding characters
 ;; See https://github.com/emacs-evil/evil-surround for details
@@ -1278,16 +1285,76 @@
 (setq lsp-ui-sideline-delay 1)
 ;; TODO keep going
 
+;; Flycheck
+(use-package flycheck
+  :init
+  (global-flycheck-mode)
+  :config
+  (setq flycheck-check-syntax-automatically '(save mode-enabled)))
+
+;; Attrap: auto-applying suggestions from compilers
+(use-package attrap)
+
 ;; Haskell
 ;;  _  _         _       _ _ 
 ;; | || |__ _ __| |_____| | |
 ;; | __ / _` (_-< / / -_) | |
 ;; |_||_\__,_/__/_\_\___|_|_|
-(require 'haskell-mode)
-(require 'lsp-haskell)
-(add-hook 'haskell-mode-hook #'lsp)
-(setq lsp-haskell-process-path-hie nix/hie-wrapper)
+(use-package haskell-mode)
+(use-package dante
+  :after haskell-mode
+  :commands 'dante-mode
+  :init
+  (add-hook 'haskell-mode-hook 'flycheck-mode)
+  (add-hook 'haskell-mode-hook 'dante-mode)
+  :config
+  (flycheck-add-next-checker 'haskell-dante '(info . haskell-hlint))
+  (push '(new-flake-impure
+          "flake.nix"
+          ("nix" "develop" "--impure" "-c"
+           "cabal" "v2-repl"
+           (or dante-target
+               (dante-package-name)
+               #1="")
+           "--builddir=dist/dante"))
+        dante-methods-alist)
+  (push 'new-flake-impure dante-methods))
+(use-package shm
+  :after haskell-mode
+  :init
+  (add-hook 'haskell-mode-hook 'structured-haskell-mode))
 
+
+(defhydra dwarfmaster/hydra/language/haskell (:color teal :hint nil)
+  "
+Haskell
+
+^Inspect^              ^Interactive^           ^Dante^         ^Structured
+^^^^^^^^-------------------------------------------------------------------
+[_t_] Type             [_s_] Apply suggestion  [_D_] Diagnose  [_(_] Parent start
+[_i_] Info             [_e_] Execute           [_R_] Restart   [_)_] Parent end
+[_d_] Goto definition  [_n_] Next flycheck     ^ ^             [_+_] Add operand
+[_u_] Find uses        [_p_] Prev flycheck     ^ ^             [_*_] Raise
+"
+  ("t" dante-type-at)
+  ("i" dante-info)
+  ("d" xref-find-definitions)
+  ("u" xref-find-references)
+  ("s" attrap-attrap)
+  ("e" dante-eval-block)
+  ("D" dante-diagnose)
+  ("R" dante-restart)
+  ("n" flycheck-next-error)
+  ("p" flycheck-previous-error)
+  ("(" shm/goto-parent :color pink)
+  (")" shm/goto-parent-end :color pink)
+  ("+" shm/add-operand)
+  ("*" shm/raise :color pink)
+  ("<escape>"  nil :color blue)
+  )
+(leader-def
+  :states '(normal visual)
+  "i"  'dwarfmaster/hydra/language/haskell/body)
 
 ;; Nix
 ;  _  _ _     
@@ -1399,10 +1466,6 @@
 ; |_|\_\___|\__, |_.__/|_|_| |_|\__,_|_|_| |_|\__, |___/
 ;           |___/                             |___/     
 (require 'hydra)
-
-(general-create-definer leader-def
-  ;; :prefix leader
-  :prefix "SPC")
 
 (leader-def
   :states 'normal
