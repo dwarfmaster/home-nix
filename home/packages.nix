@@ -48,18 +48,19 @@ in let packages = with pkgs; [
   usbutils     # for lsusb
 
   # Utilities
-  gparted      # Partition editing
-  woeusb       # Create bootable windows USB keys
-  stress       # System stress tester
-  patchelf     # NixOS utility to make a binary compatible
-  postgresql   # SQL database
-  ethtool      # Query/control network drivers/hardware settings
-  bridge-utils # Create and manage bridge devices
-  binutils     # Misc binary utilites (include objdump, ld and as)
-  alsaUtils    # Sound card control
-  cachix       # Nix binary caches handling
-  nixops       # Nix-based deployement
-  signal-cli   # Access signal messages
+  gparted         # Partition editing
+  woeusb          # Create bootable windows USB keys
+  stress          # System stress tester
+  patchelf        # NixOS utility to make a binary compatible
+  postgresql      # SQL database
+  ethtool         # Query/control network drivers/hardware settings
+  bridge-utils    # Create and manage bridge devices
+  binutils        # Misc binary utilites (include objdump, ld and as)
+  alsaUtils       # Sound card control
+  cachix          # Nix binary caches handling
+  nixops          # Nix-based deployement
+  signal-cli      # Access signal messages
+  signal-desktop  # Access signal
 
 
   #  ____  _          _ _ 
