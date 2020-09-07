@@ -197,6 +197,21 @@
   (interactive)
   (dwarfmaster/make-figlet-text t))
 
+;; Run arbitrary shell command on current buffer
+;;  ___ _        _ _              ___       __  __         
+;; / __| |_  ___| | |  ___ _ _   | _ )_  _ / _|/ _|___ _ _ 
+;; \__ \ ' \/ -_) | | / _ \ ' \  | _ \ || |  _|  _/ -_) '_|
+;; |___/_||_\___|_|_| \___/_||_| |___/\_,_|_| |_| \___|_|  
+;;                                                         
+
+(defun dwarfmaster/shell-command-on-buffer ()
+  "Run a shell command on the current buffer."
+  (interactive)
+  (mark-whole-buffer)
+  (call-process-region (point-min) (point-max)
+                       (read-shell-command "Shell command on buffer: ")
+                       t t))
+
 
 ;; General
 ;   ____                           _ 
@@ -1684,7 +1699,7 @@ Miscellaneous
 [_l_] Store link   [_s_] Symbol         [_h_] All commands     [_e_] Elfeed        [_t_] Cycle theme 
 [_c_] Capture      [_v_] Variable       [_R_] Select color     [_C_] Calcul        [_T_] Reset default
 ^ ^                [_b_] Bindings       [_f_] Figlet           [_A_] Direnv allow
-^ ^                [_h_] All commands   [_F_] Figlet small
+^ ^                [_h_] All commands   [_F_] Figlet small     [_$_] Shell
 "
   ("f" dwarfmaster/make-figlet-text-normal)
   ("F" dwarfmaster/make-figlet-text-small)
@@ -1698,6 +1713,7 @@ Miscellaneous
   ("b" describe-bindings)
   ("e" elfeed)
   ("A" direnv-allow)
+  ("$" dwarfmaster/shell-command-on-buffer)
   ("t" dwarfmaster/cycle-theme)
   ("T" dwarfmaster/set-default-color-theme)
   )
