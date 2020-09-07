@@ -4,5 +4,7 @@ let
 
   home-manager = import ./home-manager args;
 
-in [ home-manager ]
+  emacs = import ./emacs args;
+
+in [ home-manager emacs ]
 

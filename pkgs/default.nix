@@ -10,5 +10,6 @@ in rec {
   nixpkgs        = import ./nixpkgs { };
   nixpkgs-unfree = import ./nixpkgs { config = unfree-config; };
   hies           = import ./hie     { };
+  doom-emacs     = import ./nix-doom-emacs { pkgs = main; };
 }
 

@@ -10,3 +10,9 @@
 [submodule "pkgs/home-manager/master"]
 	path = pkgs/nixpkgs/overlays/home-manager/master
 	url = https://github.com/rycee/home-manager
+[submodule "pkgs/nix-doom-emacs/master"]
+	path = pkgs/nix-doom-emacs/master
+	url = https://github.com/vlaci/nix-doom-emacs
+[submodule "pkgs/nixpkgs/overlays/emacs/master"]
+	path = pkgs/nixpkgs/overlays/emacs/master
+	url = https://github.com/nix-community/emacs-overlay
