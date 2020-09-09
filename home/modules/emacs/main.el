@@ -865,6 +865,7 @@
 
 
 ;; Bibliography
+;; TODO migrate
 ;;  ___ _ _    _ _                         _        
 ;; | _ |_) |__| (_)___  __ _ _ _ __ _ _ __| |_ _  _ 
 ;; | _ \ | '_ \ | / _ \/ _` | '_/ _` | '_ \ ' \ || |
@@ -2101,7 +2102,7 @@ Org property
 ;;   | || (_) | |) | (_) \__ \
 ;;   |_| \___/|___/ \___/|___/
 
-;; Tasks and projects
+;; Tasks
 (defhydra dwarfmaster/hydra/org/todo/tasks (:color blue :hint nil)
   "
 Task switcher
