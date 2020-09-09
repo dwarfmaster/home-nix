@@ -1,7 +1,7 @@
 
 (doom! :app
        calendar
-       ;; (rss +org)
+       (rss +org)
 
        :checkers
        (syntax +childframe)
@@ -10,7 +10,7 @@
 
        :completion
        (company +tng)
-       (helm +fuzzy +childframe)
+       (helm +fuzzy)
 
        :config
        (default +bindings +smartparens)
@@ -29,7 +29,7 @@
        
        :lang
        (cc +lsp)
-       ;;coq
+       coq
        emacs-lisp
        (haskell +dante)
        idris

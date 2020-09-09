@@ -52,6 +52,7 @@ in {
     EDITOR    = "vim";
     NIX_PATH  = "nixpkgs=$HOME/.config/nixpkgs/exposed/nixpkgs:nixpkgs-overlays=$HOME/.config/nixpkgs/exposed/overlays";
     DIRSTACKSIZE = 16;
+    PATH = "$HOME/.emacs.d/bin:$PATH";
   };
 
   shellVariables = {

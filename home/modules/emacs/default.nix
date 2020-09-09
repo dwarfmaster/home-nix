@@ -1,16 +1,20 @@
 general@{ lib, recdata, ... }:
 
+# Doom needs to be installed manually
+
 let
 
   pkgs = general.pkgs.main;
 
-  doom-emacs = general.pkgs.doom-emacs {
-    doomPrivateDir = ./doom;
-  };
+  unstable = general.pkgs.nixpkgs.nixos-unstable;
 
 in {
+  programs.emacs = {
+    enable = true;
+    package = unstable.emacs;
+  };
+  
   packages = with pkgs; [
-    doom-emacs
     gvfs # Necessary for TRAMP support for webdav
     haskellPackages.structured-haskell-mode
     ccls
@@ -18,11 +22,13 @@ in {
     ripgrep
     sqlite
     wordnet
+    fd
   ];
 
 
-  home.file.".emacs.d/init.el".text = ''
-  '';
+  xdg.configFile."doom/init.el".source = ./init.el;
+  xdg.configFile."doom/config.el".source = ./config.el;
+  xdg.configFile."doom/packages.el".source = ./packages.el;
 
   # xdg.configFile."emacs/main.el".source = ./main.el;
   # xdg.configFile."emacs/ob-hledger.el".source = ./ob-hledger.el;
