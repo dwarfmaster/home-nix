@@ -51,9 +51,9 @@
 ;; | |___| |  _|  __/  __/ (_| |
 ;; |_____|_|_|  \___|\___|\__,_|
 
-(setq rmh-elfeed-org-files (list "~/wiki/support/feeds.org"))
 (after! elfeed
-        (setq elfeed-search-filter "@1-month-ago +unread"))
+  (setq elfeed-search-filter "@1-month-ago +unread")
+  (setq rmh-elfeed-org-files (list "~/wiki/support/feeds.org")))
 
 ;;; Figlet
  ;; _____ _       _      _
@@ -96,43 +96,44 @@
             "~/wiki/support/"))
 ;; Set org directory
 (setq org-directory "~/data/annex/wiki")
-;; Set the agenda files
-(setq org-agenda-files dwarfmaster/agenda-files)
-(setq org-todo-keywords
-    ;; Sequences for projects
-  '((sequence "IDEA(!)" "TODO(!)" "PROBLEM(!)")
-    (sequence "PROJECT(!)" "POSTPONNED(@)" "SUPPORT(!)")
-    (sequence "|" "DISCARDED(@)" "COMPLETED(@)")
-    ;; Sequences for tasks
-    (sequence "CONSIDER(!)" "TASK(!)" "NEXT(!)")
-    (sequence "STARTED(!)" "WAITING(@)" "PAUSED(@)")
-    (sequence "|" "DONT(@)" "FAILED(@)" "DONE(!)")))
-;; When dealing with repeated TODOs, don't repeat to previous task
-(setq org-todo-repeat-to-state nil)
-;; Set default tags
-;; TODO Set full list of tags
-(setq org-tag-alist
-      '(("mobile" "fantasy" "scifi" "urban" "opensource" "movie")))
-;; Warn for upcomming deadlines 7 days in advance
-(setq org-deadline-warning-days 7)
-;; Archive in another file in current directory with .org_archive extension
-(setq org-archive-location "%s_archive::")
-;; Files to open with applications
-(setq org-file-apps
-      `((auto-mode . emacs)
-        ;; Documents
-        ("\\.pdf\\'"  . "xdg-open \"%s\"")
-        ("\\.pdf::\\([0-9]+\\)\\'" . "xdg-open \"%s\" -p %1")
-        ;; Videos
-        ("\\.mp4\\'"  . "xdg-open \"%s\"")
-        ("\\.mkv\\'"  . "xdg-open \"%s\"")
-        ;; Pictures
-        ("\\.png\\'"  . "xdg-open \"%s\"")
-        ("\\.jpg\\'"  . "xdg-open \"%s\"")
-        ("\\.JPG\\'"  . "xdg-open \"%s\"")
-        ("\\.jpeg\\'" . "xdg-open \"%s\"")
-        ("\\.bmp\\'"  . "xdg-open \"%s\"")
-        ("\\.gif\\'"  . "xdg-open \"%s\"")))
+(after! org
+  ;; Set the agenda files
+  (setq org-agenda-files dwarfmaster/agenda-files)
+  (setq org-todo-keywords
+      ;; Sequences for projects
+    '((sequence "IDEA(!)" "TODO(!)" "PROBLEM(!)")
+      (sequence "PROJECT(!)" "POSTPONNED(@)" "SUPPORT(!)")
+      (sequence "|" "DISCARDED(@)" "COMPLETED(@)")
+      ;; Sequences for tasks
+      (sequence "CONSIDER(!)" "TASK(!)" "NEXT(!)")
+      (sequence "STARTED(!)" "WAITING(@)" "PAUSED(@)")
+      (sequence "|" "DONT(@)" "FAILED(@)" "DONE(!)")))
+  ;; When dealing with repeated TODOs, don't repeat to previous task
+  (setq org-todo-repeat-to-state nil)
+  ;; Set default tags
+  ;; TODO Set full list of tags
+  (setq org-tag-alist
+        '(("mobile" "fantasy" "scifi" "urban" "opensource" "movie")))
+  ;; Warn for upcomming deadlines 7 days in advance
+  (setq org-deadline-warning-days 7)
+  ;; Archive in another file in current directory with .org_archive extension
+  (setq org-archive-location "%s_archive::")
+  ;; Files to open with applications
+  (setq org-file-apps
+        `((auto-mode . emacs)
+          ;; Documents
+          ("\\.pdf\\'"  . "xdg-open \"%s\"")
+          ("\\.pdf::\\([0-9]+\\)\\'" . "xdg-open \"%s\" -p %1")
+          ;; Videos
+          ("\\.mp4\\'"  . "xdg-open \"%s\"")
+          ("\\.mkv\\'"  . "xdg-open \"%s\"")
+          ;; Pictures
+          ("\\.png\\'"  . "xdg-open \"%s\"")
+          ("\\.jpg\\'"  . "xdg-open \"%s\"")
+          ("\\.JPG\\'"  . "xdg-open \"%s\"")
+          ("\\.jpeg\\'" . "xdg-open \"%s\"")
+          ("\\.bmp\\'"  . "xdg-open \"%s\"")
+          ("\\.gif\\'"  . "xdg-open \"%s\""))))
 
 
 ;;; Org UI
@@ -142,97 +143,100 @@
 ;; | |_| | | | (_| | | |_| || |
  ;; \___/|_|  \__, |  \___/|___|
            ;; |___/
-;; When doing an edit commant on an invisible region, make it visible and only
-;; do the edit if it feels predictible
-(setq org-catch-invisible-edits 'smart)
-;; Hide block by default when opening a new file
-(setq org-hide-block-startup t)
-;; Never split line when using meta ret
-(setq org-M-RET-may-split-line '((default . nil)))
-;; Ask for clock resolution after 15 minutes of idleness
-(setq org-clock-idle-time 15)
-;; Save clock histroy across emacs sessions
-(setq org-clock-persist 'history)
 (after! org
-  (org-clock-persistence-insinuate))
+  ;; When doing an edit commant on an invisible region, make it visible and only
+  ;; do the edit if it feels predictible
+  (setq org-catch-invisible-edits 'smart)
+  ;; Hide block by default when opening a new file
+  (setq org-hide-block-startup t)
+  ;; Never split line when using meta ret
+  (setq org-M-RET-may-split-line '((default . nil)))
+  ;; Ask for clock resolution after 15 minutes of idleness
+  (setq org-clock-idle-time 15)
+  ;; Save clock histroy across emacs sessions
+  (setq org-clock-persist 'history)
+  ;; Setup clock
+  (org-clock-persistence-insinuate)
+  ;; Choose what to unfold depending on jump method
+  ;; See the documentation of the variable for more details on what that means
+  (setq org-show-context-detail
+        '((agenda . local)
+          (bookmark-jump . lineage)
+          (isearch . ancestors)
+          (occur-tree . local)
+          (default . lineage)))
+  ;; Increment integers when copying down
+  (setq org-table-copy-increment t)
 
-
-;; Choose what to unfold depending on jump method
-;; See the documentation of the variable for more details on what that means
-(setq org-show-context-detail
-      '((agenda . local)
-        (bookmark-jump . lineage)
-        (isearch . ancestors)
-        (occur-tree . local)
-        (default . lineage)))
-;; Increment integers when copying down
-(setq org-table-copy-increment t)
-
-(setq org-todo-keyword-faces
+  (setq org-todo-keyword-faces
         ;; Projects
-      `(("IDEA"       . (:foreground ,(doom-color 'base7)
-             :background ,(doom-color 'blue)
-             :weight bold))
-        ("TODO"       . (:foreground ,(doom-color 'base7)
-             :background ,(doom-color 'blue)
-             :weight bold))
-        ("PROBLEM"    . (:foreground ,(doom-color 'base7)
-             :background ,(doom-color 'blue)
-             :weight bold))
-        ("PROJECT"    . (:foreground ,(doom-color 'base7)
-             :background ,(doom-color 'purple)
-             :weight bold))
-        ("POSTPONNED" . (:foreground ,(doom-color 'bg)
-             :background ,(doom-color 'brown)
-             :weight bold))
-        ("SUPPORT"    . (:foreground ,(doom-color 'purple)
-             :background ,(doom-color 'base7)
-             :weight bold))
-        ("DISCARDED"  . (:foreground ,(doom-color 'base7)
-             :background ,(doom-color 'orange)
-             :weight bold))
-        ("COMPLETED"  . (:foreground ,(doom-color 'purple)
-             :background ,(doom-color 'base7)
-             :weight bold))
+        `(("IDEA" . (:foreground ,(doom-color 'base7)
+                     :background ,(doom-color 'blue)
+                     :weight bold))
+          ("TODO" . (:foreground ,(doom-color 'base7)
+                     :background ,(doom-color 'blue)
+                     :weight bold))
+          ("PROBLEM" . (:foreground ,(doom-color 'base7)
+                        :background ,(doom-color 'blue)
+                        :weight bold))
+          ("PROJECT" . (:foreground ,(doom-color 'base7)
+                        :background ,(doom-color 'purple)
+                        :weight bold))
+          ("POSTPONNED" . (:foreground ,(doom-color 'bg)
+                           :background ,(doom-color 'gray)
+                           :weight bold))
+          ("SUPPORT" . (:foreground ,(doom-color 'purple)
+                        :background ,(doom-color 'base7)
+                        :weight bold))
+          ("DISCARDED" . (:foreground ,(doom-color 'base7)
+                          :background ,(doom-color 'orange)
+                          :weight bold))
+          ("COMPLETED" . (:foreground ,(doom-color 'purple)
+                          :background ,(doom-color 'base7)
+                          :weight bold))
 
-    ;; Tasks
-        ("CONSIDER"   . (:foreground ,(doom-color 'yellow)
-             :background ,(doom-color 'base7)
-             :weight bold))
-        ("TASK"       . (:foreground ,(doom-color 'orange)
-             :background ,(doom-color 'base7)
-             :weight bold))
-        ("NEXT"       . (:foreground ,(doom-color 'base7)
-             :background ,(doom-color 'orange)
-             :weight bold))
-        ("STARTED"    . (:foreground ,(doom-color 'base7)
-             :background ,(doom-color 'lightgreen)
-             :weight bold))
-        ("WAITING"    . (:foreground ,(doom-color 'lightgreen)
-             :background ,(doom-color 'base7)
-             :weight bold))
-        ("PAUSED"     . (:foreground ,(doom-color 'lightgreen)
-             :background ,(doom-color 'base7)
-             :weight bold))
-        ("DONT"       . (:foreground ,(doom-color 'red)
-             :background ,(doom-color 'base7)
-             :weight bold))
-        ("FAILED"     . (:foreground ,(doom-color 'base7)
-             :background ,(doom-color 'red)
-             :weight bold))
-        ("DONE"       . (:foreground ,(doom-color 'base7)
-             :background ,(doom-color 'green)
-             :weight bold))))
-;; When couting subtasks, count all of them and not just direct ones
-(setq org-hierarchical-todo-statistics nil)
-;; Display inline images
-(setq org-startup-with-inline-images t)
-;; Ask for confirmation before running babel, shell link or elisp link
-(setq org-confirm-babel-evaluate t)
-(setq org-confirm-elisp-link-function 'yes-or-no-p)
-(setq org-confirm-shell-link-function 'yes-or-no-p)
-;; Do not indent the content of header
-(setq org-adapt-indentation nil)
+          ;; Tasks
+          ("CONSIDER" . (:foreground ,(doom-color 'yellow)
+                         :background ,(doom-color 'base7)
+                         :weight bold))
+          ("TASK" . (:foreground ,(doom-color 'orange)
+                     :background ,(doom-color 'base7)
+                     :weight bold))
+          ("NEXT" . (:foreground ,(doom-color 'base7)
+                     :background ,(doom-color 'lightbrown)
+                     :weight bold))
+          ("STARTED" . (:foreground ,(doom-color 'base7)
+                        :background ,(doom-color 'lightgreen)
+                        :weight bold))
+          ("WAITING" . (:foreground ,(doom-color 'lightgreen)
+                        :background ,(doom-color 'base7)
+                        :weight bold))
+          ("PAUSED" . (:foreground ,(doom-color 'lightgreen)
+                       :background ,(doom-color 'base7)
+                       :weight bold))
+          ("DONT" . (:foreground ,(doom-color 'red)
+                     :background ,(doom-color 'base7)
+                     :weight bold))
+          ("FAILED" . (:foreground ,(doom-color 'base7)
+                       :background ,(doom-color 'red)
+                       :weight bold))
+          ("DONE" . (:foreground ,(doom-color 'base7)
+                     :background ,(doom-color 'green)
+                     :weight bold))))
+  ;; When couting subtasks, count all of them and not just direct ones
+  (setq org-hierarchical-todo-statistics nil)
+  ;; Display inline images
+  (setq org-startup-with-inline-images t)
+  ;; Ask for confirmation before running babel, shell link or elisp link
+  (setq org-confirm-babel-evaluate t)
+  (setq org-confirm-elisp-link-function 'yes-or-no-p)
+  (setq org-confirm-shell-link-function 'yes-or-no-p)
+  ;; Do not indent the content of header
+  (setq org-adapt-indentation nil)
+  ;; Open files folded
+  (setq org-startup-folded 'overview))
+
+
 
 ;; Task switcher
  ;; _____         _      ____          _ _       _
@@ -344,64 +348,61 @@ Project switcher
 ;; | |_| | | | (_| |  / ___ \ (_| |  __/ | | | (_| | (_| |
  ;; \___/|_|  \__, | /_/   \_\__, |\___|_| |_|\__,_|\__,_|
            ;; |___/          |___/
-;; When opening agenda, maximize it
-(setq org-agenda-window-setup 'only-window)
-;; Restore windows after leaving the agenda view
-(setq org-agenda-restore-windows-after-quit t)
-;; Start agenda view on sunday
-(setq org-agenda-start-on-weekday 0)
-;; Span of the agenda view
-(setq org-agenda-span 'week)
-;; Define stuck projects
-(setq org-stuck-projects
-      '("TODO=\"PROJECT\"" ("NEXT" "WAITING" "STARTED") nil ""))
-;; Define sorting strategy
-(setq org-agenda-sorting-strategy
-      ;; Show higher priority lower effort first, and them alphabetically
-      ;; (to make it predictable)
-      '(priority-down effort-up alpha-up))
-;; Ignore scheduled, deadlined and tasks with timestamps in general
-(setq org-agenda-todo-ignore-with-date t)
-;; Define some custom views
-(setq org-agenda-custom-commands
-      '(("d" "Default view, show week and active tasks"
-         ;; This one is the working view, used to know what task is next
-     ;; and to schedule tasks
-     ((agenda "")
-      (todo "STARTED")
-      (todo "NEXT")
-      (todo "WAITING")
-      (todo "CONSIDER")))
-    ("i" "Show stuck projects, ideas, problems and todos"
-     ;; This one should be empty after each review
-     ((todo "TODO")
-      (todo "IDEA")
-      (todo "PROBLEM")
-      (stuck)))
-    ("p" "Show all projects and supports"
-     ;; Overview of current and postponned projects
-     ((todo "PROJECT")
-      (todo "SUPPORT")
-      (todo "POSTPONNED")))
-    ("M" "Show all headers with mobile tag"
-     tags "+mobile"
-     ((org-use-tag-inheritance nil)))
-    ))
+(after! org
+  ;; Start agenda view on sunday
+  (setq org-agenda-start-on-weekday 0)
+  ;; Span of the agenda view
+  (setq org-agenda-span 'week)
+  ;; Define stuck projects
+  (setq org-stuck-projects
+        '("TODO=\"PROJECT\"" ("NEXT" "WAITING" "STARTED") nil ""))
+  ;; Define sorting strategy
+  (setq org-agenda-sorting-strategy
+        ;; Show higher priority lower effort first, and them alphabetically
+        ;; (to make it predictable)
+        '(priority-down effort-up alpha-up))
+  ;; Ignore scheduled, deadlined and tasks with timestamps in general
+  (setq org-agenda-todo-ignore-with-date t)
+  ;; Define some custom views
+  (setq org-agenda-custom-commands
+        '(("d" "Default view, show week and active tasks"
+           ;; This one is the working view, used to know what task is next
+       ;; and to schedule tasks
+       ((agenda "")
+        (todo "STARTED")
+        (todo "NEXT")
+        (todo "WAITING")
+        (todo "CONSIDER")))
+      ("i" "Show stuck projects, ideas, problems and todos"
+       ;; This one should be empty after each review
+       ((todo "TODO")
+        (todo "IDEA")
+        (todo "PROBLEM")
+        (stuck)))
+      ("p" "Show all projects and supports"
+       ;; Overview of current and postponned projects
+       ((todo "PROJECT")
+        (todo "SUPPORT")
+        (todo "POSTPONNED")))
+      ("M" "Show all headers with mobile tag"
+       tags "+mobile"
+       ((org-use-tag-inheritance nil)))
+      )))
 
 (defun dwarfmaster/agenda/default ()
-  "Open the default weekly agenda view"
+  "Open the default weekly agenda view."
   (interactive)
   (org-agenda nil "d"))
 (defun dwarfmaster/agenda/review ()
-  "Open the agenda view with things to review"
+  "Open the agenda view with things to review."
   (interactive)
   (org-agenda nil "i"))
 (defun dwarfmaster/agenda/projects ()
-  "Open the agenda view with project overview"
+  "Open the agenda view with project overview."
   (interactive)
   (org-agenda nil "p"))
 (defun dwarfmaster/agenda/mobile ()
-  "Open the agenda view with mobile headers"
+  "Open the agenda view with mobile headers."
   (interactive)
   (org-agenda nil "M"))
 
@@ -431,23 +432,21 @@ Project switcher
 ;; | |_| | | | (_| |  / ___ \ |_| || (_| | (__| | | |
  ;; \___/|_|  \__, | /_/   \_\__|\__\__,_|\___|_| |_|
            ;; |___/
-(setq org-attach-directory "/data/luc/annex/data")
-(setq org-attach-method 'mv)
-(setq org-attach-auto-tag "attach")
-;; Stores a link to the file when attaching it
-(setq org-attach-store-link-p t)
-(setq org-attach-archive-delete nil)
-;; Ask before getting git annexed files
-(setq org-attach-annex-auto-get 'ask)
-;; Inherit DIR properties
-(setq org-attach-allow-inheritance t)
-;; Property used to list attached file, not necessary
-(setq org-attach-file-list-property "attached")
-;; Do not commit attachements with git ! Will use a special hook
-(setq org-attach-commit nil)
-;; Add support for attachement link
 (after! org
-  (push '("att" . org-attach-expand-link) org-link-abbrev-alist))
+  (setq org-attach-directory "/data/luc/annex/data")
+  (setq org-attach-method 'mv)
+  (setq org-attach-auto-tag "attach")
+  ;; Stores a link to the file when attaching it
+  (setq org-attach-store-link-p t)
+  (setq org-attach-archive-delete nil)
+  ;; Ask before getting git annexed files
+  (setq org-attach-annex-auto-get 'ask)
+  ;; Inherit DIR properties
+  (setq org-attach-allow-inheritance t)
+  ;; Property used to list attached file, not necessary
+  (setq org-attach-file-list-property "attached")
+  ;; Do not commit attachements with git ! Will use a special hook
+  (setq org-attach-commit nil))
 
 
 ;; Org Roam
@@ -486,6 +485,8 @@ Project switcher
      :head "#+TITLE: ${title}\n#+ROAM_TAGS: project\n\n"
      :unnarrowed t)
     ))
+(map! :leader
+      :desc "Open Org File" "SPC o" 'org-roam-find-file)
 
 ;; Org Capture
   ;; ___               ____            _
@@ -608,21 +609,23 @@ Project switcher
 ;; |  _ <  __/  _| | | | | | | (_| |
 ;; |_| \_\___|_| |_|_|_|_| |_|\__, |
                            ;; |___/
-;; Cache refile destinations
-(setq org-refile-use-cache t)
-;; Log timestamp when refiling entries
-(setq org-log-refile 'time)
-;; New notes (or refiled notes) are at the end
-(setq org-reverse-note-order nil)
-;; Set the targets for refiling
-;; TODO improve selection using notdeft
-(setq org-refile-targets
-      '((nil . (:maxlevel . 2)) ; Up to level 2 in current file
-    (org-agenda-files . (:maxlevel . 9))))
-;; Better handling for multiple subheaders with same name, and allow refiling to top level
-(setq org-refile-use-outline-path 'file)
-;; Do dot complete path in steps
-(setq org-outline-path-complete-in-steps nil)
+(after! org
+  ;; Cache refile destinations
+  (setq org-refile-use-cache t)
+  ;; Log timestamp when refiling entries
+  (setq org-log-refile 'time)
+  ;; New notes (or refiled notes) are at the end
+  (setq org-reverse-note-order nil)
+  ;; Set the targets for refiling
+  ;; TODO improve selection using notdeft
+  (setq org-refile-targets
+        '((nil . (:maxlevel . 2)) ; Up to level 2 in current file
+      (org-agenda-files . (:maxlevel . 9))))
+  ;; Better handling for multiple subheaders with same name, and allow refiling to top level
+  (setq org-refile-use-outline-path 'file)
+  ;; Do dot complete path in steps
+  (setq org-outline-path-complete-in-steps nil)
+  )
 
 
 ;; Mobile sync
