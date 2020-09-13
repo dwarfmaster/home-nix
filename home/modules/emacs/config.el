@@ -235,24 +235,27 @@
   (setq org-adapt-indentation nil)
   ;; Open files folded
   (setq org-startup-folded 'overview))
+;; Open links with enter
+(map! :after org :map org-mode-map
+      :n [return] #'org-open-at-point)
 
 
 
 ;; Task switcher
- ;; _____         _      ____          _ _       _
+;; _____         _      ____          _ _       _
 ;; |_   _|_ _ ___| | __ / ___|_      _(_) |_ ___| |__   ___ _ __
-  ;; | |/ _` / __| |/ / \___ \ \ /\ / / | __/ __| '_ \ / _ \ '__|
-  ;; | | (_| \__ \   <   ___) \ V  V /| | || (__| | | |  __/ |
-  ;; |_|\__,_|___/_|\_\ |____/ \_/\_/ |_|\__\___|_| |_|\___|_|
+;; | |/ _` / __| |/ / \___ \ \ /\ / / | __/ __| '_ \ / _ \ '__|
+;; | | (_| \__ \   <   ___) \ V  V /| | || (__| | | |  __/ |
+;; |_|\__,_|___/_|\_\ |____/ \_/\_/ |_|\__\___|_| |_|\___|_|
 
 (defmacro dwarfmaster/org/make-todo-switcher (todo)
- "Create a function dwarfmaster/org/todo-swith-%todo that switches
+  "Create a function dwarfmaster/org/todo-swith-%todo that switches
   the header to the right todo"
- (let ((fname (intern (concat "dwarfmaster/org/todo-switch-" (downcase todo)))))
-   `(defun ,fname ()
-      ,(concat "Switch current header to TODO state " todo)
-      (interactive)
-      (org-todo ,todo))))
+  (let ((fname (intern (concat "dwarfmaster/org/todo-switch-" (downcase todo)))))
+    `(defun ,fname ()
+       ,(concat "Switch current header to TODO state " todo)
+       (interactive)
+       (org-todo ,todo))))
 ;; Projects
 (dwarfmaster/org/make-todo-switcher "IDEA")
 (dwarfmaster/org/make-todo-switcher "TODO")
@@ -349,8 +352,6 @@ Project switcher
  ;; \___/|_|  \__, | /_/   \_\__, |\___|_| |_|\__,_|\__,_|
            ;; |___/          |___/
 (after! org
-  ;; Start agenda view on sunday
-  (setq org-agenda-start-on-weekday 0)
   ;; Span of the agenda view
   (setq org-agenda-span 'week)
   ;; Define stuck projects
