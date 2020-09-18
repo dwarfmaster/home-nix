@@ -177,6 +177,10 @@ in let packages = with pkgs; [
   autoconf # Makefile generator
   automake # Same
 
+  # Data viewing
+  gnuplot     # Plotting programming language
+  paraview    # An interface to vtk
+
 
   #  ____            _    _              
   # |  _ \  ___  ___| | _| |_ ___  _ __  
