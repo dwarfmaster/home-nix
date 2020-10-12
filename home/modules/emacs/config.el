@@ -51,9 +51,9 @@
 ;; | |___| |  _|  __/  __/ (_| |
 ;; |_____|_|_|  \___|\___|\__,_|
 
+(setq rmh-elfeed-org-files (list "~/wiki/support/feeds.org"))
 (after! elfeed
-  (setq elfeed-search-filter "@1-month-ago +unread")
-  (setq rmh-elfeed-org-files (list "~/wiki/support/feeds.org")))
+  (setq elfeed-search-filter "@1-month-ago +unread"))
 
 ;;; Figlet
  ;; _____ _       _      _
