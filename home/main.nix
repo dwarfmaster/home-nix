@@ -32,12 +32,15 @@ let args    = general // { inherit self recdata; };            in
   };
 
   home.file = lib.mayAccess [ "home" "file" ] recdata;
-  xdg       = lib.mayAccess [ "xdg" ] recdata // { enable = true; };
+  xdg       = lib.mayAccess [ "xdg" ] recdata
+              // { enable = true;
+                   configFile."nixpkgs/config.nix".source = ./nixpkgs-config.nix;
+                 };
   programs  = lib.mayAccess [ "programs" ] recdata;
   services  = lib.mayAccess [ "services" ] recdata;
   systemd   = lib.mayAccess [ "systemd" ] recdata;
   qt        = import modules/qt args;
   gtk       = lib.mayAccess [ "gtk" ] recdata;
   dconf     = lib.mayAccess [ "dconf" ] recdata;
+  nixpkgs.config = import ./nixpkgs-config.nix;
 }
-
