@@ -249,6 +249,7 @@ in let packages = with pkgs; [
   # Conversion
   imagemagick                 # Convert any image format to any other
   qpdf                        # Content preserving pdf transformations
+  xpdf                        # Tools to work with pdf
   fanficfare                  # Download and convert to epub fanfiction from the web
   python35Packages.youtube-dl # Video downloader
   pandoc                      # Markdown converter

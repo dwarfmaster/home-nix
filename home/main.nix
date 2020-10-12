@@ -29,6 +29,10 @@ let args    = general // { inherit self recdata; };            in
     emacs        = import modules/emacs        args;
     xdg          = import modules/xdg          args;
     direnv       = import modules/direnv       args;
+    nixpkgs      = {
+      configFile."nixpkgs/config.nix".source = ./nixpkgs-config.nix;
+      nixpkgs.config = import ./nixpkgs-config.nix;
+    };
   };
 
   home.file = lib.mayAccess [ "home" "file" ] recdata;
@@ -40,4 +44,3 @@ let args    = general // { inherit self recdata; };            in
   gtk       = lib.mayAccess [ "gtk" ] recdata;
   dconf     = lib.mayAccess [ "dconf" ] recdata;
 }
-
