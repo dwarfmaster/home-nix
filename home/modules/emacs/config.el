@@ -121,9 +121,9 @@
   ;; Files to open with applications
   (setq org-file-apps
         `((auto-mode . emacs)
-          ;; Documents
-          ("\\.pdf\\'"  . "xdg-open \"%s\"")
-          ("\\.pdf::\\([0-9]+\\)\\'" . "xdg-open \"%s\" -p %1")
+          ;; Documents (not using xdg-open since it doesn't support open at page)
+          ("\\.pdf\\'"  . "zathura \"%s\"")
+          ("\\.pdf::\\([0-9]+\\)\\'" . "zathura \"%s\" -P %1")
           ;; Videos
           ("\\.mp4\\'"  . "xdg-open \"%s\"")
           ("\\.mkv\\'"  . "xdg-open \"%s\"")
