@@ -1,10 +1,18 @@
-VERSIONS=release-19.09 release-20.03
+VERSIONS=19.09 20.03 20.09
 
-init: $(VERSIONS)
+init: $(addprefix release-, $(VERSIONS))
 
 release-%: master
-	cd master && git worktree add ../$@ origin/$@
+	test -e $@ || { cd master; git worktree add ../$@ origin/$@; }
 
-.PHONY:init
+update-all: update-master $(add-prefix update-, $(VERSIONS))
+
+update-master:
+	cd master && git fetch origin
+
+update-%: release-% 
+	cd $< && git merge --ff-only origin/$<
+
+.PHONY:init update-all update-master
 
 

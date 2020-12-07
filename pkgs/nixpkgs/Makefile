@@ -1,10 +1,18 @@
-VERSIONS=nixos-19.03 nixos-19.09 nixos-20.03 nixos-unstable
+VERSIONS=19.09 20.03 20.09
 
-init: $(VERSIONS)
+init: $(addprefix nixos-, $(VERSIONS))
 
 nixos-%: master
-	cd master && git worktree add ../$@ origin/$@
+	test -e $@ || { cd master; git worktree add ../$@ origin/$@; }
 
-.PHONY:init
+update-all: update-master $(add-prefix update-, $(VERSIONS))
+
+update-master:
+	cd master && git fetch origin
+
+update-%: nixos-% 
+	cd $< && git merge --ff-only origin/$<
+
+.PHONY:init update-all update-master
 
 
