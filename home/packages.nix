@@ -57,6 +57,7 @@ in let packages = with pkgs; [
   bridge-utils    # Create and manage bridge devices
   binutils        # Misc binary utilites (include objdump, ld and as)
   alsaUtils       # Sound card control
+  pavucontrol     # PulseAudio control
   cachix          # Nix binary caches handling
   nixops          # Nix-based deployement
   signal-cli      # Access signal messages
@@ -219,8 +220,10 @@ in let packages = with pkgs; [
   audacity # sound editor
 
   # 2D
-  gimp     # scalar image editor
-  inkscape # vectorial image editor
+  gimp      # scalar image editor
+  inkscape  # vectorial image editor
+  asymptote # 2D and 3D mathematical drawing
+  gv        # PS utilities
 
   # 3D
   blender    # 3D design and animation
@@ -248,8 +251,8 @@ in let packages = with pkgs; [
 
   # Conversion
   imagemagick                 # Convert any image format to any other
+  ffmpeg-full                 # Convert any video/audio format to any other
   qpdf                        # Content preserving pdf transformations
-  xpdf                        # Tools to work with pdf
   fanficfare                  # Download and convert to epub fanfiction from the web
   python35Packages.youtube-dl # Video downloader
   pandoc                      # Markdown converter
@@ -279,6 +282,7 @@ in let packages = with pkgs; [
   unfree.discord               # Audio and chat
   fractal                      # Chat client for matrix
   nheko                        # Idem
+  chromium
 
 
   #   ____                           
