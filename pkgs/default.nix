@@ -5,8 +5,8 @@ let
   unfree-config = { allowUnfree = true; };
 
 in rec {
-  main        = nixpkgs.nixos-20-03;
-  unfree-main = nixpkgs-unfree.nixos-20-03;
+  main        = nixpkgs.nixos-20-09;
+  unfree-main = nixpkgs-unfree.nixos-20-09;
   nixpkgs        = import ./nixpkgs { };
   nixpkgs-unfree = import ./nixpkgs { config = unfree-config; };
   hies           = import ./hie     { };
