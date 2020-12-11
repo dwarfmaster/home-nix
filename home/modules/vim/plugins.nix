@@ -28,28 +28,6 @@ in with pkgs; {
     };
   };
 
-  sandwich = buildPlugin {
-    pname = "vim-sandwich";
-    version = "2019-06-11";
-    src = fetchFromGitHub {
-      owner  = "machakann";
-      repo   = "vim-sandwich";
-      rev    = "35948af32203282ffd724f4ffac87af9c3efcf11";
-      sha256 = "0rpwkwi6xjd26rqvi4spbj87rp056m8r1pyncjfwmd3662xpxvgg";
-    };
-  };
-
-  coc = buildPlugin rec {
-    pname = "coc-nvim";
-    version = "0.0.74";
-    src = fetchFromGitHub {
-      owner  = "neoclide";
-      repo   = "coc.nvim";
-      rev    = "v${version}";
-      sha256 = "1s4nib2mnhagd0ymx254vf7l1iijwrh2xdqn3bdm4f1jnip81r10";
-    };
-  };
-
   coquille = buildPlugin rec {
     pname = "coquille";
     version = "81cea3080eb781216c4f3ab14dc7a1673d6688f6";
@@ -61,27 +39,4 @@ in with pkgs; {
       sha256 = "0r0nx5jnjkfx3n1y3lplvsn35iw7gqsbgm7r150559sdbag1ahw0";
     };
   };
-
-  taskwiki = buildPlugin rec {
-    pname = "taskwiki";
-    version = "7b823ace5b12b1719ec85ec976dd7c72560239eb";
-    src = fetchFromGitHub {
-      owner  = "tbabej";
-      repo   = "taskwiki";
-      rev    = "${version}";
-      sha256 = "0xbwbn5zh1djniwj263j9dwrxrqf3yx5nyjlybmqkavghpvzll5j";
-    };
-  };
-
-  narrow-region = buildPlugin rec {
-    pname = "NrrwRgn";
-    version = "8a2930141ada6719aae6c53bf4e4a8dfc3f8dbed";
-    src = fetchFromGitHub {
-      owner  = "chrisbra";
-      repo   = "NrrwRgn";
-      rev    = "${version}";
-      sha256 = "0mns43i7jj0kragylfhpawbkd9wwky8fbyvwx33406193ymyn3y3";
-    };
-  };
 }
-
