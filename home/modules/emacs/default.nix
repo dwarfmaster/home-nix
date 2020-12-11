@@ -62,6 +62,6 @@ in {
     GIO_EXTRA_MODULES = "${pkgs.gvfs}/lib/gio/modules";
   };
 
-  haskellPackages = [ (hpkgs: with hpkgs; [ hindent ]) ];
+  haskellPackages = [ (hpkgs: with hpkgs; [ ]) ];
 }
 

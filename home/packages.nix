@@ -46,6 +46,7 @@ in let packages = with pkgs; [
   lsof         # List users of a device
   wireshark    # Networks packets reading
   usbutils     # for lsusb
+  duc          # Inspect disk usage
 
   # Utilities
   gparted         # Partition editing
@@ -60,33 +61,37 @@ in let packages = with pkgs; [
   pavucontrol     # PulseAudio control
   cachix          # Nix binary caches handling
   nixops          # Nix-based deployement
-  signal-cli      # Access signal messages
-  signal-desktop  # Access signal
 
 
-  #  ____  _          _ _ 
+  #  ____  _          _ _
   # / ___|| |__   ___| | |
   # \___ \| '_ \ / _ \ | |
   #  ___) | | | |  __/ | |
   # |____/|_| |_|\___|_|_|
-  #                       
+  #
   # Shells and multiplexers
-  dash   # Minimalistic shell
   bash   # GNU shell
   fish   # Shell focused on interaction
   tmux   # Terminal multiplexer and splitter
   abduco # Terminal multiplexer
-  dvtm   # Terminal splitter
 
   # Utilities
-  most   # Advanced pager
-  jq     # CLI JSON interaction
-  tree   # Display directories arborescence
-  file   # Misc information about a file
-  bc     # Terminal calculator
-  telnet # Unsecure direct download
-  sqlite # SQlite database access and manipulation
-  dhall  # Better json
+  most             # Advanced pager
+  jq               # CLI JSON interaction
+  tree             # Display directories arborescence
+  file             # Misc information about a file
+  bc               # Terminal calculator
+  telnet           # Unsecure direct download
+  sqlite           # SQlite database access and manipulation
+  dhall            # Better json
+  magic-wormhole   # File sharing
+  croc             # Same but better
+
+  # Fonts
+  powerline-fonts  # Fonts with icons
+  nerdfonts        # Fonts with icons
+  iosevka          # Good font
+  font-manager     # Preview fonts
 
   # Misc
   figlet           # Font ASCII art
@@ -95,20 +100,14 @@ in let packages = with pkgs; [
   asciiquarium     # ASCII art aquarium
   sl               # ASCII art train
   beep             # Play sounds on the terminal
-  powerline-fonts  # Fonts with icons
-  nerdfonts        # Fonts with icons
-  iosevka          # Good font
-  font-manager     # Preview fonts
   spaceship-prompt # Oh-my-zsh theme
-  magic-wormhole   # File sharing
-  croc             # Same but better
 
-  #  ____                                                _             
-  # |  _ \ _ __ ___   __ _ _ __ __ _ _ __ ___  _ __ ___ (_)_ __   __ _ 
+  #  ____                                                _
+  # |  _ \ _ __ ___   __ _ _ __ __ _ _ __ ___  _ __ ___ (_)_ __   __ _
   # | |_) | '__/ _ \ / _` | '__/ _` | '_ ` _ \| '_ ` _ \| | '_ \ / _` |
   # |  __/| | | (_) | (_| | | | (_| | | | | | | | | | | | | | | | (_| |
   # |_|   |_|  \___/ \__, |_|  \__,_|_| |_| |_|_| |_| |_|_|_| |_|\__, |
-  #                  |___/                                       |___/ 
+  #                  |___/                                       |___/
   # Scripting
   perl        # Perl interpreter
   (python2.withPackages
@@ -119,8 +118,7 @@ in let packages = with pkgs; [
     (ppkgs: builtins.concatLists (builtins.map (f: f ppkgs)
                                                (lib.defAccess [ "python3Packages" ] recdata [ ])))
   )
-  ruby        # Ruby interpreter
-  julia       # Julia interpreter
+  # julia       # Julia interpreter
 
   # Haskell
   cabal-install
@@ -136,28 +134,10 @@ in let packages = with pkgs; [
 
   # Proof assistants
   coq
-
-  # Stage M1
-  openjdk8               # JAVA implementation
-  ccl                    # Clozure CL, common lisp implementation
-  lispPackages.quicklisp # Library manager for common lisp
-
-  # Ocaml
-  opam
-  ocaml
-  gmp
-  jbuilder
-  obuild
-  ocamlPackages.camlp4
-  ocamlPackages.camlp5
-  ocamlPackages.ansiterminal
-  ocamlPackages.cppo
-  ocamlPackages.ocsigen_deriving
-  ocamlPackages.qcheck
-  ocamlPackages.findlib
-  ocamlPackages.apron
-  ocamlPackages.utop
-  ocamlPackages.num
+  why3
+  z3
+  cvc4
+  unfree.alt-ergo
 
   # C/C++
   gcc       # C/C++ compiler
@@ -183,12 +163,12 @@ in let packages = with pkgs; [
   paraview    # An interface to vtk
 
 
-  #  ____            _    _              
-  # |  _ \  ___  ___| | _| |_ ___  _ __  
-  # | | | |/ _ \/ __| |/ / __/ _ \| '_ \ 
+  #  ____            _    _
+  # |  _ \  ___  ___| | _| |_ ___  _ __
+  # | | | |/ _ \/ __| |/ / __/ _ \| '_ \
   # | |_| |  __/\__ \   <| || (_) | |_) |
-  # |____/ \___||___/_|\_\\__\___/| .__/ 
-  #                               |_|    
+  # |____/ \___||___/_|\_\\__\___/| .__/
+  #                               |_|
   # Window manager
   dmenu                  # Application launcher
 
@@ -210,12 +190,12 @@ in let packages = with pkgs; [
   xorg.xf86videointel # For intel-virtual-output, handling hdmi monitors
 
 
-  #  ____            _             
-  # |  _ \  ___  ___(_) __ _ _ __  
-  # | | | |/ _ \/ __| |/ _` | '_ \ 
+  #  ____            _
+  # |  _ \  ___  ___(_) __ _ _ __
+  # | | | |/ _ \/ __| |/ _` | '_ \
   # | |_| |  __/\__ \ | (_| | | | |
   # |____/ \___||___/_|\__, |_| |_|
-  #                    |___/       
+  #                    |___/
   # Sound
   audacity # sound editor
 
@@ -236,12 +216,12 @@ in let packages = with pkgs; [
   # Maps
   viking     # GPS traces editor
 
-  #  __  __       _ _   _                    _ _       
-  # |  \/  |_   _| | |_(_)_ __ ___   ___  __| (_) __ _ 
+  #  __  __       _ _   _                    _ _
+  # |  \/  |_   _| | |_(_)_ __ ___   ___  __| (_) __ _
   # | |\/| | | | | | __| | '_ ` _ \ / _ \/ _` | |/ _` |
   # | |  | | |_| | | |_| | | | | | |  __/ (_| | | (_| |
   # |_|  |_|\__,_|_|\__|_|_| |_| |_|\___|\__,_|_|\__,_|
-  #                                                    
+  #
   # Readers
   mpv     # video player
   okular  # heavy featureful pdf reader
@@ -254,7 +234,7 @@ in let packages = with pkgs; [
   ffmpeg-full                 # Convert any video/audio format to any other
   qpdf                        # Content preserving pdf transformations
   fanficfare                  # Download and convert to epub fanfiction from the web
-  python35Packages.youtube-dl # Video downloader
+  python38Packages.youtube-dl # Video downloader
   pandoc                      # Markdown converter
 
   # Editors
@@ -270,47 +250,27 @@ in let packages = with pkgs; [
   texlive.combined.scheme-full # All of texlive (including LaTeX and ConTEXt)
   libreoffice
 
-  # Misc
-  remind                       # CLI advanced calendar
-  wyrd                         # NCurses interface to remind (TODO deprecated ?)
-  pass                         # CLI password manager
-  gitAndTools.git-annex        # Files manager
-  newsboat                     # RSS feed manager
-  haskellPackages.hledger      # Accounting software
-  project-manager              # Tool for managing projects
-  unstable-unfree.zoom-us      # Video meeting
+  # Communication
   unfree.discord               # Audio and chat
+  signal-desktop               # Access signal
   fractal                      # Chat client for matrix
   nheko                        # Idem
+  unstable-unfree.zoom-us      # Video meeting
+
+  # Misc
+  pass                         # CLI password manager
+  gitAndTools.git-annex        # Files manager
+  haskellPackages.hledger      # Accounting software
   chromium
 
 
-  #   ____                           
-  #  / ___| __ _ _ __ ___   ___  ___ 
+  #   ____
+  #  / ___| __ _ _ __ ___   ___  ___
   # | |  _ / _` | '_ ` _ \ / _ \/ __|
   # | |_| | (_| | | | | | |  __/\__ \
   #  \____|\__,_|_| |_| |_|\___||___/
-  #                                  
-  mupen64plus
-  zsnes
-  superTuxKart
-  superTux
-  armagetronad
-  gltron
-  (unfree.dwarf-fortress.override {
-    enableDFHack = true;
-    themes       = {};
-    theme        = null;
-  })
-  unfree.dwarf-therapist
-  # wesnoth
-  hedgewars
-  rogue
-  cataclysm-dda-git
-  (unfree.factorio.override {
-    username = "dwarfmaster";
-    token = "1e93e5acafd5b3705ba732be54952a";
-  })
+  #
+  # No games : games are to be installed on windows
 
 ]; in
 

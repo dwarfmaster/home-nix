@@ -1,7 +1,7 @@
 { pkgs, ... }:
 
 # TODO Not enough !
-with pkgs.main; python35Packages.buildPythonPackage rec {
+with pkgs.main; python38Packages.buildPythonPackage rec {
   name = "msi-perkeyrgb-${version}";
   version = "1.4";
 
@@ -12,6 +12,6 @@ with pkgs.main; python35Packages.buildPythonPackage rec {
     sha256 = "1yp705gaxacmwprzj5xp4bxy4w18488bn2gpi3kk5pdh4569nkhg";
   };
 
-  buildInputs = with python35Packages; [ hidapi setuptools ];
+  buildInputs = with python38Packages; [ hidapi setuptools ];
 }
 
