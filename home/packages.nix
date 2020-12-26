@@ -88,10 +88,13 @@ in let packages = with pkgs; [
   croc             # Same but better
 
   # Fonts
-  powerline-fonts  # Fonts with icons
-  nerdfonts        # Fonts with icons
-  iosevka          # Good font
-  font-manager     # Preview fonts
+  powerline-fonts   # Fonts with icons
+  nerdfonts         # Fonts with icons
+  iosevka           # Good font
+  fira-code         # Good font
+  fira-mono
+  fira-code-symbols
+  font-manager      # Preview fonts
 
   # Misc
   figlet           # Font ASCII art
@@ -134,16 +137,21 @@ in let packages = with pkgs; [
 
   # Proof assistants
   coq
-  why3
+  (why3.withProvers [why3-z3 why3-cvc4 unfree.why3-alt-ergo])
   z3
   cvc4
-  unfree.alt-ergo
 
   # C/C++
   gcc       # C/C++ compiler
   gdb       # C/C++ debugger
   ddd       # Graphical frontendfor GDB
   pkgconfig # Library finder
+
+  # OCaml
+  ocaml
+  opam
+  dune_2
+  ocamlPackages.utop
 
   # Tools
   pijul    # VCS based on sound theory
