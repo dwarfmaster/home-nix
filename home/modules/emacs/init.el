@@ -26,8 +26,10 @@
        (dired +icons +ranger)
        (ibuffer +icons)
        (undo +tree)
+       vc
        
        :lang
+       agda
        (cc +lsp)
        coq
        emacs-lisp
@@ -60,8 +62,10 @@
        doom
        doom-dashboard
        doom-quit
+       (emoji +github +unicode)
        hl-todo
        hydra
+       (ligatures +extra +fira)
        modeline
        nav-flash
        neotree

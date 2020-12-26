@@ -8,14 +8,14 @@
   ;; | | | | | |  __/ | | | | |  __/
   ;; |_| |_| |_|\___|_| |_| |_|\___|
 
-(setq doom-font "FuraCode Nerd Font Mono-11:weight=bold")
+(setq doom-font "FiraCode Nerd Font Mono-11:weight=bold")
 
 (setq doom-themes-enable-bold t)
 (setq doom-themes-enable-italic t)
 (solaire-global-mode +1)
 (setq fancy-splash-image "~/wiki/logo.png")
 
-(setq doom-theme 'doom-outrun-electric)
+(setq doom-theme 'doom-manegarm)
 (after! doom-themes
   ;; Enable flashing modeline on errors
   (doom-themes-visual-bell-config)
@@ -34,15 +34,16 @@
 ;; | |__| (_| | |  __/ | | | (_| | (_| | |
  ;; \____\__,_|_|\___|_| |_|\__,_|\__,_|_|
 
+;; TODO update to use calfw
 (defun dwarfmaster/calendar ()
   "Open a calendar view."
   (interactive)
   (cfw:open-calendar-buffer
    :content-sources
    (list
-    (cfx:org-create-source "Green"))))
+    (cfw:org-create-source "Green"))))
 
-(map! :leader "SPC A" 'dwarfmaster/calendar)
+(map! :leader "SPC c" 'dwarfmaster/calendar)
 
 ;;; Elfeed
  ;; _____ _  __               _
@@ -54,6 +55,8 @@
 (setq rmh-elfeed-org-files (list "~/wiki/support/feeds.org"))
 (after! elfeed
   (setq elfeed-search-filter "@1-month-ago +unread"))
+(map! :leader "SPC e e" 'elfeed)
+(map! :leader "SPC e u" 'elfeed-update)
 
 ;;; Figlet
  ;; _____ _       _      _
@@ -144,30 +147,6 @@
  ;; \___/|_|  \__, |  \___/|___|
            ;; |___/
 (after! org
-  ;; When doing an edit commant on an invisible region, make it visible and only
-  ;; do the edit if it feels predictible
-  (setq org-catch-invisible-edits 'smart)
-  ;; Hide block by default when opening a new file
-  (setq org-hide-block-startup t)
-  ;; Never split line when using meta ret
-  (setq org-M-RET-may-split-line '((default . nil)))
-  ;; Ask for clock resolution after 15 minutes of idleness
-  (setq org-clock-idle-time 15)
-  ;; Save clock histroy across emacs sessions
-  (setq org-clock-persist 'history)
-  ;; Setup clock
-  (org-clock-persistence-insinuate)
-  ;; Choose what to unfold depending on jump method
-  ;; See the documentation of the variable for more details on what that means
-  (setq org-show-context-detail
-        '((agenda . local)
-          (bookmark-jump . lineage)
-          (isearch . ancestors)
-          (occur-tree . local)
-          (default . lineage)))
-  ;; Increment integers when copying down
-  (setq org-table-copy-increment t)
-
   (setq org-todo-keyword-faces
         ;; Projects
         `(("IDEA" . (:foreground ,(doom-color 'base7)
@@ -223,22 +202,11 @@
           ("DONE" . (:foreground ,(doom-color 'base7)
                      :background ,(doom-color 'green)
                      :weight bold))))
-  ;; When couting subtasks, count all of them and not just direct ones
-  (setq org-hierarchical-todo-statistics nil)
-  ;; Display inline images
-  (setq org-startup-with-inline-images t)
   ;; Ask for confirmation before running babel, shell link or elisp link
   (setq org-confirm-babel-evaluate t)
   (setq org-confirm-elisp-link-function 'yes-or-no-p)
   (setq org-confirm-shell-link-function 'yes-or-no-p)
-  ;; Do not indent the content of header
-  (setq org-adapt-indentation nil)
-  ;; Open files folded
-  (setq org-startup-folded 'overview))
-;; Open links with enter
-(map! :after org :map org-mode-map
-      :n [return] #'org-open-at-point)
-
+  )
 
 
 ;; Task switcher
@@ -342,7 +310,8 @@ Project switcher
          (dwarfmaster/hydra/org/todo/projects/body))
       (t (dwarfmaster/hydra/org/todo/tasks/body)))))
 
-(map! :leader :map org-mode-map "SPC !" 'dwarfmaster/org/todo-switch-dwim)
+(map! :after org :map org-mode-map
+      :localleader "!" 'dwarfmaster/org/todo-switch-dwim)
 
 ;; Org Agenda
   ;; ___                 _                        _
@@ -413,19 +382,6 @@ Project switcher
       "SPC a p" 'dwarfmaster/agenda/projects
       "SPC a m" 'dwarfmaster/agenda/mobile)
 
-;; Org ID
-  ;; ___              ___ ____
- ;; / _ \ _ __ __ _  |_ _|  _ \
-;; | | | | '__/ _` |  | || | | |
-;; | |_| | | | (_| |  | || |_| |
- ;; \___/|_|  \__, | |___|____/
-           ;; |___/
-;; Use ID when storing link
-(setq org-id-link-to-org-use-id t)
-(after! org
-  (org-id-update-id-locations))
-
-
 ;; Org Attach
   ;; ___                 _   _   _             _
  ;; / _ \ _ __ __ _     / \ | |_| |_ __ _  ___| |__
@@ -442,10 +398,6 @@ Project switcher
   (setq org-attach-archive-delete nil)
   ;; Ask before getting git annexed files
   (setq org-attach-annex-auto-get 'ask)
-  ;; Inherit DIR properties
-  (setq org-attach-allow-inheritance t)
-  ;; Property used to list attached file, not necessary
-  (setq org-attach-file-list-property "attached")
   ;; Do not commit attachements with git ! Will use a special hook
   (setq org-attach-commit nil))
 
@@ -465,134 +417,30 @@ Project switcher
 (setq org-roam-db-location (concat (getenv "XDG_CACHE_HOME")
                    "/org-roam/doom.sqlite3"))
 ;; Default capture
-(setq org-roam-capture-templates
-      '(("d" "default" plain (function org-roam--capture-get-point)
-     "%?"
-     :file-name "notes/%<%Y-%m>/%<%d_%H-%M-%S>-${slug}"
-     :head "#+TITLE: ${title}\n\n"
-     :unnarrowed t)
-        ("p" "project" plain (function org-roam--capture-get-point)
-     "* PROJECT ${title}
+(after! org
+  (setq org-roam-capture-templates
+        '(("d" "default" plain (function org-roam--capture-get-point)
+           "%?"
+           :file-name "notes/%<%Y-%m>/%<%d_%H-%M-%S>-${slug}"
+           :head "#+TITLE: ${title}\n\n"
+           :unnarrowed t)
+          ("p" "project" plain (function org-roam--capture-get-point)
+           "* PROJECT ${title}
   %u
 %?"
-     :file-name "projects/${slug}"
-     :head "#+TITLE: ${title}\n#+ROAM_TAGS: project\n\n"
-     :unnarrowed t)
-        ("s" "support" plain (function org-roam--capture-get-point)
-     "* SUPPORT ${title}
+           :file-name "projects/${slug}"
+           :head "#+TITLE: ${title}\n#+ROAM_TAGS: project\n\n"
+           :unnarrowed t)
+          ("s" "support" plain (function org-roam--capture-get-point)
+           "* SUPPORT ${title}
   %u
 %?"
-     :file-name "support/${slug}"
-     :head "#+TITLE: ${title}\n#+ROAM_TAGS: project\n\n"
-     :unnarrowed t)
-    ))
+           :file-name "support/${slug}"
+           :head "#+TITLE: ${title}\n#+ROAM_TAGS: project\n\n"
+           :unnarrowed t)
+          )))
 (map! :leader
       :desc "Open Org File" "SPC o" 'org-roam-find-file)
-
-;; Org Capture
-  ;; ___               ____            _
- ;; / _ \ _ __ __ _   / ___|__ _ _ __ | |_ _   _ _ __ ___
-;; | | | | '__/ _` | | |   / _` | '_ \| __| | | | '__/ _ \
-;; | |_| | | | (_| | | |__| (_| | |_) | |_| |_| | | |  __/
- ;; \___/|_|  \__, |  \____\__,_| .__/ \__|\__,_|_|  \___|
-           ;; |___/             |_|
-;; Set default notes file for capture
-(setq org-default-notes-file (concat org-directory "/inbox.org"))
-;; Always set the org-capture-last-stored bookmark
-(setq org-capture-bookmark t)
-;; Use template F when capturing from org-protocol
-(setq org-protocol-default-template-key "F")
-
-(defun dwarfmaster/format-html-title (title)
-  "Change an arbitrary html TITLE so that it can safely be inserted in an org link."
-  (concat
-   (mapcar #'(lambda (c) (if (equal c ?\[) ?\( (if (equal c ?\]) ?\) c))) title)))
-(defun dwarfmaster/capture/prepare-keys (keys)
-  "Unhex URLs in KEYS."
-  (mapcar #'(lambda (c) (if (char-or-string-p c) (url-unhex-string c) c))
-      keys))
-(defun dwarfmaster/capture/protocol (fun &rest rest)
-  "Wrap FUN with argument REST to unhex urls."
-  (apply fun (dwarfmaster/capture/prepare-keys (car rest)) (cdr rest)))
-(advice-add 'org-protocol-capture :around #'dwarfmaster/capture/protocol)
-
-(defun dwarfmaster/capture/build-roam-candidates ()
-  "Return a completion list for helm with all org roam candidates."
-  (mapcar (lambda (cand)
-        `(,(car cand)
-          . ,(concat "[[" (plist-get (cdr cand) :path)
-             "][" (plist-get (cdr cand) :title)
-             "]]")))
-      (org-roam--get-title-path-completions)))
-
-(defun dwarfmaster/capture/find-roam-note ()
-  "Use helm to find a roam note and return a org link to it."
-  (interactive)
-  (helm :buffer "*helm capture note*"
-    :sources (helm-build-sync-source "roam notes"
-           :candidates (dwarfmaster/capture/build-roam-candidates))))
-
-;; Templates
-(setq org-capture-templates
-      '(
-    ;; Templates to use from emacs
-    ("i" "Idea" entry (file+headline "" "Captured")
-     "
-** IDEA %^{Idea: } %^G
-   %U"
-     :empty-lines 1 :clock-resume :immediate-finish)
-        ("t" "Todo" entry (file+headline "" "Captured")
-     "
-** TODO %^{Idea: } %^G
-   %U"
-     :empty-lines 1 :clock-resume :immediate-finish)
-        ("P" "Problem" entry (file+headline "" "Captured")
-     "
-** PROBLEM %^{Idea: } %^G
-   %U"
-     :empty-lines 1 :clock-resume :immediate-finish)
-    ("b" "book" entry (file+headline "" "Captured")
-     "
-*** %(dwarfmaster/capture/find-roam-note)
-:PROPERTIES:
-:STATUS: %^{Rating: }
-:DIFFICULTY: %^{Difficulty: }
-:END:"
-     :empty-lines 1 :clock-resume :immediate-finish)
-        ;; Templates for
-        ("F" "Protocol" entry (file+headline "" "Firefox")
-     "
-** [[%:link][%(dwarfmaster/format-html-title \"%:description\")]]
-   %U
-
-#+BEGIN_QUOTE
-%:initial
-#+END_QUOTE"
-     :empty-lines 1)
-    ("G" "Protocol link" entry (file+headline "" "Firefox")
-     "** [[%:link][%(dwarfmaster/format-html-title \"%:description\")]]\n   %U"
-     :empty-lines 1)
-    ))
-
-(defmacro dwarfmaster/capture/make-function (key name)
-  "Make a function for capture KEY with name NAME."
-  (let ((fname (intern (concat "dwarfmaster/capture/" key))))
-    `(defun ,fname ()
-       ,(concat "Launch capture " (downcase name))
-       (interactive)
-       (org-capture nil ,key)
-       )))
-(dwarfmaster/capture/make-function "i" "Idea")
-(dwarfmaster/capture/make-function "t" "Todo")
-(dwarfmaster/capture/make-function "P" "Problem")
-(dwarfmaster/capture/make-function "b" "Book")
-
-(map! :leader
-      "SPC c i" 'dwarfmaster/capture/i
-      "SPC c t" 'dwarfmaster/capture/t
-      "SPC c p" 'dwarfmaster/capture/p
-      "SPC c b" 'dwarfmaster/capture/b
-      )
 
 ;; Biblio
  ;; ____  _ _     _ _
@@ -601,32 +449,6 @@ Project switcher
 ;; | |_) | | |_) | | | (_) |
 ;; |____/|_|_.__/|_|_|\___/
 ;; TODO
-
-
-;; Refiling
- ;; ____       __ _ _ _
-;; |  _ \ ___ / _(_) (_)_ __   __ _
-;; | |_) / _ \ |_| | | | '_ \ / _` |
-;; |  _ <  __/  _| | | | | | | (_| |
-;; |_| \_\___|_| |_|_|_|_| |_|\__, |
-                           ;; |___/
-(after! org
-  ;; Cache refile destinations
-  (setq org-refile-use-cache t)
-  ;; Log timestamp when refiling entries
-  (setq org-log-refile 'time)
-  ;; New notes (or refiled notes) are at the end
-  (setq org-reverse-note-order nil)
-  ;; Set the targets for refiling
-  ;; TODO improve selection using notdeft
-  (setq org-refile-targets
-        '((nil . (:maxlevel . 2)) ; Up to level 2 in current file
-      (org-agenda-files . (:maxlevel . 9))))
-  ;; Better handling for multiple subheaders with same name, and allow refiling to top level
-  (setq org-refile-use-outline-path 'file)
-  ;; Do dot complete path in steps
-  (setq org-outline-path-complete-in-steps nil)
-  )
 
 
 ;; Mobile sync
@@ -733,6 +555,8 @@ Project switcher
 ;; | |__|  __/ (_| | (_| |  __/ |
 ;; |_____\___|\__,_|\__, |\___|_|
                  ;; |___/
+
+;; TODO move to hledger-mode
 (add-to-list 'auto-mode-alist '("\\.journal\\'" . ledger-mode))
 ;; Configure ledger-mode to work with hledger
 (setq ledger-mode-should-check-version nil
