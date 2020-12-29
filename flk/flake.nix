@@ -83,10 +83,5 @@
         recursiveUpdate
           (recursiveUpdate cachixAttrs modulesAttrs)
           profilesAttrs;
-
-      templates.flk.path = ./.;
-      templates.flk.description = "flk template";
-
-      defaultTemplate = self.templates.flk;
     };
 }
