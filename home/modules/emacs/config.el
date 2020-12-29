@@ -54,7 +54,7 @@
 
 (setq rmh-elfeed-org-files (list "~/wiki/support/feeds.org"))
 (after! elfeed
-  (setq elfeed-search-filter "@1-month-ago +unread"))
+  (setq elfeed-search-filter "@1-week-ago +unread"))
 (map! :leader "SPC e e" 'elfeed)
 (map! :leader "SPC e u" 'elfeed-update)
 
@@ -127,9 +127,11 @@
           ;; Documents (not using xdg-open since it doesn't support open at page)
           ("\\.pdf\\'"  . "zathura \"%s\"")
           ("\\.pdf::\\([0-9]+\\)\\'" . "zathura \"%s\" -P %1")
+          ("\\.epub\\'"  . "zathura \"%s\"")
           ;; Videos
           ("\\.mp4\\'"  . "xdg-open \"%s\"")
           ("\\.mkv\\'"  . "xdg-open \"%s\"")
+          ("\\.avi\\'"  . "xdg-open \"%s\"")
           ;; Pictures
           ("\\.png\\'"  . "xdg-open \"%s\"")
           ("\\.jpg\\'"  . "xdg-open \"%s\"")
