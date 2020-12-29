@@ -270,6 +270,8 @@ in let packages = with pkgs; [
   gitAndTools.git-annex        # Files manager
   haskellPackages.hledger      # Accounting software
   chromium
+  exif                         # Query images metadata
+  exiv2                        # Query and edit image metadata
 
 
   #   ____
