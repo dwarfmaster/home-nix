@@ -18,6 +18,7 @@
       ../profiles/direnv
       ../profiles/vim
       ../profiles/zsh
+      ../profiles/emacs
     ];
 
     xdg.enable = true;
