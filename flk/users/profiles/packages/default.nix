@@ -107,7 +107,7 @@
     # Haskell
     cabal-install
     cabal2nix
-    (haskellPackages.ghcWithHoogle (hpkgs: [ ]))
+    (haskellPackages.ghcWithHoogle (hpkgs: with hpkgs; [ diagrams ]))
 
     # Idris
     (idrisPackages.with-packages

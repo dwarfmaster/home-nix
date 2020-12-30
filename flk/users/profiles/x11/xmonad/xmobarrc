@@ -1,0 +1,75 @@
+Config {
+ -- appearance
+   font     = "xft:FuraCode Nerd Font:style=Bold:pixelsize=12:antialias=true"
+ , bgColor  = "#48413a"
+ , fgColor  = "#d7c8bc"
+ , position = Top
+ , border   = NoBorder
+
+ -- layout
+ , sepChar  = "%"
+ , alignSep = "}{"
+ , template = "<fc=#ca7f32></fc> %StdinReader% }{ %multicpu% | %coretemp% | %memory% | %dynnetwork% | %battery% | %date%"
+
+ -- general behaviour
+ , lowerOnStart     = True  -- send to the bottom of window stack
+ , hideOnStart      = False -- start with window unmapped
+ , allDesktops      = True  -- show on all destops
+ , overrideRedirect = False
+ , pickBroadest     = False -- choose widest display
+ , persistent       = True  -- True to disable hiding
+ , commands =
+   [ Run BatteryP   [ "BAT1" ]
+                    [ "--template" , "<acstatus>"
+                    , "--Low"      , "15"        -- units: %
+                    , "--High"     , "85"        -- units: %
+                    , "--low"      , "#d35c5c"
+                    , "--normal"   , "#ca7f32"
+                    , "--high"     , "#6eb958"
+
+                    , "--" -- battery specific options
+                           -- discharging status
+                           , "-o"	, "<fc=#ca7f32></fc> <left>% (<timeleft>)"
+                           -- AC "on" status
+                           , "-O"	, "<fc=#ca7f32></fc> <left>%"
+                           -- charged status
+                           , "-i"	, "<fc=#6eb958></fc>"
+                           -- Command to run when the battery gets low (for example notification)
+                           -- The threshold in percents is set by the -A command
+                           -- Only available from version 0.30 of xmobar
+                           -- , "-A" , "5"
+                           -- , "-a" , "notify-send -u critial \"Battery Alert\" \"Battery low\""
+                    ] 50
+   , Run DynNetwork [ "--template" , "<fc=#ca7f32>祝</fc><tx>kB/s <fc=#ca7f32></fc><rx>kB/s"
+                    , "--Low"      , "500000"
+                    , "--High"     , "2000000"
+                    , "--low"      , "#6eb958"
+                    , "--normal"   , "#ca7f32"
+                    , "--high"     , "#d35c5c"
+                    ] 10
+   , Run MultiCpu   [ "--template" , "<fc=#ca7f32></fc> <total0>-<total1>-<total2>-<total3>-<total4>-<total5>-<total6>-<total7>-<total8>-<total9>-<total10>-<total11>%"
+                    , "--Low"      , "50"
+                    , "--High"     , "90"
+                    , "--low"      , "#6eb958"
+                    , "--normal"   , "#ca7f32"
+                    , "--high"     , "#d35c5c"
+                    ] 10
+   , Run CoreTemp   [ "--template" , "<fc=#ca7f32></fc> <core0>-<core1>-<core2>-<core3>-<core4>-<core5>°C"
+                    , "--Low"      , "65"
+                    , "--High"     , "85"
+                    , "--low"      , "#6eb958"
+                    , "--normal"   , "#ca7f32"
+                    , "--high"     , "#d35c5c"
+                    ] 50
+   , Run Memory     [ "--template" , "<fc=#ca7f32></fc> <usedratio>%"
+                    , "--Low"      , "20"
+                    , "--High"     , "90"
+                    , "--low"      , "#6eb958"
+                    , "--normal"   , "#ca7f32"
+                    , "--high"     , "#d35c5c"
+                    ] 10
+    , Run Date      "%F (%a) %T" "date" 10
+    , Run StdinReader
+    ]
+}
+

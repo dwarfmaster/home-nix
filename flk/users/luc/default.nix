@@ -11,6 +11,13 @@
     imports = [
       ../profiles/packages
       ../profiles/git
+      ../profiles/xdg
+      ../profiles/x11
+      ../profiles/fzf
+      ../profiles/web
+      ../profiles/direnv
+      ../profiles/vim
+      ../profiles/zsh
     ];
 
     xdg.enable = true;

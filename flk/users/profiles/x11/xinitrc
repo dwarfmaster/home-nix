@@ -1,0 +1,24 @@
+#!/usr/bin/env sh
+
+# DBus is not setted up properly with the startx method
+if test -z "$DBUS_SESSION_BUS_ADDRESS"; then
+  eval $(dbus-launch --exit-with-session --sh-syntax)
+fi
+systemctl --user import-environment DISPLAY XAUTHORITY
+if command -v dbus-update-activation-environment >/dev/null 2>&1; then
+  dbus-update-activation-environment DISPLAY XAUTHORITY
+fi
+
+# WM-independent config
+xmodmap -e "keycode 65 = space space space space" # shift+space <- 4*space
+xset b off
+
+# X settings
+imlibsetroot -x e -s f $XDG_CONFIG_HOME/bg/bg.png > /dev/null 2>&1 &
+xrandr --output eDP-1 --brightness 0.77
+
+# XMonad
+xmonad
+
+# Clean up when closing X
+

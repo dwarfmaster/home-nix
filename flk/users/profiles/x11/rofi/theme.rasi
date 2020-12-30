@@ -1,0 +1,172 @@
+/**
+ * Base16 Woodland ROFI Color theme
+ *
+ * Authors
+ *  Scheme: Jay Cornwall (https://jcornwall.com)
+ *  Template: Jordi Pakey-Rodriguez (https://github.com/0xdec), Andrea Scarpino (https://github.com/ilpianista)
+ *  Modified by me !
+ */
+
+* {
+    base00:                      rgba (  35,  30,  24, 100 % );
+    base01:                      rgba (  48,  43,  37, 100 % );
+    base02:                      rgba (  72,  65,  58, 100 % );
+    base03:                      rgba ( 157, 139, 112, 100 % );
+    base04:                      rgba ( 180, 164, 144, 100 % );
+    base05:                      rgba ( 202, 188, 177, 100 % );
+    base06:                      rgba ( 215, 200, 188, 100 % );
+    base07:                      rgba ( 228, 212, 200, 100 % );
+    base08:                      rgba ( 211,  92,  92, 100 % );
+    base09:                      rgba ( 202, 127,  50, 100 % );
+    base0A:                      rgba ( 224, 172,  22, 100 % );
+    base0B:                      rgba ( 183, 186,  83, 100 % );
+    base0C:                      rgba ( 110, 185,  88, 100 % );
+    base0D:                      rgba ( 136, 164, 211, 100 % );
+    base0E:                      rgba ( 187, 144, 226, 100 % );
+    base0F:                      rgba ( 180, 147, 104, 100 % );
+
+    foreground:                  @base07;
+    background:                  @base02;
+    alternate-background:        @base03;
+
+    separatorcolor:              @base0C;
+
+    selected-normal-foreground:  @background;
+    selected-normal-background:  @base0C;
+    selected-active-foreground:  @background;
+    selected-active-background:  @base0D;
+    selected-urgent-foreground:  @background;
+    selected-urgent-background:  @base08;
+
+    normal-foreground:           @foreground;
+    normal-background:           @background;
+    active-foreground:           @base0D;
+    active-background:           @background;
+    urgent-foreground:           @base08;
+    urgent-background:           @background;
+
+    alternate-normal-foreground: @foreground;
+    alternate-normal-background: @alternate-background;
+    alternate-active-foreground: @base0D;
+    alternate-active-background: @alternate-background;
+    alternate-urgent-foreground: @base08;
+    alternate-urgent-background: @alternate-background;
+    spacing:                     2;
+
+    border-color:                @separatorcolor;
+    background-color:            @base02;
+}
+window {
+    border:           1;
+    padding:          5;
+}
+mainbox {
+    border:           0;
+    padding:          0;
+}
+message {
+    border:           1px dash 0px 0px ;
+    border-color:     @separatorcolor;
+    padding:          1px ;
+}
+textbox {
+    text-color:       @foreground;
+}
+listview {
+    fixed-height:     0;
+    border:           2px dash 0px 0px ;
+    border-color:     @separatorcolor;
+    spacing:          2px ;
+    scrollbar:        true;
+    padding:          2px 0px 0px ;
+}
+element {
+    border:           0;
+    padding:          1px ;
+}
+element normal.normal {
+    background-color: @normal-background;
+    text-color:       @normal-foreground;
+}
+element normal.urgent {
+    background-color: @urgent-background;
+    text-color:       @urgent-foreground;
+}
+element normal.active {
+    background-color: @active-background;
+    text-color:       @active-foreground;
+}
+element selected.normal {
+    background-color: @selected-normal-background;
+    text-color:       @selected-normal-foreground;
+}
+element selected.urgent {
+    background-color: @selected-urgent-background;
+    text-color:       @selected-urgent-foreground;
+}
+element selected.active {
+    background-color: @selected-active-background;
+    text-color:       @selected-active-foreground;
+}
+element alternate.normal {
+    background-color: @alternate-normal-background;
+    text-color:       @alternate-normal-foreground;
+}
+element alternate.urgent {
+    background-color: @alternate-urgent-background;
+    text-color:       @alternate-urgent-foreground;
+}
+element alternate.active {
+    background-color: @alternate-active-background;
+    text-color:       @alternate-active-foreground;
+}
+scrollbar {
+    width:            4px ;
+    border:           0;
+    handle-color:     @separatorcolor;
+    handle-width:     8px ;
+    background-color: @background;
+    padding:          0;
+}
+sidebar {
+    border:           2px dash 0px 0px ;
+    border-color:     @separatorcolor;
+}
+button {
+    spacing:          0;
+    text-color:       @normal-foreground;
+    background-color: @background;
+}
+button selected {
+    background-color: @selected-normal-background;
+    text-color:       @selected-normal-foreground;
+}
+inputbar {
+    spacing:          0px;
+    text-color:       @normal-foreground;
+    background-color: @background;
+    padding:          1px ;
+    children:         [ prompt,textbox-prompt-colon,entry,case-indicator ];
+}
+case-indicator {
+    spacing:          0;
+    text-color:       @normal-foreground;
+    background-color: inherit;
+}
+entry {
+    spacing:          0;
+    text-color:       @normal-foreground;
+    background-color: inherit;
+}
+prompt {
+    spacing:          0;
+    text-color:       @normal-foreground;
+    background-color: inherit;
+}
+textbox-prompt-colon {
+    expand:           false;
+    str:              ":";
+    margin:           0px 0.3000em 0.0000em 0.0000em ;
+    text-color:       inherit;
+    background-color: inherit;
+}
