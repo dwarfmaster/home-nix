@@ -115,7 +115,7 @@
 
     # Proof assistants
     coq
-    # (why3.withProvers [why3-z3 why3-cvc4 why3-alt-ergo])
+    (why3.withProvers [why3-z3 why3-cvc4 why3-alt-ergo])
     z3
     cvc4
 
