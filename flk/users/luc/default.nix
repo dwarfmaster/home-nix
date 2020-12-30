@@ -8,6 +8,13 @@
   };
 
   home-manager.users.luc = {
-    imports = [ ../profiles/packages ];
+    imports = [
+      ../profiles/packages
+      ../profiles/git
+    ];
+
+    xdg.enable = true;
+    programs.git.userName = "DwarfMaster";
+    programs.git.userEmail = "luc@dwarfmaster.net";
   };
 }

@@ -101,23 +101,13 @@
     #                  |___/                                       |___/
     # Scripting
     perl        # Perl interpreter
-    (python2.withPackages
-      (ppkgs: builtins.concatLists (builtins.map (f: f ppkgs)
-                                                 (lib.defAccess [ "python2Packages" ] recdata [ ])))
-    )
-    (python3.withPackages
-      (ppkgs: builtins.concatLists (builtins.map (f: f ppkgs)
-                                                 (lib.defAccess [ "python3Packages" ] recdata [ ])))
-    )
+    (python3.withPackages (ppkgs: [ ]))
     # julia       # Julia interpreter
 
     # Haskell
     cabal-install
     cabal2nix
-    (haskellPackages.ghcWithHoogle
-      (hpkgs: builtins.concatLists (builtins.map (f: f hpkgs)
-                                                 (lib.defAccess [ "haskellPackages" ] recdata [ ])))
-    )
+    (haskellPackages.ghcWithHoogle (hpkgs: [ ]))
 
     # Idris
     (idrisPackages.with-packages
@@ -125,7 +115,7 @@
 
     # Proof assistants
     coq
-    (why3.withProvers [why3-z3 why3-cvc4 why3-alt-ergo])
+    # (why3.withProvers [why3-z3 why3-cvc4 why3-alt-ergo])
     z3
     cvc4
 
@@ -154,9 +144,9 @@
     autoconf # Makefile generator
     automake # Same
 
-    # # Data viewing
-    # gnuplot     # Plotting programming language
-    # paraview    # An interface to vtk
+    # Data viewing
+    gnuplot     # Plotting programming language
+    paraview    # An interface to vtk
 
 
     #  ____            _    _
@@ -174,8 +164,6 @@
     i3lock                 # Screen locker
     imlibsetroot           # Background picture setter
     gnome3.dconf-editor    # GTK configuration editor
-    ckb-next               # Configure corsair devices lights
-    msi-perkeyrgb          # Configure keyboard lights
     desktop-file-utils     # Manage desktop files
 
     # System
@@ -192,25 +180,25 @@
     # | |_| |  __/\__ \ | (_| | | | |
     # |____/ \___||___/_|\__, |_| |_|
     #                    |___/
-    # # Sound
-    # audacity # sound editor
+    # Sound
+    audacity # sound editor
 
-    # # 2D
-    # gimp      # scalar image editor
-    # inkscape  # vectorial image editor
-    # asymptote # 2D and 3D mathematical drawing
-    # gv        # PS utilities
+    # 2D
+    gimp      # scalar image editor
+    inkscape  # vectorial image editor
+    asymptote # 2D and 3D mathematical drawing
+    gv        # PS utilities
 
-    # # 3D
-    # blender    # 3D design and animation
-    # solvespace # generic CAD
-    # freecad    # generic CAD
+    # 3D
+    blender    # 3D design and animation
+    solvespace # generic CAD
+    freecad    # generic CAD
 
-    # # Misc
-    # leocad     # LEGO models designer
+    # Misc
+    leocad     # LEGO models designer
 
-    # # Maps
-    # viking     # GPS traces editor
+    # Maps
+    viking     # GPS traces editor
 
     #  __  __       _ _   _                    _ _
     # |  \/  |_   _| | |_(_)_ __ ___   ___  __| (_) __ _
