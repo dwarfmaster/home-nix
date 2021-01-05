@@ -26,6 +26,7 @@ let args    = general // { inherit self recdata; };            in
     emacs        = import modules/emacs        args;
     xdg          = import modules/xdg          args;
     direnv       = import modules/direnv       args;
+    why3         = import modules/why3         args;
     nixpkgs      = {
       configFile."nixpkgs/config.nix".source = ./nixpkgs-config.nix;
       nixpkgs.config = import ./nixpkgs-config.nix;
