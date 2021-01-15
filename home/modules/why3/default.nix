@@ -13,6 +13,16 @@ memlimit = 1000
 running_provers_max = 2
 timelimit = 5
 
+[ide]
+font_size = 14
+error_color_bg = "darkgrey"
+error_color_fg = "red"
+error_color_msg_zone_bg = "darkgoldenrod"
+error_color_msg_zone_fg = "white"
+error_line_color = "darkgoldenrod"
+goal_color = "darkgoldenrod"
+premise_color = "darkgreen"
+
 [prover]
 command = "${pkgs.why3-z3}/bin/z3 -smt2 -T:%t sat.random_seed=42 nlsat.randomize=false smt.random_seed=42 -st %f"
 command_steps = "${pkgs.why3-z3}/bin/z3 -smt2 sat.random_seed=42 nlsat.randomize=false smt.random_seed=42 -st rlimit=%S %f"
