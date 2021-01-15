@@ -1,10 +1,11 @@
 {
   users.users.luc = {
     uid = 1000;
-    password = "";
+    hashedPassword = import ./password.nix;
     description = "default";
     isNormalUser = true;
-    extraGroups = [ "wheel" "luc" ];
+    extraGroups = [ "wheel" "luc" "networkmanager" "adbusers" "video" ];
+    shell = "/run/current-system/sw/bin/zsh";
   };
 
   home-manager.users.luc = {
