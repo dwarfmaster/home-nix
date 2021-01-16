@@ -29,7 +29,7 @@
        vc
        
        :lang
-       agda
+       (agda +local)
        (cc +lsp)
        coq
        emacs-lisp
@@ -48,6 +48,7 @@
        eshell
 
        :tools
+       biblio
        direnv
        (debugger +lsp)
        (eval +overlay)
