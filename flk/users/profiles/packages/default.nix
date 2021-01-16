@@ -49,6 +49,7 @@
     pavucontrol     # PulseAudio control
     cachix          # Nix binary caches handling
     nixops          # Nix-based deployement
+    mkpasswd        # Tool to encode passwords for config files
 
 
     #  ____  _          _ _
