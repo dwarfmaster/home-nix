@@ -20,6 +20,7 @@
       ../profiles/vim
       ../profiles/zsh
       ../profiles/emacs
+      ../profiles/logic
     ];
 
     xdg.enable = true;

@@ -109,16 +109,6 @@
     cabal2nix
     (haskellPackages.ghcWithHoogle (hpkgs: with hpkgs; [ diagrams ]))
 
-    # Idris
-    (idrisPackages.with-packages
-      (with idrisPackages; [ lightyear contrib ]))
-
-    # Proof assistants
-    coq
-    (why3.withProvers [why3-z3 why3-cvc4 why3-alt-ergo])
-    z3
-    cvc4
-
     # C/C++
     gcc       # C/C++ compiler
     gdb       # C/C++ debugger
