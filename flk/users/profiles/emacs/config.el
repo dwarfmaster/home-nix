@@ -27,24 +27,6 @@
 ;;; Basic UI
 (map! :leader "b" 'helm-mini)
 
-;;; Calendar
-  ;; ____      _                _
- ;; / ___|__ _| | ___ _ __   __| | __ _ _ __
-;; | |   / _` | |/ _ \ '_ \ / _` |/ _` | '__|
-;; | |__| (_| | |  __/ | | | (_| | (_| | |
- ;; \____\__,_|_|\___|_| |_|\__,_|\__,_|_|
-
-;; TODO update to use calfw
-(defun dwarfmaster/calendar ()
-  "Open a calendar view."
-  (interactive)
-  (cfw:open-calendar-buffer
-   :content-sources
-   (list
-    (cfw:org-create-source "Green"))))
-
-(map! :leader "SPC c" 'dwarfmaster/calendar)
-
 ;;; Elfeed
  ;; _____ _  __               _
 ;; | ____| |/ _| ___  ___  __| |
@@ -55,8 +37,7 @@
 (setq rmh-elfeed-org-files (list "~/wiki/support/feeds.org"))
 (after! elfeed
   (setq elfeed-search-filter "@1-week-ago +unread"))
-(map! :leader "SPC e e" 'elfeed)
-(map! :leader "SPC e u" 'elfeed-update)
+(map! :leader "o l" 'elfeed)
 
 ;;; Figlet
  ;; _____ _       _      _
@@ -82,8 +63,8 @@
   (dwarfmaster/make-figlet-text t))
 
 (map! :leader
-      "SPC f"  'dwarfmaster/make-figlet-text-normal
-      "SPC F"  'dwarfmaster/make-figlet-text-small)
+      "i g"  'dwarfmaster/make-figlet-text-normal
+      "i G"  'dwarfmaster/make-figlet-text-small)
 
 
 ;;; Org config
@@ -379,10 +360,10 @@ Project switcher
   (org-agenda nil "M"))
 
 (map! :leader
-      "SPC a a" 'dwarfmaster/agenda/default
-      "SPC a i" 'dwarfmaster/agenda/review
-      "SPC a p" 'dwarfmaster/agenda/projects
-      "SPC a m" 'dwarfmaster/agenda/mobile)
+      "o a" 'dwarfmaster/agenda/default
+      "o i" 'dwarfmaster/agenda/review
+      "o p" 'dwarfmaster/agenda/projects
+      "o m" 'dwarfmaster/agenda/mobile)
 
 ;; Org Attach
   ;; ___                 _   _   _             _
@@ -441,8 +422,6 @@ Project switcher
            :head "#+TITLE: ${title}\n#+ROAM_TAGS: project\n\n"
            :unnarrowed t)
           )))
-(map! :leader
-      :desc "Open Org File" "SPC o" 'org-roam-find-file)
 
 ;; Biblio
  ;; ____  _ _     _ _
