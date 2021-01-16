@@ -1,0 +1,16 @@
+
+NORMAL 0
+FILE   0
+
+DIR     1;31
+LINK    0;33 
+ORPHAN  1;36
+MISSING undefined
+FIFO    0;35
+SOCK    0;35
+BLK     0;36
+CHR     0;36
+EXEC    0;31
+
+*~ 1;34
+

@@ -1,0 +1,8 @@
+
+! Enable the extending coloring options
+rofi.color-enabled: true
+
+! Sorting method
+rofi.sort: fzf
+rofi.matching: fuzzy
+
