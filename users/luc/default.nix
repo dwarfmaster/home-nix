@@ -11,16 +11,23 @@
   home-manager.users.luc = {
     imports = [
       ../profiles/packages
-      ../profiles/git
+
+      # Desktop
       ../profiles/xdg
       ../profiles/x11
       ../profiles/fzf
       ../profiles/web
+
+      # Shell
+      ../profiles/git
       ../profiles/direnv
       ../profiles/vim
       ../profiles/zsh
+
+      # Workflow
       ../profiles/emacs
       ../profiles/logic
+      ../profiles/photos
     ];
 
     xdg.enable = true;

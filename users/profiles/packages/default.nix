@@ -201,11 +201,9 @@
     mpv     # video player
     okular  # heavy featureful pdf reader
     zathura # lightweight pdf reader
-    sxiv    # images reader
     calibre # epub reader
 
     # Conversion
-    imagemagick                 # Convert any image format to any other
     ffmpeg-full                 # Convert any video/audio format to any other
     qpdf                        # Content preserving pdf transformations
     fanficfare                  # Download and convert to epub fanfiction from the web
