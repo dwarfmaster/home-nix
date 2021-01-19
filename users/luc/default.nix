@@ -24,6 +24,9 @@
       ../profiles/vim
       ../profiles/zsh
 
+      # Security
+      ../profiles/encryption
+
       # Workflow
       ../profiles/emacs
       ../profiles/logic

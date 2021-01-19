@@ -11,10 +11,6 @@
     # Cryptography
     openssh          # Misc cryptographic utilities
     mosh             # Better SSH for bad connections
-    gnupg            # GNU pgp implementation
-    gnupg1           # GNU pgp implementation (TODO why is it necessary ?)
-    pinentry-curses  # Save password input for gpg
-    cryptsetup       # Setup DM encrypted disks
 
     # Compression
     unrar # RAR decompression
