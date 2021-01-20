@@ -10,7 +10,6 @@
 # Global parameters
 pinentry-program ${pkgs.pinentry-curses}/bin/pinentry-curses
 write-env-file /tmp/gpg-agent-info-luc
-allow-loopback-pinentry
 
 # Cache settings : 30 minutes
 default-cache-ttl 600
@@ -24,7 +23,6 @@ enforce-passphrase-constraints
     enable = true;
     settings = {
       use-agent = true;
-      pinentry-mode = "loopback";
     };
   };
 }
