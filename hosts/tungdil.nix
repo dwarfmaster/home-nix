@@ -15,6 +15,8 @@
   ];
 
   boot = {
+    kernelPackages = pkgs.linuxPackages_latest_hardened;
+
     loader = {
       systemd-boot.enable = true;
       efi.canTouchEfiVariables = true;
@@ -27,10 +29,16 @@
     kernelModules = [ "kvm-intel" "thunderbolt" ];
     blacklistedKernelModules = [ "nouveau" ];
     extraModulePackages = [ ];
+    cleanTmpDir = true;
   };
+  hardware.enableRedistributableFirmware = true;
 
   nix.maxJobs = lib.mkDefault 12;
   powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
+
+  systemd.extraConfig = ''
+    DefaultTimeoutStopSec = 10s
+  '';
 
   # Graphic card
   services.xserver.videoDrivers = [ "intel" ];
@@ -39,6 +47,7 @@
     enable = true;
     driSupport = true;
   };
+  hardware.acpilight.enable = true;
 
   # RGB driver for keyboard
   hardware.ckb-next.enable = true;
