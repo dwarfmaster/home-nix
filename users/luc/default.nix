@@ -31,6 +31,7 @@
       ../profiles/emacs
       ../profiles/logic
       ../profiles/photos
+      ../profiles/music
     ];
 
     xdg.enable = true;
