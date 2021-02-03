@@ -3,6 +3,7 @@ import XMonad.Layout hiding ((|||))
 import XMonad.Operations
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
+import XMonad.Hooks.EwmhDesktops
 import XMonad.Actions.CycleWS
 import XMonad.Actions.Volume
 import XMonad.Layout.Spacing
@@ -116,7 +117,7 @@ myManageHook = composeAll
     --, role =? "GtkFileChooserDialog" --> doFloat -- role is not defined
     ]
 
-mconfig xmp1 = docks $ def
+mconfig xmp1 = ewmh $ docks $ def
         { borderWidth        = 2
         , terminal           = "st"
         , normalBorderColor  = "#b4a490"
@@ -127,8 +128,8 @@ mconfig xmp1 = docks $ def
         , keys               = const keybinds
         , manageHook         = manageDocks <+> myManageHook <+> manageHook def
         , logHook            = loghk xmp1 >> updatePointer (0.5,0.5) (0,0)
+        , handleEventHook    = handleEventHook def <+> fullscreenEventHook
         }
 
 main = do xmp1 <- spawnPipe "/usr/bin/env xmobar /home/luc/.xmonad/xmobarrc"
           xmonad $ mconfig xmp1
-
