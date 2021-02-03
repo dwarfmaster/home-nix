@@ -41,10 +41,10 @@
 
   # TODO Filesystems
   fileSystems = {
-    # "/" = {
-    #   device = "/dev/disk/by-uuid/1be3caa1-f5df-4e19-831e-9add0f8fed1b";
-    #   fsType = "ext4";
-    # };
+    "/" = {
+      device = "/dev/disk/by-uuid/1be3caa1-f5df-4e19-831e-9add0f8fed1b";
+      fsType = "ext4";
+    };
 
     # "/data" = {
     #   device = "/dev/disk/by-uuid/f9dcf866-2a61-4823-826f-e27250197f9f";
@@ -55,5 +55,25 @@
     #   device = "/dev/disk/by-uuid/9366-2848";
     #   fsType = "vfat";
     # };
+  };
+
+  # NGinx
+  security.acme = {
+    acceptTerms = true;
+    email = "acme@dwarfmaster.net";
+  };
+
+  services.nginx = {
+    enable = true;
+    virtualHosts = {
+      "dwarfmaster.net" = {
+        forceSSL = true;
+        enableACME = true;
+        serverAliases = [ "blog.dwarfmaster.net" ];
+        locations."/" = {
+          root = "/var/www/blog";
+        };
+      };
+    };
   };
 }
