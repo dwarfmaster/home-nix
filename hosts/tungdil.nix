@@ -1,7 +1,6 @@
 { config, lib, pkgs, ... }:
 
 {
-  ### root password is empty by default ###
   imports = [
     ../users/root
     ../users/luc
@@ -16,6 +15,9 @@
 
   boot = {
     kernelPackages = pkgs.linuxPackages_latest_hardened;
+    kernel.sysctl = {
+      "kernel.unprivileged_userns_clone" = 1;
+    };
 
     loader = {
       systemd-boot.enable = true;

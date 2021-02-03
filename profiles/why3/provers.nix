@@ -34,7 +34,7 @@ version = "${cfg.package.version}"
   };
 
   alt-ergo = {
-    defaultDriver = "alt-ergo";
+    defaultDriver = "alt_ergo";
     defaultEditor = "altgr-ergo";
     config = cfg: ''
 command = "${cfg.package}/bin/alt-ergo -timelimit %t %f"

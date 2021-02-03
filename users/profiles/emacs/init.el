@@ -45,7 +45,7 @@
        web
 
        :term
-       eshell
+       ;; eshell
 
        :tools
        biblio
