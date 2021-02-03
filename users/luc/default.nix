@@ -32,6 +32,7 @@
       ../profiles/logic
       ../profiles/photos
       ../profiles/music
+      ../profiles/book
     ];
 
     xdg.enable = true;

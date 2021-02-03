@@ -195,9 +195,8 @@
     #
     # Readers
     mpv     # video player
-    okular  # heavy featureful pdf reader
     zathura # lightweight pdf reader
-    calibre # epub reader
+    kodi    # Music and film viewer
 
     # Conversion
     ffmpeg-full                 # Convert any video/audio format to any other
@@ -233,5 +232,9 @@
     chromium
     exif                         # Query image metadata
     exiv2                        # Query and edit image metadata
+
+    # Games
+    gcs   # GURPS character sheet
+    gmp
   ];
 }
