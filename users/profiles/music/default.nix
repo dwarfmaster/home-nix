@@ -17,10 +17,10 @@
       asciify_paths = true;
       art_filename = "cover";
       threaded = true;
-      format_item = "[$genre] $album ($albumartist): $title";
-      format_album = "[$genre] $albumartist - $album";
-      sort_item = "genre+ artist+ album+ disc+ track+";
-      sort_album = "genre+ albumartist+ album+";
+      format_item = "$album ($albumartist): $title";
+      format_album = "$albumartist - $album";
+      sort_item = "artist+ album+ disc+ track+";
+      sort_album = "albumartist+ album+";
       sort_case_insensitive = true;
       original_date = false;
       per_disc_numbering = false;
@@ -31,6 +31,7 @@
         "lastgenre"
         "edit"
         "keyfinder"
+        "fromfilename"
       ];
 
       import = {
@@ -43,7 +44,7 @@
         none_rec_action = "ask";
         log = "${config.xdg.cacheHome}/beets/import.log";
         languages = [ "en" "fr" ];
-        group_albums = true;
+        group_albums = false;
         bell = true;
       };
 
@@ -56,9 +57,9 @@
       };
 
       paths = {
-        default = "$genre/$albumartist/$album%aunique{}/$track - $title";
-        singleton = "$genre/singles/$artist/$title";
-        comp = "$genre/Compilations/$album%aunique{}/$track - $title";
+        default = "$albumartist/$album%aunique{}/$track - $title";
+        singleton = "singles/$artist/$title";
+        comp = "Compilations/$album%aunique{}/$track - $title";
       };
 
       ui = {
@@ -66,7 +67,7 @@
       };
 
       keyfinder = {
-        auto = true;
+        auto = false;
         bin = "${pkgs.keyfinder-cli}/bin/keyfinder-cli";
         overwrite = false;
       };
@@ -87,7 +88,7 @@
       };
 
       lastgenre = {
-        auto = true;
+        auto = false;
         canonical = true;
         fallback = "unknown";
         force = true;
