@@ -8,8 +8,15 @@
     coq
     # (idris.withPackages
     #   (with idrisPackages; [ lightyear contrib ]))
-    agda
+    (agda.withPackages (p: [ p.standard-library ]))
   ];
+
+  home.sessionVariables = {
+    AGDA_DIR = "${config.xdg.configHome}/agda/";
+  };
+  xdg.configFile."agda/defaults".text = ''
+    standard-library
+  '';
 
   # Why3
   programs.why3 = {
