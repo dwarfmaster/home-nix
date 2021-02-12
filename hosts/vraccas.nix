@@ -1,0 +1,113 @@
+{ config, lib, pkgs, ... }:
+
+{
+  imports = [
+    ../users/root
+    ../users/luc-server
+    ../modules/nix
+    ../modules/locale
+    ../modules/common-env
+  ];
+
+  boot = {
+    kernelPackages = pkgs.linuxPackages_latest_hardened;
+    kernel.sysctl = {
+      "kernel.unprivileged_userns_clone" = 1;
+    };
+
+    initrd = {
+      availableKernelModules = [ "uhci_hcd" "ahci" "usbhid" ];
+      kernelModules = [ ];
+    };
+    kernelModules = [ "kvm-intel" ];
+    extraModulePackages = [ ];
+
+    loader.grub = {
+      enable = true;
+      version = 2;
+      efiSupport = false;
+      device = "/dev/sda";
+    };
+  };
+  system.stateVersion = "20.09";
+
+  nix.maxJobs = lib.mkDefault 8;
+  powerManagement.cpuFreqGovernor = lib.mkDefault "ondemand";
+
+  # Filesystems
+  fileSystems = {
+    "/" = {
+      device = "/dev/disk/by-uuid/cf566959-5090-4121-b268-df3e581ca2bd";
+      fsType = "ext4";
+    };
+
+    "/data" = {
+      device = "/dev/disk/by-uuid/73927e8e-2d70-439a-ba11-c07067bc0007";
+      fsType = "ext4";
+    };
+
+    "/boot" = {
+      device = "/dev/disk/by-uuid/ca63c5b4-3ec5-4338-9ff7-54fe935b83d0";
+      fsType = "ext4";
+    };
+  };
+
+  # Networking
+  networking.wireless.enable = false;
+  networking.useDHCP = false;
+  networking.usePredictableInterfaceNames = true;
+  networking.defaultGateway = "188.165.216.254";
+  networking.nameservers = [ "213.186.33.99" "1.1.1.1" ];
+  networking.interfaces.enp1s0.ipv4.addresses = [ {
+    address = "188.165.216.157";
+    prefixLength = 24;
+  } ];
+  networking.defaultGateway6 = {
+    address = "2001:41d0:2:a3ff:ff:ff:ff:ff";
+    interface = "enp1s0";
+  };
+  networking.interfaces.enp1s0.ipv6.addresses = [ {
+    address = "2001:41d0:2:a39d::1";
+    prefixLength = 128;
+  } ];
+  networking.firewall.allowPing = true;
+
+  # NGinx
+  security.acme = {
+    acceptTerms = true;
+    email = "acme@dwarfmaster.net";
+  };
+
+  services.nginx = {
+    enable = true;
+    virtualHosts = {
+      "dwarfmaster.net" = {
+        forceSSL = true;
+        enableACME = true;
+        serverAliases = [ "blog.dwarfmaster.net" ];
+        locations."/" = {
+          root = "/var/www/blog";
+        };
+      };
+    };
+  };
+
+  # SSH
+  services.openssh = {
+    enable = true;
+    banner = ''
+ ____                      __ __  __           _
+|  _ \__      ____ _ _ __ / _|  \/  | __ _ ___| |_ ___ _ __
+| | | \ \ /\ / / _` | '__| |_| |\/| |/ _` / __| __/ _ \ '__|
+| |_| |\ V  V / (_| | |  |  _| |  | | (_| \__ \ ||  __/ |
+|____/  \_/\_/ \__,_|_|  |_| |_|  |_|\__,_|___/\__\___|_|
+
+Welcome !
+'';
+    forwardX11 = false;
+    logLevel = "VERBOSE";
+    passwordAuthentication = false;
+    permitRootLogin = "no";
+    ports = [ 2222 ];
+  };
+}
