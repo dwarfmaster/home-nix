@@ -16,5 +16,7 @@
       keep-derivations = true
       experimental-features = nix-command flakes
     '';
+    # Users that can import closures
+    trustedUsers = [ "root" "@wheel" ];
   };
 }
