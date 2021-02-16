@@ -73,40 +73,43 @@
   networking.firewall.allowPing = true;
 
   # NGinx
-  security.acme = {
-    acceptTerms = true;
-    email = "acme@dwarfmaster.net";
-  };
+  # security.acme = {
+  #   acceptTerms = true;
+  #   email = "acme@dwarfmaster.net";
+  # };
 
   services.nginx = {
     enable = true;
     virtualHosts = {
-      "dwarfmaster.net" = {
-        forceSSL = true;
-        enableACME = true;
-        serverAliases = [ "blog.dwarfmaster.net" ];
+      "_" = {
+        # forceSSL = true;
+        # enableACME = true;
+        serverAliases = [ "blog.dwarfmaster.net" "dwarfmaster.net" ];
         locations."/" = {
           root = "/var/www/blog";
         };
       };
     };
   };
+  systemd.services.nginx.serviceConfig.ReadWritePaths = [ "/var/www/" ];
+  networking.firewall.allowedTCPPorts = [ 80 443 ];
 
   # SSH
   services.openssh = {
     enable = true;
     banner = ''
- ____                      __ __  __           _
-|  _ \__      ____ _ _ __ / _|  \/  | __ _ ___| |_ ___ _ __
-| | | \ \ /\ / / _` | '__| |_| |\/| |/ _` / __| __/ _ \ '__|
-| |_| |\ V  V / (_| | |  |  _| |  | | (_| \__ \ ||  __/ |
-|____/  \_/\_/ \__,_|_|  |_| |_|  |_|\__,_|___/\__\___|_|
+ ____                      __ __  __           _                       _
+|  _ \__      ____ _ _ __ / _|  \/  | __ _ ___| |_ ___ _ __ _ __   ___| |_
+| | | \ \ /\ / / _` | '__| |_| |\/| |/ _` / __| __/ _ \ '__| '_ \ / _ \ __|
+| |_| |\ V  V / (_| | |  |  _| |  | | (_| \__ \ ||  __/ | _| | | |  __/ |_
+|____/  \_/\_/ \__,_|_|  |_| |_|  |_|\__,_|___/\__\___|_|(_)_| |_|\___|\__|
 
 Welcome !
 '';
     forwardX11 = false;
     logLevel = "VERBOSE";
     passwordAuthentication = false;
+    challengeResponseAuthentication = false;
     permitRootLogin = "no";
     ports = [ 2222 ];
   };
