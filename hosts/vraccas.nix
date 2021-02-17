@@ -1,12 +1,19 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, simple-nixos-mailserver, ... }:
 
 {
   imports = [
+    # Users
     ../users/root
     ../users/luc-server
+
+    # Basic configuration
     ../modules/nix
     ../modules/locale
     ../modules/common-env
+
+    # Services
+    simple-nixos-mailserver.nixosModules.mailserver
+    ../modules/mail-server
   ];
 
   boot = {
