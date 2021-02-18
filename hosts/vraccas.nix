@@ -12,7 +12,6 @@
     ../modules/common-env
 
     # Services
-    simple-nixos-mailserver.nixosModules.mailserver
     ../modules/mail-server
   ];
 

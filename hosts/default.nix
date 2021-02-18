@@ -6,6 +6,7 @@
 , self
 , system
 , utils
+, simple-mailserver
 , ...
 }:
 let
@@ -20,6 +21,8 @@ let
       modules =
         let
           inherit (home.nixosModules) home-manager;
+
+          inherit (simple-mailserver.nixosModules) mailserver;
 
           core = self.nixosModules.profiles.core;
 
@@ -66,7 +69,7 @@ let
             attrValues (removeAttrs self.nixosModules [ "profiles" ]);
 
         in
-        flakeModules ++ [ core global local home-manager overrides ];
+        flakeModules ++ [ core global local home-manager mailserver overrides ];
 
       extraArgs = {
         inherit system;

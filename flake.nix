@@ -6,10 +6,10 @@
       master.url = "nixpkgs/master";
       nixos.url = "nixpkgs/release-20.09";
       home.url = "github:nix-community/home-manager/release-20.09";
-      simple-nixos-mailserver.url = "gitlab:simple-nixos-mailserver/nixos-mailserver";
+      simple-mailserver.url = "gitlab:simple-nixos-mailserver/nixos-mailserver";
     };
 
-  outputs = inputs@{ self, simple-nixos-mailserver, home, nixos, master }:
+  outputs = inputs@{ self, simple-mailserver, home, nixos, master }:
     let
       inherit (builtins) attrNames attrValues readDir;
       inherit (nixos) lib;
