@@ -80,28 +80,17 @@
   networking.firewall.pingLimit = "--limit 10/minute --limit-burst 50";
 
   # NGinx
-  # security.acme = {
-  #   acceptTerms = true;
-  #   email = "acme@dwarfmaster.net";
-  # };
+  security.acme = {
+    acceptTerms = true;
+    email = "acme@dwarfmaster.net";
+  };
 
   services.nginx = {
     enable = true;
     virtualHosts = {
-      "_" = {
-        default = true;
-        extraConfig = ''
-          set $path "blog";
-          if ($host ~* ^(.*)\.dwarfmaster.net$) {
-            set $path "$1";
-          }
-          root /var/www/$path;
-        '';
-      };
-
       "dwarfmaster.net" = {
-        # forceSSL = true;
-        # enableACME = true;
+        forceSSL = true;
+        enableACME = true;
         serverAliases = [ "blog.dwarfmaster.net" "www.dwarfmaster.net" ];
         locations."/" = {
           root = "/var/www/blog";
@@ -109,10 +98,14 @@
       };
 
       "info16.dwarfmaster.net" = {
+        forceSSL = true;
+        enableACME = true;
         globalRedirect = "info16.twal.org";
       };
 
       "assofrancojap.dwarfmaster.net" = {
+        forceSSL = true;
+        enableACME = true;
         locations."/" = {
           root = "/var/www/assofrancojap";
         };
