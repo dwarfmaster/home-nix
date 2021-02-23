@@ -6,6 +6,7 @@
   home-manager.users.luc = {
     imports = [
       ../profiles/packages
+      ../profiles/mail
 
       # Desktop
       ../profiles/x11

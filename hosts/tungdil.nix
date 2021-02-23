@@ -11,6 +11,7 @@
     ../modules/sound
     ../modules/printing
     ../modules/common-env
+    ../modules/mail-client
   ];
 
   boot = {
