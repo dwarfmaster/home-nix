@@ -1,8 +1,16 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 
 # Doom needs to be installed manually
 
-{
+let
+
+  doom = config.programs.emacs.finalPackage;
+
+  emacs = "${doom}/bin/emacs";
+
+  client = "${doom}/bin/emacsclient";
+
+in {
   programs.emacs = {
     enable = true;
     package = pkgs.emacs;
@@ -24,12 +32,30 @@
   xdg.configFile."doom/config.el".source = ./config.el;
   xdg.configFile."doom/packages.el".source = ./packages.el;
 
+  # Systemd daemon
+  systemd.user.services.doom-emacs-daemon = {
+    Unit = {
+      Description = "Doom Emacs Server Daemon";
+      Documentation = [ "info:emacs" "man:emacs(1)" "https://gnu.org/software/emacs/" ];
+    };
+
+    Service = {
+      Type = "forking";
+      ExecStart = "${pkgs.dash}/bin/dash -c '${emacs} --daemon && ${client} -c --eval \"(delete-frame)\"'";
+      ExecStop = "${client} --no-wait --eval \"(progn (setq kill-emacs-hook nil) (kill emacs))\"";
+      Restart = "on-failure";
+    };
+
+    Install = {
+      WantedBy = [ "default.target" ];
+    };
+  };
+
   # Set emacsclient as the org-protocol:// url handler
-  # TODO use finalPackage
   xdg.dataFile."applications/org-protocol.desktop".text = ''
     [Desktop Entry]
     Name=org-protocol
-    Exec=emacsclient %u
+    Exec=${client} %u
     Type=Application
     Terminal=false
     Categories=System;
