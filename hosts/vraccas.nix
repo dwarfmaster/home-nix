@@ -134,4 +134,5 @@ Welcome !
     permitRootLogin = "no";
     ports = [ 2222 ];
   };
+  programs.mosh.enable = true;
 }
