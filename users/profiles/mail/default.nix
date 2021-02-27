@@ -27,6 +27,10 @@ in {
     maildir.synchronizeFlags = true;
     new.tags = [ "new" ];
     search.excludeTags = [ "spam" ];
+    hooks = {
+      postNew = "${pkgs.afew} --tag --new";
+      preNew = "";
+    };
   };
 
   accounts.email.maildirBasePath = "/home/luc/mail";
