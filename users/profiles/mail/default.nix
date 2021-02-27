@@ -4,14 +4,13 @@ let
 
   realName = "Luc Chabassier";
 
-  maildir = { path = "dwarfmaster"; };
+  maildir = { path = "dwarfmaster/Inbox"; };
 
   getmail = {
     enable = true;
     delete = true;
     readAll = true;
-    mailboxes = [ "ALL" ];
-    destinationCommand = "${pkgs.maildrop}/bin/maildrop";
+    mailboxes = [ "Inbox" "Sent" ];
   };
 
 in {
@@ -22,14 +21,17 @@ in {
 
   programs.mbsync.enable = true;
   programs.msmtp.enable = true;
+  home.packages = [ pkgs.getmail ];
   programs.notmuch = {
     enable = true;
     maildir.synchronizeFlags = true;
     new.tags = [ "new" ];
     search.excludeTags = [ "spam" ];
     hooks = {
-      postNew = "${pkgs.afew} --tag --new";
-      preNew = "";
+      postNew = "${pkgs.afew}/bin/afew --tag --new";
+      preNew = ''
+getmail --rcfile getmailens --rcfile getmailmailoo --rcfile getmailens
+'';
     };
   };
 
@@ -78,22 +80,54 @@ in {
       };
     };
 
-    # "ens" = {
-    #   address = "luc.chabassier@ens.fr";
-    #   aliases = [ "luc.chabassier@ens.psl.eu" "chabassi@clipper.ens.fr" "chabassi@clipper.ens.psl.eu" ];
-    #   inherit realName getmail maildir;
-    # };
+    "ens" = {
+      address = "luc.chabassier@ens.fr";
+      aliases = [ "luc.chabassier@ens.psl.eu" "chabassi@clipper.ens.fr" "chabassi@clipper.ens.psl.eu" ];
+      inherit realName getmail maildir;
+      userName = "chabassi";
+      passwordCommand = "pass school/ens/clipper";
 
-    # "gmail" = {
-    #   address = "luc.chabassier@gmail.com";
-    #   inherit realName getmail maildir;
-    #   flavor = "gmail.com";
-    # };
+      imap = {
+        host = "clipper.ens.fr";
+        port = 993;
+        tls.enable = true;
+      };
+    };
 
-    # "mailoo" = {
-    #   address = "luc.linux@mailoo.org";
-    #   inherit realName getmail maildir;
-    # };
+    "gmail" = rec {
+      address = "luc.chabassier@gmail.com";
+      inherit realName getmail maildir;
+      flavor = "gmail.com";
+      userName = address;
+      passwordCommand = "pass mail/gmail.com/luc.chabassier";
+
+      imap = {
+        host = "imap.gmail.com";
+        port = 993;
+        tls.enable = true;
+      };
+
+      smtp = {
+        host = "smtp.gmail.com";
+        port = 587;
+        tls = {
+          enable = true;
+          useStartTls = true;
+        };
+      };
+    };
+
+    "mailoo" = rec {
+      address = "luc.linux@mailoo.org";
+      inherit realName getmail maildir;
+      userName = address;
+      passwordCommand = "pass mail/mailoo.org/luc.linux";
+      imap = {
+        host = "mail.net-c.com";
+        port = 993;
+        tls.enable = true;
+      };
+    };
 
     # "hotmail" = {
     #   address = "luc.toulouse@hotmail.fr";
