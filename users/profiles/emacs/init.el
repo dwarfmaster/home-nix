@@ -5,7 +5,7 @@
 
        :checkers
        (syntax +childframe)
-       (spell +everywhere +hunspell)
+       (spell +flyspell +everywhere +hunspell)
        grammar
 
        :completion

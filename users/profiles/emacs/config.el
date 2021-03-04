@@ -543,3 +543,18 @@ Project switcher
 (setq ledger-mode-should-check-version nil
       ledger-report-links-in-register nil
       ledger-binary-path "hledger")
+
+;; Spell checker
+(after! ispell
+  (setq ispell-local-dictionary-alist
+        '(("en_US"
+           "[[:alpha:]]"
+           "[^[:alpha:]]"
+           "[']"
+           t
+           ("-d" "en_US,en_CA,en_AU,fr-toutesvariantes")
+           nil
+           iso-8859-1)))
+  (setq ispell-hunspell-dictionary-alist ispell-local-dictionary-alist)
+  (setq ispell-dictionary "en_US")
+  (setq ispell-personal-dictionary (concat (getenv "XDG_CACHE_HOME") "/hunspell/personal")))

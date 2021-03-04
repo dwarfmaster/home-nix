@@ -25,6 +25,9 @@ in {
     sqlite
     wordnet
     fd
+    # Spell checkers
+    aspell
+    (hunspellWithDicts (with hunspellDicts; [ fr-any en_US en_CA en_AU ]))
   ];
 
 
