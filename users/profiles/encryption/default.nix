@@ -8,7 +8,7 @@
 
   home.file.".gnupg/gpg-agent.conf".text = ''
 # Global parameters
-pinentry-program ${pkgs.pinentry-curses}/bin/pinentry-curses
+pinentry-program ${pkgs.pinentry-gtk2}/bin/pinentry
 write-env-file /tmp/gpg-agent-info-luc
 
 # Cache settings : 30 minutes

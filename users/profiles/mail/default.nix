@@ -30,7 +30,7 @@ in {
     hooks = {
       postNew = "${pkgs.afew}/bin/afew --tag --new";
       preNew = ''
-getmail --rcfile getmailens --rcfile getmailmailoo --rcfile getmailens
+getmail --rcfile getmailens --rcfile getmailmailoo
 '';
     };
   };
@@ -86,20 +86,32 @@ getmail --rcfile getmailens --rcfile getmailmailoo --rcfile getmailens
       inherit realName getmail maildir;
       userName = "chabassi";
       passwordCommand = "pass school/ens/clipper";
+      astroid.enable = true;
+      astroid.sendMailCommand = "${pkgs.msmtp}/bin/msmtpq --read-envelope-from --read-recpipients --account ens";
 
       imap = {
         host = "clipper.ens.fr";
         port = 993;
         tls.enable = true;
       };
+
+      msmtp.enable = true;
+      smtp = {
+        host = "clipper.ens.fr";
+        port = 465;
+        tls.enable = true;
+      };
     };
 
-    "gmail" = rec {
+    "gmail" = let gm = getmail // { mailboxes = [ "Inbox" ]; }; in rec {
       address = "luc.chabassier@gmail.com";
-      inherit realName getmail maildir;
+      inherit realName maildir;
       flavor = "gmail.com";
       userName = address;
       passwordCommand = "pass mail/gmail.com/luc.chabassier";
+      astroid.enable = true;
+      astroid.sendMailCommand = "${pkgs.msmtp}/bin/msmtpq --read-envelope-from --read-recpipients --account gmail";
+      getmail = gm;
 
       imap = {
         host = "imap.gmail.com";
@@ -107,6 +119,7 @@ getmail --rcfile getmailens --rcfile getmailmailoo --rcfile getmailens
         tls.enable = true;
       };
 
+      msmtp.enable = true;
       smtp = {
         host = "smtp.gmail.com";
         port = 587;
@@ -122,9 +135,19 @@ getmail --rcfile getmailens --rcfile getmailmailoo --rcfile getmailens
       inherit realName getmail maildir;
       userName = address;
       passwordCommand = "pass mail/mailoo.org/luc.linux";
+      astroid.enable = true;
+      astroid.sendMailCommand = "${pkgs.msmtp}/bin/msmtpq --read-envelope-from --read-recpipients --account mailoo";
+
       imap = {
-        host = "mail.net-c.com";
+        host = "mail.mailo.com";
         port = 993;
+        tls.enable = true;
+      };
+
+      msmtp.enable = true;
+      smtp = {
+        host = "mail.mailo.com";
+        port = 465;
         tls.enable = true;
       };
     };

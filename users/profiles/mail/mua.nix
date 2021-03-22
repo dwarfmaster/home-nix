@@ -17,6 +17,6 @@
   programs.astroid = {
     enable = true;
     externalEditor = "${config.programs.emacs.finalPackage}/bin/emacsclient -q -c %1";
-    pollScript = "${config.programs.mbsync.package}/bin/mbsync --all";
+    pollScript = "${pkgs.notmuch}/bin/notmuch new";
   };
 }
