@@ -49,6 +49,7 @@ getmail --rcfile getmailens --rcfile getmailmailoo
       flavor = "plain";
       passwordCommand = "pass mail/dwarfmaster.net/luc";
       astroid.enable = true;
+      astroid.sendMailCommand = "${pkgs.msmtp}/bin/msmtp --read-envelope-from --read-recipients --account dwarfmaster";
 
       # TODO setup gpg
 
@@ -87,7 +88,7 @@ getmail --rcfile getmailens --rcfile getmailmailoo
       userName = "chabassi";
       passwordCommand = "pass school/ens/clipper";
       astroid.enable = true;
-      astroid.sendMailCommand = "${pkgs.msmtp}/bin/msmtpq --read-envelope-from --read-recpipients --account ens";
+      astroid.sendMailCommand = "${pkgs.msmtp}/bin/msmtp --read-envelope-from --read-recipients --account ens";
 
       imap = {
         host = "clipper.ens.fr";
@@ -110,7 +111,7 @@ getmail --rcfile getmailens --rcfile getmailmailoo
       userName = address;
       passwordCommand = "pass mail/gmail.com/luc.chabassier";
       astroid.enable = true;
-      astroid.sendMailCommand = "${pkgs.msmtp}/bin/msmtpq --read-envelope-from --read-recpipients --account gmail";
+      astroid.sendMailCommand = "${pkgs.msmtp}/bin/msmtp --read-envelope-from --read-recipients --account gmail";
       getmail = gm;
 
       imap = {
@@ -136,7 +137,7 @@ getmail --rcfile getmailens --rcfile getmailmailoo
       userName = address;
       passwordCommand = "pass mail/mailoo.org/luc.linux";
       astroid.enable = true;
-      astroid.sendMailCommand = "${pkgs.msmtp}/bin/msmtpq --read-envelope-from --read-recpipients --account mailoo";
+      astroid.sendMailCommand = "${pkgs.msmtp}/bin/msmtp --read-envelope-from --read-recipients --account mailoo";
 
       imap = {
         host = "mail.mailo.com";
