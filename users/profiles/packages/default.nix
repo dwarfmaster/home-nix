@@ -11,6 +11,7 @@
     # Cryptography
     openssh          # Misc cryptographic utilities
     mosh             # Better SSH for bad connections
+    openssl          # Generic cryptography tool
 
     # Compression
     unrar # RAR decompression
@@ -234,7 +235,6 @@
     exiv2                        # Query and edit image metadata
 
     # Games
-    gcs   # GURPS character sheet
     gmp
   ];
 }
