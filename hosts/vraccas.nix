@@ -20,10 +20,34 @@
     kernel.sysctl = {
       "kernel.unprivileged_userns_clone" = 1;
     };
+    kernelParams = [ "ip=188.165.216.157" ];
 
     initrd = {
-      availableKernelModules = [ "uhci_hcd" "ahci" "usbhid" ];
+      availableKernelModules = [ "uhci_hcd" "ahci" "usbhid" "e1000e" ];
       kernelModules = [ ];
+      luks.devices.data.device = "/dev/disk/by-label/515e7b79-ce78-4666-a30a-8ad1150d0810";
+      network = {
+        enable = true;
+        ssh = {
+          enable = true;
+          port = 6922;
+          authorizedKeys = with lib; concatLists (mapAttrsToList
+            (name: user: if elem "wheel" user.extraGroups
+                         then user.openssh.authorizedKeys.keys
+                         else [])
+            config.users.users);
+          hostKeys = [
+            "/var/host/ecdsa"
+            "/var/host/rsa"
+            "/var/host/ed25519"
+          ];
+        };
+      };
+      # postMountCommands = ''
+      #   for int in /sys/class/net/*/
+      #     do ip link set `basename $int` down
+      #   down
+      # '';
     };
     kernelModules = [ "kvm-intel" ];
     extraModulePackages = [ ];
@@ -41,6 +65,9 @@
   powerManagement.cpuFreqGovernor = lib.mkDefault "ondemand";
 
   # Filesystems
+  environment.systemPackages = with pkgs; [
+    cryptsetup
+  ];
   fileSystems = {
     "/" = {
       device = "/dev/disk/by-uuid/cf566959-5090-4121-b268-df3e581ca2bd";
@@ -48,7 +75,7 @@
     };
 
     "/data" = {
-      device = "/dev/disk/by-uuid/73927e8e-2d70-439a-ba11-c07067bc0007";
+      device = "/dev/mapper/data";
       fsType = "ext4";
     };
 
