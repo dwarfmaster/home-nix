@@ -9,6 +9,7 @@
     # (idris.withPackages
     #   (with idrisPackages; [ lightyear contrib ]))
     (agda.withPackages (p: [ p.standard-library ]))
+    vscodium
   ];
 
   home.sessionVariables = {

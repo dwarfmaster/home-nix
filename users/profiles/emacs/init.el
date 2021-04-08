@@ -53,7 +53,7 @@
        (debugger +lsp)
        (eval +overlay)
        (lookup +dictionary +docsets)
-       (lsp +peek)
+       (lsp +peek +eglot)
        magit
        make
        (pass +auth)
