@@ -20,34 +20,10 @@
     kernel.sysctl = {
       "kernel.unprivileged_userns_clone" = 1;
     };
-    kernelParams = [ "ip=188.165.216.157" ];
 
     initrd = {
-      availableKernelModules = [ "uhci_hcd" "ahci" "usbhid" "e1000e" ];
+      availableKernelModules = [ "uhci_hcd" "ahci" "usbhid" ];
       kernelModules = [ ];
-      luks.devices.data.device = "/dev/disk/by-label/515e7b79-ce78-4666-a30a-8ad1150d0810";
-      network = {
-        enable = true;
-        ssh = {
-          enable = true;
-          port = 6922;
-          authorizedKeys = with lib; concatLists (mapAttrsToList
-            (name: user: if elem "wheel" user.extraGroups
-                         then user.openssh.authorizedKeys.keys
-                         else [])
-            config.users.users);
-          hostKeys = [
-            "/var/host/ecdsa"
-            "/var/host/rsa"
-            "/var/host/ed25519"
-          ];
-        };
-      };
-      # postMountCommands = ''
-      #   for int in /sys/class/net/*/
-      #     do ip link set `basename $int` down
-      #   down
-      # '';
     };
     kernelModules = [ "kvm-intel" ];
     extraModulePackages = [ ];
@@ -59,7 +35,7 @@
       device = "/dev/sda";
     };
   };
-  system.stateVersion = "20.09";
+  system.stateVersion = "21.05";
 
   nix.maxJobs = lib.mkDefault 8;
   powerManagement.cpuFreqGovernor = lib.mkDefault "ondemand";
@@ -70,17 +46,18 @@
   ];
   fileSystems = {
     "/" = {
-      device = "/dev/disk/by-uuid/cf566959-5090-4121-b268-df3e581ca2bd";
+      device = "/dev/disk/by-uuid/26dd438a-3009-43f3-9796-a88568e92fb5";
       fsType = "ext4";
     };
 
-    "/data" = {
-      device = "/dev/mapper/data";
-      fsType = "ext4";
-    };
+    # "/data" = {
+    #   device = "/dev/mapper/data";
+    #   fsType = "ext4";
+    #   options = [ "defaults" "noauto" ];
+    # };
 
     "/boot" = {
-      device = "/dev/disk/by-uuid/ca63c5b4-3ec5-4338-9ff7-54fe935b83d0";
+      device = "/dev/disk/by-uuid/c3075475-8a0a-4438-839f-4ee048e083ce";
       fsType = "ext4";
     };
   };
