@@ -13,6 +13,7 @@
 
     # Services
     ../modules/mail-server
+    ../modules/nextcloud
   ];
 
   boot = {
