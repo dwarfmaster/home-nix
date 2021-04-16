@@ -14,6 +14,7 @@
     # Services
     ../modules/mail-server
     ../modules/nextcloud
+    ../modules/deluge
   ];
 
   boot = {
