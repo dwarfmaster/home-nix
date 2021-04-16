@@ -5,6 +5,7 @@ args@{ config, lib, pkgs, ... }:
     enable = true;
     fqdn = "dwarfmaster.net";
     domains = [ "dwarfmaster.net" ];
+    mailDirectory = "/data/var/vmail";
 
     loginAccounts = {
       "luc@dwarfmaster.net" = {
