@@ -36,7 +36,7 @@
 
 (setq rmh-elfeed-org-files (list "~/wiki/support/feeds.org"))
 (after! elfeed
-  (setq elfeed-search-filter "@1-week-ago +unread"))
+  (setq elfeed-search-filter "@1-week-ago +unread -webcomics"))
 (map! :leader "o l" 'elfeed)
 
 ;;; Figlet

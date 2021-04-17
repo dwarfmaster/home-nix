@@ -38,7 +38,7 @@
        (latex +latexmk +cdlatex +lsp)
        ledger
        nix
-       ocaml
+       ;; ocaml
        (org +roam +pretty)
        rust
        sh

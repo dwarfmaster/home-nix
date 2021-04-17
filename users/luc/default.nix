@@ -18,6 +18,7 @@
       ../profiles/photos
       ../profiles/music
       ../profiles/book
+      ../profiles/papers
     ];
   };
 }
