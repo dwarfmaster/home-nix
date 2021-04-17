@@ -28,6 +28,10 @@
   services.nginx.virtualHosts."downloads.dwarfmaster.net" = {
     forceSSL = true;
     enableACME = true;
-    root = "/data/var/www/torrents";
+    root = "/data/var/www/torrents/completed";
+    basicAuthFile = "/data/var/www/torrents/completed/.htpasswd";
+    extraConfig = ''
+      autoindex on;
+    '';
   };
 }
