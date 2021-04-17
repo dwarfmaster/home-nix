@@ -15,6 +15,7 @@
     ../modules/mail-server
     ../modules/nextcloud
     ../modules/deluge
+    ../modules/matrix
   ];
 
   boot = {
