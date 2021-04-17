@@ -46,6 +46,7 @@
   # Filesystems
   environment.systemPackages = with pkgs; [
     cryptsetup
+    apacheHttpd # For htpasswd
   ];
   fileSystems = {
     "/" = {
@@ -94,6 +95,11 @@
 
   services.nginx = {
     enable = true;
+    recommendedTlsSettings = true;
+    recommendedOptimisation = true;
+    recommendedGzipSettings = true;
+    recommendedProxySettings = true;
+
     virtualHosts = {
       "dwarfmaster.net" = {
         forceSSL = true;
@@ -142,4 +148,10 @@ Welcome !
     ports = [ 2222 ];
   };
   programs.mosh.enable = true;
+
+  # PostgreSQL
+  services.postgresql = {
+    enable = true;
+    dataDir = "/data/var/lib/postgresql/${config.services.postgresql.package.psqlSchema}";
+  };
 }

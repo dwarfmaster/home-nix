@@ -40,9 +40,6 @@
 
   # Database configuration
   services.postgresql = {
-    enable = true;
-    dataDir = "/data/var/lib/postgresql/${config.services.postgresql.package.psqlSchema}";
-
     # Ensure the database, user and permission always exist
     ensureDatabases = [ "nextcloud" ];
     ensureUsers = [
