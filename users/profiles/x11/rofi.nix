@@ -15,5 +15,5 @@
   separator   = "solid";
   padding     = 5;
 
-  extraConfig = builtins.readFile ./rofi/config;
+  extraConfig = import ./rofi/config.nix;
 }

@@ -15,7 +15,7 @@
 
     # Support for touchpad
     libinput.enable = true;
-    libinput.tapping = false;
+    libinput.touchpad.tapping = false;
   };
 
   # Add dconf as dbus service

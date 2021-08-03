@@ -4,8 +4,8 @@
   inputs =
     {
       master.url = "nixpkgs/master";
-      nixos.url = "nixpkgs/release-20.09";
-      home.url = "github:nix-community/home-manager/release-20.09";
+      nixos.url = "nixpkgs/release-21.05";
+      home.url = "github:nix-community/home-manager/release-21.05";
       simple-mailserver.url = "gitlab:simple-nixos-mailserver/nixos-mailserver";
     };
 

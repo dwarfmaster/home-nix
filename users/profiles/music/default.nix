@@ -3,13 +3,12 @@
 {
   programs.beets = {
     enable = true;
-    package = (pkgs.beets.override {
-      keyfinder-cli = pkgs.keyfinder-cli;
-      bs1770gain = pkgs.bs1770gain;
-      flac = pkgs.flac;
-      mp3val = pkgs.mp3val;
-      enableAlternatives = true;
-    });
+    #package = (pkgs.beets.override {
+    #  keyfinder-cli = pkgs.keyfinder-cli;
+    #  flac = pkgs.flac;
+    #  mp3val = pkgs.mp3val;
+    #  enableAlternatives = true;
+    #});
     settings = {
       directory = "/data/luc/annex/music/files";
       library = "${config.xdg.cacheHome}/beets/database.db";

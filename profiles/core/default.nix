@@ -134,8 +134,6 @@ in
 
   security = {
 
-    hideProcessInformation = true;
-
     protectKernelImage = true;
 
   };

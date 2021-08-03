@@ -6,7 +6,7 @@
 
 assert javaBindings -> jdk != null;
 
-with stdenv.lib;
+with lib;
 
 stdenv.mkDerivation rec {
   pname = "z3";
@@ -44,8 +44,8 @@ stdenv.mkDerivation rec {
   meta = {
     description = "A high-performance theorem prover and SMT solver";
     homepage    = "https://github.com/Z3Prover/z3";
-    license     = stdenv.lib.licenses.mit;
-    platforms   = stdenv.lib.platforms.x86_64;
-    maintainers = with stdenv.lib.maintainers; [ thoughtpolice ttuegel ];
+    license     = lib.licenses.mit;
+    platforms   = lib.platforms.x86_64;
+    maintainers = with lib.maintainers; [ thoughtpolice ttuegel ];
   };
 }
