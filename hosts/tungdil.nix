@@ -12,6 +12,7 @@
     ../modules/printing
     ../modules/common-env
     ../modules/mail-client
+    ../modules/accounting
   ];
 
   boot = {

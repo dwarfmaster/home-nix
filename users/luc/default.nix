@@ -19,6 +19,7 @@
       ../profiles/music
       ../profiles/book
       ../profiles/papers
+      ../profiles/accounting
     ];
   };
 }
