@@ -47,6 +47,11 @@
     cachix          # Nix binary caches handling
     nixops          # Nix-based deployement
     mkpasswd        # Tool to encode passwords for config files
+    zbar            # Tool to work with QR code
+
+    # Phone
+    android-udev-rules
+    signify
 
 
     #  ____  _          _ _
@@ -119,6 +124,9 @@
     dune_2
     ocamlPackages.utop
 
+    # JAVA
+    #openjdk14
+
     # Tools
     pijul    # VCS based on sound theory
     gnumake  # Simple generic purpose build system
@@ -131,6 +139,7 @@
     ctags    # Objects indexer for many languages
     autoconf # Makefile generator
     automake # Same
+    linuxPackages.perf # Profile programs
 
     # Data viewing
     gnuplot     # Plotting programming language
@@ -229,12 +238,8 @@
     # Misc
     pass                         # CLI password manager
     gitAndTools.git-annex        # Files manager
-    haskellPackages.hledger      # Accounting software
     chromium
     exif                         # Query image metadata
     exiv2                        # Query and edit image metadata
-
-    # Games
-    gmp
   ];
 }
