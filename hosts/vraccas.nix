@@ -16,6 +16,7 @@
     ../modules/nextcloud
     ../modules/deluge
     ../modules/matrix
+    ../modules/reading-server
   ];
 
   boot = {
@@ -121,6 +122,7 @@
         enableACME = true;
         locations."/" = {
           root = "/var/www/assofrancojap";
+          index = "SiteAccueil.html";
         };
       };
     };
