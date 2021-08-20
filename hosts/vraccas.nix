@@ -17,6 +17,7 @@
     ../modules/deluge
     ../modules/matrix
     ../modules/reading-server
+    ../modules/photo-server
   ];
 
   boot = {
