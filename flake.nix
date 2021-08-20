@@ -4,12 +4,20 @@
   inputs =
     {
       master.url = "nixpkgs/master";
+      unstable.url = "nixpkgs/nixos-unstable";
       nixos.url = "nixpkgs/release-21.05";
-      home.url = "github:nix-community/home-manager/release-21.05";
-      simple-mailserver.url = "gitlab:simple-nixos-mailserver/nixos-mailserver";
+      home = {
+        url = "github:nix-community/home-manager/release-21.05";
+        inputs.nixpkgs.follows = "nixos";
+      };
+      simple-mailserver = {
+        url = "gitlab:simple-nixos-mailserver/nixos-mailserver";
+        inputs.nixpkgs.follows = "unstable";
+        inputs.nixpkgs-21_05.follows = "nixos";
+      };
     };
 
-  outputs = inputs@{ self, simple-mailserver, home, nixos, master }:
+  outputs = inputs@{ self, simple-mailserver, home, nixos, master, unstable }:
     let
       inherit (builtins) attrNames attrValues readDir;
       inherit (nixos) lib;
