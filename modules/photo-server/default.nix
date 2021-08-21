@@ -53,6 +53,34 @@ let
   poolConfig   = null;
 
   pixelfed = with pkgs; callPackage ./pixelfed { php = phpPackage; phpPackages = php74Packages; noDev = true; };
+  pixelfed-config = {
+    name = "DwarfMaster's Photo server";
+    url = "https://photos.dwarfmaster.net";
+    domain = "dwarfmaster.net";
+    dbtype = "pgsql";
+    dbhost = "127.0.0.1";
+    dbport = config.services.postgresql.port;
+    dbname = dbtable;
+    dbuser = user;
+    dbpass = null;
+    dbsocket = null;
+    redis_host = config.services.redis.unixSocket;
+    redis_port = null;
+    enable_mail = true;
+    mail_host = "localhost";
+    mail_port = 465;
+    mail_from = "pixelfed@dwarfmaster.net";
+    mail_from_name = "DwarfMaster's PixelFed";
+    open_registration = false;
+    mail_verification = true;
+    max_users = 2000;
+    enable_activity_pub = true;
+    max_photo_size = 15000;
+    max_caption_length = 150;
+    max_album_length = 10;
+  };
+  pixelfed-env = pkgs.writeText "env"
+    (import ./pixelfed-env.nix { config = pixelfed-config; inherit lib; });
 
 in {
   imports = [ ./redis.nix ];
@@ -104,4 +132,68 @@ in {
 
   # NGinx
   services.nginx.enable = mkDefault true;
+
+  # SystemdD services
+  systemd.services = {
+    pixelfed-setup = {
+      wantedBy = [ "multi-user.target" ];
+      before = [ "phpfpm-pixelfed.service"
+                 "pixelfed-horizon.service"
+                 "pixelfed-queue-worker.service" ];
+      serviceConfig.Type = "oneshot";
+      serviceConfig.User = user;
+      restartTriggers = [ pixelfed pixelfed-env ];
+      # path = [  ];
+      script = ''
+        chmod og+x ${home}
+
+        # Read-only content
+        for ro in vendor routes ressources public database config bootstrap app \
+                  webpack.mix.js server.php artisan; do
+          ln -sf ${pixelfed}/$ro ${home}/$ro
+        done
+
+        # Data directories
+        for dir in storage; do
+          if [ ! -e ${home}/$dir ]; then
+            install -o ${user} -g ${group} ${home}/$dir
+          elif [ $(stat -c "%G" ${home}/$dir) != "${group}" ]; then
+            chgrp -R ${group} ${home}/$dir
+          fi
+        done
+
+        # Config
+        ln -sf ${pixelfed-env}/env ${home}/.env
+
+        ${phpPackage}/bin/php ${home}/artisan key:generate
+        ${phpPackage}/bin/php ${home}/artisan storage:link
+        ${phpPackage}/bin/php ${home}/artisan migrate --force
+        ${phpPackage}/bin/php ${home}/artisan import:cities
+        ${if pixelfed-config.enable_activity_pub
+          then "${phpPackage}/bin/php ${home}/artisan instance:actor"
+          else ""}
+        ${phpPackage}/bin/php ${home}/artisan route:cache
+        ${phpPackage}/bin/php ${home}/artisan view:cache
+        ${phpPackage}/bin/php ${home}/artisan config:cache
+        ${phpPackage}/bin/php ${home}/artisan horizon:install
+        ${phpPackage}/bin/php ${home}/artisan horizon:publish
+      '';
+    };
+
+    pixelfed-horizon = {
+      wantedBy = [ "multi-user.target" ];
+      before = [ "phpfpm-pixelfed.service" ];
+      serviceConfig.Type = "simple";
+      serviceConfig.User = user;
+      script = "${phpPackage}/bin/php ${home}/artisan horizon";
+    };
+
+    pixelfed-queue-worker = {
+      wantedBy = [ "multi-user.target" ];
+      before = [ "phpfpm-pixelfed.service" ];
+      serviceConfig.Type = "simple";
+      serviceConfig.User = user;
+      script = "${phpPackage}/bin/php ${home}/artisan queue:work";
+    };
+  };
 }
