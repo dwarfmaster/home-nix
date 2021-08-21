@@ -1,3 +1,5 @@
+{ pkgs, ... }:
+
 {
   users.users.luc = {
     uid = 1000;
@@ -27,6 +29,9 @@
     xdg.enable = true;
     programs.git.userName = "DwarfMaster";
     programs.git.userEmail = "luc@dwarfmaster.net";
+
+    # TODO factor common packages somewhere
+    home.packages = with pkgs; [ tree ];
 
     manual = {
       html.enable = true;
