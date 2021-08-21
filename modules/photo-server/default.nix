@@ -12,6 +12,9 @@ let
   dbhost  = "/run/postgresql";
   dbtype  = "pgsql";
 
+  hostName = "pixelfed.dwarfmaster.net";
+  domain = "dwarfmaster.net";
+
   fpm = config.services.phpfpm.pools.pixelfed;
   phpPackage = pkgs.php74.buildEnv {
     extensions = {enabled, all}:
@@ -55,8 +58,8 @@ let
   pixelfed = with pkgs; callPackage ./pixelfed { php = phpPackage; phpPackages = php74Packages; noDev = true; };
   pixelfed-config = {
     name = "DwarfMaster's Photo server";
-    url = "https://photos.dwarfmaster.net";
-    domain = "dwarfmaster.net";
+    url = "https://${hostName}";
+    domain = domain;
     dbtype = "pgsql";
     dbhost = "127.0.0.1";
     dbport = config.services.postgresql.port;
@@ -130,9 +133,6 @@ in {
     };
   };
 
-  # NGinx
-  services.nginx.enable = mkDefault true;
-
   # SystemdD services
   systemd.services = {
     pixelfed-setup = {
@@ -154,6 +154,7 @@ in {
         done
 
         # Data directories
+        # TODO
         for dir in storage; do
           if [ ! -e ${home}/$dir ]; then
             install -o ${user} -g ${group} ${home}/$dir
@@ -185,7 +186,7 @@ in {
       before = [ "phpfpm-pixelfed.service" ];
       serviceConfig.Type = "simple";
       serviceConfig.User = user;
-      script = "${phpPackage}/bin/php ${home}/artisan horizon";
+      serviceConfig.ExecStart = "${phpPackage}/bin/php ${home}/artisan horizon";
     };
 
     pixelfed-queue-worker = {
@@ -193,7 +194,83 @@ in {
       before = [ "phpfpm-pixelfed.service" ];
       serviceConfig.Type = "simple";
       serviceConfig.User = user;
-      script = "${phpPackage}/bin/php ${home}/artisan queue:work";
+      serviceConfig.ExecStart = "${phpPackage}/bin/php ${home}/artisan queue:work";
     };
+
+    pixelfed-cron = {
+      serviceConfig.Type = "oneshot";
+      serviceConfig.User = user;
+      serviceConfig.ExecStart = "${phpPackage}/bin/php ${home}/artisan schedule:run";
+    };
+  };
+
+  systemd.timers = {
+    pixelfed-cron = {
+      wantedBy = [ "timers.target" ];
+      timerConfig.OnBootSec = "5m";
+      timerConfig.OnUnitActiveSec = "5m";
+      timerConfig.Unit = "pixelfed-cron.service";
+    };
+  };
+
+  # NGinx
+  services.nginx.enable = mkDefault true;
+
+  services.nginx.virtualHosts.${hostName} = {
+    forceSSL = true;
+    enableACME = true;
+    root = home;
+
+    locations = {
+      "/" = {
+        priority = 100;
+        tryFiles = "$uri $uri/ /index.php?$query_string";
+      };
+
+      "= /favicon.ico" = {
+        priority = 200;
+        extraConfig = ''
+          access_log off;
+          log_not_found off;
+        '';
+      };
+      "= /robots.txt" = {
+        priority = 200;
+        extraConfig = ''
+          access_log off;
+          log_not_found off;
+        '';
+      };
+
+      "~ \.php$" = {
+        priority = 300;
+        extraConfig = ''
+          fastcgi_split_path_info ^(.+\.php)(/.+)$;
+          try_files $fastcgi_script_name =404;
+          fastcgi_pass unix:${config.services.phpfpm.pools.pixelfed.socket};
+          fastcgi_index index.php;
+          include fastcgi_params;
+          fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name; # or $request_filename
+        '';
+      };
+
+      "~ /\.(?!well-known).*" = {
+        priority = 400;
+        extraConfig = "deny all;";
+      };
+    };
+
+    extraConfig = ''
+      add_header X-Frame-Options "SAMEORIGIN";
+      add_header X-XSS-Protection "1; mode=block";
+      add_header X-Content-Type-Options "nosniff";
+
+      index index.html index.htm index.php;
+
+      charset utf-8;
+      client_max_body_size 15M;
+
+      error 404 /index.php;
+    '';
   };
 }
