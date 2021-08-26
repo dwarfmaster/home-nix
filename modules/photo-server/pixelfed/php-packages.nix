@@ -1,6 +1,7 @@
-{composerEnv, fetchurl, fetchgit ? null, fetchhg ? null, fetchsvn ? null, noDev ? false}:
+{pixelfed-env, composerEnv, fetchurl, fetchgit ? null, fetchhg ? null, fetchsvn ? null, noDev ? false}:
 
 let
+
   packages = {
     "alchemy/binary-driver" = {
       targetDir = "";
@@ -1591,4 +1592,7 @@ composerEnv.buildPackage {
   meta = {
     license = "AGPL-3.0-only";
   };
+  postInstall = ''
+    cp ${pixelfed-env} $out/.env
+  '';
 }
