@@ -1,6 +1,7 @@
 args@{ config, lib, pkgs, ... }:
 
 {
+  # TODO add assertion that redis doesn't use a unix socket
   mailserver = {
     enable = true;
     fqdn = "dwarfmaster.net";
@@ -27,4 +28,9 @@ args@{ config, lib, pkgs, ... }:
     enableManageSieve = false;
     virusScanning = true;
   };
+
+  assertions = [
+    { assertion = isNull config.services.redis.unixSocket;
+      message = "simple-nixos-mailserver doesn't support redis over UNIX socket"; }
+  ];
 }
