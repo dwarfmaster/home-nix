@@ -64,10 +64,13 @@ CACHE_DRIVER=redis
 SESSION_DRIVER=redis
 QUEUE_DRIVER=redis
 
-REDIS_SCHEME=tcp
-REDIS_HOST=${cfg.redis_host}
+REDIS_SCHEME=${if isNull config.redis_port then "unix" else "tcp"}
+${if isNull config.redis_port
+  then "REDIS_PATH=${cfg.redis_host}"
+  else "REDIS_HOST=${cfg.redis_host}"}
 REDIS_PASSWORD=null
-${if isNull config.redis_port then ""
+${if isNull config.redis_port
+  then ""
   else "REDIS_PORT=${cfg.redis_port}"}
 
 ${if config.enable_mail

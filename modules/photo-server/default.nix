@@ -6,7 +6,7 @@ let
 
   user = "pixelfed";
   group = "pixelfed";
-  home = "/data/var/lib/pixelfed";
+  home = "/var/www/pixelfed";
 
   dbtable = "pixelfed";
   dbhost  = "/run/postgresql";
@@ -47,15 +47,34 @@ let
     upload_max_filesize = "2M";
     max_file_uploads = 20;
     max_execution_time = 600;
+  } // {
+    short_open_tag = "Off";
+    expose_php = "Off";
+    error_reporting = "E_ALL & ~E_DEPRECATED & ~E_STRICT";
+    display_errors = "stderr";
+    "opcache.enable_cli" = "1";
+    "opcache.interned_strings_buffer" = "8";
+    "opcache.max_accelerated_files" = "10000";
+    "opcache.memory_consumption" = "128";
+    "opcache.revalidate_freq" = "1";
+    "opcache.fast_shutdown" = "1";
+    "openssl.cafile" = "/etc/ssl/certs/ca-certificates.crt";
+    catch_workers_output = "yes";
   };
   toKeyValue = generators.toKeyValue {
     mkKeyValue = generators.mkKeyValueDefault {} " = ";
   };
 
-  poolSettings = { };
+  poolSettings = {
+    "pm" = "dynamic";
+    "pm.max_children" = "32";
+    "pm.start_servers" = "2";
+    "pm.min_spare_servers" = "2";
+    "pm.max_spare_servers" = "4";
+    "pm.max_requests" = "500";
+  };
   poolConfig   = null;
 
-  pixelfed = with pkgs; callPackage ./pixelfed { php = phpPackage; phpPackages = php74Packages; noDev = true; };
   pixelfed-config = {
     name = "DwarfMaster's Photo server";
     url = "https://${hostName}";
@@ -67,8 +86,8 @@ let
     dbuser = user;
     dbpass = null;
     dbsocket = null;
-    redis_host = config.services.redis.unixSocket;
-    redis_port = null;
+    redis_host = "127.0.0.1";
+    redis_port = config.services.redis.port;
     enable_mail = true;
     mail_host = "localhost";
     mail_port = 465;
@@ -82,8 +101,13 @@ let
     max_caption_length = 150;
     max_album_length = 10;
   };
-  pixelfed-env = pkgs.writeText "env"
-    (import ./pixelfed-env.nix { config = pixelfed-config; inherit lib; });
+  pixelfed = with pkgs; callPackage ./pixelfed {
+    storage = home;
+    envConfig = pixelfed-config;
+    php = phpPackage;
+    phpPackages = php74Packages;
+    noDev = true;
+  };
 
 in {
   imports = [ ./redis.nix ];
@@ -110,9 +134,10 @@ in {
   # Users
   users.users.${user} = {
     home = home;
+    group = group;
     createHome = true;
     isSystemUser = true;
-    group = group;
+    extraGroups = [ "redis" ];
   };
   users.groups.${group}.members = [ user config.services.nginx.user ];
 
@@ -134,74 +159,84 @@ in {
   };
 
   # SystemdD services
+  # TODO
   systemd.services = {
     pixelfed-setup = {
       wantedBy = [ "multi-user.target" ];
-      before = [ "phpfpm-pixelfed.service"
-                 "pixelfed-horizon.service"
-                 "pixelfed-queue-worker.service" ];
+      before = [ "phpfpm-pixelfed.service" ];
+                 #"pixelfed-horizon.service"
+                 #"pixelfed-queue-worker.service" ];
       serviceConfig.Type = "oneshot";
       serviceConfig.User = user;
-      restartTriggers = [ pixelfed pixelfed-env ];
+      restartTriggers = [ pixelfed ];
       # path = [  ];
       script = ''
-        chmod og+x ${home}
+        chmod 775 ${home}
 
-        # Read-only content
-        for ro in vendor routes ressources public database config bootstrap app \
-                  webpack.mix.js server.php artisan; do
-          ln -sf ${pixelfed}/$ro ${home}/$ro
-        done
-
-        # Data directories
-        # TODO
-        for dir in storage; do
-          if [ ! -e ${home}/$dir ]; then
-            install -o ${user} -g ${group} ${home}/$dir
-          elif [ $(stat -c "%G" ${home}/$dir) != "${group}" ]; then
-            chgrp -R ${group} ${home}/$dir
+        if [ ! -e ${home}/storage ]; then
+          install -o ${user} -g ${group} -m 0775 -d ${home}/storage
+        fi
+        for path in framework framework/sessions framework/cache framework/views; do
+          if [ ! -e $path ]; then
+            install -o ${user} -g ${group} -m 0775 -d ${home}/storage/$path
           fi
         done
 
-        # Config
-        ln -sf ${pixelfed-env}/env ${home}/.env
+        for path in app bootstrap config database resources routes tests vendor \
+                    server.php composer.json; do
+          if [ -e ${home}/$path ]; then
+            rm ${home}/$path
+          fi
+          ln -s ${pixelfed}/$path ${home}/$path
+        done
 
-        ${phpPackage}/bin/php ${home}/artisan key:generate
-        ${phpPackage}/bin/php ${home}/artisan storage:link
-        ${phpPackage}/bin/php ${home}/artisan migrate --force
-        ${phpPackage}/bin/php ${home}/artisan import:cities
+        for path in .env public; do
+          if [ -e ${home}/$path ]; then
+            rm ${home}/$path
+          fi
+          if [ -d ${pixelfed}/$path ]; then
+            # TODO
+            install -o ${user} -g ${group} -m 0665 -d ${pixelfed}/$path ${home}/$path
+          else
+            install -o ${user} -g ${group} -m 0665 ${pixelfed}/$path ${home}/$path
+          fi
+        done
+
+        ${phpPackage}/bin/php ${pixelfed}/artisan key:generate
+        ${phpPackage}/bin/php ${pixelfed}/artisan migrate --force
+        ${phpPackage}/bin/php ${pixelfed}/artisan import:cities
         ${if pixelfed-config.enable_activity_pub
-          then "${phpPackage}/bin/php ${home}/artisan instance:actor"
+          then "${phpPackage}/bin/php ${pixelfed}/artisan instance:actor"
           else ""}
-        ${phpPackage}/bin/php ${home}/artisan route:cache
-        ${phpPackage}/bin/php ${home}/artisan view:cache
-        ${phpPackage}/bin/php ${home}/artisan config:cache
-        ${phpPackage}/bin/php ${home}/artisan horizon:install
-        ${phpPackage}/bin/php ${home}/artisan horizon:publish
+        ${phpPackage}/bin/php ${pixelfed}/artisan route:cache
+        ${phpPackage}/bin/php ${pixelfed}/artisan view:cache
+        ${phpPackage}/bin/php ${pixelfed}/artisan config:cache
+        ${phpPackage}/bin/php ${pixelfed}/artisan horizon:install
+        ${phpPackage}/bin/php ${pixelfed}/artisan horizon:publish
       '';
     };
 
-    pixelfed-horizon = {
-      wantedBy = [ "multi-user.target" ];
-      before = [ "phpfpm-pixelfed.service" ];
-      serviceConfig.Type = "simple";
-      serviceConfig.User = user;
-      serviceConfig.ExecStart = "${phpPackage}/bin/php ${home}/artisan horizon";
-    };
+  #   pixelfed-horizon = {
+  #     wantedBy = [ "multi-user.target" ];
+  #     before = [ "phpfpm-pixelfed.service" ];
+  #     serviceConfig.Type = "simple";
+  #     serviceConfig.User = user;
+  #     serviceConfig.ExecStart = "${phpPackage}/bin/php ${home}/artisan horizon";
+  #   };
 
-    pixelfed-queue-worker = {
-      wantedBy = [ "multi-user.target" ];
-      before = [ "phpfpm-pixelfed.service" ];
-      serviceConfig.Type = "simple";
-      serviceConfig.User = user;
-      serviceConfig.ExecStart = "${phpPackage}/bin/php ${home}/artisan queue:work";
-    };
+  #   pixelfed-queue-worker = {
+  #     wantedBy = [ "multi-user.target" ];
+  #     before = [ "phpfpm-pixelfed.service" ];
+  #     serviceConfig.Type = "simple";
+  #     serviceConfig.User = user;
+  #     serviceConfig.ExecStart = "${phpPackage}/bin/php ${home}/artisan queue:work";
+  #   };
 
-    pixelfed-cron = {
-      serviceConfig.Type = "oneshot";
-      serviceConfig.User = user;
-      serviceConfig.ExecStart = "${phpPackage}/bin/php ${home}/artisan schedule:run";
-    };
+  #   pixelfed-cron = {
+  #     serviceConfig.Type = "oneshot";
+  #     serviceConfig.User = user;
+  #     serviceConfig.ExecStart = "${phpPackage}/bin/php ${home}/artisan schedule:run";
+  #   };
   };
 
   systemd.timers = {
@@ -217,9 +252,10 @@ in {
   services.nginx.enable = mkDefault true;
 
   services.nginx.virtualHosts.${hostName} = {
-    forceSSL = true;
-    enableACME = true;
-    root = home;
+    # TODO
+    forceSSL = false;
+    enableACME = false;
+    root = "${pixelfed}/public";
 
     locations = {
       "/" = {
@@ -245,11 +281,13 @@ in {
       "~ \.php$" = {
         priority = 300;
         extraConfig = ''
+          include ${config.services.nginx.package}/conf/fastcgi.conf;
           fastcgi_split_path_info ^(.+\.php)(/.+)$;
           try_files $fastcgi_script_name =404;
           fastcgi_pass unix:${config.services.phpfpm.pools.pixelfed.socket};
           fastcgi_index index.php;
-          include fastcgi_params;
+          fastcgi_param PATH_INFO $path_info;
+          fastcgi_param HTTPS on;
           fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name; # or $request_filename
         '';
       };
@@ -270,7 +308,7 @@ in {
       charset utf-8;
       client_max_body_size 15M;
 
-      error 404 /index.php;
+      error_page 404 /index.php;
     '';
   };
 }
