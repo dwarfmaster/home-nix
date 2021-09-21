@@ -57,7 +57,8 @@ ${if isNull config.dbsocket
   else "DB_SOCKET=${cfg.dbsocket}"}
 DB_DATABASE=${cfg.dbname}
 DB_USERNAME=${cfg.dbuser}
-DB_PASSWORD=${cfg.dbpass}
+${if isNull config.dbpass then ""
+  else "DB_PASSWORD=${cfg.dbpass}"}
 
 BROADCAST_DRIVER=log
 CACHE_DRIVER=redis

@@ -192,11 +192,14 @@ in {
 
         for path in .env public; do
           if [ -e ${home}/$path ]; then
-            rm ${home}/$path
+            rm -rf ${home}/$path
           fi
           if [ -d ${pixelfed}/$path ]; then
             # TODO
-            install -o ${user} -g ${group} -m 0665 -d ${pixelfed}/$path ${home}/$path
+            install -o ${user} -g ${group} -m 0775 -d ${home}/$path
+            for file in ${pixelfed}/$path/*; do
+              ln -s $file ${home}/$path/$(basename $file)
+            done
           else
             install -o ${user} -g ${group} -m 0665 ${pixelfed}/$path ${home}/$path
           fi

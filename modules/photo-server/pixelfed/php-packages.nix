@@ -1,4 +1,4 @@
-{pixelfed-app, pixelfed-env, composerEnv, fetchurl, fetchgit ? null, fetchhg ? null, fetchsvn ? null, noDev ? false}:
+{pixelfed-app, pixelfed-db, pixelfed-env, composerEnv, fetchurl, fetchgit ? null, fetchhg ? null, fetchsvn ? null, noDev ? false}:
 
 let
 
@@ -1595,5 +1595,6 @@ composerEnv.buildPackage {
   postInstall = ''
     cp ${pixelfed-env} $out/.env
     cp ${pixelfed-app} $out/bootstrap/app.php
+    cp ${pixelfed-db}  $out/config/database.php
   '';
 }
