@@ -17,80 +17,76 @@
       };
     };
 
-  outputs = inputs@{ self, simple-mailserver, home, nixos, master, unstable }:
+  outputs = inputs@{ self, home, nixos, master, unstable, simple-mailserver }:
     let
-      inherit (builtins) attrNames attrValues readDir;
-      inherit (nixos) lib;
-      inherit (lib) removeSuffix recursiveUpdate genAttrs filterAttrs;
-      inherit (utils) pathsToImportedAttrs;
-
-      utils = import ./lib/utils.nix { inherit lib; };
-
-      system = "x86_64-linux";
-
-      pkgImport = pkgs:
-        import pkgs {
-          inherit system;
-          overlays = attrValues self.overlays;
-          config = { allowUnfree = true; };
-        };
-
-      pkgset = {
-        osPkgs = pkgImport nixos;
-        pkgs = pkgImport master;
+      # All overlays to apply
+      finalOverlays = self.overlays // {
+      };
+      # Modules to be made available to hosts config
+      finalModules = self.nixosModules // {
+        home-manager = home.nixosModules.nixosModules.home-manager;
+        mailserver   = simple-mailserver.nixosModules.mailserver;
+      };
+      # HM Modules to be made available to profiles
+      finalHMModules = self.hmModules // {
       };
 
     in
-    with pkgset;
-    {
-      nixosConfigurations =
-        import ./hosts (recursiveUpdate inputs {
-          inherit lib pkgset system utils;
-        }
-        );
+    # After this point there is no configuration, only plumbing
+    let
+      inherit (builtins) attrNames attrValues readDir;
+      inherit (nixos) lib;
+      inherit (lib) recursiveUpdate;
+      utils = import ./lib/utils.nix { inherit lib; };
+      inherit (utils) pathsToImportedAttrs;
 
-      devShell."${system}" = import ./shell.nix {
-        inherit pkgs;
+      system = "x86_64-linux";
+
+      pkgImport = unfree: pkgs:
+        import pkgs {
+          inherit system;
+          overlays = attrValues finalOverlays;
+          config = { allowUnfree = unfree; };
+        };
+
+      pkgset = {
+        master = pkgImport false master;
+        master-unfree = pkgImport true master;
+        unstable = pkgImport false unstable;
+        unstable-unfree = pkgImport true unstable;
+        pkgs = pkgImport false nixos;
+        unfree = pkgImport true nixos;
       };
 
-      overlay = import ./pkgs;
+    in {
+      checks."${system}" = {
+        # TODO
+      };
+
+      hydraJobs = {
+        # TODO;
+      };
 
       overlays =
         let
           overlayDir = ./overlays;
           fullPath = name: overlayDir + "/${name}";
           overlayPaths = map fullPath (attrNames (readDir overlayDir));
-        in
-        pathsToImportedAttrs overlayPaths;
-
-      packages."${system}" =
-        let
-          packages = self.overlay osPkgs osPkgs;
-          overlays = lib.filterAttrs (n: v: n != "pkgs") self.overlays;
-          overlayPkgs =
-            genAttrs
-              (attrNames overlays)
-              (name: (overlays."${name}" osPkgs osPkgs)."${name}");
-        in
-        recursiveUpdate packages overlayPkgs;
+        in pathsToImportedAttrs overlayPaths;
 
       nixosModules =
         let
-          # binary cache
-          cachix = import ./cachix.nix;
-          cachixAttrs = { inherit cachix; };
+          modulesDir = ./modules/nixos;
+          fullPath = name: modulesDir + "/${name}";
+          modulesPaths = map fullPath (attrNames (readDir modulesDir));
+        in pathsToImportedAttrs modulesPaths;
 
-          # modules
-          moduleList = import ./modules/list.nix;
-          modulesAttrs = pathsToImportedAttrs moduleList;
+      hmModules = {
+        # TODO
+      };
 
-          # profiles
-          profilesList = import ./profiles/list.nix;
-          profilesAttrs = { profiles = pathsToImportedAttrs profilesList; };
-
-        in
-        recursiveUpdate
-          (recursiveUpdate cachixAttrs modulesAttrs)
-          profilesAttrs;
+      nixosConfigurations = {
+        # TODO
+      };
     };
 }

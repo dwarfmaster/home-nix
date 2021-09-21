@@ -8,7 +8,7 @@ let
   #   (name -> value -> bool )
   #   (name -> value -> { name = any; value = any; })
   #   attrs
-  mapFilterAttrs = seive: f: attrs: filterAttrs seive (mapAttrs' f attrs);
+  mapFilterAttrs = sieve: f: attrs: filterAttrs sieve (mapAttrs' f attrs);
 
   # Generate an attribute set by mapping a function over a list of values.
   genAttrs' = values: f: listToAttrs (map f values);
