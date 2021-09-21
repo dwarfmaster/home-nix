@@ -61,10 +61,11 @@
     # |____/|_| |_|\___|_|_|
     #
     # Shells and multiplexers
-    bash   # GNU shell
-    fish   # Shell focused on interaction
-    tmux   # Terminal multiplexer and splitter
-    abduco # Terminal multiplexer
+    bash    # GNU shell
+    fish    # Shell focused on interaction
+    tmux    # Terminal multiplexer and splitter
+    abduco  # Terminal multiplexer
+    nushell # Modern shell
 
     # Utilities
     most             # Advanced pager
@@ -226,6 +227,7 @@
     graphviz                     # Graph drawing
     python27Packages.dot2tex     # Convert graphviz graphs to LaTeX
     texlive.combined.scheme-full # All of texlive (including LaTeX and ConTEXt)
+    lua53Packages.digestif       # Code analyzer for TeX
     libreoffice
 
     # Communication
