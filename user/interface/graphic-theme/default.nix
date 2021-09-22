@@ -1,7 +1,7 @@
 { pkgs, ... }:
 
 {
-  imports = [ ../xdg ];
+  imports = [ ../../system/xdg ];
 
   qt = {
     enable = true;

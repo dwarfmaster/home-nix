@@ -2,22 +2,21 @@
 
 {
   imports = [
-    # Users
-    ../users/root
-    ../users/luc-server
+    ../profiles/core
 
-    # Basic configuration
-    ../modules/nix
-    ../modules/locale
-    ../modules/common-env
+    # Users
+    ../profiles/users/root
+    ../profiles/users/luc-server
 
     # Services
-    ../modules/mail-server
-    ../modules/nextcloud
-    ../modules/deluge
-    ../modules/matrix
-    # ../modules/reading-server
-    # ../modules/photo-server
+    ../profiles/services/mail-server
+    ../profiles/services/torrent
+
+    # Web-services
+    ../profiles/web/matrix
+    ../profiles/web/nextcloud
+    # ../profiles/web/wallabag
+    # ../profiles/web/pixelfed
   ];
 
   boot = {

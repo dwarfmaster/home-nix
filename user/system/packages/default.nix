@@ -1,6 +1,8 @@
-{ pkgs, ... }:
+{ config, ... }:
 
-{
+let
+    inherit (config.pkgsets) pkgs unfree;
+in {
   home.packages = with pkgs; [
     #  ____            _                 
     # / ___| _   _ ___| |_ ___ _ __ ___  
@@ -14,9 +16,9 @@
     openssl          # Generic cryptography tool
 
     # Compression
-    unrar # RAR decompression
-    p7zip # Terminal implementation of 7zip
-    unzip # ZIP compression and decompression
+    unfree.unrar # RAR decompression
+    p7zip        # Terminal implementation of 7zip
+    unzip        # ZIP compression and decompression
     zip
 
     # Libraries
@@ -231,11 +233,11 @@
     libreoffice
 
     # Communication
-    discord          # Audio and chat
+    unfree.discord   # Audio and chat
     signal-desktop   # Access signal
     fractal          # Chat client for matrix
     nheko            # Idem
-    zoom-us          # Video meeting
+    unfree.zoom-us   # Video meeting
 
     # Misc
     pass                         # CLI password manager

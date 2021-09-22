@@ -5,21 +5,26 @@
 
   home-manager.users.luc = {
     imports = [
-      ../profiles/packages
-      ../profiles/mail
+      # System
+      ../../../user/system/packages
 
-      # Desktop
-      ../profiles/x11
-      ../profiles/web
+      # Interface
+      ../../../user/interface/x11
 
-      # Workflow
-      ../profiles/emacs
-      ../profiles/logic
-      ../profiles/photos
-      ../profiles/music
-      ../profiles/book
-      ../profiles/papers
-      ../profiles/accounting
+      # Programs
+      ../../../user/programs/web
+      ../../../user/programs/emacs
+
+      # Data
+      ../../../user/data/mail
+      ../../../user/data/photos
+      ../../../user/data/music
+      ../../../user/data/book
+      ../../../user/data/papers
+      ../../../user/data/accounting
+
+      # Languages
+      ../../../user/languages/logic
     ];
   };
 }

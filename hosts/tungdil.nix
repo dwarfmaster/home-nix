@@ -2,17 +2,21 @@
 
 {
   imports = [
-    ../users/root
-    ../users/luc
-    ../modules/xserver
-    ../modules/nix
-    ../modules/network
-    ../modules/locale
-    ../modules/sound
-    ../modules/printing
-    ../modules/common-env
-    ../modules/mail-client
-    ../modules/accounting
+    ../profiles/core
+
+    # Users
+    ../profiles/users/root
+    ../profiles/users/luc
+
+    # System
+    ../profiles/system/network
+    ../profiles/system/printing
+    ../profiles/system/mail-certificates
+
+    # Interface
+    ../profiles/interface/xserver
+    ../profiles/interface/sound
+    ../profiles/interface/grafana
   ];
 
   boot = {

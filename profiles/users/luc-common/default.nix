@@ -1,6 +1,27 @@
-{ pkgs, ... }:
+{ lib, config, ... }:
 
-{
+let
+
+  inherit (lib) types;
+  inherit (config.pkgsets) pkgs;
+
+  packages = {
+    options = {
+      pkgsets = lib.mkOption {
+        type = types.attrs;
+        example = { default = pkgs; };
+        description = ''
+          An attribute set of package sets to be used.
+        '';
+      };
+    };
+
+    config = {
+      pkgsets = config.pkgsets;
+    };
+  };
+
+in {
   users.users.luc = {
     uid = 1000;
     hashedPassword = import ./password.nix;
@@ -12,18 +33,18 @@
 
   home-manager.users.luc = {
     imports = [
-      # Desktop
-      ../profiles/xdg
-      ../profiles/fzf
+      packages
+      ../../../user/core
 
-      # Shell
-      ../profiles/git
-      ../profiles/direnv
-      ../profiles/vim
-      ../profiles/zsh
+      # System
+      ../../../user/system/xdg
+      ../../../user/system/direnv
+      ../../../user/system/encryption
 
-      # Security
-      ../profiles/encryption
+      # Programs
+      ../../../user/programs/fzf
+      ../../../user/programs/git
+      ../../../user/programs/vim
     ];
 
     xdg.enable = true;

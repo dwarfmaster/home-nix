@@ -6,7 +6,7 @@ in
   imports = [
     ./env
     ./locale
-    ./local/locale.nix
+    ./locale.nix
     ./nix
   ];
 

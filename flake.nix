@@ -11,7 +11,7 @@
         inputs.nixpkgs.follows = "nixos";
       };
       simple-mailserver = {
-        url = "gitlab:simple-nixos-mailserver/nixos-mailserver";
+        url = "gitlab:simple-nixos-mailserver/nixos-mailserver/nixos-21.05";
         inputs.nixpkgs.follows = "unstable";
         inputs.nixpkgs-21_05.follows = "nixos";
       };
@@ -24,7 +24,7 @@
       };
       # Modules to be made available to hosts config
       finalModules = self.nixosModules // {
-        home-manager = home.nixosModules.nixosModules.home-manager;
+        home-manager = home.nixosModules.home-manager;
         mailserver   = simple-mailserver.nixosModules.mailserver;
       };
       # HM Modules to be made available to profiles
@@ -34,11 +34,11 @@
     in
     # After this point there is no configuration, only plumbing
     let
-      inherit (builtins) attrNames attrValues readDir;
+      inherit (builtins) attrNames attrValues;
       inherit (nixos) lib;
       inherit (lib) recursiveUpdate;
       utils = import ./lib/utils.nix { inherit lib; };
-      inherit (utils) pathsToImportedAttrs;
+      inherit (utils) pathsToImportedAttrs readVisible;
 
       system = "x86_64-linux";
 
@@ -71,22 +71,28 @@
         let
           overlayDir = ./overlays;
           fullPath = name: overlayDir + "/${name}";
-          overlayPaths = map fullPath (attrNames (readDir overlayDir));
+          overlayPaths = map fullPath (attrNames (readVisible overlayDir));
         in pathsToImportedAttrs overlayPaths;
 
       nixosModules =
         let
           modulesDir = ./modules/nixos;
           fullPath = name: modulesDir + "/${name}";
-          modulesPaths = map fullPath (attrNames (readDir modulesDir));
+          modulesPaths = map fullPath (attrNames (readVisible modulesDir));
         in pathsToImportedAttrs modulesPaths;
 
-      hmModules = {
-        # TODO
-      };
+      hmModules =
+        let
+          modulesDir = ./modules/hm;
+          fullPath = name: modulesDir + "/${name}";
+          modulesPaths = map fullPath (attrNames (readVisible modulesDir));
+        in pathsToImportedAttrs modulesPaths;
 
-      nixosConfigurations = {
-        # TODO
-      };
+      nixosConfigurations =
+        import ./hosts (inputs // {
+          inherit system;
+          inherit lib utils pkgset;
+          inherit finalOverlays finalModules finalHMModules;
+        });
     };
 }

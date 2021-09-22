@@ -2,7 +2,7 @@
 let
   inherit (builtins) attrNames isAttrs readDir listToAttrs;
 
-  inherit (lib) filterAttrs hasSuffix mapAttrs' nameValuePair removeSuffix;
+  inherit (lib) filterAttrs hasSuffix hasPrefix mapAttrs' nameValuePair removeSuffix;
 
   # mapFilterAttrs ::
   #   (name -> value -> bool )
@@ -38,4 +38,9 @@ in
       value = import path;
     });
 
+  # List files in directory that are not hidden
+  readVisible = dir:
+    filterAttrs
+      (name: _: !(hasPrefix "." name))
+      (readDir dir);
 }
