@@ -6,7 +6,7 @@ Setup inspired by [nixflk](https://github.com/nrdxp/nixflk).
 # Features
 
 - [X] Self-contained flake
-- [ ] Support NUR
+- [X] Support NUR
 - [ ] Support cachix
 - [X] Support home-manager
 - [X] Support local lib functions
@@ -17,4 +17,5 @@ Setup inspired by [nixflk](https://github.com/nrdxp/nixflk).
 - [ ] Hydra jobs
 - [X] Setup for unfree packages
 - [ ] Setup for broken packages
+- [ ] SOPS enabled
 

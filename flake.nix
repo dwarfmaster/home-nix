@@ -15,12 +15,16 @@
         inputs.nixpkgs.follows = "unstable";
         inputs.nixpkgs-21_05.follows = "nixos";
       };
+      nur = {
+        url = "github:nix-community/NUR";
+      };
     };
 
-  outputs = inputs@{ self, home, nixos, master, unstable, simple-mailserver }:
+  outputs = inputs@{ self, home, nixos, master, unstable, nur, simple-mailserver }:
     let
       # All overlays to apply
       finalOverlays = self.overlays // {
+        nur = nur.overlay;
       };
       # Modules to be made available to hosts config
       finalModules = self.nixosModules // {
@@ -31,9 +35,7 @@
       finalHMModules = self.hmModules // {
       };
 
-    in
     # After this point there is no configuration, only plumbing
-    let
       inherit (builtins) attrNames attrValues;
       inherit (nixos) lib;
       inherit (lib) recursiveUpdate;
@@ -56,6 +58,10 @@
         unstable-unfree = pkgImport true unstable;
         pkgs = pkgImport false nixos;
         unfree = pkgImport true nixos;
+      };
+
+      nur-no-pkgs = import nur {
+        nurpkgs = pkgImport false nixos;
       };
 
     in {
