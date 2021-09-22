@@ -24,7 +24,10 @@
       ../../../user/data/accounting
 
       # Languages
-      ../../../user/languages/logic
+      ../../../user/languages/coq
+      ../../../user/languages/agda
+      ../../../user/languages/idris
+      ../../../user/languages/why3
     ];
   };
 }
