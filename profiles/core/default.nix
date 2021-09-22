@@ -3,11 +3,16 @@ let inherit (lib) fileContents;
 
 in
 {
+  imports = [
+    ./env
+    ./locale
+    ./local/locale.nix
+    ./nix
+  ];
+
   nix.package = pkgs.nixFlakes;
 
   nix.systemFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];
-
-  imports = [ ../../local/locale.nix ];
 
   environment = {
 

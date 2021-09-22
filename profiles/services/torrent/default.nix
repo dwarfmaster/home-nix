@@ -25,6 +25,7 @@
     };
   };
 
+  # TODO fix
   services.nginx.virtualHosts."downloads.dwarfmaster.net" = {
     forceSSL = true;
     enableACME = true;
