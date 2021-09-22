@@ -43,4 +43,20 @@ in
     filterAttrs
       (name: _: !(hasPrefix "." name))
       (readDir dir);
+
+  # Make a nixpkgs module with an attrset of packages sets
+  mkPackagesModule = sets: {
+    options = {
+      pkgsets = lib.mkOption {
+        type = lib.types.attrs;
+        description = ''
+          An attribute set of package sets to be used.
+        '';
+      };
+    };
+
+    config = {
+      pkgsets = sets;
+    };
+  };
 }

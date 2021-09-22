@@ -1,25 +1,12 @@
-{ lib, config, ... }:
+{ lib, config, utils, ... }:
 
 let
 
   inherit (lib) types;
   inherit (config.pkgsets) pkgs;
+  inherit (utils) mkPackagesModule;
 
-  packages = {
-    options = {
-      pkgsets = lib.mkOption {
-        type = types.attrs;
-        example = { default = pkgs; };
-        description = ''
-          An attribute set of package sets to be used.
-        '';
-      };
-    };
-
-    config = {
-      pkgsets = config.pkgsets;
-    };
-  };
+  packages = mkPackagesModule config.pkgsets;
 
 in {
   users.users.luc = {
