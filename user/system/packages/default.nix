@@ -242,6 +242,7 @@ in {
     # Misc
     pass                         # CLI password manager
     gitAndTools.git-annex        # Files manager
+    git-secret                   # Encrypt files in git repo
     chromium
     exif                         # Query image metadata
     exiv2                        # Query and edit image metadata
