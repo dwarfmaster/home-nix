@@ -8,6 +8,7 @@
 , system
 , utils
 , finalModules
+, finalHMModules
 , ...
 }:
 let
@@ -50,8 +51,24 @@ let
 
           local = import "${toString ./.}/${hostName}.nix";
 
+          hm-default = {
+            options = {
+              home-manager-default-modules = lib.mkOption {
+                type = types.attrs;
+                description = "An attr-set of home-manager modules to include in every configuration";
+                readOnly = true;
+                internal = true;
+                visible = false;
+              };
+            };
+
+            config = {
+              home-manager-default-modules = finalHMModules;
+            };
+          };
+
         in
-          (attrValues finalModules) ++ [ packages global local ];
+          (attrValues finalModules) ++ [ hm-default packages global local ];
 
       extraArgs = {
         inherit system utils;

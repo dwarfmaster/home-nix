@@ -4,9 +4,7 @@ let
 
   inherit (lib) types;
   inherit (config.pkgsets) pkgs;
-  inherit (utils) mkPackagesModule;
-
-  packages = mkPackagesModule config.pkgsets;
+  inherit (utils) mkHM;
 
 in {
   users.users.luc = {
@@ -18,11 +16,8 @@ in {
     shell = "/run/current-system/sw/bin/zsh";
   };
 
-  home-manager.users.luc = {
+  home-manager.users.luc = mkHM config {
     imports = [
-      packages
-      ../../../user/core
-
       # System
       ../../../user/system/xdg
       ../../../user/system/direnv
