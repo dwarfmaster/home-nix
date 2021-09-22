@@ -24,8 +24,15 @@
     };
   };
 
+  # TODO improve font handling
   fonts = {
+    fonts = with pkgs; [ powerline-fonts dejavu_fonts ];
+
     fontconfig.enable = true;
+    fontconfig.defaultFonts = {
+      monospace = [ "DejaVu Sans Mono for Powerline" ];
+      sansSerif = [ "DejaVu Sans" ];
+    };
   };
 
   home.packages = [ pkgs.gnome3.dconf ];

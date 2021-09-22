@@ -2,23 +2,31 @@
 
 {
   environment.systemPackages = with pkgs; [
-    wget
-    gnufdisk
-    vim
-    lm_sensors
-    htop
-    git
-    ntfs3g
+    binutils
+    coreutils
+    curl
+    direnv
+    dnsutils
+    dosfstools
     exfat-utils
+    fd
+    git
+    gnufdisk
+    gotop
+    gptfdisk
+    htop
+    iputils
+    jq
+    lm_sensors
+    moreutils
+    nmap
+    ntfs3g
+    ripgrep
+    utillinux
+    vim
+    wget
+    whois
   ];
 
-  programs = {
-    zsh.enable = true;
-    adb.enable = true;
-  };
-
-  # System completion for ZSH
-  environment.pathsToLink = [ "/share/zsh" ];
-  # Docker support
-  virtualisation.docker.enable = true;
+  programs.adb.enable = true;
 }
