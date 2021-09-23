@@ -12,7 +12,8 @@
       ../../../user/interface/x11
 
       # Programs
-      ../../../user/programs/web
+      ../../../user/programs/firefox
+      ../../../user/programs/chromium
       ../../../user/programs/emacs
 
       # Data
