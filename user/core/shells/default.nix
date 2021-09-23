@@ -96,7 +96,6 @@ in {
         "cabal"                 # Autocompletion for cabal
         "emoji-clock"           # Add a function emoji-clock that display a fancy clock
       ];
-      theme = "starship";
     };
   };
 
@@ -108,8 +107,11 @@ in {
   };
 
   # Theme
-  programs.starship.enable = true;
-  programs.starship.enableBashIntegration = true;
-  programs.starship.enableZshIntegration = true;
-  # TODO nushell integration
+  programs.starship = {
+    enable = true;
+    enableBashIntegration = true;
+    enableZshIntegration = true;
+    # TODO nushell integration
+    settings = import ./starship.nix;
+  };
 }
