@@ -26,6 +26,7 @@ in {
       inherit (pkgs.nur.repos.rycee.firefox-addons)
         darkreader
         vim-vixen
+        i-dont-care-about-cookies # Prevent most cookies popups
       ;
       inherit (unfree.nur.repos.rycee.firefox-addons)
         languagetool
