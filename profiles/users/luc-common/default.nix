@@ -23,6 +23,9 @@ in {
       ../../../user/system/direnv
       ../../../user/system/encryption
 
+      # Interface
+      ../../../user/interface/theme
+
       # Programs
       ../../../user/programs/fzf
       ../../../user/programs/git

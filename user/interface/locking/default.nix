@@ -5,7 +5,7 @@ let
   inherit (config.pkgsets) pkgs;
 
   physlock = "${pkgs.physlock}/bin/physlock";
-  i3lock = "${pkgs.i3lock}/bin/i3lock";
+  i3lock = builtins.replaceStrings ["%%"] ["%"] "${config.services.screen-locker.lockCmd}";
   vlock = "${pkgs.vlock}/bin/vlock";
   setxkbmap = "${pkgs.xorg.setxkbmap}/bin/setxkbmap";
 
@@ -36,6 +36,7 @@ let
       XKBOPTION=srvrkeys:none ${unsetxkbmap}
     '';
 in {
+  services.screen-locker.enableBase16Theme = true;
   home.packages = [ pkgs.physlock pkgs.vlock pkgs.i3lock ];
   programs.zsh.shellAliases = {
     xlock = "${locker}";

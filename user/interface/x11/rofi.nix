@@ -1,19 +1,37 @@
-{ term, config, ... }:
+{ config, ... }:
 
-{
-  enable   = true;
-  cycle    = true;
-  terminal = term;
+let
+  inherit (config.pkgsets) pkgs;
+in {
+  programs.rofi = {
+    enable   = true;
+    cycle    = true;
+    terminal = "${pkgs.st}/bin/st";
+    package  = pkgs.rofi.override {
+      plugins = builtins.attrValues {
+        inherit (pkgs) rofi-emoji rofi-calc;
+      };
+    };
 
-  borderWidth = 2;
-  theme       = "${config.xdg.configHome}/rofi/theme.rasi"; # TODO BAD !
-  font        = "FuraCode Nerd Font Bold 20";
-  fullscreen  = false;
-  lines       = 15;
-  location    = "center";
-  scrollbar   = true;
-  separator   = "solid";
-  padding     = 5;
+    enableBase16Theme = true;
+    borderWidth = 2;
+    font        = "FuraCode Nerd Font Bold 20";
+    fullscreen  = false;
+    lines       = 15;
+    location    = "center";
+    scrollbar   = true;
+    separator   = "solid";
+    padding     = 5;
 
-  extraConfig = import ./rofi/config.nix;
+    configPath  = "${config.xdg.configHome}/rofi/config.rasi";
+    extraConfig = {
+      # Enable the extending coloring options
+      color-enabled = true;
+      # Sorting method
+      sort = "fzf";
+      matching = "fuzzy";
+      # Two columns
+      columns = 2;
+    };
+  };
 }

@@ -18,10 +18,11 @@
       package = pkgs.papirus-icon-theme;
       name    = "Papirus";
     };
-    theme = {
-      package = pkgs.equilux-theme;
-      name    = "Equilux";
-    };
+    enableBase16Theme = true;
+    #theme = {
+    #  package = pkgs.equilux-theme;
+    #  name    = "Equilux";
+    #};
   };
 
   # TODO improve font handling

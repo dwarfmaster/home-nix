@@ -33,6 +33,7 @@
       };
       # HM Modules to be made available to profiles
       finalHMModules = self.hmModules // {
+        rycee-base16 = nur-no-pkgs.repos.rycee.hmModules.theme-base16;
       };
 
     # After this point there is no configuration, only plumbing

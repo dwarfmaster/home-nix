@@ -31,17 +31,6 @@ let
     xdg.configFile."bg/bg.png".source = ./bg.png;
   };
 
-  notifications = {
-    services.dunst = import ./dunst.nix;
-    home.packages = [ pkgs.libnotify ]; # For notify-send
-  };
-
-  launcher = {
-    programs.rofi = import ./rofi.nix { term = "${st}/bin/st"; inherit config; };
-    xdg.configFile."rofi/theme.rasi".source = ./rofi/theme.rasi;
-    home.packages = [ pkgs.rofi-calc ];
-  };
-
   fonts = {
     home.packages = builtins.attrValues {
       # Fonts with icons
@@ -82,6 +71,6 @@ let
   };
 
 in {
-  imports = [ ../graphic-theme xmonad xinit notifications launcher terminal fonts tools];
+  imports = [ ../graphic-theme xmonad xinit ./dunst.nix ./rofi.nix terminal fonts tools];
 }
 
