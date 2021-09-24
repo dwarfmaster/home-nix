@@ -70,7 +70,6 @@ let
       inherit (pkgs)
         desktop-file-utils  # Manage desktop files
         glxinfo             # OpenGL info
-        i3lock              # Screen locker
         redshift            # Color shift with the time of the day
         xclip               # X11 copy-paste from the console
         ;

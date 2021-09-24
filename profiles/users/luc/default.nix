@@ -14,6 +14,7 @@
       # Interface
       ../../../user/interface/x11
       ../../../user/interface/visualisation
+      ../../../user/interface/locking
 
       # Programs
       ../../../user/programs/firefox
