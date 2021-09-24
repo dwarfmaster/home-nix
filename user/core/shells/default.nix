@@ -1,7 +1,7 @@
 { config, ... }:
 
 let
-  inherit (config.pkgsets) pkgs;
+  inherit (config.pkgsets) pkgs unstable;
 in {
   # Misc
   home = {
@@ -102,6 +102,7 @@ in {
   # NuShell
   programs.nushell = {
     enable = true;
+    package = unstable.nushell;
     # TODO configure
     settings = { };
   };
