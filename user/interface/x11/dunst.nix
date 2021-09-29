@@ -3,6 +3,12 @@
 let
   inherit (config.pkgsets) pkgs;
   cols = config.theme.colors;
+  cfg = config.services.dunst;
+
+  pauseDunst = pkgs.writeShellScript "dunst-pause"
+    "PATH=${pkgs.dbus}/bin:$PATH ${cfg.package}/bin/dunstctl set-paused true";
+  unpauseDunst = pkgs.writeShellScript "dunst-unpause"
+    "PATH=${pkgs.dbus}/bin:$PATH ${cfg.package}/bin/dunstctl set-paused false";
 in {
   services.dunst = {
     enable = true;
@@ -27,4 +33,20 @@ in {
   };
 
   home.packages = [ pkgs.libnotify ]; # For notify-send
+
+  systemd.user.services = {
+    pause-dunst-on-lock = {
+      Unit = {
+        Description = "Pause dunst notifications when active";
+        PartOf = [ "xsession-lock.target" ];
+      };
+      Install = { WantedBy = [ "xsession-lock.target" ]; };
+      Service = {
+        Type = "oneshot";
+        RemainAfterExit = true;
+        ExecStart = "${pauseDunst}";
+        ExecStop  = "${unpauseDunst}";
+      };
+    };
+  };
 }
