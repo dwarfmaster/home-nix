@@ -2,6 +2,7 @@
 
 let
   inherit (config.pkgsets) pkgs;
+  background-picture = pkgs.copyPathToStore ./bg.png;
 in {
   # Woodland theme, from https://github.com/jcornwall/base16-woodland-scheme
   theme.base16 = {
@@ -24,6 +25,25 @@ in {
       base0D.hex = { r = "88"; g = "a4"; b = "d3"; };
       base0E.hex = { r = "bb"; g = "90"; b = "e2"; };
       base0F.hex = { r = "b4"; g = "93"; b = "68"; };
+    };
+  };
+
+  # Set the background when running X
+  systemd.user.services = {
+    xbackground = {
+      Unit = {
+        Description = "Set the background image";
+        After = [ "graphical-session-pre.target" ];
+        PartOf = [ "graphical-session.target" ];
+      };
+
+      Install = { WantedBy = [ "graphical-session.target" ]; };
+
+      Service = {
+        Type = "oneshot";
+        RemainAfterExit = true;
+        ExecStart = "${pkgs.imlibsetroot}/bin/imlibsetroot ${background-picture}";
+      };
     };
   };
 }

@@ -10,25 +10,67 @@ let
     home.packages = [ st ];
   };
 
-  xmonad = {
+  xmonad = let
+    xmonad = pkgs.xmonad-with-packages.override {
+      packages = hpkgs: builtins.attrValues {
+        inherit (hpkgs) xmonad-contrib xmonad-extras xmobar;
+      };
+    };
+  in {
     home = {
       file.".xmonad".source = ./xmonad;
       file.".xmonad".recursive = true;
       packages = [
         pkgs.haskellPackages.xmobar
-        (pkgs.xmonad-with-packages.override {
-          packages = hpkgs: with hpkgs; [ xmonad-contrib xmonad-extras xmobar ];
-        })
+        xmonad
       ];
+    };
+    xsession.windowManager.command = "${xmonad}/bin/xmonad";
+  };
+
+  keyboard = let
+    xmodmap = "${pkgs.xorg.xmodmap}/bin/xmodmap";
+    remappings = pkgs.writeShellScript "xkb-remap-keys" ''
+      ${xmodmap} -e "keycode 65 = space space space space" # shift+space -> 4*space
+    '';
+  in {
+    home.keyboard.layout = "fr";
+    systemd.user.services = {
+      xkbmappings = {
+        Unit = {
+          Description = "Common X key remapping";
+          After = [ "graphical-session-pre.target" "setxkbmap.service" ];
+          PartOf = [ "graphical-session.target" ];
+        };
+
+        Install = { WantedBy = [ "graphical-session.target" ]; };
+
+        Service = {
+          Type = "oneshot";
+          RemainAfterExit = true;
+          ExecStart = "${remappings}";
+        };
+      };
     };
   };
 
   xinit = {
+    xsession = {
+      enable = true;
+      scriptPath = ".xinitrc";
+      # DBus is not setted up properly with the startx method
+      initExtra = ''
+        if test -z "$DBUS_SESSION_BUS_ADDRESS"; then
+          eval $(dbus-launch --exit-with-session --sh-syntax)
+        fi
+        if command -v dbus-update-activation-environment >/dev/null 2>&1; then
+          dbus-update-activation-environment DISPLAY XAUTHORITY
+        fi
+      '';
+    };
     home.packages = [ pkgs.xorg.xrandr ] ++ builtins.attrValues {
       inherit (pkgs) imlibsetroot;
     };
-    home.file.".xinitrc".source = ./xinitrc;
-    xdg.configFile."bg/bg.png".source = ./bg.png;
   };
 
   fonts = {
@@ -71,6 +113,6 @@ let
   };
 
 in {
-  imports = [ ../graphic-theme xmonad xinit ./dunst.nix ./rofi.nix terminal fonts tools];
+  imports = [ ../graphic-theme xmonad xinit keyboard ./dunst.nix ./rofi.nix terminal fonts tools];
 }
 
