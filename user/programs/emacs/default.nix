@@ -66,6 +66,16 @@ in {
     Categories=System;
     MimeType=x-scheme-handler/org-protocol;
   '';
+  # Create desktop entry for emacsclient
+  xdg.dataFile."applications/emacsclient.desktop".text = ''
+    [Desktop Entry]
+    Name=Emacs Client
+    Exec=${client} -c
+    Type=Application
+    Terminal=false
+    Categories=System;Editor;
+    Icon=emacs
+  '';
 
   home.sessionVariables = {
     GIO_EXTRA_MODULES = "${pkgs.gvfs}/lib/gio/modules";
