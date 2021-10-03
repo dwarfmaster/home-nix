@@ -20,7 +20,8 @@
   ];
 
   boot = {
-    kernelPackages = pkgs.linuxPackages_latest_hardened;
+    # TODO re-enable latest_hardened
+    kernelPackages = pkgs.linuxPackages_latest;
     kernel.sysctl = {
       "kernel.unprivileged_userns_clone" = 1;
     };
