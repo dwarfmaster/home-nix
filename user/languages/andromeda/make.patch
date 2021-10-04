@@ -1,0 +1,16 @@
+diff --git a/Makefile b/Makefile
+index 1d0c7aed..58a08284 100644
+--- a/Makefile
++++ b/Makefile
+@@ -59,9 +59,9 @@ version:
+ 	@git describe --always --long
+ 
+ src/build.ml:
+-	/bin/echo -n 'let version = "' > $@
++	echo -n 'let version = "' > $@
+ 	$(MAKE) -s version | egrep -v '^make' | tr -d '\n' >> $@
+-	/bin/echo '" ;;' >> $@
++	echo '" ;;' >> $@
+ 	echo "let lib_dir = \""$(LIB_DIR)"\" ;;" >> $@
+ 
+ emacs-autoloads:
