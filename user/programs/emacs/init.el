@@ -32,6 +32,7 @@
        (agda +local)
        (cc +lsp)
        coq
+       lean
        emacs-lisp
        (haskell +dante)
        idris

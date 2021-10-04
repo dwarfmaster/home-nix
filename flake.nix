@@ -18,13 +18,20 @@
       nur = {
         url = "github:nix-community/NUR";
       };
+      lean4 = {
+        url = "github:leanprover/lean4";
+        inputs.nixpkgs.follows = "unstable";
+      };
     };
 
-  outputs = inputs@{ self, home, nixos, master, unstable, nur, simple-mailserver }:
+  outputs = inputs@{ self, home, nixos, master, unstable, nur, simple-mailserver, lean4 }:
     let
       # All overlays to apply
       finalOverlays = self.overlays // {
         nur = nur.overlay;
+        packages = self: super: {
+          lean4 = lean4.defaultPackage.x86_64-linux;
+        };
       };
       # Modules to be made available to hosts config
       finalModules = self.nixosModules // {

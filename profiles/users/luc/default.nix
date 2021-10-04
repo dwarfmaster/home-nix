@@ -42,6 +42,7 @@
       # Languages
       ../../../user/languages/tools
       ../../../user/languages/coq
+      ../../../user/languages/lean
       ../../../user/languages/agda
       ../../../user/languages/idris
       ../../../user/languages/why3
