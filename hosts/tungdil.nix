@@ -11,7 +11,6 @@
     # System
     ../profiles/system/network
     ../profiles/system/printing
-    ../profiles/system/mail-certificates
 
     # Interface
     ../profiles/interface/xserver
