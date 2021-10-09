@@ -41,6 +41,7 @@ let
       locker
       terminal
       browser
+      volume
     ;
     xmobarCmd = "${pkgs.haskellPackages.xmobar}/bin/xmobar ${xmobarrc}";
   };

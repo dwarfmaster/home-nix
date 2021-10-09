@@ -94,7 +94,10 @@ keybinds = M.fromList $ foldl kwk
          , ((modkey .|. shiftMask, xK_z), sendMessage ToggleLayout)
          , ((modkey, xK_z), sendMessage $ JumpToLayout "Tiled")
          , ((modkey, xK_e), sendMessage $ JumpToLayout "Circle")
-         -- TODO Audio control
+         -- Audio control
+         , ((0, xF86XK_AudioLowerVolume), spawn $ Nix.volume ++ " down")
+         , ((0, xF86XK_AudioRaiseVolume), spawn $ Nix.volume ++ " up")
+         , ((0, xF86XK_AudioMute),        spawn $ Nix.volume ++ " toggle")
          -- TODO Brightness control
          -- TODO Media players control
          ] $ zip mworkspaces wkkeys
