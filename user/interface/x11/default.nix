@@ -11,24 +11,6 @@ let
     home.packages = [ st ];
   };
 
-  xmonad = let
-    xmonad = pkgs.xmonad-with-packages.override {
-      packages = hpkgs: builtins.attrValues {
-        inherit (hpkgs) xmonad-contrib xmonad-extras xmobar;
-      };
-    };
-  in {
-    home = {
-      file.".xmonad".source = ./xmonad;
-      file.".xmonad".recursive = true;
-      packages = [
-        pkgs.haskellPackages.xmobar
-        xmonad
-      ];
-    };
-    xsession.windowManager.command = "${xmonad}/bin/xmonad";
-  };
-
   keyboard = let
     xmodmap = "${pkgs.xorg.xmodmap}/bin/xmodmap";
     remappings = pkgs.writeShellScript "xkb-remap-keys" ''
@@ -115,6 +97,6 @@ let
   };
 
 in {
-  imports = [ ../graphic-theme xmonad xinit keyboard ./dunst.nix ./rofi.nix terminal fonts tools];
+  imports = [ ../graphic-theme xinit keyboard ./dunst.nix ./rofi.nix terminal fonts tools];
 }
 

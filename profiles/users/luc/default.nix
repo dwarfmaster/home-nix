@@ -13,6 +13,7 @@
 
       # Interface
       ../../../user/interface/x11
+      ../../../user/interface/xmonad
       ../../../user/interface/visualisation
       ../../../user/interface/locking
 

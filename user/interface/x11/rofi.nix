@@ -36,5 +36,5 @@ in {
   };
 
   applications.launcher   = "${config.programs.rofi.package}/bin/rofi -modi drun -show drun -show-icons";
-  applications.calculator = "${config.programs.rofi.package}/bin/rofi -modi calc -show calc";
+  applications.calculator = "${config.programs.rofi.package}/bin/rofi -modi calc -show calc -no-show-match -no-sort -calc-command \"echo '{result}' | ${pkgs.xclip}/bin/xclip -i\"";
 }
