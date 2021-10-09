@@ -1,7 +1,6 @@
 args@{ config, lib, pkgs, ... }:
 
 {
-  # TODO add assertion that redis doesn't use a unix socket
   mailserver = {
     enable = true;
     fqdn = "dwarfmaster.net";
