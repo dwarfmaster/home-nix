@@ -22,6 +22,8 @@ let
         ${notify-send} --urgency=critical "$2" "$3";;
       clear)
         ${dunstctl} close-all;;
+      progress)
+        ${notify-send} -h "int:value:$3" "$2";;
     esac
   '';
 
