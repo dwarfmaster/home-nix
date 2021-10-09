@@ -4,9 +4,10 @@ let
 
   inherit (config.pkgsets) pkgs;
 
-  st = pkgs.st.override { conf = builtins.readFile ./st.h; };
-
-  terminal = {
+  terminal = let
+    st = pkgs.st.override { conf = builtins.readFile ./st.h; };
+  in {
+    applications.terminal = "${st}/bin/st";
     home.packages = [ st ];
   };
 
@@ -103,6 +104,7 @@ let
         glxinfo             # OpenGL info
         redshift            # Color shift with the time of the day
         xclip               # X11 copy-paste from the console
+        networkmanagerapplet # GUI for network manager
         ;
       inherit (pkgs.xorg)
         xev                 # X11 event querying

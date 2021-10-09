@@ -50,6 +50,7 @@ let
 in {
   services.screen-locker.enableBase16Theme = true;
   home.packages = [ locker dim-screen pkgs.vlock pkgs.brightnessctl ];
+  applications.locker = "${pkgs.systemd}/bin/loginctl lock-session";
 
   systemd.user.services = {
     dpms-setup = {

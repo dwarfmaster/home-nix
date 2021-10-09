@@ -34,4 +34,7 @@ in {
       columns = 2;
     };
   };
+
+  applications.launcher   = "${config.programs.rofi.package}/bin/rofi -modi drun -show drun -show-icons";
+  applications.calculator = "${config.programs.rofi.package}/bin/rofi -modi calc -show calc";
 }

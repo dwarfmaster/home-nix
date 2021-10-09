@@ -9,6 +9,22 @@ let
     "PATH=${pkgs.dbus}/bin:$PATH ${cfg.package}/bin/dunstctl set-paused true";
   unpauseDunst = pkgs.writeShellScript "dunst-unpause"
     "PATH=${pkgs.dbus}/bin:$PATH ${cfg.package}/bin/dunstctl set-paused false";
+
+  notify-send = "${pkgs.libnotify}/bin/notify-send";
+  dunstctl = "${config.services.dunst.package}/bin/dunstctl";
+  notifier = pkgs.writeShellScriptBin "notify" ''
+    case $1 in
+      low)
+        ${notify-send} --urgency=low "$2" "$3";;
+      normal)
+        ${notify-send} --urgency=normal "$2" "$3";;
+      high)
+        ${notify-send} --urgency=critical "$2" "$3";;
+      clear)
+        ${dunstctl} close-all;;
+    esac
+  '';
+
 in {
   services.dunst = {
     enable = true;
@@ -32,7 +48,8 @@ in {
     };
   };
 
-  home.packages = [ pkgs.libnotify ]; # For notify-send
+  home.packages = [ pkgs.libnotify notifier ]; # For notify-send
+  applications.notifier = "${notifier}/bin/notify";
 
   systemd.user.services = {
     pause-dunst-on-lock = {

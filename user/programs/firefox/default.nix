@@ -48,4 +48,6 @@ in {
       extraConfig = builtins.readFile ./user.js;
     };
   };
+
+  applications.browser = "${config.programs.firefox.package}/bin/firefox";
 }
