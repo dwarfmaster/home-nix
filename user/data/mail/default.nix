@@ -30,8 +30,8 @@ in {
     hooks = {
       postNew = "${pkgs.afew}/bin/afew --tag --new";
       preNew = ''
-getmail --rcfile getmailens --rcfile getmailmailoo
-'';
+        getmail --rcfile getmailens --rcfile getmailmailoo --rcfile getmaillsv
+      '';
     };
   };
 
@@ -150,6 +150,38 @@ getmail --rcfile getmailens --rcfile getmailmailoo
         host = "mail.mailo.com";
         port = 465;
         tls.enable = true;
+      };
+    };
+
+    "lsv" = {
+      address = "luc.chabassier@lsv.fr";
+      inherit realName maildir;
+      userName = "chabassier";
+      passwordCommand = "pass school/these/luc.chabassier@lsv.fr";
+      astroid.enable = true;
+      astroid.sendMailCommand = "${pkgs.msmtp}/bin/msmtp --read-envelope-from --read-recipients --account lsv";
+
+      imap = {
+        host = "imaps.lsv.ens-cachan.fr";
+        port = 993;
+        tls.enable = true;
+      };
+
+      msmtp.enable = true;
+      smtp = {
+        host = "smtps.lsv.ens-cachan.fr";
+        port = 587;
+        tls = {
+          enable = true;
+          useStartTls = true;
+        };
+      };
+
+      getmail = {
+        enable = true;
+        delete = true;
+        readAll = true;
+        mailboxes = [ "Inbox" ];
       };
     };
 
