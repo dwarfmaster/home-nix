@@ -16,6 +16,7 @@
       ../../../user/interface/xmonad
       ../../../user/interface/visualisation
       ../../../user/interface/locking
+      ../../../user/interface/brightness
 
       # Programs
       ../../../user/programs/firefox

@@ -42,6 +42,7 @@ let
       terminal
       browser
       volume
+      brightness
     ;
     xmobarCmd = "${pkgs.haskellPackages.xmobar}/bin/xmobar ${xmobarrc}";
   };

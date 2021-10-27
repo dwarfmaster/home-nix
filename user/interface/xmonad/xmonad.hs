@@ -98,7 +98,9 @@ keybinds = M.fromList $ foldl kwk
          , ((0, xF86XK_AudioLowerVolume), spawn $ Nix.volume ++ " down")
          , ((0, xF86XK_AudioRaiseVolume), spawn $ Nix.volume ++ " up")
          , ((0, xF86XK_AudioMute),        spawn $ Nix.volume ++ " toggle")
-         -- TODO Brightness control
+         -- Brightness control
+         , ((0, xF86XK_MonBrightnessUp),   spawn $ Nix.brightness ++ " up")
+         , ((0, xF86XK_MonBrightnessDown), spawn $ Nix.brightness ++ " down")
          -- TODO Media players control
          ] $ zip mworkspaces wkkeys
  where kwk l (wk,k) = l ++
