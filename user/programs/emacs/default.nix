@@ -5,9 +5,7 @@
 let
 
   doom = config.programs.emacs.finalPackage;
-
   emacs = "${doom}/bin/emacs";
-
   client = "${doom}/bin/emacsclient";
 
 in {
@@ -15,6 +13,13 @@ in {
     enable = true;
     package = pkgs.emacs;
   };
+  # programs.doom = {
+  #   enable = true;
+  #   modules.config.global = {
+  #     packages.source = ./packages.el;
+  #     config.source = ./config.el;
+  #   };
+  # };
   
   home.packages = with pkgs; [
     gvfs # Necessary for TRAMP support for webdav
@@ -65,6 +70,7 @@ in {
     Terminal=false
     Categories=System;
     MimeType=x-scheme-handler/org-protocol;
+    Icon=emacs
   '';
   # Create desktop entry for emacsclient
   xdg.dataFile."applications/emacsclient.desktop".text = ''
@@ -81,4 +87,3 @@ in {
     GIO_EXTRA_MODULES = "${pkgs.gvfs}/lib/gio/modules";
   };
 }
-
