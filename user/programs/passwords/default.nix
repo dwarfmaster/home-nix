@@ -8,4 +8,10 @@ in {
       pass # Unix password manager
       ;
   };
+
+  programs.doom = {
+    initModules = {
+      tools = [ { mod = "pass"; args = [ "auth" ]; } ];
+    };
+  };
 }

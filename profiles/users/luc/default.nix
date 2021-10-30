@@ -40,6 +40,8 @@
       ../../../user/data/book
       ../../../user/data/papers
       ../../../user/data/accounting
+      ../../../user/data/feeds
+      ../../../user/data/wiki
 
       # Languages
       ../../../user/languages/tools

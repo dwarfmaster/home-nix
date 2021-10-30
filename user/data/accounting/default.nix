@@ -11,4 +11,9 @@ in {
     haskellPackages.hledger
     influxdb-init
   ];
+
+  programs.doom = {
+    modules.dwarfmaster.hledger.config.source = ./hledger.el;
+    initModules.lang = [ "ledger" ];
+  };
 }

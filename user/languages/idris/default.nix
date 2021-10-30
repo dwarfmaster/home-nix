@@ -6,4 +6,5 @@ in {
   home.packages = with pkgs.idrisPackages; [
     (with-packages [ lightyear contrib ])
   ];
+  programs.doom.initModules.lang = [ "idris" ];
 }

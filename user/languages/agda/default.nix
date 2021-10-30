@@ -13,4 +13,10 @@ in {
   xdg.configFile."agda/defaults".text = ''
     standard-library
   '';
+
+  programs.doom = {
+    initModules = {
+      lang = [ { mod = "agda"; args = [ "local" ]; } ];
+    };
+  };
 }

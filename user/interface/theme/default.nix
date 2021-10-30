@@ -28,6 +28,25 @@ in {
     };
   };
 
+  # Setup doom-emacs theme
+  programs.doom = {
+    initModules = {
+      ui = [
+        { mod = "ligatures"; args = [ "extra" "fira" ]; }
+        "nav-flash"
+        "neotree"
+        "ophints"
+        { mod = "popup"; args = [ "all" "defaults" ]; }
+        "window-select"
+        "workspace"
+      ];
+      tools = [ "rgb" ];
+    };
+    modules.ui.dwarfmaster-theme = {
+      config.source = ./config.el;
+    };
+  };
+
   # Set the background when running X
   systemd.user.services = {
     xbackground = {

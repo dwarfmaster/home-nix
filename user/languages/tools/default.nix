@@ -18,4 +18,16 @@ in {
       ;
     perf = pkgs.linuxPackages.perf; # Profile programs
   };
+
+  programs.doom = {
+    initModules = {
+      tools = [
+        { mod = "debugger"; args = [ "lsp" ]; }
+        { mod = "eval"; args = [ "overlay" ]; }
+        { mod = "lookup"; args = [ "dictionary" "docsets" ]; }
+        { mod = "lsp"; args = [ "peek" "eglot" ]; }
+        "make"
+      ];
+    };
+  };
 }

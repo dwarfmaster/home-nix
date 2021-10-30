@@ -19,5 +19,11 @@ use_flake() {
 }
 '';
   };
+
+  programs.doom = {
+    initModules = {
+      tools = [ "direnv" ];
+    };
+  };
 }
 

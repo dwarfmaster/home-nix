@@ -24,9 +24,6 @@ in {
   
   home.packages = with pkgs; [
     gvfs # Necessary for TRAMP support for webdav
-    haskellPackages.structured-haskell-mode
-    ccls
-    texlab
     ripgrep
     sqlite
     wordnet

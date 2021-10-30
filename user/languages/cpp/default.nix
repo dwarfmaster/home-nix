@@ -9,6 +9,13 @@ in {
       gdb       # C/C++ debugger
       ddd       # Graphical frontendfor GDB
       pkgconfig # Library finder
+      ccls      # LSP server for CPP
       ;
+  };
+
+  programs.doom = {
+    initModules = {
+      lang = [ { mod = "cc"; args = [ "lsp" ]; } ];
+    };
   };
 }

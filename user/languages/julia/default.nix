@@ -8,4 +8,10 @@ in {
       julia-stable-bin # Julia interpreter
       ;
   };
+
+  programs.doom = {
+    initModules = {
+      lang = [ { mod = "julia"; args = [ "lsp" ]; } ];
+    };
+  };
 }

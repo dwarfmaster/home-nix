@@ -31,6 +31,12 @@
     };
     ignores = [ "*~" "*.swp" ".direnv" ];
   };
+
+  programs.doom = {
+    initModules = {
+      tools = [ "magit" ];
+    };
+  };
 }
 
 
