@@ -44,6 +44,7 @@
        rust
        sh
        web
+       (julia +lsp)
 
        :term
        ;; eshell
