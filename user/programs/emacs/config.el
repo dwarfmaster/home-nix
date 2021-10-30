@@ -15,8 +15,9 @@
 (solaire-global-mode +1)
 (setq fancy-splash-image "~/wiki/logo.png")
 
-(setq doom-theme 'doom-manegarm)
 (after! doom-themes
+  ;; Set the theme after doom-themes is loaded
+  (setq doom-theme 'doom-manegarm)
   ;; Enable flashing modeline on errors
   (doom-themes-visual-bell-config)
   ;; Enable custom neatree theme

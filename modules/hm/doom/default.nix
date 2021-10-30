@@ -1,10 +1,12 @@
 { config, lib, pkgs, ... }:
 
+# TODO support building doom from nix
+
 let
 
   inherit (lib)
     mkEnableOption mkOption types mkIf
-    mapAttrs mapAttrs' mapAttrsRecursive mapAttrsToList foldl
+    mapAttrs mapAttrs' mapAttrsRecursive mapAttrsToList foldl filterAttrs
     concatMapStrings concatStringsSep concatMap concatStrings nameValuePair;
   inherit (builtins) isString readFile attrValues;
 
@@ -37,6 +39,7 @@ let
   # TODO support unit tests
   doomModule = { name, config, ...}: {
     options = {
+      # To enable it with options, set enable to false and manually add it to initModules
       enable = mkOption {
         description = "Should the module be automatically included in loaded modules";
         type = types.bool;
@@ -56,6 +59,7 @@ let
       nix = mkOption {
         description = "Creates a +nix.el file at the root with constants corresponding to nix values";
         type = types.attrsOf types.str;
+        default = { };
       };
     };
   };
@@ -65,24 +69,31 @@ let
                     // (if !(isNull content.source) then { inherit (content) source; } else {});
   pathName = path: (concatStringsSep "/" path) + ".el";
   elispFile = path: content: if !(isNull content) then { "${pathName path}" = mkFile content; } else {};
-  # TODO handle nix and enable cases
+  makeNixEl = strs: concatStrings (mapAttrsToList (name: value: "(defconst *nix/${name}* \"${value}\")\n") strs);
   moduleFiles = prefix: name: module:
     prefixNames (prefix + name + "/")
       (flattenAttr
         ((mapAttrs (name: elispFile [ name ]) (removeAttrs module [ "enable" "nix" "autoloads" ]))
           // (mapAttrs (name: elispFile [ "autoloads" name ]) module.autoloads)
+          // (if module.nix == { } then {} else { name = { "+nix.el".text = makeNixEl module.nix; }; })
         ));
   categoryFiles = prefix: category: modules:
     flattenAttr (mapAttrs (moduleFiles (prefix + category + "/")) modules);
   modulesFiles = prefix: flattenAttr (mapAttrs (categoryFiles prefix) cfg.modules);
 
+  defaultModules =
+    mapAttrs
+      (_: modules: mapAttrsToList (name: _: name)
+        (filterAttrs (_: mod: mod.enable) modules))
+      cfg.modules;
+
   formatMod = mod:
     if isString mod
-    then "    " + mod
-    else "    (" + mod.mod + concatMapStrings (arg: " +" + arg) mod.args + ")";
+    then "    " + mod + "\n"
+    else "    (" + mod.mod + concatMapStrings (arg: " +" + arg) mod.args + ")\n";
   init.el = ''
     (doom!
-      ${concatStrings (mapAttrsToList (category: mods: category + ":\n" + concatMapStrings formatMod mods) cfg.initModules) }
+    ${concatStrings (mapAttrsToList (category: mods: "  :" + category + "\n" + concatMapStrings formatMod mods) cfg.initModules) }
       )
   '';
   files = {
@@ -136,5 +147,6 @@ in {
     assertions = [ { assertion = config.programs.emacs.enable; message = "Emacs must be enabled for doom-emacs"; } ];
 
     xdg.configFile = mapAttrs' (path: file: nameValuePair ("doom/" + path) file) files;
+    programs.doom.initModules = defaultModules;
   };
 }
