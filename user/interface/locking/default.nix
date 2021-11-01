@@ -52,6 +52,16 @@ in {
   home.packages = [ locker dim-screen pkgs.vlock pkgs.brightnessctl ];
   applications.locker = "${pkgs.systemd}/bin/loginctl lock-session";
 
+  xdg.dataFile."applications/screen-locker.desktop".text = ''
+    [Desktop Entry]
+    Name=Screen Locker
+    Exec=${config.applications.locker}
+    Type=Application
+    Terminal=false
+    Categories=System;
+    Icon=lock
+  '';
+
   systemd.user.services = {
     dpms-setup = {
       Unit = {
