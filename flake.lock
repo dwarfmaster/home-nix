@@ -194,8 +194,25 @@
         "master": "master",
         "nixos": "nixos",
         "nur": "nur",
+        "scientific-fhs": "scientific-fhs",
         "simple-mailserver": "simple-mailserver",
         "unstable": "unstable"
+      }
+    },
+    "scientific-fhs": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1618760591,
+        "narHash": "sha256-hmJsaSCV710EGglAXPmt45xTqUKj1jGcbvpDjKhm/yE=",
+        "owner": "olynch",
+        "repo": "scientific-fhs",
+        "rev": "425cf6909a3e6e7a793d54681297fa9b30efc1d4",
+        "type": "github"
+      },
+      "original": {
+        "owner": "olynch",
+        "repo": "scientific-fhs",
+        "type": "github"
       }
     },
     "simple-mailserver": {

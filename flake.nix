@@ -22,15 +22,20 @@
         url = "github:leanprover/lean4";
         inputs.nixpkgs.follows = "unstable";
       };
+      scientific-fhs = {
+        url = "github:olynch/scientific-fhs";
+        flake = false;
+      };
     };
 
-  outputs = inputs@{ self, home, nixos, master, unstable, nur, simple-mailserver, lean4 }:
+  outputs = inputs@{ self, home, nixos, master, unstable, nur, simple-mailserver, lean4, scientific-fhs }:
     let
       # All overlays to apply
       finalOverlays = self.overlays // {
         nur = nur.overlay;
         packages = self: super: {
           lean4 = lean4.defaultPackage.x86_64-linux;
+          inherit scientific-fhs;
         };
       };
       # Modules to be made available to hosts config
