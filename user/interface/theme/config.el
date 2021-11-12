@@ -31,6 +31,8 @@
 ;;  \___/|_|  \__, |  \___/|___|
 ;;            |___/
 (after! org
+  (add-to-list 'org-emphasis-alist
+               '("*" (:foreground "orange")))
   (setq org-todo-keyword-faces
         ;; Projects
         `(("IDEA" . (:foreground ,(doom-color 'base7)
@@ -89,5 +91,4 @@
   ;; Ask for confirmation before running babel, shell link or elisp link
   (setq org-confirm-babel-evaluate t)
   (setq org-confirm-elisp-link-function 'yes-or-no-p)
-  (setq org-confirm-shell-link-function 'yes-or-no-p)
-  )
+  (setq org-confirm-shell-link-function 'yes-or-no-p))
