@@ -52,24 +52,3 @@
   (setq ispell-dictionary "en_US")
   (setq ispell-personal-dictionary (concat (getenv "XDG_CACHE_HOME") "/hunspell/personal")))
 
-;; Dedukti
-;;  ____           _       _    _   _
-;; |  _ \  ___  __| |_   _| | _| |_(_)
-;; | | | |/ _ \/ _` | | | | |/ / __| |
-;; | |_| |  __/ (_| | |_| |   <| |_| |
-;; |____/ \___|\__,_|\__,_|_|\_\\__|_|
-;;
-
-(use-package! company :after lambdapi-mode)
-(use-package! company-math :after lambdapi-mode)
-(map! :after lambdapi-mode
-      :map lambdapi-mode-map
-      :localleader
-      "]" #'lp-proof-forward
-      "[" #'lp-proof-backward
-      "." #'lp-prove-till-cursor
-      ";" #'comment-dwim
-      "r" #'lambdapi-refresh-window-layout
-      (:prefix ("g" . "goto")
-       "n" #'lp-jump-proof-forward
-       "p" #'lp-jump-proof-backward))

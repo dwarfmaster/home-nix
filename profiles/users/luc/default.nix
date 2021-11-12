@@ -57,6 +57,7 @@
       ../../../user/languages/haskell
       ../../../user/languages/ocaml
       ../../../user/languages/latex
+      ../../../user/languages/dedukti
     ];
   };
 }
