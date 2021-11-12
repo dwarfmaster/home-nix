@@ -61,6 +61,11 @@ let
         type = types.attrsOf types.str;
         default = { };
       };
+      extras = mkOption {
+        description = "Create other files prefixed by + at the root";
+        type = types.attrsOf elispFileType;
+        default = { };
+      };
     };
   };
 
@@ -73,9 +78,10 @@ let
   moduleFiles = prefix: name: module:
     prefixNames (prefix + name + "/")
       (flattenAttr
-        ((mapAttrs (name: elispFile [ name ]) (removeAttrs module [ "enable" "nix" "autoloads" ]))
+        ((mapAttrs (name: elispFile [ name ]) (removeAttrs module [ "enable" "nix" "autoloads" "extras" ]))
           // (mapAttrs (name: elispFile [ "autoloads" name ]) module.autoloads)
           // (if module.nix == { } then {} else { name = { "+nix.el".text = makeNixEl module.nix; }; })
+          // (mapAttrs (name: elispFile [ ("+" + name) ]) module.extras)
         ));
   categoryFiles = prefix: category: modules:
     flattenAttr (mapAttrs (moduleFiles (prefix + category + "/")) modules);
