@@ -42,6 +42,7 @@
       ../../../user/data/accounting
       ../../../user/data/feeds
       ../../../user/data/wiki
+      ../../../user/data/calendar
 
       # Languages
       ../../../user/languages/tools
