@@ -82,7 +82,6 @@ let
   tools = {
     home.packages = builtins.attrValues {
       inherit (pkgs)
-        desktop-file-utils  # Manage desktop files
         glxinfo             # OpenGL info
         redshift            # Color shift with the time of the day
         xclip               # X11 copy-paste from the console
