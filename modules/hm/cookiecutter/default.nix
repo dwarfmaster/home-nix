@@ -42,7 +42,7 @@ in {
 
       templates = mkOption {
         description = "Pre-installed templates";
-        type = types.attrsOf types.package;
+        type = types.attrsOf (types.either types.package types.path);
         default = { };
       };
 
