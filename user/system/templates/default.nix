@@ -3,8 +3,6 @@
 let
   inherit (config.pkgsets) pkgs;
 in {
-  imports = [ ./hm.nix ];
-
   programs.cookiecutter = {
     enable = true;
     defaults = {
@@ -13,6 +11,10 @@ in {
       github_username = "dwarfmaster";
       cpp_standard = "20";
     };
-    templates = import ./templates.nix { inherit config lib; };
+  };
+
+  # TODO move to home.shellAliases when it is available
+  programs.zsh.shellAliases = {
+    tp = "${config.programs.cookiecutter.package}/bin/cookiecutter";
   };
 }
