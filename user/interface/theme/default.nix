@@ -15,7 +15,7 @@ in {
   programs.doom = {
     initModules = {
       ui = [
-        { mod = "ligatures"; args = [ "extra" "fira" ]; }
+        { mod = "ligatures"; args = [ "extra" ]; }
         "nav-flash"
         "neotree"
         "ophints"
