@@ -10,6 +10,7 @@
       ../../../user/system/direnv
       ../../../user/system/encryption
       ../../../user/system/xdg
+      ../../../user/system/templates
 
       # Interface
       ../../../user/interface/x11
