@@ -43,7 +43,7 @@ function ProcessScheme(tempdir, nix, scheme_name, scheme_repo)
                         "base08" "base09" "base0A" "base0B" "base0C" "base0D" "base0E" "base0F" ]
             r = scheme[color][1:2]
             g = scheme[color][3:4]
-            b = scheme[color][4:5]
+            b = scheme[color][5:6]
             write(nix, "      $color.hex = { r = \"$r\"; g = \"$g\"; b = \"$b\"; };\n")
         end
         write(nix, "    };\n")
