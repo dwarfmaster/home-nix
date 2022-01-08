@@ -16,23 +16,23 @@
 ;; Default capture
 (after! org
   (setq org-roam-capture-templates
-        '(("d" "default" plain (function org-roam--capture-get-point)
+        '(("d" "default" plain
            "%?"
-           :file-name "notes/%<%Y-%m>/%<%d_%H-%M-%S>-${slug}"
-           :head "#+TITLE: ${title}\n\n"
+           :target (file+head "notes/%<%Y-%m>/%<%d_%H-%M-%S>-${slug}.org"
+                              "#+TITLE: ${title}\n\n")
            :unnarrowed t)
-          ("p" "project" plain (function org-roam--capture-get-point)
+          ("p" "project" plain
            "* PROJECT ${title}
 %u
 %?"
-           :file-name "projects/${slug}"
-           :head "#+TITLE: ${title}\n#+ROAM_TAGS: project\n\n"
+           :target (file+head "projects/${slug}.org"
+                              "#+TITLE: ${title}\n#+ROAM_TAGS: project\n\n")
            :unnarrowed t)
-          ("s" "support" plain (function org-roam--capture-get-point)
+          ("s" "support" plain
            "* SUPPORT ${title}
 %u
 %?"
-           :file-name "support/${slug}"
-           :head "#+TITLE: ${title}\n#+ROAM_TAGS: project\n\n"
+           :target (file+head "support/${slug}.org"
+                              "#+TITLE: ${title}\n#+ROAM_TAGS: project\n\n")
            :unnarrowed t)
           )))

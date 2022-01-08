@@ -3,7 +3,7 @@
 {
   programs.doom = {
     initModules = {
-      lang = [ { mod = "org"; args = [ "roam" "pretty" ]; } ];
+      lang = [ { mod = "org"; args = [ "roam2" "pretty" ]; } ];
     };
     modules.dwarfmaster = {
       org-config.config.source = ./org.el;
