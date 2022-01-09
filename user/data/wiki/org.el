@@ -53,6 +53,44 @@
           ("\\.bmp\\'"  . "xdg-open \"%s\"")
           ("\\.gif\\'"  . "xdg-open \"%s\""))))
 
+;; Org Id
+;;   ___              ___ ____
+;;  / _ \ _ __ __ _  |_ _|  _ \
+;; | | | | '__/ _` |  | || | | |
+;; | |_| | | | (_| |  | || |_| |
+;;  \___/|_|  \__, | |___|____/
+;;            |___/
+
+(defun dwarfmaster/org-id-refresh-extra-files ()
+  "Update org-id-extra-files if org files where created or deleted in the wiki."
+  (interactive)
+  (setq org-id-extra-files (directory-files-recursively "/data/luc/annex/wiki" "\.org$")))
+
+(after! org
+  (setq org-id-track-globally t)
+  (dwarfmaster/org-id-refresh-extra-files))
+(map! :after org :map org-mode-map :localleader
+      "E" 'dwarfmaster/org-id-refresh-extra-files)
+
+;; HUGO Export
+;;  _   _ _   _  ____  ___    _____                       _
+;; | | | | | | |/ ___|/ _ \  | ____|_  ___ __   ___  _ __| |_
+;; | |_| | | | | |  _| | | | |  _| \ \/ / '_ \ / _ \| '__| __|
+;; |  _  | |_| | |_| | |_| | | |___ >  <| |_) | (_) | |  | |_
+;; |_| |_|\___/ \____|\___/  |_____/_/\_\ .__/ \___/|_|   \__|
+;;                                      |_|
+
+(defun dwarfmaster/org-roam-export-all ()
+  "Re-exports all Org-roam files to Hugo markdown."
+  (interactive)
+  (dolist (f (org-roam-list-files))
+    (with-current-buffer (find-file f)
+      (org-hugo-export-wim-to-md))))
+(map! :leader
+      "n E" 'dwarfmaster/org-roam-export-all)
+(after! org
+  ;; Never execute code blocks when exporting
+  (setq org-export-use-babel nil))
 
 ;; Task switcher
 ;;  _____         _      ____          _ _       _

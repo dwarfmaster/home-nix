@@ -78,10 +78,15 @@
          (title   (cadr row))
          (last    (nth 1 (cdr row)))
          (unreads (nth 2 (cdr row))))
-    (format-message "| [[%s][%s]] | %d | [[elisp:(dwarfmaster/elfeed/mark-feed-as-read \"%s\")][Mark as read]] |\n"
+    (if last
+        (format-message "| [[%s][%s]] | %d | [[elisp:(dwarfmaster/elfeed/mark-feed-as-read \"%s\")][Mark as read]] |\n"
                     last title
                     unreads
-                    id)))
+                    id)
+        (format-message "| %s | %d | [[elisp:(dwarfmaster/elfeed/mark-feed-as-read \"%s\")][Mark as read]] |\n"
+                    title
+                    unreads
+                    id))))
 
 (defun dwarfmaster/elfeed/webcomics-summary (tag)
   "Make summary of webcomics with TAG."
