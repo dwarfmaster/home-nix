@@ -19,6 +19,9 @@
       mtdt = "annex metadata";
     };
     extraConfig = {
+      init = {
+        defaultBranch = "main";
+      };
       color = {
         diff        = "auto";
         status      = "auto";
