@@ -1,7 +1,10 @@
 
 (load! "+nix")
 
-;; TODO it first starts with requesting GPG password for now reason
+;; Used to try to open authentification sources listed in auth-sources before
+;; trying to connect with password. This caused problems when there was a
+;; gpg-agent running since I couldn't interactively stop it. This is fixed by
+;; setting auth-source to '().
 (use-package! org-caldav
   :after org
   :config
@@ -9,7 +12,9 @@
   (setq org-caldav-inbox nil)
   (setq org-caldav-sync-direction 'org->cal)
   (setq org-icalendar-timezone "Europe/Paris")
-  (setq org-caldav-save-directory (concat *nix/xdg-cache* "emacs"))
+  (setq org-caldav-save-directory (concat *nix/xdg-cache* "/emacs/"))
+  (setq org-caldav-calendar-id "caldav-test")
+  (setq org-caldav-debug-level 2)
   (setq org-caldav-calendars
         '((:calendar-id "dedukteam" :files ("~/wiki/projects/these.org"))))
   ;; Do not include all TODOs

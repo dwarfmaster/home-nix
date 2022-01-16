@@ -11,7 +11,7 @@ in {
 
   programs.doom = {
     initModules = {
-      tools = [ { mod = "pass"; args = [ "auth" ]; } ];
+      tools = [ { mod = "pass"; args = [ ]; } ];
     };
   };
 }
