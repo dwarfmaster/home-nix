@@ -1,27 +1,32 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, ... }:
 
-# I ressorted to maintain my own lambdapi-mode which is cloned from
-# https://github.com/Deducteam/lambdapi, except that I don't start all features
+let
+  inherit (config.pkgsets) pkgs;
 
-{
+  # TODO fix lambdapi package
+  lambdapi_v20_pkg = pkgs.callPackage ./lambdapi20.nix { };
+  lambdapi_v20 = pkgs.writeShellScriptBin "lambdapi-v2.0" ''
+    ${lambdapi_v20_pkg}/bin/lambdapi
+  '';
+  lambdapi_v21 = pkgs.callPackage ./lambdapi21.nix { };
+
+in {
+  home.packages = [
+    # lambdapi_v20
+    # lambdapi_v21
+  ];
   programs.doom = {
     modules.lang.dedukti = {
       config.source = ./config.el;
       packages.text = ''
         (package! lambdapi-mode)
       '';
-      # autoloads = {
-      #   mode.source = ./mode.el;
-      # };
-      # extras = {
-      #   input.source = ./input.el;
-      #   capf.source = ./capf.el;
-      #   abbrev.source = ./abbrev.el;
-      #   vars.source = ./vars.el;
-      #   smie.source = ./smie.el;
-      #   proofs.source = ./proofs.el;
-      #   layout.source = ./layout.el;
-      # };
     };
   };
+
+  # To install lambdapi with opam, I need zlib
+  pkgconfig.enable = true;
+  pkgconfig.path = [
+    "${pkgs.zlib.dev}/lib/pkgconfig"
+  ];
 }
