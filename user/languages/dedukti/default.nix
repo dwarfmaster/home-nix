@@ -15,7 +15,7 @@ in {
     # lambdapi_v20
     # lambdapi_v21
   ];
-  programs.doom = {
+  programs.doom-emacs.config = {
     modules.lang.dedukti = {
       config.source = ./config.el;
       packages.text = ''

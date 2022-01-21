@@ -12,7 +12,7 @@ in {
   };
 
   # Setup doom-emacs theme
-  programs.doom = {
+  programs.doom-emacs.config = {
     initModules = {
       ui = [
         { mod = "ligatures"; args = [ "extra" ]; }

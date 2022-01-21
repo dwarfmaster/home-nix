@@ -10,7 +10,7 @@ in {
     pkgs.texlab                        # LSP for LaTeX
   ];
 
-  programs.doom = {
+  programs.doom-emacs.config = {
     initModules = {
       lang = [ { mod = "latex"; args = [ "latexmk" "cdlatex" "lsp" ]; } ];
     };

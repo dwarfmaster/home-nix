@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 
 {
-  programs.doom = {
+  programs.doom-emacs.config = {
     modules.dwarfmaster.feeds = {
       config.source = ./config.el;
     };

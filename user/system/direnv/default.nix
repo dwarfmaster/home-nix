@@ -9,7 +9,7 @@
     enableZshIntegration = true;
   };
 
-  programs.doom = {
+  programs.doom-emacs.config = {
     initModules = {
       tools = [ "direnv" ];
     };

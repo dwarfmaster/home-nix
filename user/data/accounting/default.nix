@@ -12,7 +12,7 @@ in {
     influxdb-init
   ];
 
-  programs.doom = {
+  programs.doom-emacs.config = {
     modules.dwarfmaster.hledger.config.source = ./hledger.el;
     initModules.lang = [ "ledger" ];
   };

@@ -35,7 +35,7 @@
     ignores = [ "*~" "*.swp" ".direnv" ];
   };
 
-  programs.doom = {
+  programs.doom-emacs.config = {
     initModules = {
       tools = [ "magit" ];
     };

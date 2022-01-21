@@ -7,7 +7,7 @@ in {
     inherit (pkgs)
       coq;
   };
-  programs.doom.initModules.lang = [ "coq" ];
+  programs.doom-emacs.config.initModules.lang = [ "coq" ];
   # I need to tell opam where to find gmp
   pkgconfig.enable = true;
   pkgconfig.path = [ "${pkgs.gmp.dev}/lib/pkgconfig" ];

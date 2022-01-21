@@ -19,7 +19,7 @@ in {
     perf = pkgs.linuxPackages.perf; # Profile programs
   };
 
-  programs.doom = {
+  programs.doom-emacs.config = {
     initModules = {
       tools = [
         { mod = "debugger"; args = [ "lsp" ]; }

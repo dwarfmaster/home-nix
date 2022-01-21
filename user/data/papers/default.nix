@@ -5,7 +5,7 @@ let
 in {
   home.packages = with pkgs; [ zotero ];
 
-  programs.doom = {
+  programs.doom-emacs.config = {
     initModules = {
       tools = [ "biblio" ];
     };

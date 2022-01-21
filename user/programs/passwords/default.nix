@@ -9,7 +9,7 @@ in {
       ;
   };
 
-  programs.doom = {
+  programs.doom-emacs.config = {
     initModules = {
       tools = [ { mod = "pass"; args = [ ]; } ];
     };

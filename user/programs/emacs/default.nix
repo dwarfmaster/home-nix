@@ -13,14 +13,17 @@ in {
     enable = true;
     package = pkgs.emacs;
   };
-  programs.doom = {
-    enable = true;
-    initModules = import ./init.nix;
-    modules.config.main = {
-      packages.source = ./packages.el;
-      config.source = ./config.el;
+  programs.doom-emacs = {
+    config = {
+      enable = true;
+      initModules = import ./init.nix;
+      modules.config.main = {
+        packages.source = ./packages.el;
+        config.source = ./config.el;
+      };
     };
   };
+  xdg.configFile."doom".source = config.programs.doom-emacs.config.dir;
   
   home.packages = with pkgs; [
     gvfs # Necessary for TRAMP support for webdav

@@ -3,7 +3,7 @@
 let
   inherit (config.pkgsets) pkgs;
 in {
-  programs.doom = {
+  programs.doom-emacs.config = {
     initModules = {
       lang = [ { mod = "org"; args = [ "roam2" "pretty" "hugo" ]; } ];
     };

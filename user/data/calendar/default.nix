@@ -3,7 +3,7 @@
 let
   inherit (config.pkgsets) pkgs;
 in {
-  programs.doom = {
+  programs.doom-emacs.config = {
     modules.apps.caldav = {
       config.source = ./config.el;
       packages.text = ''

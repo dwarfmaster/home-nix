@@ -4,5 +4,5 @@ let
   inherit (config.pkgsets) pkgs;
 in {
   home.packages = [ pkgs.lean ];
-  programs.doom.initModules.lang = [ "lean" ];
+  programs.doom-emacs.config.initModules.lang = [ "lean" ];
 }

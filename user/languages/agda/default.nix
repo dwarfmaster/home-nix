@@ -14,7 +14,7 @@ in {
     standard-library
   '';
 
-  programs.doom = {
+  programs.doom-emacs.config = {
     initModules = {
       lang = [ { mod = "agda"; args = [ "local" ]; } ];
     };

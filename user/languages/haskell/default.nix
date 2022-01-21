@@ -15,7 +15,7 @@ in {
       (hpkgs: [ hpkgs.diagrams ]);
   };
 
-  programs.doom = {
+  programs.doom-emacs.config = {
     initModules = {
       lang = [ { mod = "haskell"; args = [ "dante" ]; } ];
     };

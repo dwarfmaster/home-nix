@@ -13,7 +13,7 @@ in {
       ;
   };
 
-  programs.doom = {
+  programs.doom-emacs.config = {
     initModules = {
       lang = [ { mod = "cc"; args = [ "lsp" ]; } ];
     };
