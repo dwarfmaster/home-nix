@@ -26,15 +26,20 @@
         url = "github:olynch/scientific-fhs";
         flake = false;
       };
+      opam2nix = {
+        url = "github:dwarfmaster/opam2nix";
+        inputs.nixpkgs.follows = "nixos";
+      };
     };
 
-  outputs = inputs@{ self, home, nixos, master, unstable, nur, simple-mailserver, lean4, scientific-fhs }:
+  outputs = inputs@{ self, home, nixos, master, unstable, nur, simple-mailserver, lean4, scientific-fhs, opam2nix }:
     let
       # All overlays to apply
       finalOverlays = self.overlays // {
         nur = nur.overlay;
         packages = self: super: {
           lean4 = lean4.defaultPackage.x86_64-linux;
+          opam2nix = opam2nix.defaultPackage.x86_64-linux;
           inherit scientific-fhs;
         };
       };

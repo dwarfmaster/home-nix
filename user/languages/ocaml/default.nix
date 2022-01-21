@@ -8,6 +8,7 @@ in {
       ocaml
       opam
       dune_2
+      opam2nix
       ;
     utop = pkgs.ocamlPackages.utop;
   };
