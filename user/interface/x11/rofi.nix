@@ -7,21 +7,20 @@ in {
     enable   = true;
     cycle    = true;
     terminal = "${pkgs.st}/bin/st";
-    package  = pkgs.rofi.override {
-      plugins = builtins.attrValues {
-        inherit (pkgs) rofi-emoji rofi-calc;
-      };
+    plugins  = builtins.attrValues {
+      inherit (pkgs) rofi-emoji rofi-calc;
     };
 
     enableBase16Theme = true;
-    borderWidth = 2;
     font        = "FuraCode Nerd Font Bold 20";
-    fullscreen  = false;
-    lines       = 15;
     location    = "center";
-    scrollbar   = true;
-    separator   = "solid";
-    padding     = 5;
+
+    # scrollbar   = true;
+    # separator   = "solid";
+    # padding     = 5;
+    # fullscreen  = false;
+    # borderWidth = 2;
+    # lines       = 15;
 
     configPath  = "${config.xdg.configHome}/rofi/config.rasi";
     extraConfig = {

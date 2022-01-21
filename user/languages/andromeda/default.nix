@@ -24,6 +24,7 @@ let
           ocamlbuild
           findlib
           menhir
+          menhirLib
           sedlex
         ;
       };

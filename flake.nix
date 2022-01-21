@@ -5,15 +5,15 @@
     {
       master.url = "nixpkgs/master";
       unstable.url = "nixpkgs/nixos-unstable";
-      nixos.url = "nixpkgs/release-21.05";
+      nixos.url = "nixpkgs/release-21.11";
       home = {
-        url = "github:nix-community/home-manager/release-21.05";
+        url = "github:nix-community/home-manager/release-21.11";
         inputs.nixpkgs.follows = "nixos";
       };
       simple-mailserver = {
-        url = "gitlab:simple-nixos-mailserver/nixos-mailserver/nixos-21.05";
+        url = "gitlab:simple-nixos-mailserver/nixos-mailserver/nixos-21.11";
         inputs.nixpkgs.follows = "unstable";
-        inputs.nixpkgs-21_05.follows = "nixos";
+        inputs.nixpkgs-21_11.follows = "nixos";
       };
       nur = {
         url = "github:nix-community/NUR";
