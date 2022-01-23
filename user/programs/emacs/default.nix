@@ -1,19 +1,17 @@
 { pkgs, config, ... }:
 
-# Doom needs to be installed manually
-
 let
 
-  doom = config.programs.emacs.finalPackage;
+  cfg = config.programs.doom-emacs;
+  doom = cfg.package;
   emacs = "${doom}/bin/emacs";
   client = "${doom}/bin/emacsclient";
+  epkgs = pkgs.emacsPackages;
 
 in {
-  programs.emacs = {
-    enable = true;
-    package = pkgs.emacs;
-  };
   programs.doom-emacs = {
+    enable = true;
+    doomPrivateDir = cfg.config.dir;
     config = {
       enable = true;
       initModules = import ./init.nix;
@@ -22,9 +20,15 @@ in {
         config.source = ./config.el;
       };
     };
+
+    # Fix some mismatch between packages names
+    # See https://github.com/vlaci/nix-doom-emacs/issues/394#issuecomment-985368661
+    emacsPackagesOverlay = self: super: {
+      gitignore-mode = epkgs.git-modes;
+      gitconfig-mode = epkgs.git-modes;
+    };
   };
-  xdg.configFile."doom".source = config.programs.doom-emacs.config.dir;
-  
+
   home.packages = with pkgs; [
     gvfs # Necessary for TRAMP support for webdav
     ripgrep

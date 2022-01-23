@@ -15,9 +15,7 @@
         inputs.nixpkgs.follows = "unstable";
         inputs.nixpkgs-21_11.follows = "nixos";
       };
-      nur = {
-        url = "github:nix-community/NUR";
-      };
+      nur.url = "github:nix-community/NUR";
       lean4 = {
         url = "github:leanprover/lean4";
         inputs.nixpkgs.follows = "unstable";
@@ -30,9 +28,21 @@
         url = "github:dwarfmaster/opam2nix";
         inputs.nixpkgs.follows = "nixos";
       };
+      # Forces more recent emacs-overlay, fixes https://github.com/vlaci/nix-doom-emacs/issues/401
+      emacs-overlay = {
+        url = "github:nix-community/emacs-overlay";
+        flake = false;
+      };
+      nix-doom-emacs = {
+        url = "github:nix-community/nix-doom-emacs";
+        inputs.nixpkgs.follows = "nixos";
+        inputs.emacs-overlay.follows = "emacs-overlay";
+      };
     };
 
-  outputs = inputs@{ self, home, nixos, master, unstable, nur, simple-mailserver, lean4, scientific-fhs, opam2nix }:
+  outputs = inputs@{ self, home, nixos, master, unstable, nur,
+                     simple-mailserver, lean4, scientific-fhs,
+                     opam2nix, emacs-overlay, nix-doom-emacs }:
     let
       # All overlays to apply
       finalOverlays = self.overlays // {
@@ -50,7 +60,8 @@
       };
       # HM Modules to be made available to profiles
       finalHMModules = self.hmModules // {
-        rycee-base16 = nur-no-pkgs.repos.rycee.hmModules.theme-base16;
+        rycee-base16   = nur-no-pkgs.repos.rycee.hmModules.theme-base16;
+        nix-doom-emacs = nix-doom-emacs.hmModule;
       };
 
     # After this point there is no configuration, only plumbing

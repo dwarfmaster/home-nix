@@ -103,17 +103,21 @@ let
     if isString mod
     then "    " + mod + "\n"
     else "    (" + mod.mod + concatMapStrings (arg: " +" + arg) mod.args + ")\n";
-  init.el = pkgs.writeText "init.el" ''
+  init-el = pkgs.writeText "init.el" ''
     (doom!
     ${concatStrings (mapAttrsToList (category: mods: "  :" + category + "\n" + concatMapStrings formatMod mods) cfg.initModules) }
       )
   '';
   files = {
-    "init.el" = init.el;
+    "init.el" = init-el;
   } // modulesFiles "modules/";
 
-  config-derivation = pkgs.runCommand "doom-emacs-config" {}
-    (concatStrings (mapAttrsToList (path: file: "mkdir -p $(dirname $out/${path}) && ln -s ${file} $out/${path}\n") files));
+  config-derivation = pkgs.runCommand "doom-emacs-config" {} ''
+    mkdir -p $out
+    touch $out/config.el
+    touch $out/packages.el
+    ${concatStrings (mapAttrsToList (path: file: "mkdir -p $(dirname $out/${path}) && ln -s ${file} $out/${path}\n") files)}
+  '';
 
 in {
   options = {
