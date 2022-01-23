@@ -2,6 +2,8 @@
 
 let
   inherit (config.pkgsets) pkgs;
+  theme = pkgs.writeText "hm-base16.rasi"
+    (import ./rofi-theme.nix config.theme.base16.colors);
 in {
   programs.rofi = {
     enable   = true;
@@ -11,28 +13,16 @@ in {
       inherit (pkgs) rofi-emoji rofi-calc;
     };
 
-    enableBase16Theme = true;
-    font        = "FuraCode Nerd Font Bold 20";
-    location    = "center";
-
-    # scrollbar   = true;
-    # separator   = "solid";
-    # padding     = 5;
-    # fullscreen  = false;
-    # borderWidth = 2;
-    # lines       = 15;
+    font     = "FuraCode Nerd Font Bold 20";
+    location = "center";
+    theme    = "hm-base16";
 
     configPath  = "${config.xdg.configHome}/rofi/config.rasi";
     extraConfig = {
-      # Enable the extending coloring options
-      color-enabled = true;
-      # Sorting method
-      sort = "fzf";
       matching = "fuzzy";
-      # Two columns
-      columns = 2;
     };
   };
+  xdg.configFile."rofi/themes/hm-base16.rasi".source = theme;
 
   applications.launcher   = "${config.programs.rofi.package}/bin/rofi -modi drun -show drun -show-icons";
   applications.calculator = "${config.programs.rofi.package}/bin/rofi -modi calc -show calc -no-show-match -no-sort -calc-command \"echo '{result}' | ${pkgs.xclip}/bin/xclip -i\"";
