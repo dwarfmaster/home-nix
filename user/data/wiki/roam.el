@@ -1,4 +1,6 @@
 
+(load! "+nix")
+
 ;; Org Roam
 ;;   ___              ____
 ;;  / _ \ _ __ __ _  |  _ \ ___   __ _ _ __ ___
@@ -11,8 +13,7 @@
 ;; Set the index file
 (setq org-roam-index-file (concat org-roam-directory "/index.org"))
 ;; Store the database in $XDG_CACHE_HOME/org-roam/db.sqlite3
-(setq org-roam-db-location (concat (getenv "XDG_CACHE_HOME")
-                   "/org-roam/doom.sqlite3"))
+(setq org-roam-db-location (concat *nix/xdg-cache* "/org-roam/doom.sqlite3"))
 ;; Default capture
 (after! org
   (setq org-roam-capture-templates

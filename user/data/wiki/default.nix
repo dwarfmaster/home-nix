@@ -10,8 +10,13 @@ in {
     modules.dwarfmaster = {
       org-config.config.source = ./org.el;
       org-attach.config.source = ./attach.el;
-      org-roam.config.source   = ./roam.el;
       org-links.config.source  = ./links.el;
+      org-roam = {
+        config.source   = ./roam.el;
+        nix = {
+          xdg-cache = "${config.xdg.cacheHome}";
+        };
+      };
     };
   };
 
