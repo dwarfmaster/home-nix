@@ -51,9 +51,9 @@ in {
     };
 
     Service = {
-      Type = "forking";
-      ExecStart = "${pkgs.dash}/bin/dash -c '${emacs} --daemon && ${client} -c --eval \"(delete-frame)\"'";
-      ExecStop = "${client} --no-wait --eval \"(progn (setq kill-emacs-hook nil) (kill emacs))\"";
+      Type = "notify";
+      ExecStart = "${pkgs.runtimeShell} -l -c '${emacs} --fg-daemon'";
+      SuccessExitStatus=15;
       Restart = "on-failure";
     };
 
