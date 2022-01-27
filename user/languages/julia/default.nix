@@ -2,19 +2,13 @@
 
 let
   inherit (config.pkgsets) pkgs;
-  fhsCommand = pkgs.callPackage pkgs.scientific-fhs {
-    juliaVersion = "julia_16";
-    condaInstallationPath = "${config.xdg.cacheHome}/conda";
-    enableConda = false; # I don't need conda for now
-  };
 in {
-  home.packages = [
-    (fhsCommand "julia" "julia")
-    (fhsCommand "julia-bash" "bash")
-  ];
+  home.packages = [ pkgs.julia-bin ];
+  # Julia looks for startup.jl in its DEPOT_PATH
+  xdg.dataFile."julia/config/startup.jl".source = ./startup.jl;
 
   home.sessionVariables = {
-    JULIA_DEPOT_PATH = "${config.xdg.cacheHome}/julia";
+    JULIA_DEPOT_PATH = "${config.xdg.dataHome}/julia";
   };
 
   programs.doom-emacs.config = {

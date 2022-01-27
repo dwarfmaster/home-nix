@@ -20,10 +20,6 @@
         url = "github:leanprover/lean4";
         inputs.nixpkgs.follows = "unstable";
       };
-      scientific-fhs = {
-        url = "github:olynch/scientific-fhs";
-        flake = false;
-      };
       opam2nix = {
         url = "github:dwarfmaster/opam2nix";
         inputs.nixpkgs.follows = "nixos";
@@ -41,7 +37,7 @@
     };
 
   outputs = inputs@{ self, home, nixos, master, unstable, nur,
-                     simple-mailserver, lean4, scientific-fhs,
+                     simple-mailserver, lean4,
                      opam2nix, emacs-overlay, nix-doom-emacs }:
     let
       # All overlays to apply
@@ -50,7 +46,6 @@
         packages = self: super: {
           lean4 = lean4.defaultPackage.x86_64-linux;
           opam2nix = opam2nix.defaultPackage.x86_64-linux;
-          inherit scientific-fhs;
         };
       };
       # Modules to be made available to hosts config
