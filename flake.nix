@@ -34,11 +34,12 @@
         inputs.nixpkgs.follows = "nixos";
         inputs.emacs-overlay.follows = "emacs-overlay";
       };
+      nix-autobahn.url = "github:Lassulus/nix-autobahn";
     };
 
   outputs = inputs@{ self, home, nixos, master, unstable, nur,
-                     simple-mailserver, lean4,
-                     opam2nix, emacs-overlay, nix-doom-emacs }:
+                     simple-mailserver, lean4, opam2nix,
+                     emacs-overlay, nix-doom-emacs, nix-autobahn }:
     let
       # All overlays to apply
       finalOverlays = self.overlays // {
@@ -46,6 +47,7 @@
         packages = self: super: {
           lean4 = lean4.defaultPackage.x86_64-linux;
           opam2nix = opam2nix.defaultPackage.x86_64-linux;
+          nix-autobahn = nix-autobahn.defaultPackage.x86_64-linux;
         };
       };
       # Modules to be made available to hosts config
