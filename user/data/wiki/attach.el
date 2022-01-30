@@ -7,21 +7,34 @@
 ;;  \___/|_|  \__, | /_/   \_\__|\__\__,_|\___|_| |_|
 ;;            |___/
 
+(defun dwarfmaster/iterate-attach-directories (fun)
+  "Call FUN over all attachment directories of parents, in order."
+  (save-excursion
+    (let ((inside (not (org-before-first-heading-p))))
+      (outline-back-to-heading)
+      (while inside
+        (if (and (org-id-get) (file-exists-p (org-attach-dir-from-id (org-id-get))))
+            (funcall fun (org-attach-dir-from-id (org-id-get))))
+        (condition-case nil
+            (outline-up-heading 1)
+          (error (setq inside nil)))))))
+
 ;; I'm using my own system where attachment links are resolved by moving up the
 ;; tree in when resolved.
 (defun dwarfmaster/attach-list-candidates ()
   "List all attachments available for current heading."
-  (save-excursion
-    (let ((files '()))
-      (outline-back-to-heading)
-      (while (not (org-before-first-heading-p))
-        (if (and (org-id-get) (file-exists-p (org-attach-dir-from-id (org-id-get))))
-            (let* ((dir (org-attach-dir-from-id (org-id-get)))
-                   (locals (directory-files dir)))
-              (setq files (cl-merge 'list files locals #'string-lessp))))
-        (outline-up-heading 1))
-      files)))
-;; TODO better complete solution for attach links
+  (let ((files '()))
+    (dwarfmaster/iterate-attach-directories
+     (lambda (path) (setq files (cl-merge 'list files (directory-files path) #'string-lessp))))
+    (delete "." (delete ".." files))))
+(defun dwarfmaster/attach-complete ()
+  "Interactively select an available attachment."
+  (interactive)
+  (let ((att-source
+         `((name . "Attachment")
+           (candidates . ,(dwarfmaster/attach-list-candidates))
+           (action . (lambda (candidate) (format "attachment:%s" candidate))))))
+    (helm :sources '(att-source))))
 
 (defun dwarfmaster/attach-resolve-link (file)
   "Look for FILE in attach directories."
@@ -52,4 +65,6 @@ See `org-open-file' for details about ARG"
   ;; Do not commit attachements with git ! Will use a special hook
   (setq org-attach-commit nil))
 (after! org-attach
-  (org-link-set-parameters "attachment" :follow #'dwarfmaster/attach-follow))
+  (org-link-set-parameters "attachment"
+                           :follow #'dwarfmaster/attach-follow
+                           :complete #'dwarfmaster/attach-complete))
