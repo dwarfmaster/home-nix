@@ -77,4 +77,22 @@
       fsType = "vfat";
     };
   };
+
+  # Network
+  # systemd.network = {
+  #   networks = {
+  #     "40-wired" = {
+  #       enable = true;
+  #       matchConfig.Name = "enp61s0";
+  #       networkConfig.DHCP = "yes";
+  #       dhcpConfig.RouteMetric = 10;
+  #     };
+  #     "40-wireless" = {
+  #       enable = true;
+  #       matchConfig.Name = "wlo1";
+  #       networkConfig.DHCP = "yes";
+  #       dhcpConfig.RouteMetric = 10;
+  #     };
+  #   };
+  # };
 }

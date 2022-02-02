@@ -2,10 +2,9 @@
 
 {
   name = "trivial";
-  inherit system;
 
   nodes = {
-    tungdil = { ... }: { };
+    tungdil = { ... }: { imports = tungdil; };
   };
 
   skipLint = true;

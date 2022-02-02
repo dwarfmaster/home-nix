@@ -69,9 +69,6 @@
   };
 
   # Networking
-  networking.wireless.enable = false;
-  networking.useDHCP = false;
-  networking.usePredictableInterfaceNames = true;
   networking.defaultGateway = "188.165.216.254";
   networking.nameservers = [ "213.186.33.99" "1.1.1.1" ];
   networking.interfaces.enp1s0.ipv4.addresses = [ {

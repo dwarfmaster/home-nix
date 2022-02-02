@@ -136,7 +136,12 @@
           modulesPaths = map fullPath (attrNames (readVisible modulesDir));
         in pathsToImportedAttrs modulesPaths;
 
-      nixosConfigurations = hosts;
+      nixosConfigurations =
+        builtins.mapAttrs (_: modules:
+          lib.nixosSystem {
+            inherit system modules;
+            extraArgs = { inherit system; };
+          }) hosts;
 
       hmConfigurations =
         import ./users {
