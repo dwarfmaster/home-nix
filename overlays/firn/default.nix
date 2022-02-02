@@ -1,3 +1,3 @@
-self: super: {
-  firn = super.callPackage ./firn.nix { };
+final: prev: {
+  firn = prev.callPackage ./firn.nix { };
 }
