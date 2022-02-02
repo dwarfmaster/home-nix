@@ -61,7 +61,7 @@
         nix-doom-emacs = nix-doom-emacs.hmModule;
       };
 
-    # After this point there is no configuration, only plumbing
+      # After this point there is no configuration, only plumbing
       inherit (builtins) attrNames attrValues;
       inherit (nixos) lib;
       inherit (lib) recursiveUpdate;
@@ -90,10 +90,20 @@
         nurpkgs = pkgImport false nixos;
       };
 
+      hosts =
+        import ./hosts (inputs // {
+          inherit system;
+          inherit lib utils pkgset;
+          inherit finalOverlays finalModules finalHMModules;
+        });
+
     in {
-      checks."${system}" = {
-        # TODO
-      };
+      checks."${system}" =
+        import ./tests (inputs // {
+          inherit system;
+          inherit lib utils pkgset;
+          inherit hosts;
+        });
 
       hydraJobs = {
         # TODO;
@@ -120,11 +130,6 @@
           modulesPaths = map fullPath (attrNames (readVisible modulesDir));
         in pathsToImportedAttrs modulesPaths;
 
-      nixosConfigurations =
-        import ./hosts (inputs // {
-          inherit system;
-          inherit lib utils pkgset;
-          inherit finalOverlays finalModules finalHMModules;
-        });
+      nixosConfigurations = hosts;
     };
 }
