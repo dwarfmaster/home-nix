@@ -63,3 +63,16 @@
 ;; Including no password-store
 (after! password-store
   (setq auth-sources '()))
+
+;; Project root
+;;  ____            _           _     ____             _
+;; |  _ \ _ __ ___ (_) ___  ___| |_  |  _ \ ___   ___ | |_
+;; | |_) | '__/ _ \| |/ _ \/ __| __| | |_) / _ \ / _ \| __|
+;; |  __/| | | (_) | |  __/ (__| |_  |  _ < (_) | (_) | |_
+;; |_|   |_|  \___// |\___|\___|\__| |_| \_\___/ \___/ \__|
+;;               |__/
+(defun dwarfmaster/projectile-find-root (dir)
+  (let ((root (projectile-project-root dir)))
+    (and root (cons 'transient root))))
+(after! project
+  (add-to-list 'project-find-functions 'dwarfmaster/projectile-find-root))
