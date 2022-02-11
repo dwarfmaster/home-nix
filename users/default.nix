@@ -2,31 +2,30 @@
 
 let
 
+  mkConfig = path:
+    { imports = [ path ../config/core ] ++ builtins.attrValues finalHMModules; };
+
   configurations = {
     luc        = {
       username = "luc";
-      config   = import ./luc.nix;
+      config   = mkConfig ./luc.nix;
     };
     luc-server = {
       username = "luc";
-      config   = import ./luc-server.nix;
+      config   = mkConfig ./luc-server.nix;
     };
   };
 
   mkHm = name: config:
     homeManagerConfiguration {
-      configuration = {
-        imports = [
-          config.config
-          ../config/core
-        ];
-      };
+      configuration = config.config;
       system = "x86_64-linux";
       homeDirectory = "/home/${config.username}";
       username = config.username;
-      extraModules = builtins.attrValues finalHMModules;
       pkgs = pkgs;
       stateVersion = "21.11";
     };
 
-in builtins.mapAttrs mkHm configurations
+  activations = builtins.mapAttrs mkHm configurations;
+
+in activations // { configurations = builtins.mapAttrs (_: config: config.config) configurations; }

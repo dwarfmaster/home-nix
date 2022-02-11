@@ -18,6 +18,9 @@ let
   modules = hostName:
     let
       global = {
+        home-manager.useGlobalPkgs = true;
+        home-manager.useUserPackages = true;
+
         networking.hostName = hostName;
         nix.nixPath = let path = toString ../.; in
           [

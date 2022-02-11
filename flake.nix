@@ -53,6 +53,7 @@
       # Modules to be made available to hosts config
       finalModules = self.nixosModules // {
         mailserver   = simple-mailserver.nixosModules.mailserver;
+        home-manager = home.nixosModules.home-manager;
       };
       # HM Modules to be made available to profiles
       finalHMModules = self.hmModules // {
@@ -96,10 +97,16 @@
         nurpkgs = pkgImport false nixos;
       };
 
+      hmConfigurations =
+        import ./users {
+          inherit finalHMModules lib pkgs;
+          inherit (home.lib) homeManagerConfiguration;
+        };
+
       hosts =
         import ./hosts (inputs // {
           inherit system;
-          inherit lib pkgs;
+          inherit pkgs lib;
           inherit finalOverlays finalModules finalHMModules;
         });
 
@@ -140,13 +147,12 @@
         builtins.mapAttrs (_: modules:
           lib.nixosSystem {
             inherit system modules;
+            lib = lib.extend (final: prev: {
+              hmConfigurations = hmConfigurations.configurations;
+            });
             extraArgs = { inherit system; };
           }) hosts;
 
-      hmConfigurations =
-        import ./users {
-          inherit finalHMModules lib pkgs;
-          inherit (home.lib) homeManagerConfiguration;
-        };
+      hmConfigurations = builtins.removeAttrs hmConfigurations [ "configurations" ];
     };
 }
