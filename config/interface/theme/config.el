@@ -23,6 +23,22 @@
   ;; Corrects org native fontification
   (doom-themes-org-config))
 
+;; Ligatures
+;;  _     _             _
+;; | |   (_) __ _  __ _| |_ _   _ _ __ ___  ___
+;; | |   | |/ _` |/ _` | __| | | | '__/ _ \/ __|
+;; | |___| | (_| | (_| | |_| |_| | | |  __/\__ \
+;; |_____|_|\__, |\__,_|\__|\__,_|_|  \___||___/
+;;          |___/
+(plist-put! +ligatures-extra-symbols
+            :str     ""
+            :bool    ""
+            :return  ""
+            :true    "⊤"
+            :false   "⊥"
+            :not     ""
+            )
+
 ;;; Org UI
 ;;   ___              _   _ ___
 ;;  / _ \ _ __ __ _  | | | |_ _|
