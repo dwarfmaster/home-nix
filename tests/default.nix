@@ -6,17 +6,16 @@
 , pkgs
 , self
 , system
-, utils
 , hosts
 , ...
 }:
 
 let
+  inherit (lib) nameValuePair utils;
   inherit (utils) mapFilterAttrs;
-  inherit (lib) nameValuePair;
   inherit (builtins) readDir;
   makeTest = pkgs.nixosTest;
-  importTest = name: path: makeTest (import path ({ inherit lib pkgs system utils; } // hosts));
+  importTest = name: path: makeTest (import path ({ inherit lib pkgs system; } // hosts));
 in
 mapFilterAttrs
   (_: v: v != null)

@@ -6,13 +6,12 @@
 , pkgs
 , self
 , system
-, utils
 , finalModules
 , finalHMModules
 , ...
 }:
 let
-  inherit (lib) types;
+  inherit (lib) types utils;
   inherit (utils) recImport;
   inherit (builtins) attrValues removeAttrs;
 
@@ -64,9 +63,7 @@ let
         in
           (attrValues finalModules) ++ [ hm-default global local ];
 
-      extraArgs = {
-        inherit system utils;
-      };
+      extraArgs = { inherit system; };
     };
 
   hosts = recImport {

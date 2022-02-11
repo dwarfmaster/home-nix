@@ -62,9 +62,7 @@
 
       # After this point there is no configuration, only plumbing
       inherit (builtins) attrNames attrValues;
-      inherit (nixos) lib;
-      inherit (lib) recursiveUpdate;
-      utils = import ./lib/utils.nix { inherit lib; };
+      utils = import ./lib/utils.nix { lib = nixos.lib; };
       inherit (utils) pathsToImportedAttrs readVisible;
 
       system = "x86_64-linux";
@@ -88,9 +86,11 @@
         inherit system;
         config = { allowUnfree = false; };
         overlays =
-          attrValues finalOverlays ++
-          [ (self: super: pkgs-variants) ];
+          attrValues finalOverlays ++ [
+            (self: super: pkgs-variants)
+          ];
       };
+      lib = nixos.lib.extend (final: prev: { inherit utils; });
 
       nur-no-pkgs = import nur {
         nurpkgs = pkgImport false nixos;
@@ -99,7 +99,7 @@
       hosts =
         import ./hosts (inputs // {
           inherit system;
-          inherit lib utils pkgs;
+          inherit lib pkgs;
           inherit finalOverlays finalModules finalHMModules;
         });
 
@@ -107,7 +107,7 @@
       checks."${system}" =
         import ./tests (inputs // {
           inherit system;
-          inherit lib utils pkgs;
+          inherit lib pkgs;
           inherit hosts;
         });
 
@@ -140,7 +140,7 @@
 
       hmConfigurations =
         import ./users {
-          inherit finalHMModules lib pkgs utils;
+          inherit finalHMModules lib pkgs;
           inherit (home.lib) homeManagerConfiguration;
         };
     };
