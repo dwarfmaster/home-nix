@@ -1,16 +1,18 @@
-{ system, tungdil, vraccas, ... }:
+{ system, ... }:
 
 {
   name = "trivial";
-
-  nodes = {
-    tungdil = { ... }: { imports = tungdil; };
+  meta = {
+    description = "A trivial test that boots an empty VM";
   };
 
-  skipLint = true;
+  nodes = {
+    vm = { ... }: { };
+  };
+
   testScript = ''
-    tungdil.start()
-    tungdil.wait_for_unit("default.target")
-    print("Tungdil succesfully started")
+    vm.start()
+    vm.wait_for_unit("default.target")
+    print("Empty VM successfully started")
   '';
 }
