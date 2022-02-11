@@ -52,7 +52,6 @@
       };
       # Modules to be made available to hosts config
       finalModules = self.nixosModules // {
-        home-manager = home.nixosModules.home-manager;
         mailserver   = simple-mailserver.nixosModules.mailserver;
       };
       # HM Modules to be made available to profiles
@@ -131,5 +130,11 @@
         in pathsToImportedAttrs modulesPaths;
 
       nixosConfigurations = hosts;
+
+      hmConfigurations =
+        import ./users {
+          inherit finalHMModules lib pkgset utils;
+          inherit (home.lib) homeManagerConfiguration;
+        };
     };
 }

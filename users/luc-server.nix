@@ -1,5 +1,5 @@
 {
   imports = [
-    ../luc-common
+    ./luc-common.nix
   ];
 }

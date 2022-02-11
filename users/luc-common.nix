@@ -1,0 +1,31 @@
+{ lib, config, pkgs, ... }:
+
+{
+    imports = [
+      # System
+      ../config/system/xdg
+      ../config/system/direnv
+      ../config/system/encryption
+
+      # Interface
+      ../config/interface/theme
+
+      # Programs
+      ../config/programs/fzf
+      ../config/programs/git
+      ../config/programs/vim
+    ];
+
+    xdg.enable = true;
+    programs.git.userName = "DwarfMaster";
+    programs.git.userEmail = "luc@dwarfmaster.net";
+
+    # TODO factor common packages somewhere
+    home.packages = with pkgs; [ tree ];
+
+    manual = {
+      html.enable = true;
+      json.enable = true;
+      manpages.enable = true;
+    };
+}
