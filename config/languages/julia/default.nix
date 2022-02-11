@@ -1,8 +1,6 @@
-{ config, ... }:
+{ config, pkgs, ... }:
 
-let
-  inherit (config.pkgsets) pkgs;
-in {
+{
   home.packages = [ pkgs.julia-bin ];
   # Julia looks for startup.jl in its DEPOT_PATH
   xdg.dataFile."julia/config/startup.jl".source = ./startup.jl;

@@ -1,8 +1,6 @@
-{ config, lib, ... }:
+{ config, lib, pkgs, ... }:
 
-let
-  inherit (config.pkgsets) pkgs;
-in {
+{
   programs.cookiecutter = {
     enable = true;
     defaults = {

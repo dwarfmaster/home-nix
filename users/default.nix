@@ -1,4 +1,4 @@
-{ lib, utils, homeManagerConfiguration, finalHMModules, pkgset, ... }:
+{ lib, homeManagerConfiguration, finalHMModules, pkgs, ... }:
 
 let
 
@@ -19,14 +19,13 @@ let
         imports = [
           config.config
           ../config/core
-          (utils.mkPackagesModule pkgset)
         ];
       };
       system = "x86_64-linux";
       homeDirectory = "/home/${config.username}";
       username = config.username;
       extraModules = builtins.attrValues finalHMModules;
-      pkgs = pkgset.pkgs;
+      pkgs = pkgs;
       stateVersion = "21.11";
     };
 

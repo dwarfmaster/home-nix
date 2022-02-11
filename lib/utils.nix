@@ -13,22 +13,6 @@ let
   # Generate an attribute set by mapping a function over a list of values.
   genAttrs' = values: f: listToAttrs (map f values);
 
-  # Make a nixpkgs module with an attrset of packages sets
-  mkPackagesModule = sets: {
-    options = {
-      pkgsets = lib.mkOption {
-        type = lib.types.attrs;
-        description = ''
-          An attribute set of package sets to be used.
-        '';
-      };
-    };
-
-    config = {
-      pkgsets = sets;
-    };
-  };
-
 in
 {
   inherit mapFilterAttrs genAttrs';
@@ -59,15 +43,4 @@ in
     filterAttrs
       (name: _: !(hasPrefix "." name))
       (readDir dir);
-
-  inherit mkPackagesModule;
-
-  # Wrapper to create a user home-manager module from its definition
-  mkHM = config: usercfg: {
-    imports = [
-      usercfg
-      ../user/core
-      (mkPackagesModule config.pkgsets)
-    ] ++ attrValues config.home-manager-default-modules;
-  };
 }

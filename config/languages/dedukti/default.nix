@@ -1,8 +1,6 @@
-{ config, lib, ... }:
+{ config, lib, pkgs, ... }:
 
 let
-  inherit (config.pkgsets) pkgs;
-
   # TODO fix lambdapi package
   lambdapi_v20_pkg = pkgs.callPackage ./lambdapi20.nix { };
   lambdapi_v20 = pkgs.writeShellScriptBin "lambdapi-v2.0" ''

@@ -1,8 +1,6 @@
-{ config, lib, ... }:
+{ config, lib, pkgs, ... }:
 
 let
-  inherit (config.pkgsets) pkgs;
-
   physlock = "${pkgs.physlock}/bin/physlock";
   i3lock = builtins.replaceStrings ["%%"] ["%"] "${config.services.screen-locker.lockCmd}";
   vlock = "${pkgs.vlock}/bin/vlock";

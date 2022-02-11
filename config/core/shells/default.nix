@@ -1,7 +1,7 @@
-{ config, ... }:
+{ config, pkgs, ... }:
 
 let
-  inherit (config.pkgsets) pkgs unstable;
+  inherit (pkgs) unstable;
 in {
   # Misc
   home = {

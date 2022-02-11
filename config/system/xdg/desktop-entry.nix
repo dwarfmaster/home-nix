@@ -1,10 +1,9 @@
-{ config, lib, ... }:
+{ config, lib, pkgs, ... }:
 
 # SPEC: https://specifications.freedesktop.org/desktop-entry-spec/desktop-entry-spec-latest.html
 # Nice interface to create desktop files already present in upstream home-manager
 let
-  inherit (config.pkgsets) pkgs;
-
+  # TODO broken
   lsdesktopfPkg = { stdenv, fetchFromGitHub }:
     stdenv.mkDerivation {
       pname = "lsdesktopf";

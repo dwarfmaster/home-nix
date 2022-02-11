@@ -1,8 +1,6 @@
-{ config, ... }:
+{ config, pkgs, ... }:
 
 let
-
-  inherit (config.pkgsets) pkgs;
 
   terminal = let
     st = pkgs.st.override { conf = builtins.readFile ./st.h; };

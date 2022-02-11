@@ -1,7 +1,6 @@
-{ config, ... }:
+{ config, pkgs, ... }:
 
 let
-  inherit (config.pkgsets) pkgs;
   cols = config.theme.colors;
   cfg = config.services.dunst;
 

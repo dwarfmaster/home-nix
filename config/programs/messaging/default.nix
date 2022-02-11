@@ -1,7 +1,7 @@
-{ config, ... }:
+{ config, pkgs, ... }:
 
 let
-  inherit (config.pkgsets) pkgs unfree;
+  inherit (pkgs) unfree;
 in {
   home.packages = builtins.attrValues {
     inherit (pkgs)

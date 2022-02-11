@@ -1,7 +1,7 @@
-{ config, lib, ... }:
+{ config, lib, pkgs, ... }:
 
 let
-  inherit (config.pkgsets) pkgs unfree;
+  inherit (pkgs) unfree;
 in {
   programs.why3 = {
     enable = false;

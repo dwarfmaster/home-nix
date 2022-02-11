@@ -1,10 +1,8 @@
-{ config, lib, ... }:
+{ config, lib, pkgs, ... }:
 
-let
-  inherit (config.pkgsets) pkgs;
-in {
-  home.packages = with pkgs; [
-    (agda.withPackages (p: [ p.standard-library ]))
+{
+  home.packages = [
+    (pkgs.agda.withPackages (p: [ p.standard-library ]))
   ];
 
   home.sessionVariables = {

@@ -1,8 +1,7 @@
-{ config, lib, ... }:
+{ config, lib, pkgs, ... }:
 
 let
 
-  inherit (config.pkgsets) pkgs;
   bctl = "${pkgs.brightnessctl}/bin/brightnessctl";
 
   brightness-manager = pkgs.writeShellScriptBin "brightness" ''

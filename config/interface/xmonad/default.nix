@@ -1,9 +1,7 @@
-{ config, lib, ... }:
+{ config, lib, pkgs, ... }:
 
 # TODO adapt to base16 theme
 let
-
-  inherit (config.pkgsets) pkgs;
 
   xmonad = pkgs.xmonad-with-packages.override {
     packages = hpkgs: builtins.attrValues {

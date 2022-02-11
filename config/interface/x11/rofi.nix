@@ -1,7 +1,6 @@
-{ config, ... }:
+{ config, pkgs, ... }:
 
 let
-  inherit (config.pkgsets) pkgs;
   theme = pkgs.writeText "hm-base16.rasi"
     (import ./rofi-theme.nix config.theme.base16.colors);
 in {

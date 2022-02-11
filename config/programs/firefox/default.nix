@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 
 let
-  inherit (config.pkgsets) pkgs unfree;
+  inherit (pkgs) unfree;
 in {
   # TODO tweak appearance
   # Consider tabliss

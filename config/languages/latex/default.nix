@@ -1,8 +1,6 @@
-{ config, ... }:
+{ config, pkgs, ... }:
 
-let
-  inherit (config.pkgsets) pkgs;
-in {
+{
   home.packages = [
     pkgs.python27Packages.dot2tex      # Convert graphviz graphs to LaTeX
     pkgs.texlive.combined.scheme-full  # All of texlive (including LaTeX and ConTEXt)

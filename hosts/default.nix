@@ -3,7 +3,7 @@
 , nixos
 , master
 , unstable
-, pkgset
+, pkgs
 , self
 , system
 , utils
@@ -13,9 +13,8 @@
 }:
 let
   inherit (lib) types;
-  inherit (utils) recImport mkPackagesModule;
+  inherit (utils) recImport;
   inherit (builtins) attrValues removeAttrs;
-  inherit (pkgset) pkgs;
 
   config = hostName:
     lib.nixosSystem {
@@ -44,8 +43,6 @@ let
             system.configurationRevision = lib.mkIf (self ? rev) self.rev;
           };
 
-          packages = mkPackagesModule pkgset;
-
           local = import "${toString ./.}/${hostName}.nix";
 
           hm-default = {
@@ -65,7 +62,7 @@ let
           };
 
         in
-          (attrValues finalModules) ++ [ hm-default packages global local ];
+          (attrValues finalModules) ++ [ hm-default global local ];
 
       extraArgs = {
         inherit system utils;

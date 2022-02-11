@@ -1,8 +1,6 @@
-{ config, ... }:
+{ config, pkgs, ... }:
 
-let
-  inherit (config.pkgsets) pkgs;
-in {
+{
   home.packages = with pkgs; [ zotero ];
 
   programs.doom-emacs.config = {

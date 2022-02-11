@@ -1,8 +1,6 @@
-{ config, lib, ... }:
+{ config, lib, pkgs, ... }:
 
-let
-  inherit (config.pkgsets) pkgs;
-in {
+{
   programs.doom-emacs.config = {
     initModules = {
       lang = [ { mod = "org"; args = [ "roam2" "pretty" "hugo" ]; } ];

@@ -1,8 +1,6 @@
 { config, lib, pkgs, ... }:
 
 let
-  inherit (config.pkgsets) pkgs;
-
   andromedaPkg = { stdenv, fetchFromGitHub, ocaml, ocamlPackages }:
     stdenv.mkDerivation {
       pname = "andromeda";

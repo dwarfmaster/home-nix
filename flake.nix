@@ -76,13 +76,20 @@
           config = { allowUnfree = unfree; };
         };
 
-      pkgset = {
+      pkgs-variants = {
         master = pkgImport false master;
         master-unfree = pkgImport true master;
         unstable = pkgImport false unstable;
         unstable-unfree = pkgImport true unstable;
-        pkgs = pkgImport false nixos;
         unfree = pkgImport true nixos;
+      };
+
+      pkgs = import nixos {
+        inherit system;
+        config = { allowUnfree = false; };
+        overlays =
+          attrValues finalOverlays ++
+          [ (self: super: pkgs-variants) ];
       };
 
       nur-no-pkgs = import nur {
@@ -92,7 +99,7 @@
       hosts =
         import ./hosts (inputs // {
           inherit system;
-          inherit lib utils pkgset;
+          inherit lib utils pkgs;
           inherit finalOverlays finalModules finalHMModules;
         });
 
@@ -100,7 +107,7 @@
       checks."${system}" =
         import ./tests (inputs // {
           inherit system;
-          inherit lib utils pkgset;
+          inherit lib utils pkgs;
           inherit hosts;
         });
 
@@ -133,7 +140,7 @@
 
       hmConfigurations =
         import ./users {
-          inherit finalHMModules lib pkgset utils;
+          inherit finalHMModules lib pkgs utils;
           inherit (home.lib) homeManagerConfiguration;
         };
     };

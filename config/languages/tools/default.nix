@@ -1,8 +1,6 @@
-{ config, ... }:
+{ config, pkgs, ... }:
 
-let
-  inherit (config.pkgsets) pkgs;
-in {
+{
   home.packages = builtins.attrValues {
     inherit (pkgs)
       pijul    # VCS based on sound theory

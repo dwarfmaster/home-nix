@@ -1,8 +1,6 @@
-{ config, ... }:
+{ config, pkgs, ... }:
 
-let
-  inherit (config.pkgsets) pkgs;
-in {
+{
   home.packages = [
     pkgs.libsForQt5.okular # Heavyweight pdf reader
   ] ++ builtins.attrValues {

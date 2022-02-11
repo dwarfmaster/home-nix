@@ -3,7 +3,7 @@
 , nixos
 , master
 , unstable
-, pkgset
+, pkgs
 , self
 , system
 , utils
@@ -15,8 +15,8 @@ let
   inherit (utils) mapFilterAttrs;
   inherit (lib) nameValuePair;
   inherit (builtins) readDir;
-  makeTest = pkgset.pkgs.nixosTest;
-  importTest = name: path: makeTest (import path ({ inherit lib pkgset system utils; } // hosts));
+  makeTest = pkgs.nixosTest;
+  importTest = name: path: makeTest (import path ({ inherit lib pkgs system utils; } // hosts));
 in
 mapFilterAttrs
   (_: v: v != null)

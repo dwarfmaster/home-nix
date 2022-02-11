@@ -1,11 +1,5 @@
-{ config, ... }:
+{ config, pkgs, ... }:
 
-let
-  inherit (config.pkgsets) pkgs;
-in {
-  home.packages = builtins.attrValues {
-    inherit (pkgs)
-      blender
-      ;
-  };
+{
+  home.packages = [ pkgs.blender ];
 }

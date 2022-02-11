@@ -1,7 +1,6 @@
-{ config, ... }:
+{ config, pkgs, ... }:
 
 let
-  inherit (config.pkgsets) pkgs;
   background-picture = pkgs.copyPathToStore ./bg.png;
 in {
   # Woodland theme, from https://github.com/jcornwall/base16-woodland-scheme
