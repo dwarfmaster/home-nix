@@ -2,6 +2,7 @@
 
 let
   inherit (pkgs) unstable;
+  lsd = "${pkgs.lsd}/bin/lsd";
 in {
   # Misc
   home = {
@@ -9,6 +10,7 @@ in {
       EDITOR    = "vim";
       DIRSTACKSIZE = 16;
     };
+    packages = [ pkgs.lsd ];
   };
   xdg.configFile."ls/dircolors".source = ./dircolors;
 
@@ -26,8 +28,8 @@ in {
 
     shellAliases     = {
       dh      = "dirs -v";
-      ls      = "ls --color=auto";
-      ll      = "ls -lrthF";
+      ls      = "${lsd}";
+      ll      = "${lsd} -lrth";
       lla     = "ll -A";
       lld     = "ll /dev/sd*";
       rm      = "rm --preserve-root -i";
@@ -87,8 +89,8 @@ in {
     '';
     shellAliases     = {
       dh      = "dirs -v";
-      ls      = "ls --color=auto";
-      ll      = "ls -lrthF";
+      ls      = "${lsd}";
+      ll      = "${lsd} -lrth";
       lla     = "ll -A";
       lld     = "ll /dev/sd*";
       rm      = "rm --preserve-root -i";
