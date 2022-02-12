@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 let
   inherit (pkgs) unstable;
@@ -9,8 +9,6 @@ in {
       EDITOR    = "vim";
       DIRSTACKSIZE = 16;
     };
-    # TODO move to emacs module
-    sessionPath = [ "$HOME/.emacs.d/bin" ];
   };
   xdg.configFile."ls/dircolors".source = ./dircolors;
 
@@ -41,17 +39,30 @@ in {
     enable = true;
     enableAutosuggestions = true;
     enableCompletion = true;
-    dotDir = ".config/zsh";
+    enableSyntaxHighlighting = true;
+    dotDir = "${lib.removePrefix config.home.homeDirectory config.xdg.configHome}/zsh";
     defaultKeymap = "viins";
 
     history = rec {
       expireDuplicatesFirst = true;
+      ignoreSpace = true;
       extended = true;
       save = 16192;
       size = save;
       share = true;
+      path = "${config.xdg.dataHome}/zsh/history";
     };
 
+    # Enable Powerlevel10k instant prompt. Should stay close to the top of
+    # .zshrc. Initialization code that may require console input (password
+    # prompts, [y/n] confirmations, etc.) must go above this block; everything
+    # else may go below.
+    initExtraFirst = ''
+      source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme
+      if [[ -r "${config.xdg.cacheHome}/p10k-instant-prompt-''${(%):-%n}.zsh" ]]; then
+        source "${config.xdg.cacheHome}/p10k-instant-prompt-''${(%):-%n}.zsh"
+      fi
+    '';
     # TODO make reupload its own script
     initExtra = ''
       # Using directory stacks as directory history : zsh.sourceforge.net/Intro/intro_6.html
@@ -70,6 +81,9 @@ in {
 
       # LS_COLORS setting
       eval $(dircolors ${config.xdg.configHome}/ls/dircolors)
+
+      # P10K config
+      source ${./p10k.zsh}
     '';
     shellAliases     = {
       dh      = "dirs -v";
