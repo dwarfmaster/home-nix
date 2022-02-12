@@ -6,8 +6,9 @@ in {
   home.packages = builtins.attrValues {
     # Cryptography
     inherit (pkgs)
-      openssh          # Misc cryptographic utilities
+      mkpasswd         # Tool to encode passwords for config files
       mosh             # Better SSH for bad connections
+      openssh          # Misc cryptographic utilities
       openssl          # Generic cryptography tool
       signify          # ED25519 signature system
       ;
@@ -32,11 +33,13 @@ in {
     # Informations
     inherit (pkgs)
       cpufrequtils # Information about the cpu
-      lm_sensors   # Access sensors like CPU temperature
-      pciutils     # Misc pci informations (contains lspci)
-      lsof         # List users of a device
-      usbutils     # for lsusb
       duc          # Inspect disk usage
+      ethtool      # Query/control network drivers/hardware settings
+      lm_sensors   # Access sensors like CPU temperature
+      lsof         # List users of a device
+      pciutils     # Misc pci informations (contains lspci)
+      usbutils     # for lsusb
+      wireshark    # Networks packets reading
       ;
 
     # Utilities
@@ -47,17 +50,17 @@ in {
       cachix           # Nix binary caches handling
       croc             # Better file sharing
       dhall            # Better json
-      ethtool          # Query/control network drivers/hardware settings
       exif             # Query image metadata
       exiv2            # Query and edit image metadata
       file             # Misc information about a file
+      gparted          # Partition editing
       jq               # CLI JSON interaction
       links            # Terminal web browser
       magic-wormhole   # File sharing
-      mkpasswd         # Tool to encode passwords for config files
       most             # Advanced pager
       patchelf         # NixOS utility to make a binary compatible
       perl             # Scripting language
+      postgresql       # PGSQL database access and manipulation
       sqlite           # SQlite database access and manipulation
       stress           # System stress tester
       telnet           # Unsecure direct download
@@ -75,12 +78,5 @@ in {
       sl               # ASCII art train
       beep             # Play sounds on the terminal
       ;
-
-    # TODO sort
-    #  wireshark    # Networks packets reading
-    #  gparted         # Partition editing
-    #  alsaUtils       # Sound card control
-    #  pavucontrol     # PulseAudio control
-    #  postgresql      # SQL database
   };
 }

@@ -36,11 +36,12 @@ let
 in {
   home.packages = builtins.attrValues {
     inherit (pkgs)
+      alsaUtils    # Sound card control
       audacity     # sound and music editor
+      pamixer      # CLI sound control
+      pavucontrol  # CLI sound interface
       pipewire     # For the pipewire CLI tools
       pulseaudio   # For the pulseaudio CLI tools
-      pavucontrol  # CLI sound interface
-      pamixer      # CLI sound control
     ;
     inherit (unstable)
       helvum      # GUI for pipewire
