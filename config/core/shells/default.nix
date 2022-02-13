@@ -28,8 +28,8 @@ in {
 
     shellAliases     = {
       dh      = "dirs -v";
-      ls      = "${lsd}";
-      ll      = "${lsd} -lrth";
+      ls      = "ls --color=auto";
+      ll      = "ls -lrth";
       lla     = "ll -A";
       lld     = "ll /dev/sd*";
       rm      = "rm --preserve-root -i";
@@ -85,12 +85,19 @@ in {
       eval $(dircolors ${config.xdg.configHome}/ls/dircolors)
 
       # P10K config
-      source ${./p10k.zsh}
+      if zmodload zsh/terminfo && (( terminfo[colors] >= 256 )); then
+        # capable terminal
+        source ${./p10k.zsh}
+        alias ls=${lsd}
+      else
+        # might be TTY or some other not very capable terminal
+        source ${./p10k-tty.zsh}
+        alias ls='ls --color=auto'
+      fi
     '';
     shellAliases     = {
       dh      = "dirs -v";
-      ls      = "${lsd}";
-      ll      = "${lsd} -lrth";
+      ll      = "ls -lrth";
       lla     = "ll -A";
       lld     = "ll /dev/sd*";
       rm      = "rm --preserve-root -i";
