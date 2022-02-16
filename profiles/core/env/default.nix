@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ system, config, lib, pkgs, ... }:
 
 {
   environment.systemPackages = with pkgs; [
@@ -28,5 +28,5 @@
     whois
   ];
 
-  programs.adb.enable = true;
+  programs.adb.enable = system == "x86_64-linux";
 }
