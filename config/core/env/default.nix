@@ -32,7 +32,8 @@ in {
 
     # Informations
     inherit (pkgs)
-      cpufrequtils # Information about the cpu
+      # TODO Not available on aarch64
+      # cpufrequtils # Information about the cpu
       duc          # Inspect disk usage
       ethtool      # Query/control network drivers/hardware settings
       lm_sensors   # Access sensors like CPU temperature
@@ -55,7 +56,7 @@ in {
       file             # Misc information about a file
       gparted          # Partition editing
       jq               # CLI JSON interaction
-      links            # Terminal web browser
+      #links            # Terminal web browser
       magic-wormhole   # File sharing
       most             # Advanced pager
       patchelf         # NixOS utility to make a binary compatible
@@ -65,18 +66,19 @@ in {
       stress           # System stress tester
       telnet           # Unsecure direct download
       tree             # Display directories arborescence
-      woeusb           # Create bootable windows USB keys
+      # TODO doesn't work on aarch64
+      # woeusb           # Create bootable windows USB keys
       zbar             # Tool to work with QR code
       ;
 
     # Useless but fun
     inherit (pkgs)
       figlet           # Font ASCII art
-      cmatrix          # Cascade of letters, matrix style
-      cowsay           # ASCII art of a cow speaking
-      asciiquarium     # ASCII art aquarium
-      sl               # ASCII art train
-      beep             # Play sounds on the terminal
+      #cmatrix          # Cascade of letters, matrix style
+      #cowsay           # ASCII art of a cow speaking
+      #asciiquarium     # ASCII art aquarium
+      #sl               # ASCII art train
+      #beep             # Play sounds on the terminal
       ;
   };
 }
