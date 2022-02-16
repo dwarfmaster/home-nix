@@ -44,7 +44,8 @@ in {
     ;
     inherit (unstable)
       helvum      # GUI for pipewire
-      easyeffects # GUI for effects on pipewire
+      # TODO doesn't work on aarch64
+      # easyeffects # GUI for effects on pipewire
     ;
     volume = volume-manager;
   };

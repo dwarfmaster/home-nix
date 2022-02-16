@@ -14,6 +14,10 @@ let
       username = "luc";
       config   = mkConfig ./luc-server.nix;
     };
+    luc-rpi4 = {
+      username = "luc";
+      config   = mkConfig ./luc-rpi4.nix;
+    };
   };
 
   mkHm = name: config:

@@ -31,7 +31,8 @@ in {
 
     # Informations
     inherit (pkgs)
-      cpufrequtils # Information about the cpu
+      # Not available on aarch64
+      # cpufrequtils # Information about the cpu
       lm_sensors   # Access sensors like CPU temperature
       pciutils     # Misc pci informations (contains lspci)
       lsof         # List users of a device
@@ -52,7 +53,7 @@ in {
       exiv2            # Query and edit image metadata
       file             # Misc information about a file
       jq               # CLI JSON interaction
-      links            # Terminal web browser
+      #links            # Terminal web browser
       magic-wormhole   # File sharing
       mkpasswd         # Tool to encode passwords for config files
       most             # Advanced pager
@@ -62,18 +63,19 @@ in {
       stress           # System stress tester
       telnet           # Unsecure direct download
       tree             # Display directories arborescence
-      woeusb           # Create bootable windows USB keys
+      # TODO doesn't work on aarch64
+      # woeusb           # Create bootable windows USB keys
       zbar             # Tool to work with QR code
       ;
 
     # Useless but fun
     inherit (pkgs)
       figlet           # Font ASCII art
-      cmatrix          # Cascade of letters, matrix style
-      cowsay           # ASCII art of a cow speaking
-      asciiquarium     # ASCII art aquarium
-      sl               # ASCII art train
-      beep             # Play sounds on the terminal
+      #cmatrix          # Cascade of letters, matrix style
+      #cowsay           # ASCII art of a cow speaking
+      #asciiquarium     # ASCII art aquarium
+      #sl               # ASCII art train
+      #beep             # Play sounds on the terminal
       ;
 
     # TODO sort
