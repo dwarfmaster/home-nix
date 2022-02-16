@@ -425,6 +425,21 @@
         "type": "indirect"
       }
     },
+    "nixos-hardware": {
+      "locked": {
+        "lastModified": 1644870092,
+        "narHash": "sha256-RLPD92lqXW98LDIbbwYqwAbt3R4iD1V1PiylfgBq5cU=",
+        "owner": "NixOS",
+        "repo": "nixos-hardware",
+        "rev": "10eab1c4cd8e715c0b41d32c28af2b89fc67bed0",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "repo": "nixos-hardware",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1628689438,
@@ -679,6 +694,7 @@
         "nix-autobahn": "nix-autobahn",
         "nix-doom-emacs": "nix-doom-emacs",
         "nixos": "nixos",
+        "nixos-hardware": "nixos-hardware",
         "nur": "nur",
         "opam2nix": "opam2nix",
         "simple-mailserver": "simple-mailserver",

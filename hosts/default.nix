@@ -1,22 +1,18 @@
-{ home
-, lib
-, nixos
-, master
-, unstable
+{ lib
 , pkgs
 , self
-, system
+, finalOverlays
 , finalModules
-, finalHMModules
-, ...
 }:
 let
   inherit (lib) types utils;
   inherit (utils) recImport;
   inherit (builtins) attrValues removeAttrs;
 
-  modules = hostName:
+  modules = hostName: system:
     let
+      sys-pkgs = pkgs system;
+
       global = {
         home-manager.useGlobalPkgs = true;
         home-manager.useUserPackages = true;
@@ -24,42 +20,35 @@ let
         networking.hostName = hostName;
         nix.nixPath = let path = toString ../.; in
           [
-            "nixpkgs=${nixos}"
-            "unstable=${unstable}"
-            "master=${master}"
-            "nixos=${nixos}"
+            "nixpkgs=${self.inputs.nixos}"
+            "unstable=${self.inputs.unstable}"
+            "master=${self.inputs.master}"
+            "nixos=${self.inputs.nixos}"
             "nixpkgs-overlays=${path}/overlays"
           ];
 
-        nixpkgs = { inherit pkgs; };
+        nixpkgs.pkgs = sys-pkgs;
 
         nix.registry = {
-          nixos.flake = nixos;
-          nixpkgs.flake = nixos;
+          nixos.flake = self.inputs.nixos;
+          nixpkgs.flake = self.inputs.nixos;
         };
 
         system.configurationRevision = lib.mkIf (self ? rev) self.rev;
       };
 
       local = import "${toString ./.}/${hostName}.nix";
-
-      hm-default = {
-        options = {
-          home-manager-default-modules = lib.mkOption {
-            type = types.attrs;
-            description = "An attr-set of home-manager modules to include in every configuration";
-            readOnly = true;
-            internal = true;
-            visible = false;
-          };
-        };
-      };
     in
-      (attrValues finalModules) ++ [ hm-default global local ];
+      (attrValues finalModules) ++ [ global local ];
 
-  hosts = recImport {
-    dir = ./.;
-    _import = modules;
+  mkHost = hostname: system: {
+    modules = modules hostname system;
+    inherit system;
+    pkgs = pkgs system;
   };
-in
-hosts
+
+in {
+  tungdil    = mkHost "tungdil"    "x86_64-linux";
+  vraccas    = mkHost "vraccas"    "x86_64-linux";
+  sharindlar = mkHost "sharindlar" "aarch64-linux";
+}
