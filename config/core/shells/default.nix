@@ -122,13 +122,4 @@ in {
     # TODO configure
     settings = { };
   };
-
-  # Theme
-  programs.starship = {
-    enable = true;
-    enableBashIntegration = true;
-    enableZshIntegration = true;
-    # TODO nushell integration
-    settings = import ./starship.nix;
-  };
 }
