@@ -1,8 +1,10 @@
 { lib, ... }:
 let
-  inherit (builtins) attrNames isAttrs readDir listToAttrs attrValues;
-
-  inherit (lib) filterAttrs hasSuffix hasPrefix mapAttrs' nameValuePair removeSuffix;
+  inherit (builtins)
+    attrNames isAttrs readDir listToAttrs attrValues;
+  inherit (lib)
+    filterAttrs hasSuffix hasPrefix mapAttrs' mapAttrsToList
+    nameValuePair removeSuffix;
 
   # mapFilterAttrs ::
   #   (name -> value -> bool )
@@ -43,4 +45,14 @@ in
     filterAttrs
       (name: _: !(hasPrefix "." name))
       (readDir dir);
+
+  # x -> (x -> string -> v -> { acc : x; value: v }) -> attrset -> attrset
+  foldOverAttrs = init: op: attrs:
+    (builtins.foldl'
+      (acc: attr: let nattr = op acc.acc attr.name attr.value; in {
+                        acc = nattr.acc;
+                        value = acc.value // { "${attr.name}" = nattr.value; };
+                      })
+      { acc = init; value = { }; }
+      (mapAttrsToList nameValuePair attrs)).value;
 }
