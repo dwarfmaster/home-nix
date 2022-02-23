@@ -4,52 +4,71 @@ let
   inherit (pkgs) unfree;
   inherit (lib.utils) foldOverAttrs;
 
+  colors = config.theme.base16.colors;
+
   profiles = {
     "Personal" = {
       homepage = "about:blank";
       default = true;
+      color = colors.base0F.hex.rgb;
     };
     "Thesis" = {
       homepage = "about:blank";
+      color = colors.base0D.hex.rgb;
     };
     "Media" = {
       homepage = "about:blank";
+      color = colors.base0E.hex.rgb;
     };
     "Private" = {
       homepage = "about:blank";
+      color = colors.base07.hex.rgb;
     };
     "Config" = {
       homepage = "about:blank";
+      color = colors.base0C.hex.rgb;
     };
     "Shopping" = {
       homepage = "about:blank";
+      color = colors.base0A.hex.rgb;
     };
     "Secure" = {
       homepage = "about:blank";
       extraConfig = builtins.readFile ./user.js;
+      color = colors.base08.hex.rgb;
     };
   };
 
   buildProfile = id: name: profile: {
     acc = id + 1;
-    value = {
+    value = let
+      color = if profile ? color then profile.color else colors.base07.hex.rgb;
+    in {
       inherit name id;
       settings = {
         "browser.startup.homepage" = profile.homepage;
+        "browser.uidensity" = "compact";
+        "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
       } // (if profile ? settings then profile.settings else { });
       extraConfig = if profile ? extraConfig then profile.extraConfig else "";
       isDefault = if profile ? default then profile.default else false;
+      userChrome = ''
+        .tab-background[selected="true"] {
+          background: #${color} !important;
+        }
+        .tabbrowser-tab[selected="true"] {
+          color: #${colors.base00.hex.rgb} !important;
+        }
+      '';
     };
   };
 
 in {
-  # TODO tweak appearance
-  # Consider tabliss
-
   programs.firefox = {
     enable = true;
-    #package = pkgs.firefox;
     enableGnomeExtensions = false;
+    # Need to be manually enabled when first launching a new profile
+    # To do so, go to about:addons
     extensions = builtins.attrValues {
       # Missing : dont-fuck-with-paste, zotero and vivaldi fox
 
