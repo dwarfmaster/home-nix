@@ -2,40 +2,49 @@
 
 let
   inherit (pkgs) unfree;
+  inherit (lib) mapAttrs' nameValuePair;
   inherit (lib.utils) foldOverAttrs;
 
   colors = config.theme.base16.colors;
+  icons = "${pkgs.numix-icon-theme}/share/icons/Numix/scalable";
 
   profiles = {
     "Personal" = {
       homepage = "about:blank";
       default = true;
       color = colors.base0F.hex.rgb;
+      icon = "${icons}/categories/applications-games-symbolic.svg";
     };
     "Thesis" = {
       homepage = "about:blank";
       color = colors.base0D.hex.rgb;
+      icon = "${icons}/categories/applications-education-symbolic.svg";
     };
     "Media" = {
       homepage = "about:blank";
       color = colors.base0E.hex.rgb;
+      icon = "${icons}/categories/applications-multimedia-symbolic.svg";
     };
     "Private" = {
       homepage = "about:blank";
       color = colors.base07.hex.rgb;
+      icon = "${icons}/emotes/emote-love-symbolic.svg";
     };
     "Config" = {
       homepage = "about:blank";
       color = colors.base0C.hex.rgb;
+      icon = "${icons}/categories/applications-system-symbolic.svg";
     };
     "Shopping" = {
       homepage = "about:blank";
       color = colors.base0A.hex.rgb;
+      icon = "${icons}/emblems/emblem-system-symbolic.svg";
     };
     "Secure" = {
       homepage = "about:blank";
       extraConfig = builtins.readFile ./user.js;
       color = colors.base08.hex.rgb;
+      icon = "${icons}/status/security-high-symbolic.svg";
     };
   };
 
@@ -62,6 +71,15 @@ let
       '';
     };
   };
+
+  buildDesktop = name: profile: ''
+    [Desktop Entry]
+    Name=Firefox - ${name}
+    Exec=${config.programs.firefox.package}/bin/firefox -P "${name}"
+    Type=Application
+    Terminal=False
+    Icon=${profile.icon}
+  '';
 
 in {
   programs.firefox = {
@@ -98,16 +116,10 @@ in {
     };
 
     profiles = foldOverAttrs 0 buildProfile profiles;
-    # profiles.dwarfmaster = {
-    #   name = "DwarfMaster";
-    #   isDefault = true;
-    #   settings = {
-    #     # TODO create a local page
-    #     "browser.startup.homepage" = "about:blank";
-    #   };
-    #   extraConfig = builtins.readFile ./user.js;
-    # };
   };
+  xdg.dataFile = mapAttrs'
+    (name: profile: nameValuePair "applications/firefox-${name}.desktop" { text = buildDesktop name profile; })
+    profiles;
 
   applications.browser = "${config.programs.firefox.package}/bin/firefox";
 }

@@ -15,8 +15,8 @@
       name    = "FuraCode Nerd Font 14";
     };
     iconTheme = {
-      package = pkgs.papirus-icon-theme;
-      name    = "Papirus";
+      package = pkgs.numix-icon-theme;
+      name    = "Numix";
     };
     enableBase16Theme = true;
     #theme = {
