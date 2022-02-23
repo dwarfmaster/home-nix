@@ -2,6 +2,46 @@
 
 let
   inherit (pkgs) unfree;
+  inherit (lib.utils) foldOverAttrs;
+
+  profiles = {
+    "Personal" = {
+      homepage = "about:blank";
+      default = true;
+    };
+    "Thesis" = {
+      homepage = "about:blank";
+    };
+    "Media" = {
+      homepage = "about:blank";
+    };
+    "Private" = {
+      homepage = "about:blank";
+    };
+    "Config" = {
+      homepage = "about:blank";
+    };
+    "Shopping" = {
+      homepage = "about:blank";
+    };
+    "Secure" = {
+      homepage = "about:blank";
+      extraConfig = builtins.readFile ./user.js;
+    };
+  };
+
+  buildProfile = id: name: profile: {
+    acc = id + 1;
+    value = {
+      inherit name id;
+      settings = {
+        "browser.startup.homepage" = profile.homepage;
+      } // (if profile ? settings then profile.settings else { });
+      extraConfig = if profile ? extraConfig then profile.extraConfig else "";
+      isDefault = if profile ? default then profile.default else false;
+    };
+  };
+
 in {
   # TODO tweak appearance
   # Consider tabliss
@@ -38,15 +78,16 @@ in {
       ;
     };
 
-    profiles.dwarfmaster = {
-      name = "DwarfMaster";
-      isDefault = true;
-      settings = {
-        # TODO create a local page
-        "browser.startup.homepage" = "about:blank";
-      };
-      extraConfig = builtins.readFile ./user.js;
-    };
+    profiles = foldOverAttrs 0 buildProfile profiles;
+    # profiles.dwarfmaster = {
+    #   name = "DwarfMaster";
+    #   isDefault = true;
+    #   settings = {
+    #     # TODO create a local page
+    #     "browser.startup.homepage" = "about:blank";
+    #   };
+    #   extraConfig = builtins.readFile ./user.js;
+    # };
   };
 
   applications.browser = "${config.programs.firefox.package}/bin/firefox";
