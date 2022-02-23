@@ -88,13 +88,16 @@
         overlays =
           attrValues finalOverlays ++ [
             (self: super: pkgs-variants system)
+            (self: super: {
+              lib = super.lib.extend
+                (final: prev: {
+                  inherit utils;
+                  hardware = nixos-hardware.nixosModules;
+                });
+            })
           ];
       };
-      lib = nixos.lib.extend
-        (final: prev: { 
-          inherit utils;
-          hardware = nixos-hardware.nixosModules;
-        });
+      lib = nixos.lib;
 
       nur-no-pkgs = system: import nur {
         nurpkgs = pkgImport system false nixos;
@@ -119,7 +122,7 @@
       checks."x86_64-linux" =
         import ./tests (inputs // {
           inherit lib;
-          system = "86_64-linux";
+          system = "x86_64-linux";
           pkgs = pkgs "x86_64-linux";
           inherit (builtins.mapAttrs (_: config: config.modules) hosts);
         });
