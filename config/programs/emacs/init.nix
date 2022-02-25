@@ -52,5 +52,8 @@
     "hl-todo"
     "hydra"
     "modeline"
+    "nav-flash"
+    "minimap"
+    "treemacs"
   ];
 }

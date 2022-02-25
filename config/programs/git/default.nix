@@ -38,6 +38,7 @@
   programs.doom-emacs.config = {
     initModules = {
       tools = [ "magit" ];
+      ui = [ "vc-gutter" ];
     };
   };
 }
