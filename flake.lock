@@ -16,6 +16,21 @@
         "type": "gitlab"
       }
     },
+    "django": {
+      "locked": {
+        "lastModified": 1645824020,
+        "narHash": "sha256-kD1gKOO0s9iVw6iyO04oiW7fzldjawgrLVeuXznKFfY=",
+        "owner": "dwarfmaster",
+        "repo": "django-nixos",
+        "rev": "7a535f08863263e507fcd652bf0d551b29a34002",
+        "type": "github"
+      },
+      "original": {
+        "owner": "dwarfmaster",
+        "repo": "django-nixos",
+        "type": "github"
+      }
+    },
     "django-nixos": {
       "locked": {
         "lastModified": 1642402800,
@@ -740,6 +755,7 @@
     },
     "root": {
       "inputs": {
+        "django": "django",
         "emacs-overlay": "emacs-overlay",
         "home": "home",
         "imacs": "imacs",
