@@ -45,7 +45,7 @@
       # All overlays to apply
       finalOverlays = self.overlays // {
         nur = nur.overlay;
-        packages = self: super: {
+        packages = re: super: {
           lean4 = lean4.defaultPackage.x86_64-linux;
           opam2nix = opam2nix.defaultPackage.x86_64-linux;
           nix-autobahn = nix-autobahn.defaultPackage.x86_64-linux;
@@ -64,8 +64,14 @@
 
       # After this point there is no configuration, only plumbing
       inherit (builtins) attrNames attrValues;
-      utils = import ./lib/utils.nix { lib = nixos.lib; };
+      inherit (nixos) lib;
+      utils = import ./lib/utils.nix { inherit lib; };
       inherit (utils) pathsToImportedAttrs readVisible;
+
+      packages = system: import ./packages {
+        pkgs = import nixos { inherit system; config = { allowUnfree = false; }; };
+        inherit lib utils;
+      };
 
       pkgImport = system: unfree: pkgs:
         import pkgs {
@@ -95,9 +101,9 @@
                   hardware = nixos-hardware.nixosModules;
                 });
             })
+            (self: super: packages system)
           ];
       };
-      lib = nixos.lib;
 
       nur-no-pkgs = system: import nur {
         nurpkgs = pkgImport system false nixos;
@@ -129,6 +135,12 @@
 
       hydraJobs = {
         # TODO;
+      };
+
+      # TODO improve using flake-utils
+      packages = {
+        x86_64-linux = packages "x86_64-linux";
+        aarch64-linux = packages "aarch64-linux";
       };
 
       overlays =

@@ -65,7 +65,6 @@ in {
         source "${config.xdg.cacheHome}/p10k-instant-prompt-''${(%):-%n}.zsh"
       fi
     '';
-    # TODO make reupload its own script
     initExtra = ''
       # Using directory stacks as directory history : zsh.sourceforge.net/Intro/intro_6.html
       setopt autopushd pushdminus pushdsilent pushdtohome
@@ -73,13 +72,6 @@ in {
       # Change up/down keys behaviour : match commands in history by first letters
       bindkey 'OA' history-beginning-search-backward
       bindkey 'OB' history-beginning-search-forward
-
-      # reMarkable uploading
-      function reupload() {
-      	curl 'http://10.11.99.1/upload' -H 'Origin: http://10.11.99.1' -H 'Accept: */*' \
-      		-H 'Referrer: http://10.11.99.1/' -H 'Connection: keep-alive'           \
-      		-F "file=@$1;filename=$1;type=application/pdf"
-      }
 
       # LS_COLORS setting
       eval $(dircolors ${config.xdg.configHome}/ls/dircolors)

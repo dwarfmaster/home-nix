@@ -69,6 +69,7 @@ in {
       # TODO doesn't work on aarch64
       # woeusb           # Create bootable windows USB keys
       zbar             # Tool to work with QR code
+      reupload         # Easily uploads files on reMarkable
       ;
 
     # Useless but fun

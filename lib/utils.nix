@@ -31,6 +31,12 @@ in
           nameValuePair ("") (null))
       (readDir dir);
 
+  recImportDir = { dir, _import ? path: import path }:
+    mapFilterAttrs
+      (_: v: v == "directory")
+      (n: v: nameValuePair n (_import "${dir}/${n}"))
+      (readDir dir);
+
   # Convert a list to file paths to attribute set
   # that has the filenames stripped of nix extension as keys
   # and imported content of the file as value.
