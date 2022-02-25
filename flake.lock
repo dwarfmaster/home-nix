@@ -16,6 +16,21 @@
         "type": "gitlab"
       }
     },
+    "django-nixos": {
+      "locked": {
+        "lastModified": 1642402800,
+        "narHash": "sha256-BrsOBGymjgl8tS8nXETGqyN4p9oAFTDQFnVWifZrCq0=",
+        "owner": "pnmadelaine",
+        "repo": "django-nixos",
+        "rev": "31d154470c32ecdc87961b052e5641b852de3a6c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "pnmadelaine",
+        "repo": "django-nixos",
+        "type": "github"
+      }
+    },
     "doom-emacs": {
       "flake": false,
       "locked": {
@@ -225,6 +240,27 @@
         "owner": "nix-community",
         "ref": "release-21.11",
         "repo": "home-manager",
+        "type": "github"
+      }
+    },
+    "imacs": {
+      "inputs": {
+        "django-nixos": "django-nixos",
+        "nixpkgs": [
+          "nixos"
+        ]
+      },
+      "locked": {
+        "lastModified": 1644770963,
+        "narHash": "sha256-+FUFUpHXYaSJI0cZPlb1g4fw7Gbbh8YxHhjBlXMkDuo=",
+        "owner": "TWal",
+        "repo": "imacs",
+        "rev": "9a5203cfe98e0af8368d442f6bcf9941689b0155",
+        "type": "github"
+      },
+      "original": {
+        "owner": "TWal",
+        "repo": "imacs",
         "type": "github"
       }
     },
@@ -706,6 +742,7 @@
       "inputs": {
         "emacs-overlay": "emacs-overlay",
         "home": "home",
+        "imacs": "imacs",
         "lean4": "lean4",
         "master": "master",
         "nix-autobahn": "nix-autobahn",

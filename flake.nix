@@ -15,6 +15,10 @@
         inputs.nixpkgs.follows = "unstable";
         inputs.nixpkgs-21_11.follows = "nixos";
       };
+      imacs = {
+        url = "github:TWal/imacs";
+        inputs.nixpkgs.follows = "nixos";
+      };
       nur.url = "github:nix-community/NUR";
       nixos-hardware.url = "github:NixOS/nixos-hardware";
       lean4 = {
@@ -39,7 +43,7 @@
     };
 
   outputs = inputs@{ self, home, nixos, master, unstable, nur,
-                     nixos-hardware, simple-mailserver, lean4, opam2nix,
+                     nixos-hardware, simple-mailserver, imacs, lean4, opam2nix,
                      emacs-overlay, nix-doom-emacs, nix-autobahn }:
     let
       # All overlays to apply
@@ -99,6 +103,7 @@
                 (final: prev: {
                   inherit utils;
                   hardware = nixos-hardware.nixosModules;
+                  imacs    = imacs.mkNixosModule;
                 });
             })
             (self: super: packages system)
@@ -165,14 +170,15 @@
         in pathsToImportedAttrs modulesPaths;
 
       nixosConfigurations =
-        builtins.mapAttrs (_: config:
-          lib.nixosSystem {
-            inherit (config) system modules;
-            lib = lib.extend (final: prev: {
-              hmConfigurations = (hmConfigurations config.system).configurations;
-            });
-            extraArgs = { inherit (config) system; };
-          }) hosts;
+        builtins.mapAttrs (_: config: let
+          plib = (pkgs config.system).lib;
+        in lib.nixosSystem {
+          inherit (config) system modules;
+          lib = plib.extend (final: prev: {
+            hmConfigurations = (hmConfigurations config.system).configurations;
+          });
+          extraArgs = { inherit (config) system; };
+        }) hosts;
 
       # TODO improve using flake-utils
       hmConfigurations = {
