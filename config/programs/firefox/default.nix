@@ -2,8 +2,8 @@
 
 let
   inherit (pkgs) unfree;
-  inherit (lib) mapAttrs' nameValuePair;
-  inherit (lib.utils) foldOverAttrs;
+  inherit (lib) mapAttrs' nameValuePair concatMapStrings;
+  inherit (lib.utils) foldOverAttrs attrNameValuePairs;
 
   colors = config.theme.base16.colors;
   icons = "${pkgs.numix-icon-theme}/share/icons/Numix/scalable";
@@ -81,6 +81,22 @@ let
     Icon=${profile.icon}
   '';
 
+  rofi-script = pkgs.writeScript "rofi-firefox" (''
+    if test "$#" -eq 1; then
+        coproc (${config.programs.firefox.package}/bin/firefox "$URL_TO_OPEN" -P "$@" > /dev/null 2>&1)
+        exit 0
+    fi
+  '' + concatMapStrings (profile: "echo \"${profile.name}\"\n") (attrNameValuePairs profiles));
+
+  launcher = pkgs.writeScriptBin "firefox-launcher" ''
+    if test "$#" -eq 1; then
+      url="$@"
+    else
+      url="about:blank"
+    fi
+    URL_TO_OPEN="$url" ${pkgs.rofi}/bin/rofi -modi "Firefox Profile:${rofi-script}" -show "Firefox Profile"
+  '';
+
 in {
   programs.firefox = {
     enable = true;
@@ -119,7 +135,17 @@ in {
   };
   xdg.dataFile = mapAttrs'
     (name: profile: nameValuePair "applications/firefox-${name}.desktop" { text = buildDesktop name profile; })
-    profiles;
+    profiles // {
+      "applications/firefox-launcher.desktop".text = ''
+        [Desktop Entry]
+        Name=Web Browser
+        Exec=${launcher}/bin/firefox-launcher
+        Type=Application
+        Terminal=False
+        Icon=firefox
+      '';
+    };
 
-  applications.browser = "${config.programs.firefox.package}/bin/firefox";
+  home.packages = [ launcher ];
+  applications.browser = "${launcher}/bin/firefox-launcher";
 }

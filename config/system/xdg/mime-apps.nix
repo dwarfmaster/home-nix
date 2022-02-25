@@ -22,17 +22,17 @@
       "image/x-ms-bmp"   = [ "sxiv.desktop" ];
 
       # Web
-      "x-scheme-handler/http"         = [ "firefox.desktop" ];
-      "x-scheme-handler/https"        = [ "firefox.desktop" ];
-      "x-scheme-handler/ftp"          = [ "firefox.desktop" ];
-      "x-scheme-handler/chrome"       = [ "firefox.desktop" ];
-      "text/html"                     = [ "firefox.desktop" ];
-      "application/x-extension-htm"   = [ "firefox.desktop" ];
-      "application/x-extension-html"  = [ "firefox.desktop" ];
-      "application/x-extension-shtml" = [ "firefox.desktop" ];
-      "application/xhtml+xml"         = [ "firefox.desktop" ];
-      "application/x-extension-xhtml" = [ "firefox.desktop" ];
-      "application/x-extension-xht"   = [ "firefox.desktop" ];
+      "x-scheme-handler/http"         = [ "firefox-launcher.desktop" ];
+      "x-scheme-handler/https"        = [ "firefox-launcher.desktop" ];
+      "x-scheme-handler/ftp"          = [ "firefox-launcher.desktop" ];
+      "x-scheme-handler/chrome"       = [ "firefox-launcher.desktop" ];
+      "text/html"                     = [ "firefox-launcher.desktop" ];
+      "application/x-extension-htm"   = [ "firefox-launcher.desktop" ];
+      "application/x-extension-html"  = [ "firefox-launcher.desktop" ];
+      "application/x-extension-shtml" = [ "firefox-launcher.desktop" ];
+      "application/xhtml+xml"         = [ "firefox-launcher.desktop" ];
+      "application/x-extension-xhtml" = [ "firefox-launcher.desktop" ];
+      "application/x-extension-xht"   = [ "firefox-launcher.desktop" ];
     };
   };
 }

@@ -55,4 +55,7 @@ in
                       })
       { acc = init; value = { }; }
       (mapAttrsToList nameValuePair attrs)).value;
+
+  # Returns a list of name value pairs for an attrset
+  attrNameValuePairs = mapAttrsToList nameValuePair;
 }
