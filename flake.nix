@@ -10,6 +10,8 @@
         url = "github:nix-community/home-manager/release-21.11";
         inputs.nixpkgs.follows = "nixos";
       };
+      nur.url = "github:nix-community/NUR";
+      flake-utils.url = "github:numtide/flake-utils";
       simple-mailserver = {
         url = "gitlab:simple-nixos-mailserver/nixos-mailserver/nixos-21.11";
         inputs.nixpkgs.follows = "unstable";
@@ -20,7 +22,6 @@
         url = "github:TWal/imacs";
         inputs.nixpkgs.follows = "nixos";
       };
-      nur.url = "github:nix-community/NUR";
       nixos-hardware.url = "github:NixOS/nixos-hardware";
       lean4 = {
         url = "github:leanprover/lean4";
@@ -43,7 +44,7 @@
       nix-autobahn.url = "github:Lassulus/nix-autobahn";
     };
 
-  outputs = inputs@{ self, home, nixos, master, unstable, nur,
+  outputs = inputs@{ self, home, nixos, master, unstable, nur, flake-utils,
                      nixos-hardware, simple-mailserver, django, imacs,
                      lean4, opam2nix, emacs-overlay, nix-doom-emacs, nix-autobahn }:
     let
@@ -69,7 +70,15 @@
       };
       # All attributes to add to lib
       finalLib = self.lib // {
-        hardware = nixos-hardware.nixosModules;
+        hardware   = nixos-hardware.nixosModules;
+        system     = flake-utils.lib.system;
+        allSystems = flake-utils.lib.allSystems;
+      };
+      # Supported system
+      supportedSystems = builtins.attrValues {
+        inherit (flake-utils.lib.system)
+          x86_64-linux
+          aarch64-linux;
       };
 
       # After this point there is no configuration, only plumbing
@@ -77,6 +86,8 @@
       inherit (nixos) lib;
       utils = import ./lib/utils.nix { inherit lib; };
       inherit (utils) pathsToImportedAttrs readVisible;
+      eachSupportedSystem = f: builtins.listToAttrs
+        (map (system: lib.nameValuePair system (f system)) supportedSystems);
 
       packages = system: import ./packages {
         pkgs = import nixos { inherit system; config = { allowUnfree = false; }; };
@@ -146,11 +157,7 @@
         # TODO;
       };
 
-      # TODO improve using flake-utils
-      packages = {
-        x86_64-linux = packages "x86_64-linux";
-        aarch64-linux = packages "aarch64-linux";
-      };
+      packages = eachSupportedSystem packages;
 
       lib = import ./lib { inherit lib pkgs; };
 
@@ -186,10 +193,7 @@
           extraArgs = { inherit (config) system; };
         }) hosts;
 
-      # TODO improve using flake-utils
-      hmConfigurations = {
-        x86_64-linux  = builtins.removeAttrs (hmConfigurations "x86_64-linux")  [ "configurations" ];
-        aarch64-linux = builtins.removeAttrs (hmConfigurations "aarch64-linux") [ "configurations" ];
-      };
+      hmConfigurations = eachSupportedSystem (system:
+        builtins.removeAttrs (hmConfigurations system) [ "configurations" ]);
     };
 }
