@@ -23,7 +23,7 @@
         { mod = "debugger"; args = [ "lsp" ]; }
         { mod = "eval"; args = [ "overlay" ]; }
         { mod = "lookup"; args = [ "dictionary" "docsets" ]; }
-        { mod = "lsp"; args = [ "peek" "eglot" ]; }
+        { mod = "lsp"; args = [ "peek" ]; }
         "make"
       ];
     };

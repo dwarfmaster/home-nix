@@ -43,19 +43,20 @@
     ../config/data/calendar
 
     # Languages
-    ../config/languages/tools
-    ../config/languages/coq
-    ../config/languages/lean
-    ../config/languages/andromeda
     ../config/languages/agda
-    ../config/languages/idris
-    ../config/languages/why3
+    ../config/languages/andromeda
+    ../config/languages/coq
     ../config/languages/cpp
-    ../config/languages/julia
-    ../config/languages/python3
-    ../config/languages/haskell
-    ../config/languages/ocaml
-    ../config/languages/latex
     ../config/languages/dedukti
+    ../config/languages/haskell
+    ../config/languages/idris
+    ../config/languages/julia
+    ../config/languages/latex
+    ../config/languages/lean
+    ../config/languages/nix
+    ../config/languages/ocaml
+    ../config/languages/python3
+    ../config/languages/tools
+    ../config/languages/why3
   ];
 }

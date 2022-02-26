@@ -32,7 +32,6 @@
   lang = [
     "emacs-lisp"
     "sh"
-    "nix"
 
     # Languages that may have their own modules if I use them enough
     # "ocaml"
