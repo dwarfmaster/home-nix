@@ -67,6 +67,10 @@
         rycee-base16   = (nur-no-pkgs system).repos.rycee.hmModules.theme-base16;
         nix-doom-emacs = nix-doom-emacs.hmModule;
       };
+      # All attributes to add to lib
+      finalLib = self.lib // {
+        hardware = nixos-hardware.nixosModules;
+      };
 
       # After this point there is no configuration, only plumbing
       inherit (builtins) attrNames attrValues;
@@ -103,9 +107,8 @@
             (self: super: {
               lib = super.lib.extend
                 (final: prev: {
-                  inherit utils;
-                  hardware = nixos-hardware.nixosModules;
-                });
+                  currentSystem = system;
+                } // finalLib);
             })
             (self: super: packages system)
           ];
@@ -148,6 +151,8 @@
         x86_64-linux = packages "x86_64-linux";
         aarch64-linux = packages "aarch64-linux";
       };
+
+      lib = import ./lib { inherit lib pkgs; };
 
       overlays =
         let

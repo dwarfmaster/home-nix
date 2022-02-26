@@ -26,7 +26,6 @@ in
         if n != "default.nix" && hasSuffix ".nix" n && v == "regular"
         then
           let name = removeSuffix ".nix" n; in nameValuePair (name) (_import name)
-
         else
           nameValuePair ("") (null))
       (readDir dir);
