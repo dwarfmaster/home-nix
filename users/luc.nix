@@ -50,6 +50,7 @@
     ../config/languages/dedukti
     ../config/languages/haskell
     ../config/languages/idris
+    ../config/languages/java
     ../config/languages/julia
     ../config/languages/latex
     ../config/languages/lean
