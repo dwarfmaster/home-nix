@@ -15,6 +15,7 @@
     # Web-services
     ../profiles/web/matrix
     ../profiles/web/nextcloud
+    ../profiles/web/imacs
     # ../profiles/web/wallabag
     # ../profiles/web/pixelfed
   ];

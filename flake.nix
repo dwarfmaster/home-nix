@@ -17,9 +17,8 @@
         inputs.nixpkgs.follows = "unstable";
         inputs.nixpkgs-21_11.follows = "nixos";
       };
-      django.url = "github:dwarfmaster/django-nixos";
       imacs = {
-        url = "github:TWal/imacs";
+        url = "github:dwarfmaster/imacs";
         inputs.nixpkgs.follows = "nixos";
       };
       nixos-hardware.url = "github:NixOS/nixos-hardware";
@@ -45,7 +44,7 @@
     };
 
   outputs = inputs@{ self, home, nixos, master, unstable, nur, flake-utils,
-                     nixos-hardware, simple-mailserver, django, imacs,
+                     nixos-hardware, simple-mailserver, imacs,
                      lean4, opam2nix, emacs-overlay, nix-doom-emacs, nix-autobahn }:
     let
       # All overlays to apply
@@ -61,7 +60,7 @@
       finalModules = self.nixosModules // {
         mailserver   = simple-mailserver.nixosModules.mailserver;
         home-manager = home.nixosModules.home-manager;
-        django       = django.nixosModules.django;
+        imacs        = imacs.nixosModules.imacs;
       };
       # HM Modules to be made available to profiles
       finalHMModules = system: self.hmModules // {

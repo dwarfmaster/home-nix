@@ -16,9 +16,6 @@
     ../profiles/interface/xserver
     ../profiles/interface/sound
     ../profiles/interface/grafana
-
-    # Web
-    ../profiles/web/imacs
   ];
 
   boot = {
