@@ -39,6 +39,13 @@
     initModules = {
       tools = [ "magit" ];
       ui = [ "vc-gutter" ];
+      emacs = [ "vc" ];
+    };
+    modules.dwarfmaster.git-blamer = {
+      config.source = ./blamer.el;
+      packages.text = ''
+        (package! blamer)
+      '';
     };
   };
 }
