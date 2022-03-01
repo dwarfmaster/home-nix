@@ -3,17 +3,30 @@
 {
   home.packages = builtins.attrValues {
     inherit (pkgs)
-      gcc       # C/C++ compiler
-      gdb       # C/C++ debugger
-      ddd       # Graphical frontendfor GDB
-      pkgconfig # Library finder
-      ccls      # LSP server for CPP
+      gcc              # C/C++ compiler
+      gdb              # C/C++ debugger
+      ddd              # Graphical frontendfor GDB
+      pkgconfig        # Library finder
+      ccls             # LSP server for CPP
+      bazel            # Build-system by google
+      bazel-buildtools # buildifier, buildozer and unused_deps
       ;
   };
 
   programs.doom-emacs.config = {
     initModules = {
       lang = [ { mod = "cc"; args = [ "lsp" ]; } ];
+    };
+    modules.lang.bazel = {
+      config.source = ./bazel.el;
+      packages.text = ''
+        (package! bazel)
+      '';
+      nix = {
+        bazel = "${pkgs.bazel}/bin/bazel";
+        buildifier = "${pkgs.bazel-buildtools}/bin/buildifier";
+        buildozer = "${pkgs.bazel-buildtools}/bin/buildozer";
+      };
     };
   };
 
