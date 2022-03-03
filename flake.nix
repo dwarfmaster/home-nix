@@ -17,9 +17,11 @@
         inputs.nixpkgs.follows = "unstable";
         inputs.nixpkgs-21_11.follows = "nixos";
       };
+      django.url = "github:dwarfmaster/django-nixos/wsgi";
       imacs = {
         url = "github:dwarfmaster/imacs";
         inputs.nixpkgs.follows = "nixos";
+        inputs.django-nixos.follows = "django";
       };
       nixos-hardware.url = "github:NixOS/nixos-hardware";
       lean4 = {
@@ -44,7 +46,7 @@
     };
 
   outputs = inputs@{ self, home, nixos, master, unstable, nur, flake-utils,
-                     nixos-hardware, simple-mailserver, imacs,
+                     nixos-hardware, simple-mailserver, django, imacs,
                      lean4, opam2nix, emacs-overlay, nix-doom-emacs, nix-autobahn }:
     let
       # All overlays to apply

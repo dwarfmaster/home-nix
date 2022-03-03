@@ -16,17 +16,18 @@
         "type": "gitlab"
       }
     },
-    "django-nixos": {
+    "django": {
       "locked": {
-        "lastModified": 1646072542,
-        "narHash": "sha256-KwEj/E+Bz+g5/e+GV0+j9S2HN7yNXZHBTSt7aSRpRtQ=",
-        "owner": "pnmadelaine",
+        "lastModified": 1646326513,
+        "narHash": "sha256-kxpxjXOYsG+sbV0cCsMlTAQGEuyQA/4XYpvGUsXO42o=",
+        "owner": "dwarfmaster",
         "repo": "django-nixos",
-        "rev": "62c17fad1b71e737a0f2ccc2a1293da0881bd52a",
+        "rev": "e0b7dc419389a51966e69e818f72c6bef66dd4d3",
         "type": "github"
       },
       "original": {
-        "owner": "pnmadelaine",
+        "owner": "dwarfmaster",
+        "ref": "wsgi",
         "repo": "django-nixos",
         "type": "github"
       }
@@ -260,17 +261,19 @@
     },
     "imacs": {
       "inputs": {
-        "django-nixos": "django-nixos",
+        "django-nixos": [
+          "django"
+        ],
         "nixpkgs": [
           "nixos"
         ]
       },
       "locked": {
-        "lastModified": 1646090222,
-        "narHash": "sha256-TviMTITgll/f8XFtbPLsymQhZR+Ohy6cL403jhbuiXo=",
+        "lastModified": 1646319823,
+        "narHash": "sha256-se7gcr0ImqielP17mLDQit620XcQQBsgfbWyqPITctA=",
         "owner": "dwarfmaster",
         "repo": "imacs",
-        "rev": "712a7efe071ac3a5c27cb9ba3f91d4783bf878a6",
+        "rev": "e2d74be6f9780b489dd8ff84c5c5e62e1dcb4762",
         "type": "github"
       },
       "original": {
@@ -755,6 +758,7 @@
     },
     "root": {
       "inputs": {
+        "django": "django",
         "emacs-overlay": "emacs-overlay",
         "flake-utils": "flake-utils",
         "home": "home",
