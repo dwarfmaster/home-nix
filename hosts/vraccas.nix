@@ -13,10 +13,10 @@
     ../profiles/services/torrent
 
     # Web-services
-    ../profiles/web/matrix
+    # ../profiles/web/matrix
     ../profiles/web/nextcloud
     ../profiles/web/imacs
-    # ../profiles/web/wallabag
+    ../profiles/web/wallabag
     # ../profiles/web/pixelfed
   ];
 
@@ -57,11 +57,12 @@
       fsType = "ext4";
     };
 
-    # "/data" = {
-    #   device = "/dev/mapper/data";
-    #   fsType = "ext4";
-    #   options = [ "defaults" "noauto" ];
-    # };
+    # I must first luksOpen the right disk manually and then mount it by hand
+    "/data" = {
+      device = "/dev/mapper/data";
+      fsType = "ext4";
+      options = [ "defaults" "noauto" ];
+    };
 
     "/boot" = {
       device = "/dev/disk/by-uuid/c3075475-8a0a-4438-839f-4ee048e083ce";
