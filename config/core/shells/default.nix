@@ -7,8 +7,9 @@ in {
   # Misc
   home = {
     sessionVariables = {
-      EDITOR    = "vim";
+      EDITOR       = "vim";
       DIRSTACKSIZE = 16;
+      NIX_SSHOPTS  = "-t";
     };
     packages = [ pkgs.lsd ];
   };
