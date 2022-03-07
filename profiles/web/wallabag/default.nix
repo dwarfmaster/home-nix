@@ -13,9 +13,19 @@ let
     checkCollisionContents = false;
     paths = [ parameters "${wallabag}/app" ];
   };
+  dataDir = "/data/var/www/wallabag";
   php = pkgs.php74;
   exts = pkgs.php74Extensions;
   phpPkgs = pkgs.php74Packages;
+
+  # See there for available commands:
+  # https://doc.wallabag.org/en/admin/console_commands.html
+  # A user can be made admin with the fos:user:promote --super <user> command
+  console = pkgs.writeShellScriptBin "wallabag-console" ''
+      export WALLABAG_DATA="${dataDir}"
+      cd "${dataDir}"
+      ${php}/bin/php ${wallabag}/bin/console --env=prod $@
+    '';
 in {
   # Wallabag config yml files needs to be recreated at each update, and
   # var/cache needs to be cleared between restart
@@ -23,6 +33,9 @@ in {
     assertion = wallabag.version == "2.4.2";
     message   = "Wallabag update to ${wallabag.version} needs manual intervention";
   } ];
+
+  # Install console manager
+  environment.systemPackages = [ console ];
 
   # Inspired by https://doc.wallabag.org/ens/admin/installation/virtualhosts.html
   services.nginx.virtualHosts."reading.dwarfmaster.net" = {
@@ -116,7 +129,7 @@ in {
   # Data directory
   systemd.tmpfiles.rules = let
     user = "wallabag";
-  in [ "d /data/var/www/wallabag 0700 ${user} ${user} - -" ];
+  in [ "d ${dataDir} 0700 ${user} ${user} - -" ];
   systemd.services."wallabag-setup" = {
     description = "Wallabag install service";
     wantedBy = [ "multi-user.target" ];
@@ -131,11 +144,10 @@ in {
       Type = "oneshot";
       RemainAfterExit = "yes";
       PermissionsStartOnly = true;
+      Environment="WALLABAG_DATA=${dataDir}";
     };
 
-    script = let
-        dataDir = "/data/var/www/wallabag";
-      in ''
+    script = ''
         echo "Setting up wallabag files in ${dataDir} ..."
         cd "${dataDir}"
 
@@ -144,7 +156,6 @@ in {
         ln -sf ${appDir} app
         ln -sf ${wallabag}/composer.{json,lock} .
 
-        export WALLABAG_DATA="${dataDir}"
         if [ ! -f installed ]; then
           echo "Installing wallabag"
           php ${wallabag}/bin/console --env=prod wallabag:install --no-interaction

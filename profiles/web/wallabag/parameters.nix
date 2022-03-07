@@ -14,7 +14,7 @@ let
     database_socket       = "/run/postgresql/.s.PGSQL.${toString config.services.postgresql.port}";
     database_charset      = "utf8";
 
-    domain_name = "https://reading.dwarfmaster.com";
+    domain_name = "https://reading.dwarfmaster.net";
     server_name = "DwarfMaster's wallabag instance";
 
     mailer_transport  = "smtp";
@@ -35,8 +35,9 @@ let
     twofactor_auth   = true;
     twofactor_sender = "wallabag@dwarfmaster.net";
 
-    # fosuser stuff
-    fosuser_registration = true;
+    # Disable user registration
+    # See https://github.com/wallabag/wallabag/issues/1873
+    fosuser_registration = false;
     fosuser_confirmation = true;
 
     # how long the access token should live in seconds for the API
