@@ -17,6 +17,7 @@
     ../profiles/web/nextcloud
     ../profiles/web/imacs
     ../profiles/web/wallabag
+    ../profiles/web/grocy
     # ../profiles/web/pixelfed
   ];
 
