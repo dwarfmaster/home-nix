@@ -56,6 +56,7 @@
       # All overlays to apply
       finalOverlays = self.overlays // {
         nur = nur.overlay;
+        arkenfox = arkenfox.overlay;
         packages = re: super: {
           lean4 = lean4.defaultPackage.x86_64-linux;
           opam2nix = opam2nix.defaultPackage.x86_64-linux;
@@ -79,6 +80,7 @@
         hardware   = nixos-hardware.nixosModules;
         system     = flake-utils.lib.system;
         allSystems = flake-utils.lib.allSystems;
+        arkenfox   = arkenfox.lib.arkenfox;
       };
       # Supported system
       supportedSystems = builtins.attrValues {

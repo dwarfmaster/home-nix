@@ -114,11 +114,11 @@
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1647194783,
-        "narHash": "sha256-L5GmSDsEKaZI3BW+f58MgHiAUtlIqWfdEUUXvsOQodI=",
+        "lastModified": 1647196961,
+        "narHash": "sha256-ENFfQuhpLprzDYovpCYiDd+DThO7zaGIBMM0qR3lpNo=",
         "owner": "dwarfmaster",
         "repo": "arkenfox-nixos",
-        "rev": "fa84d9e2495ea708593173e589ed98561fb014e5",
+        "rev": "5f2f4f121884ca5de94f71dab1b5aae3bb56fb87",
         "type": "github"
       },
       "original": {
