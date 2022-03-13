@@ -7,6 +7,7 @@ let
 
   colors = config.theme.base16.colors;
   icons = "${pkgs.numix-icon-theme}/share/icons/Numix/scalable";
+  arkenfox = import ./arkenfox.nix { inherit lib; };
 
   profiles = {
     "Personal" = {
@@ -14,37 +15,43 @@ let
       default = true;
       color = colors.base0F.hex.rgb;
       icon = "${icons}/categories/applications-games-symbolic.svg";
+      arkenfox = [ arkenfox.main arkenfox.safe ];
     };
     "Thesis" = {
       homepage = "about:blank";
       color = colors.base0D.hex.rgb;
       icon = "${icons}/categories/applications-education-symbolic.svg";
+      arkenfox = [ arkenfox.main arkenfox.safe ];
     };
     "Media" = {
       homepage = "about:blank";
       color = colors.base0E.hex.rgb;
       icon = "${icons}/categories/applications-multimedia-symbolic.svg";
+      arkenfox = [ arkenfox.main ];
     };
     "Private" = {
       homepage = "about:blank";
       color = colors.base07.hex.rgb;
       icon = "${icons}/emotes/emote-love-symbolic.svg";
+      arkenfox = [ arkenfox.main ];
     };
     "Config" = {
       homepage = "about:blank";
       color = colors.base0C.hex.rgb;
       icon = "${icons}/categories/applications-system-symbolic.svg";
+      arkenfox = [ arkenfox.main arkenfox.safe ];
     };
     "Shopping" = {
       homepage = "about:blank";
       color = colors.base0A.hex.rgb;
       icon = "${icons}/emblems/emblem-system-symbolic.svg";
+      arkenfox = [ arkenfox.main ];
     };
     "Secure" = {
       homepage = "about:blank";
-      extraConfig = builtins.readFile ./user.js;
       color = colors.base08.hex.rgb;
       icon = "${icons}/status/security-high-symbolic.svg";
+      arkenfox = [ arkenfox.main arkenfox.hardened ];
     };
   };
 
@@ -57,9 +64,9 @@ let
       settings = {
         "browser.startup.homepage" = profile.homepage;
         "browser.uidensity" = "compact";
+        "browser.rememberSignons" = false; # Disable password manager
         "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
       } // (if profile ? settings then profile.settings else { });
-      extraConfig = if profile ? extraConfig then profile.extraConfig else "";
       isDefault = if profile ? default then profile.default else false;
       userChrome = ''
         .tab-background[selected="true"] {
@@ -69,6 +76,9 @@ let
           color: #${colors.base00.hex.rgb} !important;
         }
       '';
+      arkenfox = lib.mkMerge ([
+        { enable = true; }
+      ] ++ (if profile ? arkenfox then profile.arkenfox else [ ]));
     };
   };
 
@@ -101,10 +111,12 @@ in {
   programs.firefox = {
     enable = true;
     enableGnomeExtensions = false;
+    enableArkenfox = true;
+    arkenfoxVersion = "97.0";
     # Need to be manually enabled when first launching a new profile
     # To do so, go to about:addons
     extensions = builtins.attrValues {
-      # Missing : dont-fuck-with-paste, zotero and vivaldi fox
+      # Missing : dont-fuck-with-paste, zotero and wallabagger
 
       # Security
       inherit (pkgs.nur.repos.rycee.firefox-addons)
@@ -128,6 +140,7 @@ in {
       # Interaction with the system
       inherit (pkgs.nur.repos.rycee.firefox-addons)
         org-capture
+        # wallabagger
       ;
     };
 

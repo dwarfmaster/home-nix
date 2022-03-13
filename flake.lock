@@ -1,5 +1,132 @@
 {
   "nodes": {
+    "93.0": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1634027026,
+        "narHash": "sha256-/ITf8nv/IWR1sKBchPtdkPjZO5OFH9p6FgVbDfBrJc8=",
+        "owner": "arkenfox",
+        "repo": "user.js",
+        "rev": "85438d00e457bff692303af519da618c6372476b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "arkenfox",
+        "ref": "93.0",
+        "repo": "user.js",
+        "type": "github"
+      }
+    },
+    "94.0": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1637651503,
+        "narHash": "sha256-RvG+GRh8Md1yrTzFniu1G2UpTnOb7KCGDfQmFvdtl58=",
+        "owner": "arkenfox",
+        "repo": "user.js",
+        "rev": "cbfb8abf1544c3e87f412f64a9747bd1dea4a705",
+        "type": "github"
+      },
+      "original": {
+        "owner": "arkenfox",
+        "ref": "94.0",
+        "repo": "user.js",
+        "type": "github"
+      }
+    },
+    "95.0": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1638965627,
+        "narHash": "sha256-4g1Vu4zF+EtHK123zSxIDP1wYROK2rqS897Kcv2C/cI=",
+        "owner": "arkenfox",
+        "repo": "user.js",
+        "rev": "7e1b92567ca2bb76ad358d0fc786fd60b3cf7970",
+        "type": "github"
+      },
+      "original": {
+        "owner": "arkenfox",
+        "ref": "95.0",
+        "repo": "user.js",
+        "type": "github"
+      }
+    },
+    "96.0": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1642736886,
+        "narHash": "sha256-P2C59t4DnM11I9GDL9xyc2m8Ml0T8gRuom7UtWykWnk=",
+        "owner": "arkenfox",
+        "repo": "user.js",
+        "rev": "ac0820a5dc00e04fe14fc2a74ba75e590883293c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "arkenfox",
+        "ref": "96.0",
+        "repo": "user.js",
+        "type": "github"
+      }
+    },
+    "97.0": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1644750900,
+        "narHash": "sha256-Df2D2eBifkZpFklPBbE94AvgAUM/NUAAiuqUzp67Hdo=",
+        "owner": "arkenfox",
+        "repo": "user.js",
+        "rev": "a98b73c64e2e0b505efb6b23d34e6c5d90abe2c8",
+        "type": "github"
+      },
+      "original": {
+        "owner": "arkenfox",
+        "ref": "97.0",
+        "repo": "user.js",
+        "type": "github"
+      }
+    },
+    "98.0": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1646873050,
+        "narHash": "sha256-HJu+azYJRMW0C5hhU96pkwZxql7Ijpiz2sw9e/JoqR8=",
+        "owner": "arkenfox",
+        "repo": "user.js",
+        "rev": "d9af90d05f477e5e25f8d9f545eeb7fe0a235d2a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "arkenfox",
+        "ref": "98.0",
+        "repo": "user.js",
+        "type": "github"
+      }
+    },
+    "arkenfox": {
+      "inputs": {
+        "93.0": "93.0",
+        "94.0": "94.0",
+        "95.0": "95.0",
+        "96.0": "96.0",
+        "97.0": "97.0",
+        "98.0": "98.0",
+        "master": "master",
+        "nixpkgs": "nixpkgs"
+      },
+      "locked": {
+        "lastModified": 1647194783,
+        "narHash": "sha256-L5GmSDsEKaZI3BW+f58MgHiAUtlIqWfdEUUXvsOQodI=",
+        "owner": "dwarfmaster",
+        "repo": "arkenfox-nixos",
+        "rev": "fa84d9e2495ea708593173e589ed98561fb014e5",
+        "type": "github"
+      },
+      "original": {
+        "owner": "dwarfmaster",
+        "repo": "arkenfox-nixos",
+        "type": "github"
+      }
+    },
     "blobs": {
       "flake": false,
       "locked": {
@@ -18,16 +145,16 @@
     },
     "django": {
       "locked": {
-        "lastModified": 1646326513,
-        "narHash": "sha256-kxpxjXOYsG+sbV0cCsMlTAQGEuyQA/4XYpvGUsXO42o=",
+        "lastModified": 1647190404,
+        "narHash": "sha256-5op+DXC7CtT/H90vVowOWRCo7EJ4ysj0VI9GBj/EyaU=",
         "owner": "dwarfmaster",
         "repo": "django-nixos",
-        "rev": "e0b7dc419389a51966e69e818f72c6bef66dd4d3",
+        "rev": "c75000bdb2f53ee6a06e123736f430372f43ac37",
         "type": "github"
       },
       "original": {
         "owner": "dwarfmaster",
-        "ref": "wsgi",
+        "ref": "moar_security",
         "repo": "django-nixos",
         "type": "github"
       }
@@ -356,6 +483,22 @@
       }
     },
     "master": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1646873050,
+        "narHash": "sha256-HJu+azYJRMW0C5hhU96pkwZxql7Ijpiz2sw9e/JoqR8=",
+        "owner": "arkenfox",
+        "repo": "user.js",
+        "rev": "d9af90d05f477e5e25f8d9f545eeb7fe0a235d2a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "arkenfox",
+        "repo": "user.js",
+        "type": "github"
+      }
+    },
+    "master_2": {
       "locked": {
         "lastModified": 1645782876,
         "narHash": "sha256-NouOXP/lYTfsLLstyp+UXwKkcRcWTY6+xl0TXAluaHo=",
@@ -389,7 +532,7 @@
     "nix": {
       "inputs": {
         "lowdown-src": "lowdown-src",
-        "nixpkgs": "nixpkgs"
+        "nixpkgs": "nixpkgs_2"
       },
       "locked": {
         "lastModified": 1638447470,
@@ -408,7 +551,7 @@
     "nix-autobahn": {
       "inputs": {
         "flake-utils": "flake-utils_3",
-        "nixpkgs": "nixpkgs_2"
+        "nixpkgs": "nixpkgs_3"
       },
       "locked": {
         "lastModified": 1640799701,
@@ -513,16 +656,16 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1632864508,
-        "narHash": "sha256-d127FIvGR41XbVRDPVvozUPQ/uRHbHwvfyKHwEt5xFM=",
+        "lastModified": 1646985262,
+        "narHash": "sha256-lSlP8/lnz1nnJ27CC/AgR0eZX+8ShG+uQ2Y6ZUCFZcE=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "82891b5e2c2359d7e58d08849e4c89511ab94234",
+        "rev": "4d051c3e6dd4a9b653f36731ce00b09c58b6cee1",
         "type": "github"
       },
       "original": {
         "id": "nixpkgs",
-        "ref": "nixos-21.05-small",
+        "ref": "release-21.11",
         "type": "indirect"
       }
     },
@@ -542,6 +685,21 @@
       }
     },
     "nixpkgs_2": {
+      "locked": {
+        "lastModified": 1632864508,
+        "narHash": "sha256-d127FIvGR41XbVRDPVvozUPQ/uRHbHwvfyKHwEt5xFM=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "82891b5e2c2359d7e58d08849e4c89511ab94234",
+        "type": "github"
+      },
+      "original": {
+        "id": "nixpkgs",
+        "ref": "nixos-21.05-small",
+        "type": "indirect"
+      }
+    },
+    "nixpkgs_3": {
       "locked": {
         "lastModified": 1625442144,
         "narHash": "sha256-uv+nt5iaqZ5By/uxeCaNdaaFkwRqj+4JoAt0VTGPFMo=",
@@ -758,13 +916,14 @@
     },
     "root": {
       "inputs": {
+        "arkenfox": "arkenfox",
         "django": "django",
         "emacs-overlay": "emacs-overlay",
         "flake-utils": "flake-utils",
         "home": "home",
         "imacs": "imacs",
         "lean4": "lean4",
-        "master": "master",
+        "master": "master_2",
         "nix-autobahn": "nix-autobahn",
         "nix-doom-emacs": "nix-doom-emacs",
         "nixos": "nixos",

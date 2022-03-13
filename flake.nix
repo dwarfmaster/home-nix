@@ -12,18 +12,20 @@
       };
       nur.url = "github:nix-community/NUR";
       flake-utils.url = "github:numtide/flake-utils";
+      nixos-hardware.url = "github:NixOS/nixos-hardware";
+
       simple-mailserver = {
         url = "gitlab:simple-nixos-mailserver/nixos-mailserver/nixos-21.11";
         inputs.nixpkgs.follows = "unstable";
         inputs.nixpkgs-21_11.follows = "nixos";
       };
-      django.url = "github:dwarfmaster/django-nixos/wsgi";
+      django.url = "github:dwarfmaster/django-nixos/moar_security";
       imacs = {
         url = "github:dwarfmaster/imacs";
         inputs.nixpkgs.follows = "nixos";
         inputs.django-nixos.follows = "django";
       };
-      nixos-hardware.url = "github:NixOS/nixos-hardware";
+
       lean4 = {
         url = "github:leanprover/lean4";
         inputs.nixpkgs.follows = "unstable";
@@ -43,11 +45,13 @@
         inputs.emacs-overlay.follows = "emacs-overlay";
       };
       nix-autobahn.url = "github:Lassulus/nix-autobahn";
+      arkenfox.url = "github:dwarfmaster/arkenfox-nixos";
     };
 
   outputs = inputs@{ self, home, nixos, master, unstable, nur, flake-utils,
                      nixos-hardware, simple-mailserver, django, imacs,
-                     lean4, opam2nix, emacs-overlay, nix-doom-emacs, nix-autobahn }:
+                     lean4, opam2nix, emacs-overlay, nix-doom-emacs,
+                     nix-autobahn, arkenfox }:
     let
       # All overlays to apply
       finalOverlays = self.overlays // {
@@ -68,6 +72,7 @@
       finalHMModules = system: self.hmModules // {
         rycee-base16   = (nur-no-pkgs system).repos.rycee.hmModules.theme-base16;
         nix-doom-emacs = nix-doom-emacs.hmModule;
+        arkenfox       = arkenfox.hmModule;
       };
       # All attributes to add to lib
       finalLib = self.lib // {
