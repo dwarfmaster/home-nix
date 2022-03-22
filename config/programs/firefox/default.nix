@@ -33,7 +33,10 @@ let
       homepage = "about:blank";
       color = colors.base07.hex.rgb;
       icon = "${icons}/emotes/emote-love-symbolic.svg";
-      arkenfox = [ arkenfox.main ];
+      arkenfox = [
+        arkenfox.main
+        { "1200"."1201"."security.ssl.require_safe_negotiation".value = false; }
+      ];
     };
     "Config" = {
       homepage = "about:blank";
