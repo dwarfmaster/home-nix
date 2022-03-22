@@ -4,10 +4,16 @@
       "v i" 'blamer-show-commit-info
       "t B" 'blamer-mode)
 (after! blamer
-  (setq blamer-idle-time 0.3)
-  (setq blamer-min-offset 0.7)
+  (setq blamer-idle-time 1)
+  (setq blamer-min-offset 30)
   (setq blamer-view 'overlay)
   (setq blamer-author-formatter " ✎ %s ")
   (setq blamer-datetime-formatter "[%s]")
   (setq blamer-commit-formatter " ● %s"))
-(global-blamer-mode 1)
+;; Disable git blamer on org files
+(define-global-minor-mode dwarfmaster/blamer blamer-mode
+  (lambda ()
+    (when (not (memq major-mode
+                     '(org-mode)))
+      (blamer-mode 1))))
+(dwarfmaster/blamer 1)
