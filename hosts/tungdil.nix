@@ -14,6 +14,7 @@
 
     # Interface
     ../profiles/interface/xserver
+    ../profiles/interface/graphical
     ../profiles/interface/sound
     ../profiles/interface/grafana
   ];

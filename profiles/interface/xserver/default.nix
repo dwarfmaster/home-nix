@@ -19,7 +19,4 @@
     libinput.enable = true;
     libinput.touchpad.tapping = false;
   };
-
-  # Add dconf as dbus service
-  services.dbus.packages = with pkgs; [ gnome3.dconf ];
 }
