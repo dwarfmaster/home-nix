@@ -6,6 +6,11 @@
       master.url = "nixpkgs/master";
       unstable.url = "nixpkgs/nixos-unstable";
       nixos.url = "nixpkgs/release-21.11";
+      wayland = {
+        url = "github:nix-community/nixpkgs-wayland";
+        inputs.nixpkgs.follows = "nixos";
+        inputs.master.follows = "master";
+      };
       home = {
         url = "github:nix-community/home-manager/release-21.11";
         inputs.nixpkgs.follows = "nixos";
@@ -48,7 +53,7 @@
       arkenfox.url = "github:dwarfmaster/arkenfox-nixos";
     };
 
-  outputs = inputs@{ self, home, nixos, master, unstable, nur, flake-utils,
+  outputs = inputs@{ self, home, nixos, master, unstable, wayland, nur, flake-utils,
                      nixos-hardware, simple-mailserver, django, imacs,
                      lean4, opam2nix, emacs-overlay, nix-doom-emacs,
                      nix-autobahn, arkenfox }:
@@ -57,6 +62,7 @@
       finalOverlays = self.overlays // {
         nur = nur.overlay;
         arkenfox = arkenfox.overlay;
+        wayland = wayland.overlay;
         packages = re: super: {
           lean4 = lean4.defaultPackage.x86_64-linux;
           opam2nix = opam2nix.defaultPackage.x86_64-linux;
