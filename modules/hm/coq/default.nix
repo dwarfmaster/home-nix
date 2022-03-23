@@ -8,10 +8,15 @@ in {
   options = {
     programs.coq = {
       enable = mkEnableOption "Install coq program";
+      packages = mkOption {
+        description = "The coq package set";
+        type = types.attrs;
+        default = pkgs.coqPackages;
+      };
       package = mkOption {
         description = "The coq package to use";
         type = types.package;
-        default = pkgs.coq;
+        default = cfg.packages.coq;
       };
       libraries = mkOption {
         description = "Coq libraries to install globally";
