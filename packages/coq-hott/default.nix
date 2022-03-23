@@ -1,18 +1,17 @@
 { lib, mkCoqDerivation, coq, version ? null }:
 
-mkCoqDerivation {
+let
+  oneOf = a: v: builtins.elem v a;
+in mkCoqDerivation {
   pname = "HoTT";
   domain = "github.com";
   owner = "HoTT";
   inherit version;
   defaultVersion = lib.switch coq.coq-version [
-    { case = [ "8.10" ];   out = "8.10"; }
-    { case = [ "8.11" ];   out = "8.11"; }
-    { case = [ "8.12" ];   out = "8.12"; }
-    { case = [ "8.13" ];   out = "8.13"; }
-    { case = [ "8.13.1" ]; out = "8.13.1"; }
-    { case = [ "8.14" ];   out = "8.14"; }
-    { case = [ "8.15" ];   out = "8.15"; }
+    { case = oneOf [ "8.10" "8.11" "8.12" "8.13" "8.13.1" "8.14" "8.15" ];
+      out = coq.coq-version; }
+    { case = oneOf [ "8.13.2" ]; out = "8.13.1"; }
+    { case = oneOf [ "8.14.1" ]; out = "8.14"; }
   ] null;
   releaseRev = v: "V${v}";
   release."8.10"  .sha256 = "0ahfgqnf92fxcmrrvcam9z5v3c5sim38h8vh5pyfdnjznqrhjb3d";
