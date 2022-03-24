@@ -30,6 +30,7 @@ in {
     home.packages = [ cfg.package ] ++ cfg.libraries;
     home.sessionVariables = {
       COQPATH = concatStringsSep ":" (map (lib: "${lib}/lib/coq/${cfg.package.coq-version}/user-contrib") cfg.libraries);
+      OCAMLPATH = "${cfg.package}/lib/ocaml/${cfg.package.ocamlPackages.ocaml.version}/site-lib";
     };
   };
 }
