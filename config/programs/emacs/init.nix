@@ -26,6 +26,7 @@
     { mod = "dired"; args = [ "icons" "ranger" ]; }
     { mod = "ibuffer"; args = [ "icons" ]; }
     { mod = "undo"; args = [ "tree" ]; }
+    "imenu"
   ];
 
   lang = [

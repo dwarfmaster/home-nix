@@ -6,8 +6,22 @@
       ocaml
       opam
       dune_2
+      ocamlformat
       opam2nix
-      ;
-    utop = pkgs.ocamlPackages.utop;
+    ;
+    inherit (pkgs.ocamlPackages)
+      utop
+      merlin
+      ocp-indent
+      zarith
+    ;
+  };
+  programs.doom-emacs.config = {
+    initModules.lang = [ "ocaml" ];
+    modules.lang.mlg = {
+      config.text = ''
+        (add-to-list 'auto-mode-alist '("\\.mlg$" . tuareg-mode) t)
+      '';
+    };
   };
 }
