@@ -3,30 +3,46 @@
 let
 
   cfg = config.programs.doom-emacs;
-  doom = cfg.package;
+  doom = config.programs.emacs.finalPackage;
   emacs = "${doom}/bin/emacs";
   client = "${doom}/bin/emacsclient";
   epkgs = pkgs.emacsPackages;
 
 in {
-  programs.doom-emacs = {
-    enable = true;
-    doomPrivateDir = cfg.config.dir;
-    config = {
-      enable = true;
-      initModules = import ./init.nix;
-      modules.config.main = {
-        packages.source = ./packages.el;
-        config.source = ./config.el;
-      };
-    };
+  # Fix doom-emacs
+  # programs.doom-emacs = {
+  #   enable = true;
+  #   doomPrivateDir = cfg.config.dir;
+  #   config = {
+  #     enable = true;
+  #     initModules = import ./init.nix;
+  #     modules.config.main = {
+  #       packages.source = ./packages.el;
+  #       config.source = ./config.el;
+  #     };
+  #   };
 
-    # Fix some mismatch between packages names
-    # See https://github.com/vlaci/nix-doom-emacs/issues/394#issuecomment-985368661
-    emacsPackagesOverlay = self: super: {
-      gitignore-mode = epkgs.git-modes;
-      gitconfig-mode = epkgs.git-modes;
+  #   # Fix some mismatch between packages names
+  #   # See https://github.com/vlaci/nix-doom-emacs/issues/394#issuecomment-985368661
+  #   emacsPackagesOverlay = self: super: {
+  #     gitignore-mode = epkgs.git-modes;
+  #     gitconfig-mode = epkgs.git-modes;
+  #   };
+  # };
+  programs.emacs = {
+    enable = true;
+  };
+  programs.doom-emacs.config = {
+    enable = true;
+    initModules = import ./init.nix;
+    modules.config.main = {
+      packages.source = ./packages.el;
+      config.source = ./config.el;
     };
+  };
+  xdg.configFile."doom" = {
+    source = cfg.config.dir;
+    recursive = false;
   };
 
   home.packages = with pkgs; [

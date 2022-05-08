@@ -30,7 +30,7 @@ in {
   # Wallabag config yml files needs to be recreated at each update, and
   # var/cache needs to be cleared between restart
   assertions = [ {
-    assertion = wallabag.version == "2.4.2";
+    assertion = wallabag.version == "2.4.3";
     message   = "Wallabag update to ${wallabag.version} needs manual intervention";
   } ];
 
