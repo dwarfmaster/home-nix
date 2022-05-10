@@ -14,7 +14,7 @@ let
   get-init-script = pkgs.writeScriptBin "matrix-synapse-get-init" ''
     echo ${init-script}
   '';
-  irc = config.services.matrix-appservice-irc;
+  irc = config.services.heisenbridge;
 in {
   # Database
   services.postgresql.enable = true;
@@ -62,8 +62,8 @@ in {
     enable = true;
     server_name = "dwarfmaster.net";
     enable_registration = false;
-    app_service_config_files = [ "/var/lib/matrix-synapse/irc-registration.yml" ];
-    #   ++ (if irc.enable then [ "/var/lib/matrix-appservice-irc/registration.yml" ] else [ ]);
+    app_service_config_files =
+      (lib.optionals irc.enable [ "/var/lib/matrix-synapse/irc-registration.yml" ]);
     listeners = [
       {
         port = 8008;
