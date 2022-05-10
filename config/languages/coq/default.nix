@@ -12,8 +12,8 @@ in {
   };
   programs.doom-emacs.config.initModules.lang = [ "coq" ];
 
-  # When installing coq through opam, it needs gmp
-  home.packages = [ pkgs.gmp ];
+  # When installing coq through opam, it needs gmp and zlib
+  home.packages = [ pkgs.gmp pkgs.zlib ];
   pkgconfig.enable = true;
-  pkgconfig.path = [ "${pkgs.gmp.dev}/lib/pkgconfig" ];
+  pkgconfig.path = [ "${pkgs.gmp.dev}/lib/pkgconfig" "${pkgs.zlib.dev}/lib/pkgconfig" ];
 }
