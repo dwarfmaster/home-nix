@@ -62,6 +62,8 @@ in {
     enable = true;
     server_name = "dwarfmaster.net";
     enable_registration = false;
+    app_service_config_files = [ "/var/lib/matrix-synapse/irc-registration.yml" ];
+    #   ++ (if irc.enable then [ "/var/lib/matrix-appservice-irc/registration.yml" ] else [ ]);
     listeners = [
       {
         port = 8008;

@@ -4,5 +4,6 @@
   imports = [
     ./synapse.nix
     ./element.nix
+    ./irc.nix
   ];
 }
