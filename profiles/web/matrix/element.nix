@@ -1,17 +1,15 @@
 { config, lib, pkgs, ... }:
 
 {
-  services.nginx.virtualHosts."element.dwarfmaster.net" = {
+  # TODO https://github.com/vector-im/element-web#important-security-notes
+  services.nginx.virtualHosts."element.matrix.dwarfmaster.net" = {
     enableACME = true;
     forceSSL = true;
-    serverAliases = [
-      "matrix.dwarfmaster.net"
-    ];
 
     root = pkgs.element-web.override {
       conf = {
         default_server_config."m.homeserver" = {
-          "base_url" = "dwarfmaster.net";
+          "base_url" = "https://synapse.dwarfmaster.net";
           "server_name" = "synapse.dwarfmaster.net";
         };
       };

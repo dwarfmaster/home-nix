@@ -13,7 +13,7 @@
     ../profiles/services/torrent
 
     # Web-services
-    # ../profiles/web/matrix
+    ../profiles/web/matrix
     ../profiles/web/nextcloud
     ../profiles/web/imacs
     ../profiles/web/wallabag
