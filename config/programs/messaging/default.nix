@@ -6,8 +6,7 @@ in {
   home.packages = builtins.attrValues {
     inherit (pkgs)
       signal-desktop   # Access signal
-      fractal          # Chat client for matrix
-      nheko            # Idem
+      element-desktop  # Chat client for matrix
       ;
     inherit (unfree)
       discord          # Audio and chat
