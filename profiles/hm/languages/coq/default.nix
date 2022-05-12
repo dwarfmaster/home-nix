@@ -1,14 +1,13 @@
 { config, lib, pkgs, ... }:
 
 let
-  packages = pkgs.unstable.coqPackages_8_15;
+  packages = pkgs.coqPackages_8_14;
 in {
   programs.coq = {
     enable = true;
     inherit packages;
     libraries = [
-      # TODO fix
-      # (packages.callPackage ../../../packages/coq-hott { })
+      pkgs.coq-hott_8_14
     ];
   };
   programs.doom-emacs.config.initModules.lang = [ "coq" ];
