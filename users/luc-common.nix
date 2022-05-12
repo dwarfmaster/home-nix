@@ -1,20 +1,26 @@
 { lib, config, pkgs, ... }:
 
 {
-    imports = [
+    imports = builtins.attrValues {
       # System
-      ../config/system/xdg
-      ../config/system/direnv
-      ../config/system/encryption
+      inherit (lib.profiles.system)
+        xdg
+        direnv
+        encryption
+      ;
 
       # Interface
-      ../config/interface/theme
+      inherit (lib.profiles.interface)
+        theme
+      ;
 
       # Programs
-      ../config/programs/fzf
-      ../config/programs/git
-      ../config/programs/vim
-    ];
+      inherit (lib.profiles.programs)
+        fzf
+        git
+        vim
+      ;
+    };
 
     xdg.enable = true;
     programs.git.userName = "DwarfMaster";

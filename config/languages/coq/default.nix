@@ -7,7 +7,8 @@ in {
     enable = true;
     inherit packages;
     libraries = [
-      (packages.callPackage ../../../packages/coq-hott { })
+      # TODO fix
+      # (packages.callPackage ../../../packages/coq-hott { })
     ];
   };
   programs.doom-emacs.config.initModules.lang = [ "coq" ];

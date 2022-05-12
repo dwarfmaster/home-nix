@@ -99,7 +99,7 @@
       inherit (builtins) attrNames attrValues;
       inherit (nixos) lib;
       utils = import ./lib/utils.nix { inherit lib; };
-      inherit (utils) pathsToImportedAttrs readVisible;
+      inherit (utils) pathsToImportedAttrs readVisible importProfiles;
       eachSupportedSystem = f: builtins.listToAttrs
         (map (system: lib.nameValuePair system (f system)) supportedSystems);
 
@@ -107,6 +107,9 @@
         pkgs = import nixos { inherit system; config = { allowUnfree = false; }; };
         inherit lib utils;
       };
+
+      nixosProfiles = importProfiles ./profiles;
+      hmProfiles = importProfiles ./config;
 
       pkgImport = system: unfree: pkgs:
         import pkgs {
@@ -133,6 +136,7 @@
               lib = super.lib.extend
                 (final: prev: {
                   currentSystem = system;
+                  profiles = hmProfiles;
                 } // finalLib);
             })
             (self: super: packages system)
@@ -145,7 +149,9 @@
 
       hmConfigurations =
         system: import ./users {
-          inherit lib;
+          lib = lib.extend (final: prev: {
+            profiles = hmProfiles;
+          });
           finalHMModules = finalHMModules system;
           pkgs = pkgs system;
           inherit (home.lib) homeManagerConfiguration;
@@ -203,6 +209,7 @@
           inherit (config) system modules;
           lib = plib.extend (final: prev: {
             hmConfigurations = (hmConfigurations config.system).configurations;
+            profiles = nixosProfiles;
           });
           extraArgs = { inherit (config) system; };
         }) hosts;

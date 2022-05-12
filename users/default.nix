@@ -26,8 +26,8 @@ let
       system = "x86_64-linux";
       homeDirectory = "/home/${config.username}";
       username = config.username;
-      pkgs = pkgs;
       stateVersion = "21.11";
+      inherit pkgs;
     };
 
   activations = builtins.mapAttrs mkHm configurations;

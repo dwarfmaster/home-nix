@@ -3,17 +3,21 @@
 
   {
     imports = [
-      ../profiles/core
+      lib.profiles.core
       lib.hardware.raspberry-pi-4
-
+    ] ++ (builtins.attrValues {
       # Users
-      ../profiles/users/root
-      ../profiles/users/luc
+      inherit (lib.profiles.users)
+        root
+        luc
+      ;
 
       # Interface
-      ../profiles/interface/xserver
-      ../profiles/interface/sound
-    ];
+      inherit (lib.profiles.interface)
+        xserver
+        sound
+      ;
+    });
 
     boot.loader.raspberryPi = {
       enable = true;

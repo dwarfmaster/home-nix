@@ -1,23 +1,27 @@
 { config, lib, pkgs, ... }:
 
 {
-  imports = [
-    ../profiles/core
-
+  imports = [ lib.profiles.core ] ++ (builtins.attrValues {
     # Users
-    ../profiles/users/root
-    ../profiles/users/luc
+    inherit (lib.profiles.users)
+      root
+      luc
+    ;
 
     # System
-    ../profiles/system/network
-    ../profiles/system/printing
+    inherit (lib.profiles.system)
+      network
+      printing
+    ;
 
     # Interface
-    ../profiles/interface/xserver
-    ../profiles/interface/graphical
-    ../profiles/interface/sound
-    ../profiles/interface/grafana
-  ];
+    inherit (lib.profiles.interface)
+      xserver
+      graphical
+      sound
+      grafana
+    ;
+  });
 
   boot = {
     # TODO re-enable latest_hardened
