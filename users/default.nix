@@ -1,9 +1,11 @@
-{ lib, homeManagerConfiguration, finalHMModules, pkgs, ... }:
+{ homeManagerConfiguration, finalHMModules, pkgs, ... }:
 
 let
 
+  inherit (pkgs) lib;
+
   mkConfig = path:
-    { imports = [ path ../config/core ] ++ builtins.attrValues finalHMModules; };
+    { imports = [ path lib.profiles.core ] ++ builtins.attrValues finalHMModules; };
 
   configurations = {
     luc        = {

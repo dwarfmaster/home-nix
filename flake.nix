@@ -108,8 +108,8 @@
         inherit lib utils;
       };
 
-      nixosProfiles = importProfiles ./profiles;
-      hmProfiles = importProfiles ./config;
+      nixosProfiles = importProfiles ./profiles/nixos;
+      hmProfiles = importProfiles ./profiles/hm;
 
       pkgImport = system: unfree: pkgs:
         import pkgs {
@@ -149,9 +149,6 @@
 
       hmConfigurations =
         system: import ./users {
-          lib = lib.extend (final: prev: {
-            profiles = hmProfiles;
-          });
           finalHMModules = finalHMModules system;
           pkgs = pkgs system;
           inherit (home.lib) homeManagerConfiguration;
