@@ -161,19 +161,6 @@
         });
 
     in {
-      # TODO extend checks for all architectures
-      checks."x86_64-linux" =
-        import ./tests (inputs // {
-          inherit lib;
-          system = "x86_64-linux";
-          pkgs = pkgs "x86_64-linux";
-          inherit (builtins.mapAttrs (_: config: config.modules) hosts);
-        });
-
-      hydraJobs = {
-        # TODO;
-      };
-
       packages = eachSupportedSystem packages;
 
       lib = import ./lib { inherit lib pkgs; };
