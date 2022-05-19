@@ -37,6 +37,7 @@
       messaging
       multimedia
       passwords
+      games
     ;
 
     # Data
