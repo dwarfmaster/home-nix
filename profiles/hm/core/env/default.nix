@@ -70,6 +70,7 @@ in {
       # woeusb           # Create bootable windows USB keys
       zbar             # Tool to work with QR code
       reupload         # Easily uploads files on reMarkable
+      pv               # cat with progress bar
       ;
 
     # Useless but fun
