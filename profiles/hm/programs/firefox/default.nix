@@ -162,6 +162,9 @@ in {
       '';
     };
 
-  home.packages = [ launcher ];
+  home.packages = [
+    launcher
+    pkgs.nyxt # Minimalistic browser (replace firefox ?)
+  ];
   applications.browser = "${launcher}/bin/firefox-launcher";
 }
