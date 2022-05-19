@@ -65,6 +65,7 @@
       julia
       latex
       lean
+      lua
       nix
       ocaml
       python3
