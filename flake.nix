@@ -103,11 +103,6 @@
       eachSupportedSystem = f: builtins.listToAttrs
         (map (system: lib.nameValuePair system (f system)) supportedSystems);
 
-      packages = system: import ./packages {
-        pkgs = import nixos { inherit system; config = { allowUnfree = false; }; };
-        inherit lib utils;
-      };
-
       nixosProfiles = importProfiles ./profiles/nixos;
       hmProfiles = importProfiles ./profiles/hm;
 
@@ -124,6 +119,15 @@
         unstable = pkgImport system false unstable;
         unstable-unfree = pkgImport system true unstable;
         unfree = pkgImport system true nixos;
+      };
+
+      packages = system: import ./packages {
+        pkgs = import nixos {
+          inherit system;
+          config = { allowUnfree = false; };
+          overlays = [ (self: super: pkgs-variants system) ];
+        };
+        inherit lib utils;
       };
 
       pkgs = system: import nixos {
