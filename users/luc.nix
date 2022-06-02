@@ -9,6 +9,7 @@
       encryption
       xdg
       templates
+      network
     ;
 
 
