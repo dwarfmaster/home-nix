@@ -39,6 +39,7 @@
       multimedia
       passwords
       games
+      cheat
     ;
 
     # Data
