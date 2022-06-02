@@ -31,6 +31,9 @@
       push = {
         default = "matching";
       };
+      merge = {
+        conflictstyle = "diff3";
+      };
     };
     ignores = [ "*~" "*.swp" ".direnv" ];
   };
