@@ -135,6 +135,7 @@ in {
         darkreader
         vim-vixen
         i-dont-care-about-cookies # Prevent most cookies popups
+        reddit-enhancement-suite # Improve reddit browsing exprerience
       ;
       inherit (unfree.nur.repos.rycee.firefox-addons)
         languagetool
