@@ -115,7 +115,7 @@ in {
     enable = true;
     enableGnomeExtensions = false;
     enableArkenfox = true;
-    arkenfoxVersion = "100.0";
+    arkenfoxVersion = "101.0";
     # Need to be manually enabled when first launching a new profile
     # To do so, go to about:addons
     extensions = builtins.attrValues {
