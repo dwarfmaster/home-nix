@@ -11,5 +11,11 @@ in {
     defaultCommand         = "${fd}/bin/fd --type f";
     fileWidgetCommand      = "${fd}/bin/fd --type f";
   };
+
+  programs.broot = {
+      enable = true;
+      modal = true;
+      enableZshIntegration = true;
+  };
 }
 
