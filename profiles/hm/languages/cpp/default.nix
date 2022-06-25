@@ -1,6 +1,8 @@
 { config, pkgs, ... }:
 
-{
+let
+scan-build = pkgs.python310Packages.callPackage ./scan-build.nix {};
+in {
   home.packages = builtins.attrValues {
     inherit (pkgs)
       gcc              # C/C++ compiler
@@ -10,6 +12,9 @@
       ccls             # LSP server for CPP
       bazel            # Build-system by google
       bazel-buildtools # buildifier, buildozer and unused_deps
+      ;
+    inherit
+      scan-build       # Creates command database
       ;
   };
 
@@ -21,7 +26,7 @@
       config.source = ./bazel.el;
       packages.text = ''
         (package! bazel)
-      '';
+        '';
       nix = {
         bazel = "${pkgs.bazel}/bin/bazel";
         buildifier = "${pkgs.bazel-buildtools}/bin/buildifier";
@@ -31,7 +36,7 @@
   };
 
   programs.cookiecutter.templates = {
-    # TODO add CCLS support to template
+# TODO add CCLS support to template
     cpp = ./cmake;
   };
 }
