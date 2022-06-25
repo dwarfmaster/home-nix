@@ -11,6 +11,7 @@ in {
       openssh          # Misc cryptographic utilities
       openssl          # Generic cryptography tool
       signify          # ED25519 signature system
+      wireguard        # Efficient VPN
       ;
 
     # Compression
