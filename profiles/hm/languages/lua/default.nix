@@ -5,6 +5,7 @@ let
 in {
   home.packages = [
     lua.lua
+    pkgs.sumneko-lua-language-server
   ];
 
   programs.doom-emacs.config = {

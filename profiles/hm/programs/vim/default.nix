@@ -30,5 +30,6 @@ in {
     pkgs.unstable.neovide
     pkgs.nodejs
     pkgs.nodePackages.npm
+    pkgs.luajitPackages.luacheck
   ];
 }
