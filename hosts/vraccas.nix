@@ -97,7 +97,7 @@
   # NGinx
   security.acme = {
     acceptTerms = true;
-    email = "acme@dwarfmaster.net";
+    defaults.email = "acme@dwarfmaster.net";
   };
 
   services.nginx = {
@@ -151,7 +151,7 @@ Welcome !
     forwardX11 = false;
     logLevel = "VERBOSE";
     passwordAuthentication = false;
-    challengeResponseAuthentication = false;
+    kbdInteractiveAuthentication = false;
     permitRootLogin = "no";
     ports = [ 2222 ];
   };

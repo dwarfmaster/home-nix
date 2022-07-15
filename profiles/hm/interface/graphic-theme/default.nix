@@ -30,7 +30,7 @@
     fontconfig.enable = true;
   };
 
-  home.packages = [ pkgs.gnome3.dconf ];
+  home.packages = [ pkgs.dconf ];
 
   # Tell firefox and XDG-compliant utilities to use my directories
   xdg.configFile."user-dirs.dirs".source = ./dirs;

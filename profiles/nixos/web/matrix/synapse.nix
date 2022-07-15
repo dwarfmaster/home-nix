@@ -60,25 +60,27 @@ in {
   # register_new_matrix_user -k your-registration-shared-secret http://localhost:8008
   services.matrix-synapse = {
     enable = true;
-    server_name = "dwarfmaster.net";
-    enable_registration = false;
-    app_service_config_files =
-      (lib.optionals irc.enable [ "/var/lib/matrix-synapse/irc-registration.yml" ]);
-    listeners = [
-      {
-        port = 8008;
-        bind_address = "::1";
-        type = "http";
-        tls = false;
-        x_forwarded = true;
-        resources = [
-          {
-            names = [ "client" "federation" ];
-            compress = false;
-          }
-        ];
-      }
-    ];
+    settings = {
+      server_name = "dwarfmaster.net";
+      enable_registration = false;
+      app_service_config_files =
+        (lib.optionals irc.enable [ "/var/lib/matrix-synapse/irc-registration.yml" ]);
+      listeners = [
+        {
+          port = 8008;
+          bind_addresses = [ "::1" ];
+          type = "http";
+          tls = false;
+          x_forwarded = true;
+          resources = [
+            {
+              names = [ "client" "federation" ];
+              compress = false;
+            }
+          ];
+        }
+      ];
+    };
   };
 
   # Install tools

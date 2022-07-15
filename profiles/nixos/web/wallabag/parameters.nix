@@ -56,10 +56,10 @@ let
     rabbitmq_prefetch_count = 10;
 
     # Redis processing
-    redis_scheme   = "tcp";
-    redis_host     = "localhost";
-    redis_port     = config.services.redis.port;
-    redis_path     = null;
+    redis_scheme   = "unix";
+    redis_host     = ""; # Ignored for unix scheme
+    redis_port     = 0;  # Ignored for unix scheme
+    redis_path     = config.services.redis.servers.wallabag.unixSocket;
     redis_password = null;
 
     # sentry logging

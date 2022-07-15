@@ -30,7 +30,7 @@ in {
   # Wallabag config yml files needs to be recreated at each update, and
   # var/cache needs to be cleared between restart
   assertions = [ {
-    assertion = wallabag.version == "2.4.3";
+    assertion = wallabag.version == "2.5.0";
     message   = "Wallabag update to ${wallabag.version} needs manual intervention";
   } ];
 
@@ -72,7 +72,10 @@ in {
   };
 
   # PHP
-  services.redis.enable = true;
+  services.redis.servers.wallabag = {
+    enable = true;
+    user = "wallabag";
+  };
   services.phpfpm.pools.wallabag = {
     user = "wallabag";
     group = "wallabag";

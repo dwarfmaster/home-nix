@@ -8,7 +8,7 @@
     direnv
     dnsutils
     dosfstools
-    exfat-utils
+    exfat
     fd
     git
     gnufdisk

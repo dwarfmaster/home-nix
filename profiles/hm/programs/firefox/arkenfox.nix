@@ -58,7 +58,7 @@
     "2800" = {
       enable = true;
       "2811"."privacy.clearOnShutdown.history".enable = false;
-      "2813"."privacy.clearOnShutdown.openWindows".enable = true;
+      # "2813"."privacy.clearOnShutdown.openWindows".enable = true;
     };
   };
 

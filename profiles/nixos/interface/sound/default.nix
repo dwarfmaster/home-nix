@@ -11,7 +11,5 @@
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
-    # Default session manager
-    media-session.enable = true;
   };
 }

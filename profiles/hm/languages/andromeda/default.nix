@@ -33,5 +33,6 @@ let
     };
   andromeda = pkgs.callPackage andromedaPkg { };
 in {
-  home.packages = [ andromeda ];
+  # TODO fix
+  # home.packages = [ andromeda ];
 }

@@ -14,6 +14,8 @@ let
       sys-pkgs = pkgs system;
 
       global = {
+        _module.args.system = system;
+
         home-manager.useGlobalPkgs = true;
         home-manager.useUserPackages = true;
 

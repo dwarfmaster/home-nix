@@ -2,7 +2,7 @@
 
 let
   server = config.services.matrix-synapse;
-  listener = builtins.head server.listeners;
+  listener = builtins.head server.settings.listeners;
   cfg = config.services.heisenbridge;
 in {
   # Generates /var/lib/heisenbridge/registration.yml on first run that must be
@@ -11,7 +11,6 @@ in {
     enable     = true;
     port       = 8009;
     homeserver = "http://localhost:${toString listener.port}";
-    # The heisenbridge package in stable is too old
-    package    = pkgs.unstable.heisenbridge;
+    package    = pkgs.heisenbridge;
   };
 }

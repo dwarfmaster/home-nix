@@ -11,7 +11,7 @@ in {
       openssh          # Misc cryptographic utilities
       openssl          # Generic cryptography tool
       signify          # ED25519 signature system
-      wireguard        # Efficient VPN
+      wireguard-tools  # Efficient VPN
       ;
 
     # Compression
@@ -65,7 +65,7 @@ in {
       postgresql       # PGSQL database access and manipulation
       sqlite           # SQlite database access and manipulation
       stress           # System stress tester
-      telnet           # Unsecure direct download
+      inetutils        # Net tools
       tree             # Display directories arborescence
       # TODO doesn't work on aarch64
       # woeusb           # Create bootable windows USB keys

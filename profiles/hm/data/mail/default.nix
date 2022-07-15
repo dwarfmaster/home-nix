@@ -21,7 +21,7 @@ in {
 
   programs.mbsync.enable = true;
   programs.msmtp.enable = true;
-  home.packages = [ pkgs.getmail ];
+  home.packages = [ pkgs.getmail6 ];
   programs.notmuch = {
     enable = true;
     maildir.synchronizeFlags = true;
@@ -30,7 +30,7 @@ in {
     hooks = {
       postNew = "${pkgs.afew}/bin/afew --tag --new";
       preNew = ''
-        getmail --rcfile getmailens --rcfile getmailmailoo --rcfile getmaillsv
+        ${pkgs.getmail6}/bin/getmail --rcfile getmailens --rcfile getmailmailoo --rcfile getmaillsv
       '';
     };
   };

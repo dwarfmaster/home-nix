@@ -23,6 +23,8 @@
     ;
   });
 
+  system.stateVersion = "21.11";
+
   boot = {
     # TODO re-enable latest_hardened
     kernelPackages = pkgs.linuxPackages_latest;
@@ -53,9 +55,8 @@
     DefaultTimeoutStopSec = 10s
   '';
 
-  # Graphic card
+  # # Graphic card
   services.xserver.videoDrivers = [ "intel" ];
-  hardware.nvidiaOptimus.disable = true;
   hardware.opengl = {
     enable = true;
     driSupport = true;

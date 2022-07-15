@@ -5,14 +5,14 @@
     {
       master.url = "nixpkgs/master";
       unstable.url = "nixpkgs/nixos-unstable";
-      nixos.url = "nixpkgs/release-21.11";
+      nixos.url = "nixpkgs/release-22.05";
       wayland = {
         url = "github:nix-community/nixpkgs-wayland";
         inputs.nixpkgs.follows = "nixos";
         inputs.master.follows = "master";
       };
       home = {
-        url = "github:nix-community/home-manager/release-21.11";
+        url = "github:nix-community/home-manager/release-22.05";
         inputs.nixpkgs.follows = "nixos";
       };
       nur.url = "github:nix-community/NUR";
@@ -20,13 +20,13 @@
       nixos-hardware.url = "github:NixOS/nixos-hardware";
 
       simple-mailserver = {
-        url = "gitlab:simple-nixos-mailserver/nixos-mailserver/nixos-21.11";
+        url = "gitlab:simple-nixos-mailserver/nixos-mailserver/nixos-22.05";
         inputs.nixpkgs.follows = "unstable";
-        inputs.nixpkgs-21_11.follows = "nixos";
+        inputs.nixpkgs-22_05.follows = "nixos";
       };
-      django.url = "github:dwarfmaster/django-nixos/moar_security";
+      django.url = "github:pnmadelaine/django-nixos/main";
       imacs = {
-        url = "github:dwarfmaster/imacs";
+        url = "github:TWal/imacs";
         inputs.nixpkgs.follows = "nixos";
         inputs.django-nixos.follows = "django";
       };
@@ -201,7 +201,6 @@
             hmConfigurations = (hmConfigurations config.system).configurations;
             profiles = nixosProfiles;
           });
-          extraArgs = { inherit (config) system; };
         }) hosts;
 
       hmConfigurations = eachSupportedSystem (system:
