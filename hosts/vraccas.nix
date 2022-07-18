@@ -23,6 +23,7 @@
       grocy
       arkenfox
       # pixelfed
+      miniflux
     ;
   });
 
