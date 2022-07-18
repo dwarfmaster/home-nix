@@ -63,7 +63,7 @@ in {
       Description = "Doom Emacs Server Daemon";
       Documentation = [ "info:emacs" "man:emacs(1)" "https://gnu.org/software/emacs/" ];
       After = [ "graphical-session-pre.target" ];
-      PartOf = [ "graphical-session.target" ];
+      # PartOf = [ "graphical-session.target" ];
     };
 
     Service = {
@@ -74,7 +74,7 @@ in {
     };
 
     Install = {
-      WantedBy = [ "graphical-session.target" ];
+      # WantedBy = [ "graphical-session.target" ];
     };
   };
 
