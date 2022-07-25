@@ -49,13 +49,17 @@
         inputs.nixpkgs.follows = "nixos";
         inputs.emacs-overlay.follows = "emacs-overlay";
       };
+      nixvim = {
+        url = "github:pta2002/nixvim";
+        inputs.nixpkgs.follows = "unstable";
+      };
       nix-autobahn.url = "github:Lassulus/nix-autobahn";
       arkenfox.url = "github:dwarfmaster/arkenfox-nixos";
     };
 
   outputs = inputs@{ self, home, nixos, master, unstable, wayland, nur, flake-utils,
                      nixos-hardware, simple-mailserver, django, imacs,
-                     lean4, opam2nix, emacs-overlay, nix-doom-emacs,
+                     lean4, opam2nix, emacs-overlay, nix-doom-emacs, nixvim,
                      nix-autobahn, arkenfox }:
     let
       # All overlays to apply
@@ -80,6 +84,7 @@
         rycee-base16   = (nur-no-pkgs system).repos.rycee.hmModules.theme-base16;
         nix-doom-emacs = nix-doom-emacs.hmModule;
         arkenfox       = arkenfox.hmModule;
+        nixvim         = nixvim.homeManagerModules.nixvim;
       };
       # All attributes to add to lib
       finalLib = self.lib // {

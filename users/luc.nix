@@ -37,9 +37,11 @@
       maps
       messaging
       multimedia
+      neovim
       passwords
       games
       cheat
+      vim
     ;
 
     # Data

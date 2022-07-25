@@ -852,6 +852,43 @@
         "type": "indirect"
       }
     },
+    "nixvim": {
+      "inputs": {
+        "nixpkgs": [
+          "unstable"
+        ],
+        "nmdSrc": "nmdSrc"
+      },
+      "locked": {
+        "lastModified": 1658178881,
+        "narHash": "sha256-ipMeXvr/ANounGxKHj0Q5TlILBbNkjGywXxMzWZrXk4=",
+        "owner": "pta2002",
+        "repo": "nixvim",
+        "rev": "4d573a1e75688d75508e426243a2abaf121f6376",
+        "type": "github"
+      },
+      "original": {
+        "owner": "pta2002",
+        "repo": "nixvim",
+        "type": "github"
+      }
+    },
+    "nmdSrc": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1637239786,
+        "narHash": "sha256-l2KsnY537mz0blZdqALZKrWXn9PD39CpvotgPnxyIP4=",
+        "owner": "rycee",
+        "repo": "nmd",
+        "rev": "527245ff605bde88c2dd2ddae21c6479bb7cf8aa",
+        "type": "gitlab"
+      },
+      "original": {
+        "owner": "rycee",
+        "repo": "nmd",
+        "type": "gitlab"
+      }
+    },
     "nose": {
       "flake": false,
       "locked": {
@@ -1066,6 +1103,7 @@
         "nix-doom-emacs": "nix-doom-emacs",
         "nixos": "nixos",
         "nixos-hardware": "nixos-hardware",
+        "nixvim": "nixvim",
         "nur": "nur",
         "opam2nix": "opam2nix",
         "simple-mailserver": "simple-mailserver",

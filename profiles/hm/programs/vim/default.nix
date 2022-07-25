@@ -24,12 +24,4 @@ in {
       coquille          # COQ support
     ];
   };
-
-  home.packages = [
-    pkgs.unstable.neovim
-    pkgs.unstable.neovide
-    pkgs.nodejs
-    pkgs.nodePackages.npm
-    pkgs.luajitPackages.luacheck
-  ];
 }
