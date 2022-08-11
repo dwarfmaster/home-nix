@@ -56,6 +56,7 @@
       wiki
       calendar
       nextcloud
+      contacts
     ;
 
     # Languages
