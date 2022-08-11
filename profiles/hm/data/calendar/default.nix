@@ -12,4 +12,7 @@
       };
     };
   };
+
+  home.packages = [ pkgs.khal ];
+  xdg.configFile."khal/config".source = ./khal.conf;
 }
