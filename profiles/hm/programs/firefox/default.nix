@@ -144,6 +144,7 @@ in {
       # Interaction with the system
       inherit (pkgs.nur.repos.rycee.firefox-addons)
         org-capture
+        keepassxc-browser
         # wallabagger
       ;
     };
