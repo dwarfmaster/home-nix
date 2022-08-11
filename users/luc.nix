@@ -55,6 +55,7 @@
       feeds
       wiki
       calendar
+      nextcloud
     ;
 
     # Languages
