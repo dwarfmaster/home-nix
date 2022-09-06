@@ -16,7 +16,7 @@ static int borderpx = 2;
  * 4: value of shell in /etc/passwd
  * 5: value of shell in config.h
  */
-static char *shell = "/bin/sh";
+static char *shell = "@bash@/bin/bash";
 char *utmp = NULL;
 /* scroll program: to enable use a string like "scroll" */
 char *scroll = NULL;
@@ -94,30 +94,27 @@ char *termname = "st-256color";
 unsigned int tabspaces = 8;
 
 /* Terminal colors (16 first used in escape sequence) */
-/* Base-16 woodland theme :
- *  - https://github.com/jcornwall/base16-woodland-theme
- *  - https://github.com/honza/base16-st
- */
+/* Template taken from https://github.com/dgmulf/base16-st */
 static const char *colorname[] = {
 	/* 8 normal colors */
-	"#231e18",
-	"#d35c5c",
-	"#b7ba53",
-	"#e0ac16",
-	"#88a4d3",
-	"#bb90e2",
-	"#6eb958",
-	"#cabcb1",
+	"#@base00@",
+	"#@base08@",
+	"#@base0B@",
+	"#@base0A@",
+	"#@base0D@",
+	"#@base0E@",
+	"#@base0C@",
+	"#@base05@",
 
 	/* 8 bright colors */
-	"#9d8b70",
-	"#ca7f32",
-	"#302b25",
-	"#48413a",
-	"#b4a490",
-	"#d7c8bc",
-	"#b49368",
-	"#e4d4c8",
+	"#@base03@",
+	"#@base08@",
+	"#@base0B@",
+	"#@base0A@",
+	"#@base0D@",
+	"#@base0E@",
+	"#@base0C@",
+	"#@base07@",
 
 	[255] = 0,
 
@@ -131,7 +128,7 @@ static const char *colorname[] = {
  */
 unsigned int defaultfg = 7;
 unsigned int defaultbg = 0;
-unsigned int defaultcs = 13;
+unsigned int defaultcs = 7;
 static unsigned int defaultrcs = 0;
 
 /*
