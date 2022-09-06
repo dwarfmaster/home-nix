@@ -30,6 +30,7 @@
         inputs.nixpkgs.follows = "nixos";
         inputs.django-nixos.follows = "django";
       };
+      colors.url = "github:Misterio77/nix-colors";
 
       lean4 = {
         url = "github:leanprover/lean4";
@@ -58,7 +59,7 @@
     };
 
   outputs = inputs@{ self, home, nixos, master, unstable, wayland, nur, flake-utils,
-                     nixos-hardware, simple-mailserver, django, imacs,
+                     nixos-hardware, simple-mailserver, django, imacs, colors,
                      lean4, opam2nix, emacs-overlay, nix-doom-emacs, nixvim,
                      nix-autobahn, arkenfox }:
     let
@@ -71,6 +72,7 @@
           lean4 = lean4.defaultPackage.x86_64-linux;
           opam2nix = opam2nix.defaultPackage.x86_64-linux;
           nix-autobahn = nix-autobahn.defaultPackage.x86_64-linux;
+          nix-colors = colors.colorSchemes;
         };
       };
       # Modules to be made available to hosts config
@@ -85,6 +87,7 @@
         nix-doom-emacs = nix-doom-emacs.hmModule;
         arkenfox       = arkenfox.hmModule;
         nixvim         = nixvim.homeManagerModules.nixvim;
+        colors         = colors.homeManagerModules.colorScheme;
       };
       # All attributes to add to lib
       finalLib = self.lib // {
