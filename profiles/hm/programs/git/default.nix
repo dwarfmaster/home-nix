@@ -1,6 +1,10 @@
-{ ... }:
+{ pkgs, ... }:
 
-{
+let
+  delta = "${pkgs.delta}/bin/delta";
+in {
+  home.packages = [ pkgs.delta ];
+
   programs.git = {
     enable = true;
 
@@ -19,6 +23,9 @@
       mtdt = "annex metadata";
     };
     extraConfig = {
+      core = {
+        pager = "${delta}";
+      };
       init = {
         defaultBranch = "main";
       };
@@ -33,6 +40,19 @@
       };
       merge = {
         conflictstyle = "diff3";
+      };
+      interactive = {
+        diffFilter = "${delta} --color-only";
+      };
+      "add.interactive" = {
+        useBuiltin = false;
+      };
+      diff = {
+        colorMoved = true;
+      };
+      delta = {
+        navigate = true;
+        light = false;
       };
     };
     ignores = [ "*~" "*.swp" ".direnv" ];
