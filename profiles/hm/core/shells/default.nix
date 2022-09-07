@@ -3,6 +3,7 @@
 let
   inherit (pkgs) unstable;
   lsd = "${pkgs.lsd}/bin/lsd";
+  bat = "${pkgs.bat}/bin/bat";
 in {
   # Misc
   home = {
@@ -10,17 +11,24 @@ in {
       EDITOR       = "vim";
       DIRSTACKSIZE = 16;
       NIX_SSHOPTS  = "-t";
+      MANPAGER     = "sh -c 'col -bx | ${bat} -l man -p'";
     };
-    packages = [ pkgs.lsd ];
+    packages = builtins.attrValues {
+      inherit (pkgs)
+        lsd
+        bat 
+        ;
+      batgrep = pkgs.bat-extras.batgrep;
+      batdiff = pkgs.bat-extras.batdiff;
+    };
   };
-  xdg.configFile."ls/dircolors".source = ./dircolors;
 
   # Bash
   programs.bash = {
     enable = true;
     initExtra = ''
       # LS_COLORS setting
-      eval $(dircolors ${config.xdg.configHome}/ls/dircolors)
+      eval $(dircolors ${./dircolors})
     '';
 
     historyControl = [ "erasedups" ];
@@ -34,6 +42,7 @@ in {
       lla     = "ll -A";
       lld     = "ll /dev/sd*";
       rm      = "rm --preserve-root -i";
+      cat     = "${bat}";
     };
   };
 
@@ -75,7 +84,7 @@ in {
       bindkey 'OB' history-beginning-search-forward
 
       # LS_COLORS setting
-      eval $(dircolors ${config.xdg.configHome}/ls/dircolors)
+      eval $(dircolors ${./dircolors})
 
       # P10K config
       if zmodload zsh/terminfo && (( terminfo[colors] >= 256 )); then
@@ -94,6 +103,7 @@ in {
       lla     = "ll -A";
       lld     = "ll /dev/sd*";
       rm      = "rm --preserve-root -i";
+      cat     = "${bat}";
     };
 
     oh-my-zsh = {
@@ -101,25 +111,14 @@ in {
       plugins = [
         "git"                   # Add lots of git aliases
         "sudo"
-        "cp"                    # Add a cpv command that works likes cp but with progress bar
-        "colored-man-pages"
         "dirpersist"            # Saves dir stack across zsh reboots
         "extract"               # Define a function extract that can extract any archive
         "pass"                  # Autocompletion for pass
-        "fasd"                  # Add a f command that select files based on "frecency", and a j command to cd
         "jump"                  # Allow to mark directories and jump to them
         "gitignore"             # Add a gi command to download templates from gitignore.io
         "cabal"                 # Autocompletion for cabal
         "emoji-clock"           # Add a function emoji-clock that display a fancy clock
       ];
     };
-  };
-
-  # NuShell
-  programs.nushell = {
-    enable = true;
-    package = unstable.nushell;
-    # TODO configure
-    settings = { };
   };
 }
