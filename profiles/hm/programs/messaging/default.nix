@@ -7,7 +7,7 @@ in {
     inherit (pkgs)
       signal-desktop   # Access signal
       element-desktop  # Chat client for matrix
-      ferdi            # Meta-messenger system
+      # ferdi            # Meta-messenger system
       ;
     inherit (unstable-unfree)
       discord          # Audio and chat

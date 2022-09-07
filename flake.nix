@@ -85,7 +85,7 @@
       finalHMModules = system: self.hmModules // {
         rycee-base16   = (nur-no-pkgs system).repos.rycee.hmModules.theme-base16;
         nix-doom-emacs = nix-doom-emacs.hmModule;
-        arkenfox       = arkenfox.hmModule;
+        arkenfox       = arkenfox.hmModules.default;
         nixvim         = nixvim.homeManagerModules.nixvim;
         colors         = colors.homeManagerModules.colorScheme;
       };

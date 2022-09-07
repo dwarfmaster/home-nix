@@ -26,7 +26,6 @@
     # Programs
     inherit (lib.profiles.programs)
       firefox
-      chromium
       emacs
       audio
       blender
