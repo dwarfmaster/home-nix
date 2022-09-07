@@ -17,6 +17,15 @@ in {
       inherit (pkgs)
         lsd
         bat 
+        du-dust
+        dua
+        duf
+        choose
+        sd
+        bottom
+        hyperfine
+        gping
+        dog
         ;
       batgrep = pkgs.bat-extras.batgrep;
       batdiff = pkgs.bat-extras.batdiff;
@@ -42,7 +51,9 @@ in {
       lla     = "ll -A";
       lld     = "ll /dev/sd*";
       rm      = "rm --preserve-root -i";
-      cat     = "${bat}";
+      cat     = "bat";
+      df      = "duf";
+      ping    = "gping";
     };
   };
 
@@ -103,7 +114,9 @@ in {
       lla     = "ll -A";
       lld     = "ll /dev/sd*";
       rm      = "rm --preserve-root -i";
-      cat     = "${bat}";
+      cat     = "bat";
+      df      = "duf";
+      ping    = "gping";
     };
 
     oh-my-zsh = {

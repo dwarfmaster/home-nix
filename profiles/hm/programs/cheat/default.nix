@@ -12,4 +12,6 @@
       pager = "${pkgs.less}/bin/less -FRX";
     };
   };
+
+  home.packages = [ pkgs.tldr ];
 }
