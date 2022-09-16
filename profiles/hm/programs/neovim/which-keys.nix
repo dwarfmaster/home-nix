@@ -17,6 +17,116 @@ let
 
   renderList = lib.concatMapStringsSep ", " (v: "\"${v}\"");
 
+  bindingType = types.submodule ({ config, ...}: {
+    options = {
+      binding = mkOption {
+        description = lib.mdDoc "The binding";
+        type = types.nullOr types.str;
+        example = "<cmd>Telescope find_files<cr>";
+        default = null;
+      };
+      cmd = mkOption {
+        description = lib.mdDoc "The command to execute. Will set binding.";
+        type = types.nullOr types.str;
+        example = "Telescope find_files";
+        default = null;
+      };
+      lua = mkOption {
+        description = lib.mdDoc "Lua code to execute. Will set binding.";
+        type = types.nullOr types.str;
+        example = "print(\"bar\")";
+        default = null;
+      };
+      description = mkOption {
+        description = lib.mdDoc "The description of the binding.";
+        type = types.str;
+        example = "Find files in project";
+      };
+      silent = mkOption {
+        description = lib.mdDoc "Use `silent` when creating binding.";
+        type = types.nullOr types.bool;
+        default = null;
+      };
+      noremap = mkOption {
+        description = lib.mdDoc "Use `noremap` when creating binding.";
+        type = types.nullOr types.bool;
+        default = null;
+      };
+      buffer = mkOption {
+        description = lib.mdDoc "Create binding only for specific buffer.";
+        type = types.nullOr types.ints.positive;
+        default = null;
+      };
+    };
+
+    config = mkMerge [
+      (mkIf (!(builtins.isNull config.cmd)) { binding = "<cmd>${config.cmd}<cr>"; })
+      (mkIf (!(builtins.isNull config.lua)) { binding = "function() ${config.lua} end"; })
+    ];
+  });
+
+  bindingTreeType = types.submodule ({ config, ...}: {
+    options = {
+      name = mkOption {
+        description = "Name of the category";
+        type = types.nullOr types.str;
+        default = null;
+      };
+      bindings = mkOption {
+        description = "Bindings at this level";
+        type = types.attrsOf bindingType;
+        default = { };
+      };
+      subs = mkOption {
+        description = "Sub-trees";
+        type = types.attrsOf bindingTreeType;
+        default = { };
+      };
+    };
+  });
+
+  mergeAll = lib.foldr (as1: as2: as1 // as2) {};
+  prepareMapping = opts: prefix: key: bd: 
+    let
+      nullOr = v1: v2: if builtins.isNull v1 then v2 else v1;
+      inherit (bd) description binding;
+      silent = nullOr bd.silent opts.silent;
+      noremap = nullOr bd.noremap opts.noremap;
+      buffer = nullOr bd.buffer opts.buffer;
+    in lib.nameValuePair (prefix + key) (
+      { inherit binding description silent noremap; }
+      // (if builtins.isNull buffer then {} else { inherit buffer; })
+      // { lua = !(builtins.isNull bd.lua); });
+  accumulateMapping = opts: prefix: name: tree:
+    let
+      category = { "${prefix}" = if builtins.isNull tree.name then name else tree.name; };
+      bindings = lib.mapAttrs' (prepareMapping opts prefix) tree.bindings;
+      subs = lib.mapAttrsToList (k: accumulateMapping opts (prefix + k) k) tree.subs;
+    in mergeAll ([ category bindings ] ++ subs);
+  mappings =
+    let
+      opts = { silent = true; noremap = true; buffer = null; };
+    in lib.mapAttrs (_: maps: mergeAll (lib.mapAttrsToList (key: accumulateMapping opts key key) maps)) cfg.bindings;
+
+  escapeCmd = m: 
+    if m.lua then m.binding
+    else "\"" + builtins.replaceStrings [ "\"" ] [ "\\\"" ] m.binding + "\"";
+  renderMapping = m:
+    if builtins.isString m
+    then "{ name = \"${m}\" }" 
+    else (if builtins.isNull m.binding 
+      then "\"${m.description}\""
+      else "{ ${escapeCmd m}, \"${m.description}\", " 
+         + "silent=${printB m.silent}, noremap=${printB m.noremap}"
+         + (if m ? "buffer" then ", buffer${toString m.buffer} }" else "}"));
+  renderMappings = mode: mappings: ''
+      require('which-key').register({
+        ${lib.concatStringsSep ",\n  "
+            (lib.mapAttrsToList (k: m: "[\"${k}\"] = ${renderMapping m}") mappings)}
+      }, { mode = "${mode}" })
+    '';
+  renderedMappings = lib.concatStringsSep "\n" (lib.mapAttrsToList renderMappings mappings);
+
 in {
   options.programs.nixvim.plugins.which-key = {
     enable = mkEnableOption "which-key.nvim plugin";
@@ -203,6 +313,18 @@ in {
         default = [ "TelescopePromp" ];
       };
     };
+
+    bindings = let
+      mkBindings = name: mkOption {
+        description = lib.mdDoc "Bindings for ${name} mode.";
+        type = types.attrsOf bindingTreeType;
+        default = {};
+      };
+    in {
+      n = mkBindings "normal";
+      i = mkBindings "insert";
+      v = mkBindings "visual";
+    };
   };
 
   config = mkIf cfg.enable {
@@ -278,13 +400,16 @@ in {
                  (n: v: "${n} = { ${renderList v} }")
                  cfg.triggers.blacklist)}
           },
-          -- disable the WhichKey popup for certain buf types and file types.
-          -- Disabled by deafult for Telescope
           disable = {
             buftypes = { ${renderList cfg.disable.buftypes} },
             filetypes = { ${renderList cfg.disable.filetypes} },
           },
         })
+
+        --- Keybindings {{{
+        ${renderedMappings}
+        --- }}}
+
         --- }}}
       '';
     };

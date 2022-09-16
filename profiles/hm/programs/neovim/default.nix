@@ -45,6 +45,25 @@
           blend = 50;
         };
         popup.layout.align = "center";
+
+        bindings = {
+          n = {
+            "<leader>" =
+              { name = "Top-level";
+                bindings = {
+                  b = { lua = "print(\"bar\")"; description = "bar"; };
+                };
+                subs = {
+                  l.subs = {
+                    "u".bindings = {
+                      "a" = { lua = "print(\"foo\")"; description = "foo"; };
+                      "m" = { cmd = "messages"; description = "messages"; };
+                    };
+                  };
+                };
+              };
+          };
+        };
       };
     };
   };
