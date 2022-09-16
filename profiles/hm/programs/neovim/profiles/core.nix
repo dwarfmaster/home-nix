@@ -3,7 +3,7 @@
 let
   tab = 4;
 in {
-  imports = [ ./telescope.nix ./treesitter.nix ];
+  imports = [ ./telescope.nix ./treesitter.nix ./windows.nix ];
 
   programs.nixvim = {
     #  __  __ _        
