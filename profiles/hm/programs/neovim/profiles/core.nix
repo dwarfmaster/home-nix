@@ -1,7 +1,9 @@
 { config, pkgs, lib, ... }:
 
-{
-  imports = [ ./telescope.nix ];
+let
+  tab = 4;
+in {
+  imports = [ ./telescope.nix ./treesitter.nix ];
 
   programs.nixvim = {
     #  __  __ _        
@@ -13,20 +15,31 @@
     extraPlugins = [];
     extraConfigLua = ''
     '';
+    # TODO basic settings
     options = {
       number = true;
       relativenumber = true;
+      smartcase = true;
+      ignorecase = true;
+      autoindent = true;
+      tabstop = tab;
+      shiftwidth = tab;
+      expandtab = true;
     };
     globals = {
       mapleader = " ";
+      updatetime = 200;
+      timeoutlen = 400;
+      background = "dark";
     };
 
-    #   ___     _                _                  
-    #  / __|___| |___ _ _ ___ __| |_  ___ _ __  ___ 
-    # | (__/ _ \ / _ \ '_(_-</ _| ' \/ -_) '  \/ -_)
-    #  \___\___/_\___/_| /__/\__|_||_\___|_|_|_\___|
-    #                                               
-    # Colorscheme
+
+    #  _____ _                  
+    # |_   _| |_  ___ _ __  ___ 
+    #   | | | ' \/ -_) '  \/ -_)
+    #   |_| |_||_\___|_|_|_\___|
+    #                           
+    # Theme
     # TODO enable support for colorscheme not based on name but on colors
     # Maybe user nvim-base16
     colorschemes.base16 = {
@@ -34,7 +47,12 @@
       useTruecolor = true;
       colorscheme = lib.toLower config.colorScheme.name;
     };
-
+    plugins.lualine = {
+      enable = true;
+      # TODO "base16" here requires nvim-base16
+      # Using auto in the meantime
+      theme = "auto";
+    };
 
 
     # __      ___    _    _       _            
