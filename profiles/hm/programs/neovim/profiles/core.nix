@@ -3,7 +3,12 @@
 let
   tab = 4;
 in {
-  imports = [ ./telescope.nix ./treesitter.nix ./windows.nix ];
+  imports = [
+    ./telescope.nix
+    ./treesitter.nix
+    ./windows.nix
+    ./projects.nix
+  ];
 
   programs.nixvim = {
     #  __  __ _        
@@ -17,14 +22,20 @@ in {
     '';
     # TODO basic settings
     options = {
+      # Number
       number = true;
       relativenumber = true;
+      # Search
       smartcase = true;
       ignorecase = true;
+      # Indentation
       autoindent = true;
+      smartindent = true;
       tabstop = tab;
       shiftwidth = tab;
       expandtab = true;
+      # Misc
+      mouse = "a";
     };
     globals = {
       mapleader = " ";

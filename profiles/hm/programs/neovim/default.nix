@@ -7,6 +7,7 @@
 
     # Plugins
     ./plugins/which-keys.nix
+    ./plugins/projects.nix
   ];
 
   home.packages = [
