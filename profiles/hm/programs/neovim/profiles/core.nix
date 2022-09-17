@@ -11,6 +11,7 @@ in {
     ./comments.nix
     ./escape.nix
     ./notify.nix
+    ./gitgutter.nix
   ];
 
   programs.nixvim = {
@@ -20,7 +21,7 @@ in {
     # |_|  |_|_/__/\__|
     #                  
     # Misc
-    extraPlugins = [];
+    extraPlugins = [ pkgs.vimPlugins.vim-repeat ];
     extraConfigLua = ''
     '';
     # TODO basic settings
@@ -75,7 +76,7 @@ in {
         margin.left = 2;
         margin.right = 2;
         margin.bottom = 0;
-        blend = 20;
+        blend = 10;
       };
       labels = {
         " " = "<space>";
@@ -92,6 +93,7 @@ in {
           "d".name = "debug";
           "w".name = "window";
           "h".name = "help";
+          "t".name = "toggle";
           " ".name = "local";
         };
       };
