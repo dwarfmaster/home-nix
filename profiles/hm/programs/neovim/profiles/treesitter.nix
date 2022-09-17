@@ -11,10 +11,12 @@
     };
     plugins.which-key.bindings = {
       n."g".subs."n".bindings."n" = { description = "Select treesitter node"; };
+      n."<leader>".subs."c".bindings."T" =
+        { lua = "require'telescope.builtin'.treesitter{}"; description = "Treesitter symbols"; };
       v."g".subs."r".bindings = {
         "n" = { description = "Increment treesitter node"; };
-	"c" = { description = "Increment treesitter scope"; };
-	"m" = { description = "Decrement treesitter node"; };
+        "c" = { description = "Increment treesitter scope"; };
+        "m" = { description = "Decrement treesitter node"; };
       };
     };
   };
