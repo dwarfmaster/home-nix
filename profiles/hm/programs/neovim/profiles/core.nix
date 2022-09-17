@@ -10,6 +10,7 @@ in {
     ./projects.nix
     ./comments.nix
     ./escape.nix
+    ./notify.nix
   ];
 
   programs.nixvim = {
