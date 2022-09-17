@@ -8,6 +8,7 @@ in {
     ./treesitter.nix
     ./windows.nix
     ./projects.nix
+    ./comments.nix
   ];
 
   programs.nixvim = {
