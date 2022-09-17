@@ -9,6 +9,7 @@ in {
     ./windows.nix
     ./projects.nix
     ./comments.nix
+    ./escape.nix
   ];
 
   programs.nixvim = {
