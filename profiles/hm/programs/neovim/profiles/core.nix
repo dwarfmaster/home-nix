@@ -46,6 +46,7 @@ in {
       timeoutlen = 400;
       background = "dark";
     };
+    plugins.surround.enable = true;
 
 
     #  _____ _                  
@@ -54,18 +55,10 @@ in {
     #   |_| |_||_\___|_|_|_\___|
     #                           
     # Theme
-    # TODO enable support for colorscheme not based on name but on colors
-    # Maybe user nvim-base16
-    colorschemes.base16 = {
-      enable = true;
-      useTruecolor = true;
-      colorscheme = lib.toLower config.colorScheme.name;
-    };
+    colorschemes.nix-colors.enable = true;
     plugins.lualine = {
       enable = true;
-      # TODO "base16" here requires nvim-base16
-      # Using auto in the meantime
-      theme = "auto";
+      theme = "base16";
     };
 
 
@@ -82,7 +75,7 @@ in {
         margin.left = 2;
         margin.right = 2;
         margin.bottom = 0;
-        blend = 70;
+        blend = 20;
       };
       labels = {
         " " = "<space>";

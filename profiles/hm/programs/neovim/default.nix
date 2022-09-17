@@ -8,6 +8,7 @@
     # Plugins
     ./plugins/which-keys.nix
     ./plugins/projects.nix
+    ./plugins/nix-colors.nix
   ];
 
   home.packages = [
