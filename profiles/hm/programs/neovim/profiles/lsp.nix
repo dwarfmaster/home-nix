@@ -1,12 +1,9 @@
 { config, pkgs, lib, ... }:
 
 {
-  home.packages = [ pkgs.cargo pkgs.rustc ];
   programs.nixvim = {
     plugins.lsp = {
       enable = true;
-      servers.rnix-lsp.enable = true;
-      servers.rust-analyzer.enable = true;
     };
     plugins.lspsaga = {
       enable = true;

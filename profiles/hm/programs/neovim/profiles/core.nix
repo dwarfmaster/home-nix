@@ -14,6 +14,7 @@ in {
     ./gitgutter.nix
     ./lsp.nix
     ./direnv.nix
+    ./cmp.nix
   ];
 
   programs.nixvim = {
