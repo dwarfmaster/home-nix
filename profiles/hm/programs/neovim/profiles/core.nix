@@ -13,6 +13,7 @@ in {
     ./notify.nix
     ./gitgutter.nix
     ./lsp.nix
+    ./direnv.nix
   ];
 
   programs.nixvim = {
