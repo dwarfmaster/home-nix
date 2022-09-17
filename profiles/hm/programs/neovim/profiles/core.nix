@@ -12,6 +12,7 @@ in {
     ./escape.nix
     ./notify.nix
     ./gitgutter.nix
+    ./lsp.nix
   ];
 
   programs.nixvim = {

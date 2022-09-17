@@ -965,11 +965,11 @@
         "nmdSrc": "nmdSrc"
       },
       "locked": {
-        "lastModified": 1662074366,
-        "narHash": "sha256-V3pRgFhxIagO3tnVctAh1ubObAYAWLzJXpF49Ex5/Os=",
+        "lastModified": 1662984264,
+        "narHash": "sha256-6Rq3+SVnVhD/gJfyAtA+hhuoIwInP3I4c5uAMPh1zWs=",
         "owner": "pta2002",
         "repo": "nixvim",
-        "rev": "88fb867da5d3b4785c8c52ea9d0ca2185b0dd51a",
+        "rev": "bd6f978d51eb95c8633744331546efbd9206d228",
         "type": "github"
       },
       "original": {
