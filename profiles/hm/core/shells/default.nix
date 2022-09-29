@@ -25,7 +25,7 @@ in {
         bottom
         hyperfine
         gping
-        dog
+        dogdns
         ;
       batgrep = pkgs.bat-extras.batgrep;
       batdiff = pkgs.bat-extras.batdiff;
