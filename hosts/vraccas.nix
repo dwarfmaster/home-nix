@@ -19,8 +19,8 @@
       matrix
       nextcloud
       imacs
-      wallabag
-      grocy
+      # wallabag
+      # grocy
       arkenfox
       # pixelfed
       miniflux
