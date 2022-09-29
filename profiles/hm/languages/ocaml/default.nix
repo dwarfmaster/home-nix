@@ -24,4 +24,7 @@
       '';
     };
   };
+  programs.nixvim = {
+    plugins.lsp.enabledServers = [ "ocamllsp" ];
+  };
 }
