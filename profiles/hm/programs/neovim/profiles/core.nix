@@ -1,7 +1,7 @@
 { config, pkgs, lib, ... }:
 
 let
-  tab = 4;
+  tab = 2;
 in {
   imports = [
     ./telescope.nix
@@ -51,6 +51,9 @@ in {
       background = "dark";
     };
     plugins.surround.enable = true;
+
+    # Neorg
+    plugins.neorg.enable = false;
 
 
     #  _____ _                  

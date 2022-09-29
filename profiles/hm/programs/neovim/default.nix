@@ -9,6 +9,7 @@
     ./plugins/which-keys.nix
     ./plugins/projects.nix
     ./plugins/nix-colors.nix
+    ./plugins/neorg.nix
   ];
 
   home.packages = [
@@ -18,4 +19,5 @@
   ];
 
   programs.nixvim.enable = true;
+  # programs.neovim.package = pkgs.neovim-nightly;
 }

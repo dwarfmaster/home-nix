@@ -50,9 +50,17 @@
         inputs.nixpkgs.follows = "nixos";
         inputs.emacs-overlay.follows = "emacs-overlay";
       };
+      neovim-nightly = {
+        url = "github:nix-community/neovim-nightly-overlay";
+        inputs.nixpkgs.follows = "nixos";
+      };
       nixvim = {
         url = "github:pta2002/nixvim";
-        inputs.nixpkgs.follows = "unstable";
+        inputs.nixpkgs.follows = "nixos";
+      };
+      neorg = {
+        url = "github:nvim-neorg/nixpkgs-neorg-overlay";
+        inputs.nixpkgs.follows = "nixos";
       };
       nix-autobahn.url = "github:Lassulus/nix-autobahn";
       arkenfox.url = "github:dwarfmaster/arkenfox-nixos";
@@ -60,19 +68,21 @@
 
   outputs = inputs@{ self, home, nixos, master, unstable, wayland, nur, flake-utils,
                      nixos-hardware, simple-mailserver, django, imacs, colors,
-                     lean4, opam2nix, emacs-overlay, nix-doom-emacs, nixvim,
+                     lean4, opam2nix, emacs-overlay, nix-doom-emacs, neovim-nightly, nixvim, neorg,
                      nix-autobahn, arkenfox }:
     let
       # All overlays to apply
       finalOverlays = self.overlays // {
         nur = nur.overlay;
         arkenfox = arkenfox.overlay;
+        neorg = neorg.overlay;
         # wayland = wayland.overlay;
         packages = re: super: {
           lean4 = lean4.defaultPackage.x86_64-linux;
           opam2nix = opam2nix.defaultPackage.x86_64-linux;
           nix-autobahn = nix-autobahn.defaultPackage.x86_64-linux;
           nix-colors = colors.colorSchemes;
+          neovim-nightly = neovim-nightly.packages.default;
         };
       };
       # Modules to be made available to hosts config
