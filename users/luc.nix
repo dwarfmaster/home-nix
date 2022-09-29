@@ -30,8 +30,8 @@
       audio
       blender
       documents
-      drawing
-      engineering
+      # drawing
+      # engineering
       git-annex
       maps
       messaging
