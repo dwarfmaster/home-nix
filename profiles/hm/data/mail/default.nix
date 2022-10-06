@@ -30,7 +30,7 @@ in {
     hooks = {
       postNew = "${pkgs.afew}/bin/afew --tag --new";
       preNew = ''
-        ${pkgs.getmail6}/bin/getmail --rcfile getmailens --rcfile getmailmailoo --rcfile getmaillsv
+        ${pkgs.getmail6}/bin/getmail --rcfile getmailinria --rcfile getmailmailoo --rcfile getmaillsv
       '';
     };
   };
@@ -83,25 +83,8 @@ in {
 
     "ens" = {
       address = "luc.chabassier@ens.fr";
-      aliases = [ "luc.chabassier@ens.psl.eu" "chabassi@clipper.ens.fr" "chabassi@clipper.ens.psl.eu" ];
-      inherit realName getmail maildir;
-      userName = "chabassi";
-      passwordCommand = "pass school/ens/clipper";
-      astroid.enable = true;
-      astroid.sendMailCommand = "${pkgs.msmtp}/bin/msmtp --read-envelope-from --read-recipients --account ens";
-
-      imap = {
-        host = "clipper.ens.fr";
-        port = 993;
-        tls.enable = true;
-      };
-
-      msmtp.enable = true;
-      smtp = {
-        host = "clipper.ens.fr";
-        port = 465;
-        tls.enable = true;
-      };
+      aliases = [ "luc.chabassier@ens.psl.eu" "chabassi@clipper.ens.fr" "chabassi@clipper.ens.psl.eu" "luc.chabassier@ens.psl.eu" ];
+      inherit realName maildir;
     };
 
     "gmail" = let gm = getmail // { mailboxes = [ "Inbox" ]; }; in rec {
@@ -170,6 +153,38 @@ in {
       msmtp.enable = true;
       smtp = {
         host = "smtps.lsv.ens-cachan.fr";
+        port = 587;
+        tls = {
+          enable = true;
+          useStartTls = true;
+        };
+      };
+
+      getmail = {
+        enable = true;
+        delete = true;
+        readAll = true;
+        mailboxes = [ "Inbox" ];
+      };
+    };
+
+    "inria" = {
+      address = "luc.chabassier@inria.fr";
+      inherit realName maildir;
+      userName = "lchabass";
+      passwordCommand = "pass school/these/inria.fr/lchabass";
+      astroid.enable = true;
+      astroid.sendMailCommand = "${pkgs.msmtp}/bin/msmtp --read-envelope-from --read-recipients --account inria";
+
+      imap = {
+        host = "zimbra.inria.fr";
+        port = 993;
+        tls.enable = true;
+      };
+
+      msmtp.enable = true;
+      smtp = {
+        host = "smtp.inria.fr";
         port = 587;
         tls = {
           enable = true;
