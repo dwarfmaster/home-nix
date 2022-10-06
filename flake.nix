@@ -55,7 +55,7 @@
         inputs.nixpkgs.follows = "nixos";
       };
       nixvim = {
-        url = "github:pta2002/nixvim/bd6f978d51eb95c8633744331546efbd9206d228";
+        url = "github:pta2002/nixvim";
         inputs.nixpkgs.follows = "nixos";
       };
       neorg = {

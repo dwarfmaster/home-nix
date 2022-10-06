@@ -2,24 +2,22 @@
 
 let
   inherit (lib) mkEnableOption mkOption types;
-  cfg = config.programs.nixvim.plugins.neorg;
+  cfg = config.plugins.neorg;
 in {
-  options.programs.nixvim.plugins.neorg = {
+  options.plugins.neorg = {
     enable = mkEnableOption "neorg";
   };
 
   config = lib.mkIf cfg.enable {
-    programs.nixvim = {
-      extraPlugins = [ pkgs.vimPlugins.neorg ];
-      extraConfigLua = ''
-      -- Neorg {{{
-      require("neorg").setup {
-        load = {
-          ["core.defaults"] = {}
-        }
+    extraPlugins = [ pkgs.vimPlugins.neorg ];
+    extraConfigLua = ''
+    -- Neorg {{{
+    require("neorg").setup {
+      load = {
+        ["core.defaults"] = {}
       }
-      -- }}}
-      '';
-    };
+    }
+    -- }}}
+    '';
   };
 }

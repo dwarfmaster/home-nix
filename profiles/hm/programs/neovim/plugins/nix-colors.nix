@@ -2,17 +2,15 @@
 
 let
   inherit (lib) mkEnableOption mkOption types;
-  cfg = config.programs.nixvim.colorschemes.nix-colors;
   theme = config.colorScheme;
   colors = theme.colors;
+
 in {
   options = {
-    programs.nixvim.colorschemes.nix-colors = {
-      enable = mkEnableOption "nvim-base16 based colorscheme";
-    };
+    colorScheme.nixvimIntegration = mkEnableOption "setup nixvim colorscheme using nvim-base16";
   };
 
-  config = lib.mkIf cfg.enable {
+  config = lib.mkIf theme.nixvimIntegration {
     programs.nixvim = {
       colorscheme = "base16-${theme.slug}";
       extraPlugins = [ pkgs.vimPlugins.nvim-base16 ];

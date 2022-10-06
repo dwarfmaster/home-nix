@@ -17,6 +17,8 @@ in {
     ./cmp.nix
   ];
 
+  colorScheme.nixvimIntegration = true;
+
   programs.nixvim = {
     #  __  __ _        
     # |  \/  (_)___ __ 
@@ -62,7 +64,6 @@ in {
     #   |_| |_||_\___|_|_|_\___|
     #                           
     # Theme
-    colorschemes.nix-colors.enable = true;
     plugins.lualine = {
       enable = true;
       theme = "base16";

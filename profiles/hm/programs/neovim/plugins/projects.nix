@@ -2,9 +2,9 @@
 
 let
   inherit (lib) mkEnableOption mkOption types;
-  cfg = config.programs.nixvim.plugins.project-nvim;
+  cfg = config.plugins.project-nvim;
 in {
-  options.programs.nixvim.plugins.project-nvim = {
+  options.plugins.project-nvim = {
     enable = mkEnableOption "project.nvim plugin";
     methods = mkOption {
       description = lib.mdDoc "Methods of detecting the root directory";
@@ -40,23 +40,21 @@ in {
     printL = l: "{ " + lib.concatMapStringsSep ", " (v: "\"${v}\"") l + " }";
   in lib.mkMerge [
       (lib.mkIf cfg.enable {
-        programs.nixvim = {
-          extraPlugins = [ pkgs.vimPlugins.project-nvim ];
-          extraConfigLua = ''
-            -- project.nvim setup {{{
-            require("project_nvim").setup {
-              manual_mode = ${printB cfg.manual},
-              detection_methods = ${printL cfg.methods},
-              patterns = ${printL cfg.patterns},
-              ignore_lsp = ${printL cfg.ignore_lsp},
-              silent_chdir = ${printB cfg.silent},
-            }
-            -- }}}
-          '';
-        };
+        extraPlugins = [ pkgs.vimPlugins.project-nvim ];
+        extraConfigLua = ''
+          -- project.nvim setup {{{
+          require("project_nvim").setup {
+            manual_mode = ${printB cfg.manual},
+            detection_methods = ${printL cfg.methods},
+            patterns = ${printL cfg.patterns},
+            ignore_lsp = ${printL cfg.ignore_lsp},
+            silent_chdir = ${printB cfg.silent},
+          }
+          -- }}}
+        '';
     })
-    (lib.mkIf (cfg.enable && config.programs.nixvim.plugins.telescope.enable) {
-      programs.nixvim.plugins.telescope.enabledExtensions = [ "projects" ];
+    (lib.mkIf (cfg.enable && config.plugins.telescope.enable) {
+      plugins.telescope.enabledExtensions = [ "projects" ];
     })
   ];
 }

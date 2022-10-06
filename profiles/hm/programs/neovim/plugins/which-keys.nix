@@ -5,7 +5,7 @@ let
   inherit (lib)
     mkIf mkMerge mkOption mkEnableOption types;
 
-  cfg = config.programs.nixvim.plugins.which-key;
+  cfg = config.plugins.which-key;
 
   mkSelect = default: name: mkOption {
     inherit default;
@@ -128,7 +128,7 @@ let
   renderedMappings = lib.concatStringsSep "\n" (lib.mapAttrsToList renderMappings mappings);
 
 in {
-  options.programs.nixvim.plugins.which-key = {
+  options.plugins.which-key = {
     enable = mkEnableOption "which-key.nvim plugin";
 
     plugins = {
@@ -328,90 +328,90 @@ in {
   };
 
   config = mkIf cfg.enable {
-    assertions = [
-      { assertion = cfg.popup.layout.height.min <= cfg.popup.layout.height.max
-      ; message = "which-key.nvim max column height must be greater than min column height"; }
-      { assertion = cfg.popup.layout.width.min <= cfg.popup.layout.width.max
-      ; message = "which-key.nvim max column width must be greater than min column width"; }
-    ];
+    # Assertions are not supported in submodules 
+    # assertions = [
+    #   { assertion = cfg.popup.layout.height.min <= cfg.popup.layout.height.max
+    #   ; message = "which-key.nvim max column height must be greater than min column height"; }
+    #   { assertion = cfg.popup.layout.width.min <= cfg.popup.layout.width.max
+    #   ; message = "which-key.nvim max column width must be greater than min column width"; }
+    # ];
 
-    programs.nixvim = {
-      extraPlugins = [ pkgs.vimPlugins.which-key-nvim ];
-      extraConfigLua = let 
-        triggers =
-          if builtins.isString cfg.triggers.setup
-          then "\"${cfg.triggers.setup}\""
-          else "{ " + lib.concatMapStringsSep ", " (v: "\"${v}\"") cfg.triggers.setup + " }";
-      in ''
-        -- Set up which-keys {{{
-        require('which-key').setup({
-          plugins = {
-            marks = ${printB cfg.plugins.marks},
-            registers = ${printB cfg.plugins.registers},
-            spelling = {
-              enabled = ${printB cfg.plugins.spelling.enable},
-              suggestions = ${toString cfg.plugins.spelling.suggestions},
-            },
-            presets = {
-              operators = ${printB cfg.plugins.presets.operators},
-              motions = ${printB cfg.plugins.presets.motions},
-              text_objects = ${printB cfg.plugins.presets.text_objects},
-              windows = ${printB cfg.plugins.presets.windows},
-              nav = ${printB cfg.plugins.presets.nav},
-              z = ${printB cfg.plugins.presets.z},
-              g = ${printB cfg.plugins.presets.g},
-            },
+    extraPlugins = [ pkgs.vimPlugins.which-key-nvim ];
+    extraConfigLua = let 
+      triggers =
+        if builtins.isString cfg.triggers.setup
+        then "\"${cfg.triggers.setup}\""
+        else "{ " + lib.concatMapStringsSep ", " (v: "\"${v}\"") cfg.triggers.setup + " }";
+    in ''
+      -- Set up which-keys {{{
+      require('which-key').setup({
+        plugins = {
+          marks = ${printB cfg.plugins.marks},
+          registers = ${printB cfg.plugins.registers},
+          spelling = {
+            enabled = ${printB cfg.plugins.spelling.enable},
+            suggestions = ${toString cfg.plugins.spelling.suggestions},
           },
-          operators = { ${lib.concatStringsSep ", " (lib.mapAttrsToList (n: v: "${n} = \"${v}\"") cfg.operators)} },
-          key_labels = {
-            ${lib.concatStringsSep ",\n" (lib.mapAttrsToList (n: v: "[\"${n}\"] = \"${v}\"") cfg.labels)}
+          presets = {
+            operators = ${printB cfg.plugins.presets.operators},
+            motions = ${printB cfg.plugins.presets.motions},
+            text_objects = ${printB cfg.plugins.presets.text_objects},
+            windows = ${printB cfg.plugins.presets.windows},
+            nav = ${printB cfg.plugins.presets.nav},
+            z = ${printB cfg.plugins.presets.z},
+            g = ${printB cfg.plugins.presets.g},
           },
-          icons = {
-            breadcrumb = "${cfg.icons.breadcrumb}",
-            separator = "${cfg.icons.separator}",
-            group = "${cfg.icons.group}",
-          },
-          popup_mappings = {
-            scroll_down = '${cfg.popup.scroll.down}',
-            scroll_up = '${cfg.popup.scroll.up}',
-          },
-          window = {
-            border = "${cfg.popup.window.border}",
-            position = "${cfg.popup.window.position}",
-            margin = { ${let m = cfg.popup.window.margin; in 
-                           "${toString m.top}, ${toString m.right}, ${toString m.bottom}, ${toString m.left}"} },
-            padding = { ${let m = cfg.popup.window.padding; in 
-                            "${toString m.top}, ${toString m.right}, ${toString m.bottom}, ${toString m.left}"} },
-            winblend = ${toString cfg.popup.window.blend}
-          },
-          layout = {
-            height = { min = ${toString cfg.popup.layout.height.min}, max = ${toString cfg.popup.layout.height.max} },
-            width = { min = ${toString cfg.popup.layout.width.min}, max = ${toString cfg.popup.layout.width.max} },
-            spacing = ${toString cfg.popup.layout.spacing},
-            align = "${cfg.popup.layout.align}",
-          },
-          ignore_missing = ${printB (!cfg.missing)},
-          hidden = { ${renderList cfg.hidden}},
-          show_help = ${printB cfg.help},
-          triggers = ${triggers},
-          triggers_blacklist = {
-            ${lib.concatStringsSep ",\n    "
-               (lib.mapAttrsToList
-                 (n: v: "${n} = { ${renderList v} }")
-                 cfg.triggers.blacklist)}
-          },
-          disable = {
-            buftypes = { ${renderList cfg.disable.buftypes} },
-            filetypes = { ${renderList cfg.disable.filetypes} },
-          },
-        })
+        },
+        operators = { ${lib.concatStringsSep ", " (lib.mapAttrsToList (n: v: "${n} = \"${v}\"") cfg.operators)} },
+        key_labels = {
+          ${lib.concatStringsSep ",\n" (lib.mapAttrsToList (n: v: "[\"${n}\"] = \"${v}\"") cfg.labels)}
+        },
+        icons = {
+          breadcrumb = "${cfg.icons.breadcrumb}",
+          separator = "${cfg.icons.separator}",
+          group = "${cfg.icons.group}",
+        },
+        popup_mappings = {
+          scroll_down = '${cfg.popup.scroll.down}',
+          scroll_up = '${cfg.popup.scroll.up}',
+        },
+        window = {
+          border = "${cfg.popup.window.border}",
+          position = "${cfg.popup.window.position}",
+          margin = { ${let m = cfg.popup.window.margin; in 
+                         "${toString m.top}, ${toString m.right}, ${toString m.bottom}, ${toString m.left}"} },
+          padding = { ${let m = cfg.popup.window.padding; in 
+                          "${toString m.top}, ${toString m.right}, ${toString m.bottom}, ${toString m.left}"} },
+          winblend = ${toString cfg.popup.window.blend}
+        },
+        layout = {
+          height = { min = ${toString cfg.popup.layout.height.min}, max = ${toString cfg.popup.layout.height.max} },
+          width = { min = ${toString cfg.popup.layout.width.min}, max = ${toString cfg.popup.layout.width.max} },
+          spacing = ${toString cfg.popup.layout.spacing},
+          align = "${cfg.popup.layout.align}",
+        },
+        ignore_missing = ${printB (!cfg.missing)},
+        hidden = { ${renderList cfg.hidden}},
+        show_help = ${printB cfg.help},
+        triggers = ${triggers},
+        triggers_blacklist = {
+          ${lib.concatStringsSep ",\n    "
+             (lib.mapAttrsToList
+               (n: v: "${n} = { ${renderList v} }")
+               cfg.triggers.blacklist)}
+        },
+        disable = {
+          buftypes = { ${renderList cfg.disable.buftypes} },
+          filetypes = { ${renderList cfg.disable.filetypes} },
+        },
+      })
 
-        --- Keybindings {{{
-        ${renderedMappings}
-        --- }}}
+      --- Keybindings {{{
+      ${renderedMappings}
+      --- }}}
 
-        --- }}}
-      '';
-    };
+      --- }}}
+    '';
+    
   };
 }

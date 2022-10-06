@@ -5,11 +5,9 @@
     # Profiles
     ./profiles/core.nix
 
-    # Plugins
-    ./plugins/which-keys.nix
-    ./plugins/projects.nix
+    # HM Plugins
     ./plugins/nix-colors.nix
-    ./plugins/neorg.nix
+    # ./plugins/neorg.nix
   ];
 
   home.packages = [
@@ -18,6 +16,15 @@
     pkgs.fzy
   ];
 
-  programs.nixvim.enable = true;
+  # The functional syntax is necessary because of https://github.com/NixOS/nixpkgs/issues/70638
+  programs.nixvim = {...}: {
+    enable = true;
+    imports = [
+      # Nixvim plugins
+      ./plugins/which-keys.nix
+      ./plugins/projects.nix
+      ./plugins/neorg.nix
+    ];
+  };
   # programs.neovim.package = pkgs.neovim-nightly;
 }
