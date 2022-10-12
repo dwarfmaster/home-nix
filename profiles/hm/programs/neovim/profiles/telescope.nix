@@ -42,7 +42,7 @@
             "r" = picker "registers" "Search registers";
           };
           "h".bindings = {
-            "h" = picker "hep_tags" "Search help tags";
+            "h" = picker "help_tags" "Search help tags";
             "c" = picker "commands" "List commands";
             "m" = picker "man_pages" "Search man pages";
             "o" = picker "options" "List options";
