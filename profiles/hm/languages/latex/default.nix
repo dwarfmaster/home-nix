@@ -13,4 +13,13 @@
       lang = [ { mod = "latex"; args = [ "latexmk" "cdlatex" "lsp" ]; } ];
     };
   };
+
+  programs.nixvim = {
+    extraPlugins = [ pkgs.vimPlugins.vimtex ];
+    globals = {
+      vimtex_view_method = "zathura";
+      vimtex_compiler_method = "latexmk";
+      vimtex_compiler_silet = true;
+    };
+  };
 }
