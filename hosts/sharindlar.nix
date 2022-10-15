@@ -1,43 +1,41 @@
+{ config, pkgs, lib, ... }:
 
-  { config, pkgs, lib, ... }:
+{
+  imports = [
+    lib.profiles.core
+    lib.hardware.raspberry-pi-4
+  ] ++ (builtins.attrValues {
+    # Users
+    inherit (lib.profiles.users)
+      root
+      luc-rpi4
+    ;
 
-  {
-    imports = [
-      lib.profiles.core
-      lib.hardware.raspberry-pi-4
-    ] ++ (builtins.attrValues {
-      # Users
-      inherit (lib.profiles.users)
-        root
-        luc
-      ;
+    # Interface
+    inherit (lib.profiles.interface)
+      sound
+      kodi
+    ;
+  });
 
-      # Interface
-      inherit (lib.profiles.interface)
-        xserver
-        sound
-      ;
-    });
+  boot.loader.raspberryPi = {
+    enable = true;
+    version = 4;
+  };
+  system.stateVersion = "21.11";
+  # Enable GPU acceleration
+  hardware.raspberry-pi."4".fkms-3d.enable = true;
 
-    boot.loader.raspberryPi = {
-      enable = true;
-      version = 4;
+  powerManagement.cpuFreqGovernor = "ondemand";
+  fileSystems = {
+    "/" = {
+      device = "/dev/disk/by-label/NIXOS_SD";
+      fsType = "ext4";
+      options = [ "noatime" ];
     };
+  };
 
-    powerManagement.cpuFreqGovernor = "ondemand";
-    fileSystems = {
-      "/" = {
-        device = "/dev/disk/by-label/NIXOS_SD";
-        fsType = "ext4";
-        options = [ "noatime" ];
-      };
-    };
-
-    networking.wireless.enable = false;
-    services.openssh.enable = true;
-
-    # Enable GPU acceleration
-    hardware.raspberry-pi."4".fkms-3d.enable = true;
-
-    system.stateVersion = "21.11";
-  }
+  networking.wireless.enable = false;
+  services.openssh.enable = true;
+  programs.mosh.enable = true;
+}

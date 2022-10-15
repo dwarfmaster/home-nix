@@ -24,7 +24,7 @@
     inherit (lib.profiles.programs)
       #firefox
       #chromium
-      emacs
+      #emacs
       #audio
       #documents
       #drawing
@@ -32,6 +32,8 @@
       #messaging
       #multimedia
       #passwords
+      vim
+      neovim
     ;
 
     # Data
@@ -56,7 +58,7 @@
       #agda
       #idris
       #why3
-      cpp
+      #cpp
       #julia
       #python3
       #haskell
