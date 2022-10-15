@@ -57,6 +57,22 @@
             end
           '';
         };
+        "<Down>" = {
+          modes = [ "i" ];
+          action = ''
+            function(fallback)
+              fallback()
+            end
+          '';
+        };
+        "<Up>" = {
+          modes = [ "i" ];
+          action = ''
+            function(fallback)
+              fallback()
+            end
+          '';
+        };
       };
       # TODO improve format
       formatting = {
