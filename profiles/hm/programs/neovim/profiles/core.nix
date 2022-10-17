@@ -55,7 +55,12 @@ in {
     plugins.surround.enable = true;
 
     # Neorg
-    plugins.neorg.enable = false;
+    plugins.neorg = {
+      enable = true;
+      setup.load = {
+        "core.norg.completion".config.engine = "nvim-cmp";
+      };
+    };
 
 
     #  _____ _                  
