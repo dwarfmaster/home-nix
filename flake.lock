@@ -1292,11 +1292,11 @@
         "nmdSrc": "nmdSrc"
       },
       "locked": {
-        "lastModified": 1665411842,
-        "narHash": "sha256-FPfFkKAOePkEvaOPEiS8wTOwBUy8RnOr89Dy21USrY8=",
+        "lastModified": 1666012164,
+        "narHash": "sha256-B+84ZCredBeo/wBN/CRXt+Z2mdb2O2gWSfqCspnXmgM=",
         "owner": "pta2002",
         "repo": "nixvim",
-        "rev": "4adcb35851573c639510bc5dec18045b011e2deb",
+        "rev": "369b586fa92b8ce243c0677756867aec6467c98b",
         "type": "github"
       },
       "original": {
