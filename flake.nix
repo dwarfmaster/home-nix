@@ -116,8 +116,8 @@
       # After this point there is no configuration, only plumbing
       inherit (builtins) attrNames attrValues;
       inherit (nixos) lib;
-      utils = import ./lib/utils.nix { inherit lib; };
-      inherit (utils) pathsToImportedAttrs readVisible importProfiles;
+      localLib = import ./lib { inherit lib; };
+      inherit (localLib.utils) pathsToImportedAttrs readVisible importProfiles;
       eachSupportedSystem = f: builtins.listToAttrs
         (map (system: lib.nameValuePair system (f system)) supportedSystems);
 
@@ -145,7 +145,8 @@
           config = { allowUnfree = false; };
           overlays = [ (self: super: pkgs-variants system) ];
         };
-        inherit lib utils;
+        inherit lib;
+        inherit (localLib) utils;
       };
 
       pkgs = system: import nixos {
@@ -159,8 +160,10 @@
                 (final: prev: {
                   currentSystem = system;
                   profiles = hmProfiles;
-                } // finalLib);
+                }
+                // finalLib);
             })
+            (self: super: { local = localLib; })
             (self: super: packages system)
           ];
       };
