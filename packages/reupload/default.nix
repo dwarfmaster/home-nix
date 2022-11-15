@@ -7,6 +7,7 @@ writeScriptBin "reupload" ''
   fi
 
   ${curl}/bin/curl 'http://10.11.99.1/upload' -H 'Origin: http://10.11.99.1' -H 'Accept: */*' \
-    -H 'Referrer: http://10.11.99.1/' -H 'Connection: keep-alive'                 \
-    -F "file=@$1;filename=$1;type=application/pdf"
-  ''
+    -H 'Referrer: http://10.11.99.1/' -H 'Connection: keep-alive'                             \
+    -F "file=@$1;filename=$1;type=application/pdf"                                            \
+    --progress-bar | tee
+''
