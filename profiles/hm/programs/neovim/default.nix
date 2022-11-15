@@ -22,7 +22,6 @@
     imports = [
       # Nixvim plugins
       ./plugins/which-keys.nix
-      ./plugins/projects.nix
       ./plugins/neorg.nix
     ];
   };

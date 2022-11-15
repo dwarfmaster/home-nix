@@ -4,9 +4,10 @@
   programs.nixvim = {
     plugins.project-nvim = {
       enable = true;
-      silent = false;
+      silentChdir = false;
     };
+    plugins.telescope.extensions.project-nvim.enable = true;
     plugins.which-key.bindings.n."<leader>".subs."f".bindings."p" =
-      { cmd = "Telescope projects"; description = "Select project"; };
+      { lua = "require('telescope').extensions.projects.projects{}"; description = "Select project"; };
   };
 }
