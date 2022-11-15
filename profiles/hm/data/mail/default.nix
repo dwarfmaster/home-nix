@@ -30,7 +30,7 @@ in {
     hooks = {
       postNew = "${pkgs.afew}/bin/afew --tag --new";
       preNew = ''
-        ${pkgs.getmail6}/bin/getmail --rcfile getmailinria --rcfile getmailmailoo --rcfile getmaillsv
+        ${pkgs.getmail6}/bin/getmail --rcfile getmailinria --rcfile getmailmailoo --rcfile getmaillsv --rcfile getmailuniversite-paris-saclay
       '';
     };
   };
@@ -190,6 +190,35 @@ in {
           enable = true;
           useStartTls = true;
         };
+      };
+
+      getmail = {
+        enable = true;
+        delete = true;
+        readAll = true;
+        mailboxes = [ "Inbox" ];
+      };
+    };
+
+    "universite-paris-saclay" = {
+      address = "luc.chabassier@universite-paris-saclay.fr";
+      inherit realName maildir;
+      userName = "luc.chabassier";
+      passwordCommand = "pass school/these/universite-paris-saclay/luc.chabassier";
+      astroid.enable = true;
+      astroid.sendMailCommand = "${pkgs.msmtp}/bin/msmtp --read-envelope-from --read-recipients --account universite-paris-saclay";
+
+      imap = {
+        host = "hermes.universite-paris-saclay.fr";
+        port = 993;
+        tls.enable = true;
+      };
+
+      msmtp.enable = true;
+      smtp = {
+        host = "smtps.universite-paris-saclay.fr";
+        port = 465;
+        tls.enable = true;
       };
 
       getmail = {
