@@ -8,7 +8,7 @@ in {
   # Misc
   home = {
     sessionVariables = {
-      EDITOR       = "vim";
+      EDITOR       = "nvim";
       DIRSTACKSIZE = 16;
       NIX_SSHOPTS  = "-t";
       MANPAGER     = "sh -c 'col -bx | ${bat} -l man -p'";
