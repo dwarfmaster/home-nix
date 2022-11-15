@@ -75,6 +75,7 @@
       nix
       ocaml
       python3
+      rust
       tools
       why3
     ;
