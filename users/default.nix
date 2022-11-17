@@ -20,6 +20,10 @@ let
       username = "luc";
       config   = mkConfig ./luc-rpi4.nix;
     };
+    luc-persist = {
+      username = "luc";
+      config   = mkConfig ./luc-persist.nix;
+    };
   };
 
   mkHm = name: config:

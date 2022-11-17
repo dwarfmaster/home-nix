@@ -19,6 +19,7 @@
       flake-utils.url = "github:numtide/flake-utils";
       nixos-hardware.url = "github:NixOS/nixos-hardware";
 
+      impermanence.url = "github:nix-community/impermanence";
       simple-mailserver = {
         url = "gitlab:simple-nixos-mailserver/nixos-mailserver/nixos-22.05";
         inputs.nixpkgs.follows = "unstable";
@@ -67,7 +68,7 @@
     };
 
   outputs = inputs@{ self, home, nixos, master, unstable, wayland, nur, flake-utils,
-                     nixos-hardware, simple-mailserver, django, imacs, colors,
+                     nixos-hardware, impermanence, simple-mailserver, django, imacs, colors,
                      lean4, opam2nix, emacs-overlay, nix-doom-emacs, neovim-nightly, nixvim, neorg,
                      nix-autobahn, arkenfox }:
     let
@@ -90,6 +91,7 @@
         mailserver   = simple-mailserver.nixosModules.mailserver;
         home-manager = home.nixosModules.home-manager;
         imacs        = imacs.nixosModules.imacs;
+        impermanence = impermanence.nixosModule;
       };
       # HM Modules to be made available to profiles
       finalHMModules = system: self.hmModules // {
@@ -98,6 +100,8 @@
         arkenfox       = arkenfox.hmModules.default;
         nixvim         = nixvim.homeManagerModules.nixvim;
         colors         = colors.homeManagerModules.colorScheme;
+        # Use only if user config managed by nixos
+        impermanence   = impermanence.nixosModules.home-manager.impermanence;
       };
       # All attributes to add to lib
       finalLib = self.lib // {

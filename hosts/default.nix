@@ -51,6 +51,7 @@ let
 
 in {
   tungdil    = mkHost "tungdil"    "x86_64-linux";
+  duna       = mkHost "duna"       "x86_64-linux";
   vraccas    = mkHost "vraccas"    "x86_64-linux";
   sharindlar = mkHost "sharindlar" "aarch64-linux";
 }

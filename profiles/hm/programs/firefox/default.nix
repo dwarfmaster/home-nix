@@ -134,7 +134,7 @@ in {
       # Interface
       inherit (pkgs.nur.repos.rycee.firefox-addons)
         darkreader
-        vim-vixen
+        # vim-vixen
         i-dont-care-about-cookies # Prevent most cookies popups
         reddit-enhancement-suite # Improve reddit browsing exprerience
       ;
@@ -145,7 +145,7 @@ in {
       # Interaction with the system
       inherit (pkgs.nur.repos.rycee.firefox-addons)
         org-capture
-        keepassxc-browser
+        # keepassxc-browser
         # wallabagger
       ;
     };
@@ -170,4 +170,6 @@ in {
     pkgs.nyxt # Minimalistic browser (replace firefox ?)
   ];
   applications.browser = "${launcher}/bin/firefox-launcher";
+
+  # Save profiles
 }
