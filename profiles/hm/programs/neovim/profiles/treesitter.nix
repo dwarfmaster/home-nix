@@ -4,7 +4,7 @@
   programs.nixvim = {
     plugins.treesitter = {
       enable = true;
-      nixGrammars = false; # TODO
+      nixGrammars = true;
       ensureInstalled = "all";
       incrementalSelection.enable = true;
       indent = true;

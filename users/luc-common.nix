@@ -19,6 +19,7 @@
         fzf
         git
         vim
+        neovim
       ;
     };
 

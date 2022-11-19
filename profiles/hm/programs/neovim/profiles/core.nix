@@ -56,7 +56,7 @@ in {
 
     # Neorg
     plugins.neorg = {
-      enable = true;
+      enable = false;
       setup.load = {
         "core.norg.completion".config.engine = "nvim-cmp";
       };

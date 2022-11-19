@@ -76,7 +76,7 @@
       finalOverlays = self.overlays // {
         nur = nur.overlay;
         arkenfox = arkenfox.overlay;
-        neorg = neorg.overlay;
+        # neorg = neorg.overlays.default;
         # wayland = wayland.overlay;
         packages = re: super: {
           lean4 = lean4.defaultPackage.x86_64-linux;
