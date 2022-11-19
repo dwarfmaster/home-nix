@@ -5,4 +5,6 @@
     ./env
     ./shells
   ];
+
+  home.stateVersion = "21.11";
 }
