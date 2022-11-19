@@ -39,14 +39,12 @@
       ".config/discord"
       ".local/share/xorg"
       ".local/share/signal-cli"
+      ".local/share/zsh"
+      ".cache/bash"
     ];
     files = [
-      ".bash_history"
       ".zdirs"
-      ".zsh_history"
       ".ghc/ghci_history"
-      ".xorg.log"
-      ".xorg.log.old"
     ];
   };
 
