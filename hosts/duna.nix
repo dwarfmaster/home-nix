@@ -41,7 +41,6 @@
     initrd = {
         availableKernelModules = [ "xhci_pci" "thunderbolt" "vmd" "nvme" "usb_storage" "sd_mod" ];
         kernelModules = [ ];
-        luks.devices."data".device = "/dev/disk/by-uuid/b26108e1-3105-4f6b-bffc-eaada861ce62";
     };
     kernelModules = [ "kvm-intel" "acpi_call" ];
     extraModulePackages = [ config.boot.kernelPackages.acpi_call ];
@@ -109,6 +108,12 @@
     "/persists" = {
       device = "/dev/disk/by-uuid/4df4fca6-7c81-4848-bf1a-9c422a95e3ac";
       fsType = "btrfs";
+      neededForBoot = true;
+      encrypted = {
+        enable = true;
+        label = "data";
+        blkDev = "/dev/disk/by-uuid/b26108e1-3105-4f6b-bffc-eaada861ce62";
+      };
     };
   };
   swapDevices = [ ];
