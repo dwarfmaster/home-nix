@@ -28,7 +28,8 @@
       ".mozilla/firefox/Shopping"
       ".mozilla/firefox/Secure"
       # Neovim
-      ".local/state/nvim"
+      ".local/share/nvim"
+      ".cache/nvim"
       # Misc software
       ".opam"
       ".cargo"
@@ -41,6 +42,8 @@
       ".local/share/signal-cli"
       ".local/share/zsh"
       ".cache/bash"
+      ".local/share/Nextcloud"
+      ".config/Nextcloud"
     ];
     files = [
       ".zdirs"

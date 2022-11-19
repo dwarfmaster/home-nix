@@ -70,6 +70,8 @@
       "/var/log"
       # Systemd specific
       "/var/lib/systemd/coredump"
+      # Network manager connections
+      "/etc/NetworkManager/system-connections"
     ];
     files = [
       # Systemd specific
