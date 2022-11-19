@@ -89,6 +89,12 @@
       options = [ "defaults" "size=16G" "mode=755" ];
     };
 
+    "/home/luc" = {
+      device = "none";
+      fsType = "tmpfs";
+      options = [ "defaults" "size=4G" "mode=777" ];
+    };
+
     "/boot" = {
       device = "/dev/disk/by-uuid/CC82-9206";
       fsType = "vfat";
