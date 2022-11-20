@@ -1,4 +1,5 @@
 
+set runtimepath^={{extraRtp}}
 
 "  __  __ _          
 " |  \/  (_)___  ___ 
@@ -26,12 +27,22 @@ set hidden                              " Can open new buffer while the current 
 let mapleader=' '                       " Leader key is space
 let maplocalleader=','                  " Local leader is ,
 
+
+
+"   ____      _                     _                         
+"  / ___|___ | | ___  _ __ ___  ___| |__   ___ _ __ ___   ___ 
+" | |   / _ \| |/ _ \| '__/ __|/ __| '_ \ / _ \ '_ ` _ \ / _ \
+" | |__| (_) | | (_) | |  \__ \ (__| | | |  __/ | | | | |  __/
+"  \____\___/|_|\___/|_|  |___/\___|_| |_|\___|_| |_| |_|\___|
+"                                                             
 let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
 let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 set termguicolors
 let base16colorspace=256
-colorscheme base16-woodland             " Set the colorscheme, make the background option useless
-
+colorscheme {{colorscheme}}            " Set the colorscheme, make the background option useless
+let g:lightline = {
+    \ 'colorscheme': 'base16',
+    \ }
 
 "  ____                      _     
 " / ___|  ___  __ _ _ __ ___| |__  
@@ -66,77 +77,8 @@ set showbreak=+++ " Prefix long line return with
 " |  _| | | |  __/ |_| |_| | |_) |  __/\__ \
 " |_|   |_|_|\___|\__|\__, | .__/ \___||___/
 "                     |___/|_|              
-" Prevent polyglot from handling files it shouldn't
-let g:polyglot_disabled = [ 'markdown' ]
 " Arduino files
 au BufNewFile,BufRead *.pde setfiletype cpp
 au BufNewFile,BufRead *.ino setfiletype cpp
 
-" Coq files
-au BufNewFile,BufRead *.coq call coquille#FNMapping()
 
-"  ____              _             
-" / ___| _   _ _ __ | |_ __ ___  __
-" \___ \| | | | '_ \| __/ _` \ \/ /
-"  ___) | |_| | | | | || (_| |>  < 
-" |____/ \__, |_| |_|\__\__,_/_/\_\
-"        |___/                     
-setlocal spell spelllang=fr,en " Syntax check
-set nospell                    " Disabled by default
-
-
-"  ____             ____ _ _       _                         _ 
-" / ___| _   _ ___ / ___| (_)_ __ | |__   ___   __ _ _ __ __| |
-" \___ \| | | / __| |   | | | '_ \| '_ \ / _ \ / _` | '__/ _` |
-"  ___) | |_| \__ \ |___| | | |_) | |_) | (_) | (_| | | | (_| |
-" |____/ \__, |___/\____|_|_| .__/|_.__/ \___/ \__,_|_|  \__,_|
-"        |___/              |_|                                
-vmap <C-y> :!xclip -f <CR>
-map  <C-p> :r!xclip -o<CR>
-
-
-"  ____  _             _           
-" |  _ \| |_   _  __ _(_)_ __  ___ 
-" | |_) | | | | |/ _` | | '_ \/ __|
-" |  __/| | |_| | (_| | | | | \__ \
-" |_|   |_|\__,_|\__, |_|_| |_|___/
-"                |___/             
-               
-
-"  _    _      _   _   _ _          
-" | |  (_)__ _| |_| |_| (_)_ _  ___ 
-" | |__| / _` | ' \  _| | | ' \/ -_)
-" |____|_\__, |_||_\__|_|_|_||_\___|
-"        |___/                      
-" TODO find a way to make base16_* schemes work
-let g:lightline = {
-    \ 'colorscheme': 'solarized',
-    \ }
-
-
-"  ___ _______ 
-" | __|_  / __|
-" | _| / /| _| 
-" |_| /___|_|  
-"              
-" See https://github.com/junegunn/fzf.vim for all available actions
-" Find git-ed files in repo
-nmap <Leader>f :GFiles<CR>
-" Find files in repo
-nmap <Leader>F :Files<CR>
-" Find open buffer
-nmap <Leader>b :Buffers<CR>
-" Find files in the history of files
-nmap <Leader>h :History<CR>
-" Find a tag in the current buffer
-nmap <Leader>t :BTags<CR>
-" Find a tag in the repo (needs a tag file)
-nmap <Leader>T :Tags<CR>
-" Find a line in the current buffer
-nmap <Leader>l :BLines<CR>
-" Find a line in any open buffer
-nmap <Leader>L :Lines<CR>
-" Find a marked line
-nmap <Leader>m :Marks<CR>
-" COC diagnostics
-nmap <Leader>d :call GetFzfDiags()<CR>
