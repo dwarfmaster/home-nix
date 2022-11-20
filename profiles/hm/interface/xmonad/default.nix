@@ -1,6 +1,5 @@
 { config, lib, pkgs, ... }:
 
-# TODO adapt to base16 theme
 let
 
   xmonad = pkgs.xmonad-with-packages.override {
@@ -9,12 +8,13 @@ let
     };
   };
 
-  xmobarrc = pkgs.substituteAll {
-    src = ./xmobarrc;
-    inherit (config.colorScheme.colors)
-      base00 base01 base02 base03 base04 base05 base06 base07
-      base08 base09 base0A base0B base0C base0D base0E base0F;
-  };
+  xmobarrc = lib.mustache.render pkgs "xmobarrc" ./xmobarrc (config.colorScheme.colors // {
+    cores = lib.concatMapStringsSep "-" (id: "<core${toString id}>")
+      (lib.range 0 (config.hardware.specs.cores - 1));
+    cpus = lib.concatMapStringsSep "-" (id: "<total${toString id}>")
+      (lib.range 0 (config.hardware.specs.threads - 1));
+    notify-send = "${pkgs.libnotify}/bin/notify-send";
+  });
 
   xmonad-compiled =
     pkgs.writers.writeHaskell
@@ -52,4 +52,5 @@ let
 
 in {
   xsession.windowManager.command = "${xmonad-compiled}";
+  home.file."xmobarrc".source = "${xmobarrc}";
 }
