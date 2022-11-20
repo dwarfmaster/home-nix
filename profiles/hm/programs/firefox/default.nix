@@ -115,7 +115,7 @@ in {
     enable = true;
     arkenfox = {
       enable = true;
-      version = "105.0";
+      version = "107.0";
     };
     # Need to be manually enabled when first launching a new profile
     # To do so, go to about:addons
