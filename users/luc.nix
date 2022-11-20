@@ -80,4 +80,9 @@
       why3
     ;
   });
+
+  hardware.specs = {
+    cores = lib.mkDefault 6;
+    threads = lib.mkDefault 12;
+  };
 }

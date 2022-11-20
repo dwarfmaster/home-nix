@@ -22,6 +22,10 @@
     enable = true;
     version = 4;
   };
+  hardware.specs = {
+    cores = 4;
+    threads = 8;
+  };
   system.stateVersion = "21.11";
   # Enable GPU acceleration
   hardware.raspberry-pi."4".fkms-3d.enable = true;

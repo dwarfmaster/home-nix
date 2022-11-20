@@ -4,6 +4,7 @@
   nix = {
     package = pkgs.nixFlakes;
     systemFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];
+    maxJobs = config.hardware.specs.threads;
 
     useSandbox = true;
     autoOptimiseStore = true;

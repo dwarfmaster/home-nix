@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ lib, config, ... }:
 {
   imports = [
     ../luc-common
@@ -8,5 +8,12 @@
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDePPhrDtSu9mtHKdCgMDEGuWak40+a2r2IfW+mzUEeV luc@tungdil"
   ];
 
-  home-manager.users.luc.imports = [ lib.hmConfigurations.luc-rpi4 ];
+  home-manager.users.luc = {
+    imports = [ lib.hmConfigurations.luc-rpi4 ];
+
+    hardware.specs = {
+      cores = config.hardware.specs.cores;
+      threads = config.hardware.specs.threads;
+    };
+  };
 }

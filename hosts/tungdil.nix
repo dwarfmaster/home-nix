@@ -46,10 +46,15 @@
     extraModulePackages = [ ];
     cleanTmpDir = true;
   };
-  hardware.enableRedistributableFirmware = true;
+  hardware = {
+    specs = {
+      cores = 6;
+      threads = 12;
+    };
+    enableRedistributableFirmware = true;
+  };
 
-  nix.maxJobs = lib.mkDefault 12;
-  powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
+  powerManagement.cpuFreqGovernor = "powersave";
 
   systemd.extraConfig = ''
     DefaultTimeoutStopSec = 10s

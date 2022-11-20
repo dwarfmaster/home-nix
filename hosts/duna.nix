@@ -48,11 +48,14 @@
     cleanTmpDir = false;
   };
 
-  nix.maxJobs = 8;
   powerManagement.cpuFreqGovernor = "powersave";
 
   # Hardware
   hardware = {
+    specs = {
+      cores = 4;
+      threads = 8;
+    };
     acpilight.enable = true;
     enableRedistributableFirmware = true;
     cpu.intel.updateMicrocode = config.hardware.enableRedistributableFirmware;

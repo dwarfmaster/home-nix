@@ -49,9 +49,12 @@
     };
   };
   system.stateVersion = "21.05";
+  hardware.specs = {
+    cores = 4;
+    threads = 8;
+  };
 
-  nix.maxJobs = lib.mkDefault 8;
-  powerManagement.cpuFreqGovernor = lib.mkDefault "ondemand";
+  powerManagement.cpuFreqGovernor = "ondemand";
 
   # Filesystems
   environment.systemPackages = with pkgs; [
