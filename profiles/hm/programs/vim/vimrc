@@ -13,7 +13,6 @@ set exrc                                " Allow project local .vimrc files
 set modeline                            " Read vim commands integrated in files
 set secure                              " Restrict commands in project-local vimrc
 set encoding=utf-8                      " Default text encoding
-set cursorline                          " Highlight the current line
 set noshowmode                          " Don't show the current mode, already show by lightline
 set ttyfast                             " Make scrolling smoother
 set backspace=indent,eol,start          " What can be remove by backspace
@@ -24,9 +23,14 @@ set listchars+=nbsp:~,tab:>.            " Show unbreakable spaces in list mode
 set completeopt=longest,menuone,preview " Completing window option
 set guicursor=                          " Disable cursor change in insert mode
 set hidden                              " Can open new buffer while the current one is not saved
-colorscheme base16-woodland             " Set the colorscheme, make the background option useless
 let mapleader=' '                       " Leader key is space
 let maplocalleader=','                  " Local leader is ,
+
+let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+set termguicolors
+let base16colorspace=256
+colorscheme base16-woodland             " Set the colorscheme, make the background option useless
 
 
 "  ____                      _     
