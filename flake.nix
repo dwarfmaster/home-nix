@@ -192,8 +192,6 @@
           overlayPaths = map fullPath (attrNames (readVisible overlayDir));
         in pathsToImportedAttrs overlayPaths;
 
-      legacyPackages = eachSupportedSystem pkgs;
-
       nixosModules =
         let
           modulesDir = ./modules/nixos;
