@@ -3,6 +3,7 @@
 , self
 , finalOverlays
 , finalModules
+, finalHMModules
 }:
 let
   inherit (lib) types utils;
@@ -18,6 +19,7 @@ let
 
         home-manager.useGlobalPkgs = true;
         home-manager.useUserPackages = true;
+        home-manager.sharedModules = builtins.attrValues (finalHMModules system);
 
         networking.hostName = hostName;
         nix.nixPath = let path = toString ../.; in

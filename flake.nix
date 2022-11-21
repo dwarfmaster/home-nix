@@ -100,7 +100,6 @@
         arkenfox       = arkenfox.hmModules.default;
         nixvim         = nixvim.homeManagerModules.nixvim;
         colors         = colors.homeManagerModules.colorScheme;
-        # Use only if user config managed by nixos
         impermanence   = impermanence.nixosModules.home-manager.impermanence;
       };
       # All attributes to add to lib
@@ -176,17 +175,10 @@
         nurpkgs = pkgImport system false nixos;
       };
 
-      hmConfigurations =
-        system: import ./users {
-          finalHMModules = finalHMModules system;
-          pkgs = pkgs system;
-          inherit (home.lib) homeManagerConfiguration;
-        };
-
       hosts =
         import ./hosts ({
           inherit self pkgs lib;
-          inherit finalOverlays finalModules;
+          inherit finalOverlays finalModules finalHMModules;
         });
 
     in {
@@ -223,12 +215,9 @@
         in lib.nixosSystem {
           inherit (config) system modules;
           lib = plib.extend (final: prev: {
-            hmConfigurations = (hmConfigurations config.system).configurations;
             profiles = nixosProfiles;
+            hm = hmProfiles;
           });
         }) hosts;
-
-      hmConfigurations = eachSupportedSystem (system:
-        builtins.removeAttrs (hmConfigurations system) [ "configurations" ]);
     };
 }

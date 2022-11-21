@@ -1,5 +1,0 @@
-{
-  imports = [
-    ./luc-common.nix
-  ];
-}

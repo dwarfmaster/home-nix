@@ -9,7 +9,7 @@
   ];
 
   home-manager.users.luc = {
-    imports = [ lib.hmConfigurations.luc-rpi4 ];
+    imports = [ ];
 
     hardware.specs = {
       cores = config.hardware.specs.cores;
