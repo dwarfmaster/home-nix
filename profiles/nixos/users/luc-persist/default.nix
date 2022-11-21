@@ -5,11 +5,6 @@
   ];
 
   home-manager.users.luc = {
-    hardware.specs = {
-      cores = config.hardware.specs.cores;
-      threads = config.hardware.specs.threads;
-    };
-
     home.persistence."/persists/luc" = {
       allowOther = true;
       directories = [

@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, nixosConfig, lib, pkgs, ... }:
 
 let
 
@@ -10,9 +10,9 @@ let
 
   xmobarrc = lib.mustache.render pkgs "xmobarrc" ./xmobarrc (config.colorScheme.colors // {
     cores = lib.concatMapStringsSep "-" (id: "<core${toString id}>")
-      (lib.range 0 (config.hardware.specs.cores - 1));
+      (lib.range 0 (nixosConfig.hardware.specs.cores - 1));
     cpus = lib.concatMapStringsSep "-" (id: "<total${toString id}>")
-      (lib.range 0 (config.hardware.specs.threads - 1));
+      (lib.range 0 (nixosConfig.hardware.specs.threads - 1));
     notify-send = "${pkgs.libnotify}/bin/notify-send";
   });
 

@@ -1,7 +1,21 @@
-args:
+{ lib, config, ... }:
 
 let
-  options = import ../../common/specs args;
+  inherit (lib) types;
 in {
-  inherit options;
+  options = {
+    hardware.specs = {
+      cores = lib.mkOption {
+        description = "Number of physical cores available";
+        type = types.int;
+        default = 4;
+      };
+
+      threads = lib.mkOption {
+        description = "Number of threads available";
+        type = types.int;
+        default = config.hardware.specs.cores * 2;
+      };
+    };
+  };
 }
