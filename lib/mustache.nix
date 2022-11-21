@@ -1,9 +1,9 @@
-{ lib, ... }:
+{ lib, pkgs, ... }:
 
 # Inspired by:
 # https://pablo.tools/blog/computers/nix-mustache-templates/
 {
-  render = pkgs: name: template: vars:
+  render = name: template: vars:
     let
       json = pkgs.writeText "${name}.json" (builtins.toJSON vars);
     in pkgs.runCommandLocal name {} ''

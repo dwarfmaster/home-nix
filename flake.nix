@@ -88,6 +88,7 @@
       };
       # Modules to be made available to hosts config
       finalModules = self.nixosModules // {
+        inherit libModule;
         mailserver   = simple-mailserver.nixosModules.mailserver;
         home-manager = home.nixosModules.home-manager;
         imacs        = imacs.nixosModules.imacs;
@@ -95,6 +96,7 @@
       };
       # HM Modules to be made available to profiles
       finalHMModules = system: self.hmModules // {
+        inherit libModule;
         rycee-base16   = (nur-no-pkgs system).repos.rycee.hmModules.theme-base16;
         nix-doom-emacs = nix-doom-emacs.hmModule;
         arkenfox       = arkenfox.hmModules.default;
@@ -102,8 +104,8 @@
         colors         = colors.homeManagerModules.colorScheme;
         impermanence   = impermanence.nixosModules.home-manager.impermanence;
       };
-      # All attributes to add to lib
-      finalLib = self.lib // {
+      # All attributes to add to lib in modules
+      extraLib = {
         hardware   = nixos-hardware.nixosModules;
         system     = flake-utils.lib.system;
         allSystems = flake-utils.lib.allSystems;
@@ -119,8 +121,8 @@
       # After this point there is no configuration, only plumbing
       inherit (builtins) attrNames attrValues;
       inherit (nixos) lib;
-      localLib = import ./lib { inherit lib; };
-      inherit (localLib.utils) pathsToImportedAttrs readVisible importProfiles;
+      utils = import ./utils.nix { inherit lib; };
+      inherit (utils) pathsToImportedAttrs readVisible importProfiles;
       eachSupportedSystem = f: builtins.listToAttrs
         (map (system: lib.nameValuePair system (f system)) supportedSystems);
 
@@ -149,7 +151,7 @@
           overlays = [ (self: super: pkgs-variants system) ];
         };
         inherit lib;
-        inherit (localLib) utils;
+        inherit utils;
       };
 
       pkgs = system: import nixos {
@@ -158,21 +160,18 @@
         overlays =
           attrValues finalOverlays ++ [
             (self: super: pkgs-variants system)
-            (self: super: {
-              lib = super.lib.extend
-                (final: prev: {
-                  currentSystem = system;
-                  profiles = hmProfiles;
-                }
-                // finalLib);
-            })
-            (self: super: { local = localLib; })
             (self: super: packages system)
           ];
       };
 
       nur-no-pkgs = system: import nur {
         nurpkgs = pkgImport system false nixos;
+      };
+
+      libModule = { pkgs, lib, ... }@args: {
+        lib = utils.recImport { dir = ./lib; _import = base: import "${./lib}/${base}.nix" args; } // {
+          inherit utils;
+        };
       };
 
       hosts =
@@ -184,7 +183,7 @@
     in {
       packages = eachSupportedSystem packages;
 
-      lib = import ./lib { inherit lib pkgs; };
+      lib = import ./utils.nix { inherit lib; };
 
       overlays =
         let

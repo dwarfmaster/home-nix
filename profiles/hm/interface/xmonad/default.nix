@@ -8,7 +8,7 @@ let
     };
   };
 
-  xmobarrc = lib.mustache.render pkgs "xmobarrc" ./xmobarrc (config.colorScheme.colors // {
+  xmobarrc = config.lib.mustache.render "xmobarrc" ./xmobarrc (config.colorScheme.colors // {
     cores = lib.concatMapStringsSep "-" (id: "<core${toString id}>")
       (lib.range 0 (nixosConfig.hardware.specs.cores - 1));
     cpus = lib.concatMapStringsSep "-" (id: "<total${toString id}>")

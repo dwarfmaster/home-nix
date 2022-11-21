@@ -14,12 +14,12 @@ let
     lib.mapAttrs' (name: v: lib.nameValuePair "${name}-hex" v) theme.colors;
   schemeName = "base16-${theme.slug}";
   colorscheme =
-    lib.mustache.render pkgs "${schemeName}.vim" template
+    config.lib.mustache.render "${schemeName}.vim" template
       (colors // {
         scheme-slug = theme.slug;
       });
 
-  lightline-theme = lib.mustache.render pkgs "base16.vim" ./lightline.vim theme.colors;
+  lightline-theme = config.lib.mustache.render "base16.vim" ./lightline.vim theme.colors;
 
   rtp = pkgs.runCommandLocal "vim" {} ''
     mkdir -p $out
@@ -29,7 +29,7 @@ let
     ln -s ${lightline-theme} $out/autoload/lightline/colorscheme/base16.vim
   '';
 
-  vimrc = lib.mustache.render pkgs "vimrc" ./vimrc {
+  vimrc = config.lib.mustache.render "vimrc" ./vimrc {
     extraRtp = "${rtp}";
     colorscheme = schemeName;
   };

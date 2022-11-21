@@ -3,7 +3,7 @@
 let
   inherit (pkgs) unfree;
   inherit (lib) mapAttrs' nameValuePair concatMapStrings;
-  inherit (lib.utils) foldOverAttrs attrNameValuePairs;
+  inherit (config.lib.utils) foldOverAttrs attrNameValuePairs;
 
   colors = config.theme.base16.colors;
   icons = "${pkgs.numix-icon-theme}/share/icons/Numix/scalable";
