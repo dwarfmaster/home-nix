@@ -1,28 +1,21 @@
 { config, lib, pkgs, ... }:
 
 {
-  imports = [
-    lib.profiles.core
-  ] ++ (builtins.attrValues {
-    # Users
-    inherit (lib.profiles.users)
-      root
-      luc-persist
-    ;
-
-    # System
-    inherit (lib.profiles.system)
-      network
-      printing
-    ;
-
-    # Interface
-    inherit (lib.profiles.interface)
-      xserver
-      graphical
-      sound
-    ;
-  });
+  profiles = {
+    users = {
+      root.enable = true;
+      luc-persist.enable = true;
+    };
+    system = {
+      network.enable = true;
+      printing.enable = true;
+    };
+    interface = {
+      xserver.enable = true;
+      graphical.enable = true;
+      sound.enable = true;
+    };
+  };
 
   system.stateVersion = "22.05";
 

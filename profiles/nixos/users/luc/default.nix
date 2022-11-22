@@ -6,84 +6,77 @@
   ];
 
   home-manager.users.luc = {
-    imports = builtins.attrValues {
-      # System
-      inherit (lib.hm.system)
-        android
-        direnv
-        encryption
-        xdg
-        templates
-        network
-      ;
+    profiles = {
+      system = {
+        android.enable = true;
+        direnv.enable = true;
+        encryption.enable = true;
+        xdg.enable = true;
+        templates.enable = true;
+        network.enable = true;
+      };
 
+      interface = {
+        x11.enable = true;
+        xmonad.enable = true;
+        visualisation.enable = true;
+        locking.enable = true;
+        brightness.enable = true;
+      };
 
-      # Interface
-      inherit (lib.hm.interface)
-        x11
-        xmonad
-        visualisation
-        locking
-        brightness
-      ;
+      programs = {
+        firefox.enable = true;
+        emacs.enable = true;
+        audio.enable = true;
+        blender.enable = true;
+        documents.enable = true;
+        drawing.enable = false;
+        engineering.enable = false;
+        git-annex.enable = true;
+        maps.enable = true;
+        messaging.enable = true;
+        multimedia.enable = true;
+        neovim.enable = true;
+        passwords.enable = true;
+        games.enable = true;
+        cheat.enable = true;
+        vim.enable = true;
+      };
 
+      data = {
+        mail.enable = true;
+        photos.enable = true;
+        music.enable = true;
+        book.enable = true;
+        papers.enable = true;
+        accounting.enable = true;
+        feeds.enable = true;
+        wiki.enable = true;
+        calendar.enable = true;
+        nextcloud.enable = true;
+        contacts.enable = true;
+      };
 
-      # Programs
-      inherit (lib.hm.programs)
-        firefox
-        emacs
-        audio
-        blender
-        documents
-        # drawing
-        # engineering
-        git-annex
-        maps
-        messaging
-        multimedia
-        neovim
-        passwords
-        games
-        cheat
-        vim
-      ;
-
-      # Data
-      inherit (lib.hm.data)
-        mail
-        photos
-        music
-        book
-        papers
-        accounting
-        feeds
-        wiki
-        calendar
-        nextcloud
-        contacts
-      ;
-
-      # Languages
-      inherit (lib.hm.languages)
-        agda
-        andromeda
-        coq
-        cpp
-        dedukti
-        haskell
-        idris
-        java
-        julia
-        latex
-        lean
-        lua
-        nix
-        ocaml
-        python3
-        rust
-        tools
-        why3
-      ;
+      languages = {
+        agda.enable = true;
+        andromeda.enable = true;
+        coq.enable = true;
+        cpp.enable = true;
+        dedukti.enable = true;
+        haskell.enable = true;
+        idris.enable = true;
+        java.enable = true;
+        julia.enable = true;
+        latex.enable = true;
+        lean.enable = true;
+        lua.enable = true;
+        nix.enable = true;
+        ocaml.enable = true;
+        python3.enable = true;
+        rust.enable = true;
+        tools.enable = true;
+        why3.enable = true;
+      };
     };
   };
 }

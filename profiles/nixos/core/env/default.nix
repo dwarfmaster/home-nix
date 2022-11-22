@@ -1,6 +1,11 @@
-{ system, config, lib, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
-{
+let
+  system =
+    if config.nixpkgs.crossSystem ? system
+      then config.nixpkgs.crossSystem.system
+      else config.nixpkgs.localSystem.system;
+in {
   environment.systemPackages = with pkgs; [
     binutils
     coreutils

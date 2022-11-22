@@ -15,23 +15,30 @@ let
   # Generate an attribute set by mapping a function over a list of values.
   genAttrs' = values: f: listToAttrs (map f values);
 
-  importProfiles' = dir: content:
-    let
-      r =
-        mapFilterAttrs
-          (_: v: v != null)
-          (n: v:
-            if v == "directory"
-            then nameValuePair n (importProfiles "${dir}/${n}")
-            else nameValuePair "" null)
-          content;
-    in (if r ? "default" then r.default else r);
+  importProfilesDir = path: dir: content:
+    mapAttrsToList (n: v: importProfilesRec (path ++ [n]) "${dir}/${n}") content;
 
-  importProfiles = dir:
+  importProfilesRec = path: dir:
     let content = readDir dir;
     in if content ? "default.nix"
-       then import "${dir}"
-       else importProfiles' dir content;
+       then wrapProfile path (import "${dir}")
+       else importProfilesDir path dir content;
+
+  importProfiles = dir: lib.flatten (importProfilesRec [] dir);
+
+  wrapProfile = path: profile: { lib, pkgs, config, nixosConfig, ... }@args: let
+    prf = profile args;
+    cfg = builtins.removeAttrs prf [ "imports" ];
+    imports = if prf ? "imports" then prf.imports else [ ];
+  in {
+    inherit imports;
+
+    options.profiles = lib.setAttrByPath path {
+      enable = lib.mkEnableOption "Enable profile ${lib.concatMapStrings "/" path}";
+    };
+
+    config = lib.mkIf (lib.attrByPath path { enable = false; } config.profiles).enable cfg;
+  };
 
 in
 {

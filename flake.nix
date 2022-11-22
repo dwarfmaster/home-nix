@@ -89,6 +89,7 @@
       # Modules to be made available to hosts config
       finalModules = self.nixosModules // {
         inherit libModule;
+        profiles     = { ... }: { imports = nixosProfiles; };
         mailserver   = simple-mailserver.nixosModules.mailserver;
         home-manager = home.nixosModules.home-manager;
         imacs        = imacs.nixosModules.imacs;
@@ -97,6 +98,7 @@
       # HM Modules to be made available to profiles
       finalHMModules = system: self.hmModules // {
         inherit libModule;
+        profiles       = { ... }: { imports = hmProfiles; };
         rycee-base16   = (nur-no-pkgs system).repos.rycee.hmModules.theme-base16;
         nix-doom-emacs = nix-doom-emacs.hmModule;
         arkenfox       = arkenfox.hmModules.default;
@@ -207,14 +209,8 @@
         in pathsToImportedAttrs modulesPaths;
 
       nixosConfigurations =
-        builtins.mapAttrs (_: config: let
-          plib = (pkgs config.system).lib;
-        in lib.nixosSystem {
+        builtins.mapAttrs (_: config: lib.nixosSystem {
           inherit (config) system modules;
-          lib = plib.extend (final: prev: {
-            profiles = nixosProfiles;
-            hm = hmProfiles;
-          });
         }) hosts;
     };
 }

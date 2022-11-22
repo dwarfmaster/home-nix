@@ -1,31 +1,26 @@
 { config, lib, pkgs, simple-nixos-mailserver, ... }:
 
 {
-  imports = [ lib.profiles.core ] ++ (builtins.attrValues {
-    # Users
-    inherit (lib.profiles.users)
-      root
-      luc-server
-    ;
-
-    # Services
-    inherit (lib.profiles.services)
-      mail-server
-      torrent
-    ;
-
-    # Web-services
-    inherit (lib.profiles.web)
-      matrix
-      nextcloud
-      imacs
-      # wallabag
-      # grocy
-      arkenfox
-      # pixelfed
-      miniflux
-    ;
-  });
+  profiles = {
+    users = {
+      root.enable = true;
+      luc-server.enable = true;
+    };
+    services = {
+      mail-server.enable = true;
+      torrent.enable = true;
+    };
+    web = {
+      matrix.enable = true;
+      nextcloud.enable = true;
+      imacs.enable = true;
+      wallabag.enable = false;
+      grocy.enable = false;
+      arkenfox.enable = true;
+      pixelfed.enable = false;
+      miniflux.enable = true;
+    };
+  };
 
   boot = {
     # TODO re-enable latest_hardened

@@ -11,26 +11,19 @@
   };
 
   home-manager.users.luc = {
-    imports = builtins.attrValues {
-      # System
-      inherit (lib.hm.system)
-        xdg
-        direnv
-        encryption
-      ;
-
-      # Interface
-      inherit (lib.hm.interface)
-        theme
-      ;
-
-      # Programs
-      inherit (lib.hm.programs)
-        fzf
-        git
-        vim
-        neovim
-      ;
+    profiles = {
+      system = {
+        xdg.enable = true;
+        direnv.enable = true;
+        encryption.enable = true;
+      };
+      interface.theme.enable = true;
+      programs = {
+        fzf.enable = true;
+        git.enable = true;
+        vim.enable = true;
+        neovim.enable = true;
+      };
     };
 
     xdg.enable = true;

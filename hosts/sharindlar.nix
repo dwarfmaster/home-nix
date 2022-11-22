@@ -1,22 +1,16 @@
 { config, pkgs, lib, ... }:
 
 {
-  imports = [
-    lib.profiles.core
-    lib.hardware.raspberry-pi-4
-  ] ++ (builtins.attrValues {
-    # Users
-    inherit (lib.profiles.users)
-      root
-      luc-rpi4
-    ;
+  # TODO will fail with infinite recursion
+  imports = [ config.lib.hardware.raspberry-pi-4 ];
 
-    # Interface
-    inherit (lib.profiles.interface)
-      sound
-      kodi
-    ;
-  });
+  profiles = {
+    users.root.enable = true;
+    interface = {
+      sound.enable = true;
+      kodi.enable = true;
+    };
+  };
 
   boot.loader.raspberryPi = {
     enable = true;

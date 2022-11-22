@@ -1,7 +1,7 @@
 { lib, config, ... }:
 {
   imports = [
-    ../luc-common
+    ../luc
   ];
 
   home-manager.users.luc = {

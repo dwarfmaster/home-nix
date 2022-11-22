@@ -16,6 +16,7 @@ let
 
       global = {
         _module.args.system = system;
+        profiles.core.enable = lib.mkDefault true;
 
         home-manager.useGlobalPkgs = true;
         home-manager.useUserPackages = true;

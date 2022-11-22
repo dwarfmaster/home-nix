@@ -1,27 +1,22 @@
 { config, lib, pkgs, ... }:
 
 {
-  imports = [ lib.profiles.core ] ++ (builtins.attrValues {
-    # Users
-    inherit (lib.profiles.users)
-      root
-      luc
-    ;
-
-    # System
-    inherit (lib.profiles.system)
-      network
-      printing
-    ;
-
-    # Interface
-    inherit (lib.profiles.interface)
-      xserver
-      graphical
-      sound
-      grafana
-    ;
-  });
+  profiles = {
+    users = {
+      root.enable = true;
+      luc.enable = true;
+    };
+    system = {
+      network.enable = true;
+      printing.enable = true;
+    };
+    interface = {
+      xserver.enable = true;
+      graphical.enable = true;
+      sound.enable = true;
+      grafana.enable = true;
+    };
+  };
 
   system.stateVersion = "21.11";
 
