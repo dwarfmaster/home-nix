@@ -7,7 +7,6 @@
 
     # HM Plugins
     ./plugins/nix-colors.nix
-    # ./plugins/neorg.nix
   ];
 
   home.packages = [
@@ -22,7 +21,6 @@
     imports = [
       # Nixvim plugins
       ./plugins/which-keys.nix
-      ./plugins/neorg.nix
     ];
   };
   # programs.neovim.package = pkgs.neovim-nightly;

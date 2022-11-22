@@ -6,11 +6,6 @@
       master.url = "nixpkgs/master";
       unstable.url = "nixpkgs/nixos-unstable";
       nixos.url = "nixpkgs/release-22.05";
-      wayland = {
-        url = "github:nix-community/nixpkgs-wayland";
-        inputs.nixpkgs.follows = "nixos";
-        inputs.master.follows = "master";
-      };
       home = {
         url = "github:nix-community/home-manager/release-22.05";
         inputs.nixpkgs.follows = "nixos";
@@ -59,29 +54,21 @@
         url = "github:pta2002/nixvim";
         inputs.nixpkgs.follows = "nixos";
       };
-      neorg = {
-        url = "github:nvim-neorg/nixpkgs-neorg-overlay";
-        inputs.nixpkgs.follows = "nixos";
-      };
-      nix-autobahn.url = "github:Lassulus/nix-autobahn";
       arkenfox.url = "github:dwarfmaster/arkenfox-nixos";
     };
 
-  outputs = inputs@{ self, home, nixos, master, unstable, wayland, nur, flake-utils,
+  outputs = inputs@{ self, home, nixos, master, unstable, nur, flake-utils,
                      nixos-hardware, impermanence, simple-mailserver, django, imacs, colors,
-                     lean4, opam2nix, emacs-overlay, nix-doom-emacs, neovim-nightly, nixvim, neorg,
-                     nix-autobahn, arkenfox }:
+                     lean4, opam2nix, emacs-overlay, nix-doom-emacs, neovim-nightly, nixvim,
+                     arkenfox }:
     let
       # All overlays to apply
       finalOverlays = self.overlays // {
         nur = nur.overlay;
         arkenfox = arkenfox.overlay;
-        # neorg = neorg.overlays.default;
-        # wayland = wayland.overlay;
         packages = re: super: {
           lean4 = lean4.defaultPackage.x86_64-linux;
           opam2nix = opam2nix.defaultPackage.x86_64-linux;
-          nix-autobahn = nix-autobahn.defaultPackage.x86_64-linux;
           nix-colors = colors.colorSchemes;
           neovim-nightly = neovim-nightly.packages.default;
         };
