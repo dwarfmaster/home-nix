@@ -12,10 +12,7 @@ let
 
   modules = hostName: system:
     let
-      sys-pkgs = pkgs system;
-
       global = {
-        _module.args.system = system;
         profiles.core.enable = lib.mkDefault true;
 
         home-manager.useGlobalPkgs = true;
@@ -32,7 +29,14 @@ let
             "nixpkgs-overlays=${path}/overlays"
           ];
 
-        nixpkgs.pkgs = sys-pkgs;
+        # Will use the nixpkgs from which nixosSystem is called
+        nixpkgs = {
+          overlays = builtins.attrValues finalOverlays;
+          config = {
+            allowUnfree = false;
+          };
+          localSystem.system = system;
+        };
 
         nix.registry = {
           nixos.flake = self.inputs.nixos;

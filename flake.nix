@@ -66,12 +66,13 @@
       finalOverlays = self.overlays // {
         nur = nur.overlay;
         arkenfox = arkenfox.overlay;
-        packages = re: super: {
+        packages = self: super: {
           lean4 = lean4.defaultPackage.x86_64-linux;
           opam2nix = opam2nix.defaultPackage.x86_64-linux;
           nix-colors = colors.colorSchemes;
           neovim-nightly = neovim-nightly.packages.default;
-        };
+        } // packages self super;
+        variants = self: super: pkgs-variants super.system;
       };
       # Modules to be made available to hosts config
       finalModules = self.nixosModules // {
@@ -133,24 +134,12 @@
         unfree = pkgImport system true nixos;
       };
 
-      packages = system: import ./packages {
-        pkgs = import nixos {
-          inherit system;
-          config = { allowUnfree = false; };
-          overlays = [ (self: super: pkgs-variants system) ];
-        };
-        inherit lib;
-        inherit utils;
-      };
+      packages = import ./packages;
 
       pkgs = system: import nixos {
         inherit system;
         config = { allowUnfree = false; };
-        overlays =
-          attrValues finalOverlays ++ [
-            (self: super: pkgs-variants system)
-            (self: super: packages system)
-          ];
+        overlays = attrValues finalOverlays;
       };
 
       nur-no-pkgs = system: import nur {
@@ -159,7 +148,7 @@
 
       libModule = { pkgs, lib, ... }@args: {
         lib = utils.recImport { dir = ./lib; _import = base: import "${./lib}/${base}.nix" args; } // {
-          inherit utils;
+          utils = import ./utils.nix args;
         };
       };
 
@@ -170,7 +159,13 @@
         });
 
     in {
-      packages = eachSupportedSystem packages;
+      packages = eachSupportedSystem (system: let
+        pkgs = import nixos { inherit system; overlays = [ packages ]; };
+      in {
+        inherit (pkgs)
+          reupload
+        ;
+      });
 
       lib = import ./utils.nix { inherit lib; };
 

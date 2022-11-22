@@ -1,7 +1,7 @@
-{ pkgs, ... }:
+self: super:
 
 let
-  inherit (pkgs) callPackage;
+  inherit (super) callPackage;
 in {
   reupload = callPackage ./reupload { };
 }
