@@ -1,23 +1,20 @@
 { lib
-, pkgs
 , self
-, finalOverlays
-, finalModules
-, finalHMModules
+, overlays
+, modules
 }:
 let
-  inherit (lib) types utils;
-  inherit (utils) recImport;
+  inherit (lib) types;
   inherit (builtins) attrValues removeAttrs;
 
-  modules = hostName: system:
+  host-modules = hostName: system:
     let
       global = {
         profiles.core.enable = lib.mkDefault true;
 
         home-manager.useGlobalPkgs = true;
         home-manager.useUserPackages = true;
-        home-manager.sharedModules = builtins.attrValues (finalHMModules system);
+        home-manager.sharedModules = builtins.attrValues modules.hm;
 
         networking.hostName = hostName;
         nix.nixPath = let path = toString ../.; in
@@ -31,7 +28,7 @@ let
 
         # Will use the nixpkgs from which nixosSystem is called
         nixpkgs = {
-          overlays = builtins.attrValues finalOverlays;
+          overlays = builtins.attrValues overlays;
           config = {
             allowUnfree = false;
           };
@@ -48,12 +45,11 @@ let
 
       local = import "${toString ./.}/${hostName}.nix";
     in
-      (attrValues finalModules) ++ [ global local ];
+      (attrValues modules.nixos) ++ [ global local ];
 
   mkHost = hostname: system: {
-    modules = modules hostname system;
+    modules = host-modules hostname system;
     inherit system;
-    pkgs = pkgs system;
   };
 
 in {

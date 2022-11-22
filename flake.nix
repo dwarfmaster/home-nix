@@ -63,7 +63,7 @@
                      arkenfox }:
     let
       # All overlays to apply
-      finalOverlays = self.overlays // {
+      overlays = self.overlays // {
         nur = nur.overlay;
         arkenfox = arkenfox.overlay;
         packages = self: super: {
@@ -74,25 +74,28 @@
         } // packages self super;
         variants = self: super: pkgs-variants super.system;
       };
-      # Modules to be made available to hosts config
-      finalModules = self.nixosModules // {
-        inherit libModule;
-        profiles     = { ... }: { imports = nixosProfiles; };
-        mailserver   = simple-mailserver.nixosModules.mailserver;
-        home-manager = home.nixosModules.home-manager;
-        imacs        = imacs.nixosModules.imacs;
-        impermanence = impermanence.nixosModule;
-      };
-      # HM Modules to be made available to profiles
-      finalHMModules = system: self.hmModules // {
-        inherit libModule;
-        profiles       = { ... }: { imports = hmProfiles; };
-        rycee-base16   = (nur-no-pkgs system).repos.rycee.hmModules.theme-base16;
-        nix-doom-emacs = nix-doom-emacs.hmModule;
-        arkenfox       = arkenfox.hmModules.default;
-        nixvim         = nixvim.homeManagerModules.nixvim;
-        colors         = colors.homeManagerModules.colorScheme;
-        impermanence   = impermanence.nixosModules.home-manager.impermanence;
+      # Modules to be made available to configs
+      modules = {
+        nixos = self.nixosModules // {
+          inherit libModule;
+          profiles     = { ... }: { imports = profiles.nixos; };
+          nur          = nur.nixosModules.nur;
+          mailserver   = simple-mailserver.nixosModules.mailserver;
+          home-manager = home.nixosModules.home-manager;
+          imacs        = imacs.nixosModules.imacs;
+          impermanence = impermanence.nixosModule;
+        };
+        hm = self.hmModules // {
+          inherit libModule;
+          profiles       = { ... }: { imports = profiles.hm; };
+          nur            = nur.hmModules.nur;
+          rycee-base16   = nur-modules.repos.rycee.hmModules.theme-base16;
+          nix-doom-emacs = nix-doom-emacs.hmModule;
+          arkenfox       = arkenfox.hmModules.default;
+          nixvim         = nixvim.homeManagerModules.nixvim;
+          colors         = colors.homeManagerModules.colorScheme;
+          impermanence   = impermanence.nixosModules.home-manager.impermanence;
+        };
       };
       # All attributes to add to lib in modules
       extraLib = {
@@ -116,13 +119,15 @@
       eachSupportedSystem = f: builtins.listToAttrs
         (map (system: lib.nameValuePair system (f system)) supportedSystems);
 
-      nixosProfiles = importProfiles ./profiles/nixos;
-      hmProfiles = importProfiles ./profiles/hm;
+      profiles = {
+        nixos = importProfiles ./profiles/nixos;
+        hm = importProfiles ./profiles/hm;
+      };
 
       pkgImport = system: unfree: pkgs:
         import pkgs {
           inherit system;
-          overlays = attrValues finalOverlays;
+          overlays = attrValues overlays;
           config = { allowUnfree = unfree; };
         };
 
@@ -136,26 +141,21 @@
 
       packages = import ./packages;
 
-      pkgs = system: import nixos {
-        inherit system;
-        config = { allowUnfree = false; };
-        overlays = attrValues finalOverlays;
-      };
-
-      nur-no-pkgs = system: import nur {
-        nurpkgs = pkgImport system false nixos;
+      nur-modules = import nur {
+        # Architecture is hardcoded since it won't be used by modules
+        nurpkgs = import nixos { system = "x86_64-linux"; };
       };
 
       libModule = { pkgs, lib, ... }@args: {
         lib = utils.recImport { dir = ./lib; _import = base: import "${./lib}/${base}.nix" args; } // {
           utils = import ./utils.nix args;
-        };
+        } // extraLib;
       };
 
       hosts =
         import ./hosts ({
-          inherit self pkgs lib;
-          inherit finalOverlays finalModules finalHMModules;
+          inherit self lib;
+          inherit overlays modules;
         });
 
     in {
