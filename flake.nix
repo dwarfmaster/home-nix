@@ -192,7 +192,7 @@
 
       nixosConfigurations =
         builtins.mapAttrs (_: config: lib.nixosSystem {
-          inherit (config) system modules;
+          inherit (config) modules;
         }) hosts;
     };
 }

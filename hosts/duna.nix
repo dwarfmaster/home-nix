@@ -18,6 +18,7 @@
   };
 
   system.stateVersion = "22.05";
+  nixpkgs.localSystem.system = "x86_64-linux";
 
   boot = {
     # TODO re-enable latest_hardened

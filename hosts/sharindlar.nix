@@ -12,6 +12,11 @@
     };
   };
 
+  nixpkgs = {
+    localSystem = "x86_64-linux";
+    crossSystem = "aarch64-linux";
+  };
+
   boot.loader.raspberryPi = {
     enable = true;
     version = 4;

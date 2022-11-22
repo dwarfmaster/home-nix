@@ -22,6 +22,8 @@
     };
   };
 
+  nixpkgs.localSystem.system = "x86_64-linux";
+
   boot = {
     # TODO re-enable latest_hardened
     kernelPackages = pkgs.linuxPackages_latest;

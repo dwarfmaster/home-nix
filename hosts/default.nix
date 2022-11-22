@@ -7,7 +7,7 @@ let
   inherit (lib) types;
   inherit (builtins) attrValues removeAttrs;
 
-  host-modules = hostName: system:
+  host-modules = hostName:
     let
       global = {
         profiles.core.enable = lib.mkDefault true;
@@ -32,7 +32,6 @@ let
           config = {
             allowUnfree = false;
           };
-          localSystem.system = system;
         };
 
         nix.registry = {
@@ -47,14 +46,13 @@ let
     in
       (attrValues modules.nixos) ++ [ global local ];
 
-  mkHost = hostname: system: {
-    modules = host-modules hostname system;
-    inherit system;
+  mkHost = hostname: {
+    modules = host-modules hostname;
   };
 
 in {
-  tungdil    = mkHost "tungdil"    "x86_64-linux";
-  duna       = mkHost "duna"       "x86_64-linux";
-  vraccas    = mkHost "vraccas"    "x86_64-linux";
-  sharindlar = mkHost "sharindlar" "aarch64-linux";
+  tungdil    = mkHost "tungdil";
+  duna       = mkHost "duna";
+  vraccas    = mkHost "vraccas";
+  sharindlar = mkHost "sharindlar";
 }
