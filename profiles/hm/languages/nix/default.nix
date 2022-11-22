@@ -12,6 +12,10 @@
     '';
   };
 
+  programs.nixvim = {
+    plugins.lsp.enabledServers = ["rnix"];
+  };
+
   home.packages = builtins.attrValues {
     inherit
       (pkgs)
