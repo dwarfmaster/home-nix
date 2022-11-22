@@ -1,6 +1,9 @@
-{ config, pkgs, lib, ... }:
-
 {
+  config,
+  pkgs,
+  lib,
+  ...
+}: {
   programs.nixvim = {
     plugins.comment-nvim = {
       enable = true;
@@ -12,18 +15,18 @@
           "c" = {
             name = "Comments";
             bindings = {
-              "c" = { description = "Toggle comment"; };
-              "o" = { description = "Insert comment next line"; };
-              "O" = { description = "Insert comment previous line"; };
-              "A" = { description = "Insert comment end of line"; };
+              "c" = {description = "Toggle comment";};
+              "o" = {description = "Insert comment next line";};
+              "O" = {description = "Insert comment previous line";};
+              "A" = {description = "Insert comment end of line";};
             };
           };
           "b".name = "Block comments";
-          "b".bindings."c" = { description = "Toggle block comment"; };
+          "b".bindings."c" = {description = "Toggle block comment";};
         };
         v."g".bindings = {
-          "c" = { description = "Toggle comment"; };
-          "b" = { description = "Toggle block comment"; };
+          "c" = {description = "Toggle comment";};
+          "b" = {description = "Toggle block comment";};
         };
       };
       operators = {

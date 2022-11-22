@@ -1,9 +1,11 @@
-{ config, pkgs, ... }:
-
 {
+  config,
+  pkgs,
+  ...
+}: {
   nix = {
     package = pkgs.nixFlakes;
-    systemFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];
+    systemFeatures = ["nixos-test" "benchmark" "big-parallel" "kvm"];
     maxJobs = config.hardware.specs.threads;
 
     useSandbox = true;
@@ -28,8 +30,8 @@
       min-free = 536870912
     '';
 
-    allowedUsers = [ "@wheel" ];
+    allowedUsers = ["@wheel"];
     # Users that can import closures
-    trustedUsers = [ "root" "@wheel" ];
+    trustedUsers = ["root" "@wheel"];
   };
 }

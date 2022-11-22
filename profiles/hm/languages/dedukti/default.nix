@@ -1,13 +1,15 @@
-{ config, lib, pkgs, ... }:
-
-let
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
   # TODO fix lambdapi package
-  lambdapi_v20_pkg = pkgs.callPackage ./lambdapi20.nix { };
+  lambdapi_v20_pkg = pkgs.callPackage ./lambdapi20.nix {};
   lambdapi_v20 = pkgs.writeShellScriptBin "lambdapi-v2.0" ''
     ${lambdapi_v20_pkg}/bin/lambdapi
   '';
-  lambdapi_v21 = pkgs.callPackage ./lambdapi21.nix { };
-
+  lambdapi_v21 = pkgs.callPackage ./lambdapi21.nix {};
 in {
   home.packages = [
     # lambdapi_v20

@@ -1,6 +1,4 @@
-{ pkgs, ... }:
-
-{
+{pkgs, ...}: {
   programs.direnv = {
     enable = true;
     nix-direnv.enable = true;
@@ -10,8 +8,7 @@
 
   programs.doom-emacs.config = {
     initModules = {
-      tools = [ "direnv" ];
+      tools = ["direnv"];
     };
   };
 }
-

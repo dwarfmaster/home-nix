@@ -1,21 +1,39 @@
 {
   checkers = [
-    { mod = "syntax"; args = [ "childframe" ]; }
-    { mod = "spell"; args = [ "flyspell" "everywhere" "hunspell" ]; }
+    {
+      mod = "syntax";
+      args = ["childframe"];
+    }
+    {
+      mod = "spell";
+      args = ["flyspell" "everywhere" "hunspell"];
+    }
     "grammar"
   ];
 
   completion = [
-    { mod = "company"; args = [ "tng" ]; }
-    { mod = "helm"; args = [ "fuzzy" ]; }
+    {
+      mod = "company";
+      args = ["tng"];
+    }
+    {
+      mod = "helm";
+      args = ["fuzzy"];
+    }
   ];
 
   config = [
-    { mod = "default"; args = [ "bindings" "smartparens" ]; }
+    {
+      mod = "default";
+      args = ["bindings" "smartparens"];
+    }
   ];
 
   editor = [
-    { mod = "evil"; args = [ "everywhere" ]; }
+    {
+      mod = "evil";
+      args = ["everywhere"];
+    }
     "file-templates"
     "fold"
     "lispy"
@@ -23,9 +41,18 @@
   ];
 
   emacs = [
-    { mod = "dired"; args = [ "icons" "ranger" ]; }
-    { mod = "ibuffer"; args = [ "icons" ]; }
-    { mod = "undo"; args = [ "tree" ]; }
+    {
+      mod = "dired";
+      args = ["icons" "ranger"];
+    }
+    {
+      mod = "ibuffer";
+      args = ["icons"];
+    }
+    {
+      mod = "undo";
+      args = ["tree"];
+    }
     "imenu"
   ];
 
@@ -47,7 +74,10 @@
     "doom"
     "doom-dashboard"
     "doom-quit"
-    { mod = "emoji"; args = [ "github" "unicode" ]; }
+    {
+      mod = "emoji";
+      args = ["github" "unicode"];
+    }
     "hl-todo"
     "hydra"
     "modeline"

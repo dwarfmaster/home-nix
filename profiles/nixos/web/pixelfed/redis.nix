@@ -1,6 +1,9 @@
-{ config, lib, pkgs, ... }:
-
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}: {
   services.redis = {
     enable = true;
     # port = 0;
@@ -8,5 +11,5 @@
     # unixSocketPerm = 770;
     openFirewall = false;
   };
-  users.groups.redis.members = [ config.services.nginx.user ];
+  users.groups.redis.members = [config.services.nginx.user];
 }

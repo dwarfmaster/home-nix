@@ -1,8 +1,11 @@
-{ config, pkgs, ... }:
-
 {
+  config,
+  pkgs,
+  ...
+}: {
   home.packages = builtins.attrValues {
-    inherit (pkgs)
+    inherit
+      (pkgs)
       pass # Unix password manager
       keepassxc # An advanced passphrase manager
       ;

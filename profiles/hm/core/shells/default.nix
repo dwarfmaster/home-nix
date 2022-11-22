@@ -1,6 +1,9 @@
-{ config, pkgs, lib, ... }:
-
-let
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}: let
   inherit (pkgs) unstable;
   lsd = "${pkgs.lsd}/bin/lsd";
   bat = "${pkgs.bat}/bin/bat";
@@ -8,15 +11,16 @@ in {
   # Misc
   home = {
     sessionVariables = {
-      EDITOR       = "nvim";
+      EDITOR = "nvim";
       DIRSTACKSIZE = 16;
-      NIX_SSHOPTS  = "-t";
-      MANPAGER     = "sh -c 'col -bx | ${bat} -l man -p'";
+      NIX_SSHOPTS = "-t";
+      MANPAGER = "sh -c 'col -bx | ${bat} -l man -p'";
     };
     packages = builtins.attrValues {
-      inherit (pkgs)
+      inherit
+        (pkgs)
         lsd
-        bat 
+        bat
         du-dust
         dua
         duf
@@ -40,20 +44,20 @@ in {
       eval $(dircolors ${./dircolors})
     '';
 
-    historyControl = [ "erasedups" ];
+    historyControl = ["erasedups"];
     historyFile = "${config.xdg.cacheHome}/bash/history";
-    historyIgnore = [ "ls" "ll" "exit" ];
+    historyIgnore = ["ls" "ll" "exit"];
 
-    shellAliases     = {
-      dh      = "dirs -v";
-      ls      = "ls --color=auto";
-      ll      = "ls -lrth";
-      lla     = "ll -A";
-      lld     = "ll /dev/sd*";
-      rm      = "rm --preserve-root -i";
-      cat     = "bat";
-      df      = "duf";
-      ping    = "gping";
+    shellAliases = {
+      dh = "dirs -v";
+      ls = "ls --color=auto";
+      ll = "ls -lrth";
+      lla = "ll -A";
+      lld = "ll /dev/sd*";
+      rm = "rm --preserve-root -i";
+      cat = "bat";
+      df = "duf";
+      ping = "gping";
     };
   };
 
@@ -108,29 +112,29 @@ in {
         alias ls='ls --color=auto'
       fi
     '';
-    shellAliases     = {
-      dh      = "dirs -v";
-      ll      = "ls -lrth";
-      lla     = "ll -A";
-      lld     = "ll /dev/sd*";
-      rm      = "rm --preserve-root -i";
-      cat     = "bat";
-      df      = "duf";
-      ping    = "gping";
+    shellAliases = {
+      dh = "dirs -v";
+      ll = "ls -lrth";
+      lla = "ll -A";
+      lld = "ll /dev/sd*";
+      rm = "rm --preserve-root -i";
+      cat = "bat";
+      df = "duf";
+      ping = "gping";
     };
 
     oh-my-zsh = {
       enable = true;
       plugins = [
-        "git"                   # Add lots of git aliases
+        "git" # Add lots of git aliases
         "sudo"
-        "dirpersist"            # Saves dir stack across zsh reboots
-        "extract"               # Define a function extract that can extract any archive
-        "pass"                  # Autocompletion for pass
-        "jump"                  # Allow to mark directories and jump to them
-        "gitignore"             # Add a gi command to download templates from gitignore.io
-        "cabal"                 # Autocompletion for cabal
-        "emoji-clock"           # Add a function emoji-clock that display a fancy clock
+        "dirpersist" # Saves dir stack across zsh reboots
+        "extract" # Define a function extract that can extract any archive
+        "pass" # Autocompletion for pass
+        "jump" # Allow to mark directories and jump to them
+        "gitignore" # Add a gi command to download templates from gitignore.io
+        "cabal" # Autocompletion for cabal
+        "emoji-clock" # Add a function emoji-clock that display a fancy clock
       ];
     };
   };

@@ -1,6 +1,9 @@
-{ config, pkgs, lib, ... }:
-
 {
+  config,
+  pkgs,
+  lib,
+  ...
+}: {
   networking = {
     wireless.enable = false; # Enables wireless support via wpa_supplicant
     useDHCP = false;

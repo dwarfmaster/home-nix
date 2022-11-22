@@ -1,5 +1,9 @@
-{ config, lib, pkgs, ... }:
-
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 # TODO change elfeed database location in accordance to xdg
 {
   programs.doom-emacs.config = {
@@ -7,7 +11,10 @@
       config.source = ./config.el;
     };
     initModules.app = [
-      { mod = "rss"; args = [ "org" ]; }
+      {
+        mod = "rss";
+        args = ["org"];
+      }
     ];
   };
 }

@@ -1,8 +1,11 @@
-{ config, pkgs, ... }:
-
 {
+  config,
+  pkgs,
+  ...
+}: {
   home.packages = builtins.attrValues {
-    inherit (pkgs)
+    inherit
+      (pkgs)
       viking # GPS traces editor
       ;
   };

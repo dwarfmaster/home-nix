@@ -1,6 +1,9 @@
-{ config, pkgs, lsp, ... }:
-
 {
+  config,
+  pkgs,
+  lsp,
+  ...
+}: {
   # TODO more complete setup
   programs.nixvim = {
     extraPlugins = [
@@ -10,32 +13,32 @@
     ];
     plugins.nvim-cmp = {
       enable = true;
-      mappingPresets = [ "insert" "cmdline" ];
+      mappingPresets = ["insert" "cmdline"];
       snippet.expand = ''
         function(args)
           require('luasnip').lsp_expand(args.body)
         end
       '';
       sources = [
-        { name = "nvim_lsp"; }
-        { name = "buffer"; }
-        { name = "dictionnary"; }
-        { name = "calc"; }
-        { name = "path"; }
-        { name = "luasnip"; }
+        {name = "nvim_lsp";}
+        {name = "buffer";}
+        {name = "dictionnary";}
+        {name = "calc";}
+        {name = "path";}
+        {name = "luasnip";}
       ];
       mapping = {
         "<Tab>" = {
-          modes = [ "i" "s" ];
+          modes = ["i" "s"];
           action = ''
             function(fallback)
               if cmp.visible then
                 cmp.select_next_item()
               elseif luasnip.expandable() then
                 luasnip.expand()
-              elseif luasnip.expand_or_jumpable() then 
+              elseif luasnip.expand_or_jumpable() then
                 luasnip.expand_or_jump()
-              elseif check_backspace() then 
+              elseif check_backspace() then
                 fallback()
               else
                 fallback()
@@ -44,21 +47,21 @@
           '';
         };
         "S-<Tab>" = {
-          modes = [ "i" "s" ];
+          modes = ["i" "s"];
           action = ''
             function(fallback)
-              if cmp.visible() then 
-                cmp.select_prev_item() 
-              elseif luasnip.jumpable(-1) then 
+              if cmp.visible() then
+                cmp.select_prev_item()
+              elseif luasnip.jumpable(-1) then
                 luasnip.jump(-1)
-              else 
+              else
                 fallback()
               end
             end
           '';
         };
         "<Down>" = {
-          modes = [ "i" ];
+          modes = ["i"];
           action = ''
             function(fallback)
               fallback()
@@ -66,7 +69,7 @@
           '';
         };
         "<Up>" = {
-          modes = [ "i" ];
+          modes = ["i"];
           action = ''
             function(fallback)
               fallback()
@@ -76,7 +79,7 @@
       };
       # TODO improve format
       formatting = {
-        fields = [ "kind" "abbr" "menu" ];
+        fields = ["kind" "abbr" "menu"];
         format = ''
           require('lspkind').cmp_format({
             mode = "symbol_text",

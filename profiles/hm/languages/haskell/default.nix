@@ -1,21 +1,31 @@
-{ config, pkgs, ... }:
-
 {
+  config,
+  pkgs,
+  ...
+}: {
   home.packages = builtins.attrValues {
-    inherit (pkgs)
+    inherit
+      (pkgs)
       cabal-install
       cabal2nix
       ;
-    inherit (pkgs.haskellPackages)
+    inherit
+      (pkgs.haskellPackages)
       structured-haskell-mode
       ;
-    ghc = pkgs.haskellPackages.ghcWithHoogle
-      (hpkgs: [ hpkgs.diagrams ]);
+    ghc =
+      pkgs.haskellPackages.ghcWithHoogle
+      (hpkgs: [hpkgs.diagrams]);
   };
 
   programs.doom-emacs.config = {
     initModules = {
-      lang = [ { mod = "haskell"; args = [ "dante" ]; } ];
+      lang = [
+        {
+          mod = "haskell";
+          args = ["dante"];
+        }
+      ];
     };
   };
 }

@@ -1,7 +1,9 @@
-{ stdenv, lib, fetchurl
-, autoPatchelfHook
+{
+  stdenv,
+  lib,
+  fetchurl,
+  autoPatchelfHook,
 }:
-
 stdenv.mkDerivation {
   name = "intel-unite";
   version = "??";

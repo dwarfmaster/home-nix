@@ -1,6 +1,8 @@
-{ config, pkgs, ... }:
-
-let
+{
+  config,
+  pkgs,
+  ...
+}: let
   background-picture = pkgs.copyPathToStore ./bg.png;
   scheme = config.colorScheme;
   fromHex = hex: {
@@ -40,15 +42,21 @@ in {
   programs.doom-emacs.config = {
     initModules = {
       ui = [
-        { mod = "ligatures"; args = [ "extra" ]; }
+        {
+          mod = "ligatures";
+          args = ["extra"];
+        }
         "nav-flash"
         "neotree"
         "ophints"
-        { mod = "popup"; args = [ "all" "defaults" ]; }
+        {
+          mod = "popup";
+          args = ["all" "defaults"];
+        }
         "window-select"
         "workspace"
       ];
-      tools = [ "rgb" ];
+      tools = ["rgb"];
     };
     modules.ui.dwarfmaster-theme = {
       config.source = ./config.el;
@@ -60,11 +68,11 @@ in {
     xbackground = {
       Unit = {
         Description = "Set the background image";
-        After = [ "graphical-session-pre.target" ];
-        PartOf = [ "graphical-session.target" ];
+        After = ["graphical-session-pre.target"];
+        PartOf = ["graphical-session.target"];
       };
 
-      Install = { WantedBy = [ "graphical-session.target" ]; };
+      Install = {WantedBy = ["graphical-session.target"];};
 
       Service = {
         Type = "oneshot";

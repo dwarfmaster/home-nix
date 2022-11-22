@@ -1,8 +1,11 @@
-{ config, pkgs, lib, ... }:
-
 {
+  config,
+  pkgs,
+  lib,
+  ...
+}: {
   # TODO will fail with infinite recursion
-  imports = [ config.lib.hardware.raspberry-pi-4 ];
+  imports = [config.lib.hardware.raspberry-pi-4];
 
   profiles = {
     users.root.enable = true;
@@ -34,7 +37,7 @@
     "/" = {
       device = "/dev/disk/by-label/NIXOS_SD";
       fsType = "ext4";
-      options = [ "noatime" ];
+      options = ["noatime"];
     };
   };
 

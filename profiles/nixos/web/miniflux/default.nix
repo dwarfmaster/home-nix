@@ -1,6 +1,8 @@
-{ pkgs, config, ... }:
-
-let
+{
+  pkgs,
+  config,
+  ...
+}: let
   url = "rss.dwarfmaster.net";
   cfg = config.services.miniflux;
 in {

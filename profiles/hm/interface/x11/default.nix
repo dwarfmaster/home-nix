@@ -1,19 +1,37 @@
-{ config, pkgs, lib, ... }:
-
-let
-
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}: let
   terminal = let
     conf = pkgs.substituteAll {
       src = ./st.h;
       inherit (pkgs) bash;
-      inherit (config.colorScheme.colors)
-        base00 base01 base02 base03 base04 base05 base06 base07 
-        base08 base09 base0A base0B base0C base0D base0E base0F;
+      inherit
+        (config.colorScheme.colors)
+        base00
+        base01
+        base02
+        base03
+        base04
+        base05
+        base06
+        base07
+        base08
+        base09
+        base0A
+        base0B
+        base0C
+        base0D
+        base0E
+        base0F
+        ;
     };
-    st = pkgs.st.override { conf = builtins.readFile conf; };
+    st = pkgs.st.override {conf = builtins.readFile conf;};
   in {
     applications.terminal = "${st}/bin/st";
-    home.packages = [ st ];
+    home.packages = [st];
     home.sessionVariables.ST_H = "${conf}";
   };
 
@@ -28,11 +46,11 @@ let
       xkbmappings = {
         Unit = {
           Description = "Common X key remapping";
-          After = [ "graphical-session-pre.target" "setxkbmap.service" ];
-          PartOf = [ "graphical-session.target" ];
+          After = ["graphical-session-pre.target" "setxkbmap.service"];
+          PartOf = ["graphical-session.target"];
         };
 
-        Install = { WantedBy = [ "graphical-session.target" ]; };
+        Install = {WantedBy = ["graphical-session.target"];};
 
         Service = {
           Type = "oneshot";
@@ -57,21 +75,25 @@ let
         fi
       '';
     };
-    home.packages = [ pkgs.xorg.xrandr ] ++ builtins.attrValues {
-      inherit (pkgs) imlibsetroot;
-    };
+    home.packages =
+      [pkgs.xorg.xrandr]
+      ++ builtins.attrValues {
+        inherit (pkgs) imlibsetroot;
+      };
   };
 
   fonts = {
     home.packages = builtins.attrValues {
       # Fonts with icons
-      nerdfonts = pkgs.nerdfonts.override { fonts = [ "FiraCode" ]; };
-      inherit (pkgs)
+      nerdfonts = pkgs.nerdfonts.override {fonts = ["FiraCode"];};
+      inherit
+        (pkgs)
         powerline-fonts
         ;
 
       # Misc fonts
-      inherit (pkgs)
+      inherit
+        (pkgs)
         iosevka
         fira-code
         fira-mono
@@ -79,7 +101,8 @@ let
         ;
 
       # Misc
-      inherit (pkgs)
+      inherit
+        (pkgs)
         font-manager # Preview fonts
         ;
     };
@@ -87,15 +110,17 @@ let
 
   tools = {
     home.packages = builtins.attrValues {
-      inherit (pkgs)
-        glxinfo             # OpenGL info
-        redshift            # Color shift with the time of the day
-        xclip               # X11 copy-paste from the console
+      inherit
+        (pkgs)
+        glxinfo # OpenGL info
+        redshift # Color shift with the time of the day
+        xclip # X11 copy-paste from the console
         networkmanagerapplet # GUI for network manager
         ;
-      inherit (pkgs.xorg)
-        xev                 # X11 event querying
-        xprop               # X11 properties querying
+      inherit
+        (pkgs.xorg)
+        xev # X11 event querying
+        xprop # X11 properties querying
         ;
       dconf = pkgs.gnome3.dconf-editor; # GTK configuration editor
     };
@@ -108,8 +133,6 @@ let
       pkgs.arcan.arcan
     ];
   };
-
 in {
-  imports = [ ../graphic-theme xinit keyboard ./dunst.nix ./rofi.nix terminal fonts tools arcan ];
+  imports = [../graphic-theme xinit keyboard ./dunst.nix ./rofi.nix terminal fonts tools arcan];
 }
-

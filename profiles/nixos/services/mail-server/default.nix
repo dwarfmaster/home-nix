@@ -1,10 +1,13 @@
-args@{ config, lib, pkgs, ... }:
-
-{
+args @ {
+  config,
+  lib,
+  pkgs,
+  ...
+}: {
   mailserver = {
     enable = true;
     fqdn = "dwarfmaster.net";
-    domains = [ "dwarfmaster.net" ];
+    domains = ["dwarfmaster.net"];
     mailDirectory = "/data/var/vmail";
 
     loginAccounts = {

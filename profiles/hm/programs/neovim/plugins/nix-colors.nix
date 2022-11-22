@@ -1,10 +1,12 @@
-{ config, pkgs, lib, ... }:
-
-let
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}: let
   inherit (lib) mkEnableOption mkOption types;
   theme = config.colorScheme;
   colors = theme.colors;
-
 in {
   options = {
     colorScheme.nixvimIntegration = mkEnableOption "setup nixvim colorscheme using nvim-base16";
@@ -13,7 +15,7 @@ in {
   config = lib.mkIf theme.nixvimIntegration {
     programs.nixvim = {
       colorscheme = "base16-${theme.slug}";
-      extraPlugins = [ pkgs.vimPlugins.nvim-base16 ];
+      extraPlugins = [pkgs.vimPlugins.nvim-base16];
       options.termguicolors = true;
       extraConfigLua = ''
         -- nvim-base16 setup {{{

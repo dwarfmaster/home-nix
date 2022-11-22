@@ -1,8 +1,11 @@
-{ config, lib, pkgs, ... }:
-
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}: {
   home.packages = [
-    (pkgs.agda.withPackages (p: [ p.standard-library ]))
+    (pkgs.agda.withPackages (p: [p.standard-library]))
   ];
 
   home.sessionVariables = {
@@ -14,7 +17,12 @@
 
   programs.doom-emacs.config = {
     initModules = {
-      lang = [ { mod = "agda"; args = [ "local" ]; } ];
+      lang = [
+        {
+          mod = "agda";
+          args = ["local"];
+        }
+      ];
     };
   };
 }

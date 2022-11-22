@@ -1,11 +1,23 @@
-{ config, lib, pkgs, ... }:
-
-let
-
-  inherit (lib)
-    mkEnableOption mkOption types mkIf mkMerge
-    range concatMapStrings concatStringsSep mapAttrsToList
-    mapAttrs' nameValuePair;
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
+  inherit
+    (lib)
+    mkEnableOption
+    mkOption
+    types
+    mkIf
+    mkMerge
+    range
+    concatMapStrings
+    concatStringsSep
+    mapAttrsToList
+    mapAttrs'
+    nameValuePair
+    ;
   inherit (builtins) isAttrs;
 
   cfg = config.programs.cookiecutter;
@@ -13,9 +25,17 @@ let
   mkTabs = tabs: concatMapStrings (_: "  ") (range 1 tabs);
   formatAttr = tabs: attr:
     concatStringsSep "\n"
-      (mapAttrsToList (name: value: mkTabs tabs + name + ":" + (if isAttrs value then "\n" + formatAttr (tabs+1) value else " \"" + value + "\"")) attr);
+    (mapAttrsToList (name: value:
+      mkTabs tabs
+      + name
+      + ":"
+      + (
+        if isAttrs value
+        then "\n" + formatAttr (tabs + 1) value
+        else " \"" + value + "\""
+      ))
+    attr);
   cookiecutterCfgFormat = attrs: formatAttr 0 attrs + "\n";
-
 in {
   options = {
     programs.cookiecutter = {
@@ -36,14 +56,14 @@ in {
       extraConfig = mkOption {
         description = "Content of the config file";
         type = types.attrs;
-        default = { };
+        default = {};
         internal = true;
       };
 
       templates = mkOption {
         description = "Pre-installed templates";
         type = types.attrsOf (types.either types.package types.path);
-        default = { };
+        default = {};
       };
 
       templateDir = mkOption {
@@ -61,20 +81,20 @@ in {
       defaults = mkOption {
         description = "Default values for prompts";
         type = types.attrsOf types.str;
-        default = { };
+        default = {};
       };
 
       aliases = mkOption {
         description = "Aliases for templates";
         type = types.attrsOf types.str;
-        default = { };
+        default = {};
       };
     };
   };
 
   config = mkMerge [
     (mkIf cfg.enable {
-      home.packages = [ cfg.package ];
+      home.packages = [cfg.package];
       home.sessionVariables = {
         COOKIECUTTER_CONFIG = "${cfg.configFile}";
       };
@@ -87,11 +107,12 @@ in {
 
       home.file =
         mapAttrs'
-          (name: value: nameValuePair "${cfg.templateDir}/${name}" {
+        (name: value:
+          nameValuePair "${cfg.templateDir}/${name}" {
             source = "${value}";
             recursive = false;
           })
-          cfg.templates;
+        cfg.templates;
     })
 
     (mkIf (cfg.enable && !(isNull cfg.extraConfig)) {

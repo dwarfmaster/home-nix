@@ -1,6 +1,9 @@
-{ config, lib, pkgs, ... }:
-
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}: {
   # NGinx setup
   services.nginx.virtualHosts."nextcloud.dwarfmaster.net" = {
     forceSSL = true;
@@ -41,9 +44,10 @@
   # Database configuration
   services.postgresql = {
     # Ensure the database, user and permission always exist
-    ensureDatabases = [ "nextcloud" ];
+    ensureDatabases = ["nextcloud"];
     ensureUsers = [
-      { name = "nextcloud";
+      {
+        name = "nextcloud";
         ensurePermissions."DATABASE nextcloud" = "ALL PRIVILEGES";
       }
     ];
@@ -51,7 +55,7 @@
 
   # Make sure postgresql is running before nextcloud
   systemd.services."nextcloud-setup" = {
-    requires = [ "postgresql.service" ];
-    after = [ "postgresql.service" ];
+    requires = ["postgresql.service"];
+    after = ["postgresql.service"];
   };
 }

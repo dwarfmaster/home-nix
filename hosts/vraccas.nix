@@ -1,6 +1,10 @@
-{ config, lib, pkgs, simple-nixos-mailserver, ... }:
-
 {
+  config,
+  lib,
+  pkgs,
+  simple-nixos-mailserver,
+  ...
+}: {
   profiles = {
     users = {
       root.enable = true;
@@ -32,11 +36,11 @@
     };
 
     initrd = {
-      availableKernelModules = [ "uhci_hcd" "ahci" "usbhid" ];
-      kernelModules = [ ];
+      availableKernelModules = ["uhci_hcd" "ahci" "usbhid"];
+      kernelModules = [];
     };
-    kernelModules = [ "kvm-intel" ];
-    extraModulePackages = [ ];
+    kernelModules = ["kvm-intel"];
+    extraModulePackages = [];
 
     loader.grub = {
       enable = true;
@@ -68,7 +72,7 @@
     "/data" = {
       device = "/dev/mapper/data";
       fsType = "ext4";
-      options = [ "defaults" "noauto" ];
+      options = ["defaults" "noauto"];
     };
 
     "/boot" = {
@@ -79,19 +83,23 @@
 
   # Networking
   networking.defaultGateway = "188.165.216.254";
-  networking.nameservers = [ "213.186.33.99" "1.1.1.1" ];
-  networking.interfaces.enp1s0.ipv4.addresses = [ {
-    address = "188.165.216.157";
-    prefixLength = 24;
-  } ];
+  networking.nameservers = ["213.186.33.99" "1.1.1.1"];
+  networking.interfaces.enp1s0.ipv4.addresses = [
+    {
+      address = "188.165.216.157";
+      prefixLength = 24;
+    }
+  ];
   networking.defaultGateway6 = {
     address = "2001:41d0:2:a3ff:ff:ff:ff:ff";
     interface = "enp1s0";
   };
-  networking.interfaces.enp1s0.ipv6.addresses = [ {
-    address = "2001:41d0:2:a39d::1";
-    prefixLength = 128;
-  } ];
+  networking.interfaces.enp1s0.ipv6.addresses = [
+    {
+      address = "2001:41d0:2:a39d::1";
+      prefixLength = 128;
+    }
+  ];
   networking.firewall.allowPing = true;
   networking.firewall.pingLimit = "--limit 10/minute --limit-burst 50";
 
@@ -112,7 +120,7 @@
       "dwarfmaster.net" = {
         forceSSL = true;
         enableACME = true;
-        serverAliases = [ "blog.dwarfmaster.net" "www.dwarfmaster.net" ];
+        serverAliases = ["blog.dwarfmaster.net" "www.dwarfmaster.net"];
         locations."/" = {
           root = "/var/www/blog";
         };
@@ -134,27 +142,27 @@
       };
     };
   };
-  systemd.services.nginx.serviceConfig.ReadWritePaths = [ "/var/www/" ];
-  networking.firewall.allowedTCPPorts = [ 80 443 ];
+  systemd.services.nginx.serviceConfig.ReadWritePaths = ["/var/www/"];
+  networking.firewall.allowedTCPPorts = [80 443];
 
   # SSH
   services.openssh = {
     enable = true;
     banner = ''
- ____                      __ __  __           _                       _
-|  _ \__      ____ _ _ __ / _|  \/  | __ _ ___| |_ ___ _ __ _ __   ___| |_
-| | | \ \ /\ / / _` | '__| |_| |\/| |/ _` / __| __/ _ \ '__| '_ \ / _ \ __|
-| |_| |\ V  V / (_| | |  |  _| |  | | (_| \__ \ ||  __/ | _| | | |  __/ |_
-|____/  \_/\_/ \__,_|_|  |_| |_|  |_|\__,_|___/\__\___|_|(_)_| |_|\___|\__|
+       ____                      __ __  __           _                       _
+      |  _ \__      ____ _ _ __ / _|  \/  | __ _ ___| |_ ___ _ __ _ __   ___| |_
+      | | | \ \ /\ / / _` | '__| |_| |\/| |/ _` / __| __/ _ \ '__| '_ \ / _ \ __|
+      | |_| |\ V  V / (_| | |  |  _| |  | | (_| \__ \ ||  __/ | _| | | |  __/ |_
+      |____/  \_/\_/ \__,_|_|  |_| |_|  |_|\__,_|___/\__\___|_|(_)_| |_|\___|\__|
 
-Welcome !
-'';
+      Welcome !
+    '';
     forwardX11 = false;
     logLevel = "VERBOSE";
     passwordAuthentication = false;
     kbdInteractiveAuthentication = false;
     permitRootLogin = "no";
-    ports = [ 2222 ];
+    ports = [2222];
   };
   programs.mosh.enable = true;
 

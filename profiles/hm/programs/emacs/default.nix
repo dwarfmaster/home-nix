@@ -1,13 +1,13 @@
-{ pkgs, config, ... }:
-
-let
-
+{
+  pkgs,
+  config,
+  ...
+}: let
   cfg = config.programs.doom-emacs;
   doom = config.programs.emacs.finalPackage;
   emacs = "${doom}/bin/emacs";
   client = "${doom}/bin/emacsclient";
   epkgs = pkgs.emacsPackages;
-
 in {
   # Fix doom-emacs
   # programs.doom-emacs = {
@@ -53,23 +53,22 @@ in {
     fd
     # Spell checkers
     aspell
-    (hunspellWithDicts (with hunspellDicts; [ fr-any en_US en_CA en_AU ]))
+    (hunspellWithDicts (with hunspellDicts; [fr-any en_US en_CA en_AU]))
   ];
-
 
   # Systemd daemon
   systemd.user.services.doom-emacs-daemon = {
     Unit = {
       Description = "Doom Emacs Server Daemon";
-      Documentation = [ "info:emacs" "man:emacs(1)" "https://gnu.org/software/emacs/" ];
-      After = [ "graphical-session-pre.target" ];
+      Documentation = ["info:emacs" "man:emacs(1)" "https://gnu.org/software/emacs/"];
+      After = ["graphical-session-pre.target"];
       # PartOf = [ "graphical-session.target" ];
     };
 
     Service = {
       Type = "notify";
       ExecStart = "${pkgs.runtimeShell} -l -c '${emacs} --fg-daemon'";
-      SuccessExitStatus=15;
+      SuccessExitStatus = 15;
       Restart = "on-failure";
     };
 

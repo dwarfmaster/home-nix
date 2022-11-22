@@ -1,7 +1,8 @@
-{ config, pkgs, ... }:
-
-let
-
+{
+  config,
+  pkgs,
+  ...
+}: let
   inherit (pkgs) unstable;
 
   pamixer = "${pkgs.pamixer}/bin/pamixer";
@@ -35,19 +36,23 @@ let
   '';
 in {
   home.packages = builtins.attrValues {
-    inherit (pkgs)
-      alsaUtils    # Sound card control
-      audacity     # sound and music editor
-      pamixer      # CLI sound control
-      pavucontrol  # CLI sound interface
-      pipewire     # For the pipewire CLI tools
-      pulseaudio   # For the pulseaudio CLI tools
-    ;
-    inherit (unstable)
-      helvum      # GUI for pipewire
+    inherit
+      (pkgs)
+      alsaUtils # Sound card control
+      audacity # sound and music editor
+      pamixer # CLI sound control
+      pavucontrol # CLI sound interface
+      pipewire # For the pipewire CLI tools
+      pulseaudio # For the pulseaudio CLI tools
+      ;
+    inherit
+      (unstable)
+      helvum # GUI for pipewire
       # TODO doesn't work on aarch64
+      
       # easyeffects # GUI for effects on pipewire
-    ;
+      
+      ;
     volume = volume-manager;
   };
   applications.volume = "${volume-manager}/bin/volume";

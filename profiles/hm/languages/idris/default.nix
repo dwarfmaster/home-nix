@@ -1,8 +1,11 @@
-{ config, lib, pkgs, ... }:
-
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}: {
   home.packages = with pkgs.idrisPackages; [
-    (with-packages [ lightyear contrib ])
+    (with-packages [lightyear contrib])
   ];
-  programs.doom-emacs.config.initModules.lang = [ "idris" ];
+  programs.doom-emacs.config.initModules.lang = ["idris"];
 }

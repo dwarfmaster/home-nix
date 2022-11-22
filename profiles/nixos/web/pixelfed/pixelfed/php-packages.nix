@@ -1,7 +1,14 @@
-{pixelfed-app, pixelfed-db, pixelfed-env, composerEnv, fetchurl, fetchgit ? null, fetchhg ? null, fetchsvn ? null, noDev ? false}:
-
-let
-
+{
+  pixelfed-app,
+  pixelfed-db,
+  pixelfed-env,
+  composerEnv,
+  fetchurl,
+  fetchgit ? null,
+  fetchhg ? null,
+  fetchsvn ? null,
+  noDev ? false,
+}: let
   packages = {
     "alchemy/binary-driver" = {
       targetDir = "";
@@ -1577,24 +1584,24 @@ let
     };
   };
 in
-composerEnv.buildPackage {
-  inherit packages devPackages noDev;
-  name = "pixelfed-pixelfed";
-  src = composerEnv.buildZipPackage {
-    name = "pixelfed-pixelfed-eb84b6547d57db1d99b766c2efb012bded208dfb";
-    src = fetchurl {
-      url = "https://api.github.com/repos/pixelfed/pixelfed/zipball/eb84b6547d57db1d99b766c2efb012bded208dfb";
-      sha256 = "07hjdfd5ibqa5nnhpb6g7rpj78d82g91zcw70jbcb231pi60xgqf";
+  composerEnv.buildPackage {
+    inherit packages devPackages noDev;
+    name = "pixelfed-pixelfed";
+    src = composerEnv.buildZipPackage {
+      name = "pixelfed-pixelfed-eb84b6547d57db1d99b766c2efb012bded208dfb";
+      src = fetchurl {
+        url = "https://api.github.com/repos/pixelfed/pixelfed/zipball/eb84b6547d57db1d99b766c2efb012bded208dfb";
+        sha256 = "07hjdfd5ibqa5nnhpb6g7rpj78d82g91zcw70jbcb231pi60xgqf";
+      };
     };
-  };
-  executable = false;
-  symlinkDependencies = false;
-  meta = {
-    license = "AGPL-3.0-only";
-  };
-  postInstall = ''
-    cp ${pixelfed-env} $out/.env
-    cp ${pixelfed-app} $out/bootstrap/app.php
-    cp ${pixelfed-db}  $out/config/database.php
-  '';
-}
+    executable = false;
+    symlinkDependencies = false;
+    meta = {
+      license = "AGPL-3.0-only";
+    };
+    postInstall = ''
+      cp ${pixelfed-env} $out/.env
+      cp ${pixelfed-app} $out/bootstrap/app.php
+      cp ${pixelfed-db}  $out/config/database.php
+    '';
+  }

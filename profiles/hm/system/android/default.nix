@@ -1,5 +1,7 @@
-{ config, pkgs, ... }:
-
 {
-  home.packages = [ pkgs.android-udev-rules ];
+  config,
+  pkgs,
+  ...
+}: {
+  home.packages = [pkgs.android-udev-rules];
 }

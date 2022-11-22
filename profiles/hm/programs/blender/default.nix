@@ -1,5 +1,7 @@
-{ config, pkgs, ... }:
-
 {
-  home.packages = [ pkgs.blender ];
+  config,
+  pkgs,
+  ...
+}: {
+  home.packages = [pkgs.blender];
 }

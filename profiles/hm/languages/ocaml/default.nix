@@ -1,23 +1,27 @@
-{ config, pkgs, ... }:
-
 {
+  config,
+  pkgs,
+  ...
+}: {
   home.packages = builtins.attrValues {
-    inherit (pkgs)
+    inherit
+      (pkgs)
       ocaml
       opam
       dune_2
       ocamlformat
       opam2nix
-    ;
-    inherit (pkgs.ocamlPackages)
+      ;
+    inherit
+      (pkgs.ocamlPackages)
       utop
       merlin
       ocp-indent
       zarith
-    ;
+      ;
   };
   programs.doom-emacs.config = {
-    initModules.lang = [ "ocaml" ];
+    initModules.lang = ["ocaml"];
     modules.lang.mlg = {
       config.text = ''
         (add-to-list 'auto-mode-alist '("\\.mlg$" . tuareg-mode) t)
@@ -25,6 +29,6 @@
     };
   };
   programs.nixvim = {
-    plugins.lsp.enabledServers = [ "ocamllsp" ];
+    plugins.lsp.enabledServers = ["ocamllsp"];
   };
 }

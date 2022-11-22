@@ -1,18 +1,19 @@
-{ config, lib, pkgs, ... }:
-
-let
-
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
   realName = "Luc Chabassier";
 
-  maildir = { path = "dwarfmaster/Inbox"; };
+  maildir = {path = "dwarfmaster/Inbox";};
 
   getmail = {
     enable = true;
     delete = true;
     readAll = true;
-    mailboxes = [ "Inbox" "Sent" ];
+    mailboxes = ["Inbox" "Sent"];
   };
-
 in {
   imports = [
     ./mua.nix
@@ -21,12 +22,12 @@ in {
 
   programs.mbsync.enable = true;
   programs.msmtp.enable = true;
-  home.packages = [ pkgs.getmail6 ];
+  home.packages = [pkgs.getmail6];
   programs.notmuch = {
     enable = true;
     maildir.synchronizeFlags = true;
-    new.tags = [ "new" ];
-    search.excludeTags = [ "spam" ];
+    new.tags = ["new"];
+    search.excludeTags = ["spam"];
     hooks = {
       postNew = "${pkgs.afew}/bin/afew --tag --new";
       preNew = ''
@@ -41,7 +42,7 @@ in {
       address = "luc@dwarfmaster.net";
       inherit realName;
       userName = "luc@dwarfmaster.net";
-      aliases = [ "root@dwarfmaster.net" ];
+      aliases = ["root@dwarfmaster.net"];
       primary = true;
 
       inherit maildir;
@@ -67,7 +68,7 @@ in {
         create = "both";
         expunge = "none";
         remove = "none";
-        patterns = [ "*" ];
+        patterns = ["*"];
       };
 
       msmtp.enable = true;
@@ -83,11 +84,13 @@ in {
 
     "ens" = {
       address = "luc.chabassier@ens.fr";
-      aliases = [ "luc.chabassier@ens.psl.eu" "chabassi@clipper.ens.fr" "chabassi@clipper.ens.psl.eu" "luc.chabassier@ens.psl.eu" ];
+      aliases = ["luc.chabassier@ens.psl.eu" "chabassi@clipper.ens.fr" "chabassi@clipper.ens.psl.eu" "luc.chabassier@ens.psl.eu"];
       inherit realName maildir;
     };
 
-    "gmail" = let gm = getmail // { mailboxes = [ "Inbox" ]; }; in rec {
+    "gmail" = let
+      gm = getmail // {mailboxes = ["Inbox"];};
+    in rec {
       address = "luc.chabassier@gmail.com";
       inherit realName maildir;
       flavor = "gmail.com";
@@ -164,7 +167,7 @@ in {
         enable = true;
         delete = true;
         readAll = true;
-        mailboxes = [ "Inbox" ];
+        mailboxes = ["Inbox"];
       };
     };
 
@@ -196,7 +199,7 @@ in {
         enable = true;
         delete = true;
         readAll = true;
-        mailboxes = [ "Inbox" ];
+        mailboxes = ["Inbox"];
       };
     };
 
@@ -225,7 +228,7 @@ in {
         enable = true;
         delete = true;
         readAll = true;
-        mailboxes = [ "Inbox" ];
+        mailboxes = ["Inbox"];
       };
     };
 

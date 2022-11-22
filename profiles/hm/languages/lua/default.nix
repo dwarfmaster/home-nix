@@ -1,6 +1,9 @@
-{ config, lib, pkgs, ... }:
-
-let
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
   lua = pkgs.lua53Packages;
 in {
   home.packages = [
@@ -10,7 +13,12 @@ in {
 
   programs.doom-emacs.config = {
     initModules = {
-      lang = [ { mod = "lua"; args = [ "lsp" ]; } ];
+      lang = [
+        {
+          mod = "lua";
+          args = ["lsp"];
+        }
+      ];
     };
     # TODO derivation for sumneko-lsp hardcode ~/.cache for logs and meta
     modules.dwarfmaster.lua = {

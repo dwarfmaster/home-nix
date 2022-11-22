@@ -1,20 +1,24 @@
-{ config, lib, pkgs, ... }:
-
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 # TODO fix
-
-with lib;
-
-let
-
+with lib; let
   cfg = config.programs.why3;
 
   provers = import ./provers.nix;
 
   proversType = types.attrsOf (types.submodule (
-    { name, config, ... }: {
+    {
+      name,
+      config,
+      ...
+    }: {
       options = {
         type = mkOption {
-          type = types.enum [ "z3" "cvc4" "alt-ergo" "coq" ];
+          type = types.enum ["z3" "cvc4" "alt-ergo" "coq"];
           description = ''
             The kind of prover that is being added to why3.
           '';
@@ -65,7 +69,7 @@ let
     };
     provers = mkOption {
       type = proversType;
-      default = { };
+      default = {};
       description = ''
         The provers to enable for Why3.
       '';
@@ -104,29 +108,30 @@ let
       '';
     };
   };
-
 in {
-
   options.programs.why3 = why3Module;
 
   config = mkIf cfg.enable {
-    home.packages = [ cfg.package ];
-    home.file.".why3.conf".text = (''
-[main]
-default_editor = "vim %f"
-magic = ${toString cfg.magic}
-memlimit = ${toString cfg.memlimit}
-running_provers_max = 2
-timelimit = ${toString cfg.timelimit}
+    home.packages = [cfg.package];
+    home.file.".why3.conf".text =
+      ''
+        [main]
+        default_editor = "vim %f"
+        magic = ${toString cfg.magic}
+        memlimit = ${toString cfg.memlimit}
+        running_provers_max = 2
+        timelimit = ${toString cfg.timelimit}
 
-[ide]
-font_size = ${toString cfg.fontSize}
-''
-
-+ (if cfg.darkTheme then (import ./dark-theme.nix) else "")
-
-+ concatStrings (mapAttrsToList
-    (n: v: "[prover]\n" + provers.${v.type}.config v + "\n")
-    cfg.provers));
+        [ide]
+        font_size = ${toString cfg.fontSize}
+      ''
+      + (
+        if cfg.darkTheme
+        then (import ./dark-theme.nix)
+        else ""
+      )
+      + concatStrings (mapAttrsToList
+        (n: v: "[prover]\n" + provers.${v.type}.config v + "\n")
+        cfg.provers);
   };
 }

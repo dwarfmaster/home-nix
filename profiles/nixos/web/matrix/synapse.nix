@@ -1,6 +1,9 @@
-{ config, lib, pkgs, ... }:
-
-let
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
   cfg = config.services.matrix-synapse;
   fqdn = "synapse.dwarfmaster.net";
   # SQL script to create the database before first launch
@@ -24,24 +27,22 @@ in {
   services.nginx.virtualHosts."dwarfmaster.net" = {
     enableACME = true;
     forceSSL = true;
-    locations."= /.well-known/matrix/server".extraConfig =
-      let
-        server = { "m.server" = "${fqdn}:443"; };
-      in ''
-        add_header Content-Type application/json;
-        return 200 '${builtins.toJSON server}';
-      '';
-    locations."= /.well-known/matrix/client".extraConfig =
-      let
-        client = {
-          "m.homeserver" = { "base_url" = "https://${fqdn}"; };
-          "m.identity_server" = { "base_url" = "https://vector.im"; };
-        };
-      in ''
-        add_header Content-Type application/json;
-        add_header Access-Control-Allow-Origin *;
-        return 200 '${builtins.toJSON client}';
-      '';
+    locations."= /.well-known/matrix/server".extraConfig = let
+      server = {"m.server" = "${fqdn}:443";};
+    in ''
+      add_header Content-Type application/json;
+      return 200 '${builtins.toJSON server}';
+    '';
+    locations."= /.well-known/matrix/client".extraConfig = let
+      client = {
+        "m.homeserver" = {"base_url" = "https://${fqdn}";};
+        "m.identity_server" = {"base_url" = "https://vector.im";};
+      };
+    in ''
+      add_header Content-Type application/json;
+      add_header Access-Control-Allow-Origin *;
+      return 200 '${builtins.toJSON client}';
+    '';
   };
   services.nginx.virtualHosts.${fqdn} = {
     enableACME = true;
@@ -64,17 +65,17 @@ in {
       server_name = "dwarfmaster.net";
       enable_registration = false;
       app_service_config_files =
-        (lib.optionals irc.enable [ "/var/lib/matrix-synapse/irc-registration.yml" ]);
+        lib.optionals irc.enable ["/var/lib/matrix-synapse/irc-registration.yml"];
       listeners = [
         {
           port = 8008;
-          bind_addresses = [ "::1" ];
+          bind_addresses = ["::1"];
           type = "http";
           tls = false;
           x_forwarded = true;
           resources = [
             {
-              names = [ "client" "federation" ];
+              names = ["client" "federation"];
               compress = false;
             }
           ];
@@ -84,5 +85,5 @@ in {
   };
 
   # Install tools
-  environment.systemPackages = [ pkgs.matrix-synapse get-init-script ];
+  environment.systemPackages = [pkgs.matrix-synapse get-init-script];
 }

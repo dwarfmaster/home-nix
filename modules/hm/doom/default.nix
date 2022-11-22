@@ -1,13 +1,30 @@
-{ config, lib, pkgs, ... }:
-
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 # TODO support building doom from nix
-
 let
-
-  inherit (lib)
-    mkEnableOption mkOption types mkIf
-    mapAttrs mapAttrs' mapAttrsRecursive mapAttrsToList foldl filterAttrs last
-    concatMapStrings concatStringsSep concatMap concatStrings nameValuePair;
+  inherit
+    (lib)
+    mkEnableOption
+    mkOption
+    types
+    mkIf
+    mapAttrs
+    mapAttrs'
+    mapAttrsRecursive
+    mapAttrsToList
+    foldl
+    filterAttrs
+    last
+    concatMapStrings
+    concatStringsSep
+    concatMap
+    concatStrings
+    nameValuePair
+    ;
   inherit (builtins) isString readFile attrValues;
 
   flattenAttr = attr:
@@ -17,7 +34,7 @@ let
 
   cfg = config.programs.doom-emacs.config;
 
-  elispFileType = types.submodule ({ config, ... }: {
+  elispFileType = types.submodule ({config, ...}: {
     options = {
       text = mkOption {
         description = "The content of the elisp file";
@@ -31,13 +48,18 @@ let
       };
     };
   });
-  mkElispOption = desc: mkOption {
-    description = desc;
-    type = types.nullOr elispFileType;
-    default = null;
-  };
+  mkElispOption = desc:
+    mkOption {
+      description = desc;
+      type = types.nullOr elispFileType;
+      default = null;
+    };
   # TODO support unit tests
-  doomModule = { name, config, ...}: {
+  doomModule = {
+    name,
+    config,
+    ...
+  }: {
     options = {
       # To enable it with options, set enable to false and manually add it to initModules
       enable = mkOption {
@@ -52,52 +74,64 @@ let
       autoloads = mkOption {
         description = "Autoload files to include in the module";
         type = types.attrsOf elispFileType;
-        default = { };
+        default = {};
       };
       doctor = mkElispOption "Checks for module";
       cli = mkElispOption "Add new commands to doom program";
       nix = mkOption {
         description = "Creates a +nix.el file at the root with constants corresponding to nix values";
         type = types.attrsOf types.str;
-        default = { };
+        default = {};
       };
       extras = mkOption {
         description = "Create other files prefixed by + at the root";
         type = types.attrsOf elispFileType;
-        default = { };
+        default = {};
       };
     };
   };
-
 
   emptyFile = pkgs.writeText "empty-file.el" "";
   mkFile = name: content:
     if !(isNull content.text)
     then pkgs.writeText name content.text
-    else (if !(isNull content.source)
-      then content.source
-      else emptyFile);
+    else
+      (
+        if !(isNull content.source)
+        then content.source
+        else emptyFile
+      );
   pathName = path: (concatStringsSep "/" path) + ".el";
-  elispFile = path: content: if !(isNull content) then { "${pathName path}" = mkFile "${last path}.el" content; } else {};
-  makeNixEl = strs: pkgs.writeText "nix.el"
+  elispFile = path: content:
+    if !(isNull content)
+    then {"${pathName path}" = mkFile "${last path}.el" content;}
+    else {};
+  makeNixEl = strs:
+    pkgs.writeText "nix.el"
     (concatStrings (mapAttrsToList (name: value: "(defconst *nix/${name}* \"${value}\")\n") strs));
   moduleFiles = prefix: name: module:
     prefixNames (prefix + name + "/")
-      (flattenAttr
-        ((mapAttrs (name: elispFile [ name ]) (removeAttrs module [ "enable" "nix" "autoloads" "extras" ]))
-          // (mapAttrs (name: elispFile [ "autoloads" name ]) module.autoloads)
-          // (if module.nix == { } then {} else { name = { "+nix.el" = makeNixEl module.nix; }; })
-          // (mapAttrs (name: elispFile [ ("+" + name) ]) module.extras)
-        ));
+    (flattenAttr
+      (
+        (mapAttrs (name: elispFile [name]) (removeAttrs module ["enable" "nix" "autoloads" "extras"]))
+        // (mapAttrs (name: elispFile ["autoloads" name]) module.autoloads)
+        // (
+          if module.nix == {}
+          then {}
+          else {name = {"+nix.el" = makeNixEl module.nix;};}
+        )
+        // (mapAttrs (name: elispFile [("+" + name)]) module.extras)
+      ));
   categoryFiles = prefix: category: modules:
     flattenAttr (mapAttrs (moduleFiles (prefix + category + "/")) modules);
   modulesFiles = prefix: flattenAttr (mapAttrs (categoryFiles prefix) cfg.modules);
 
   defaultModules =
     mapAttrs
-      (_: modules: mapAttrsToList (name: _: name)
-        (filterAttrs (_: mod: mod.enable) modules))
-      cfg.modules;
+    (_: modules:
+      mapAttrsToList (name: _: name)
+      (filterAttrs (_: mod: mod.enable) modules))
+    cfg.modules;
 
   formatMod = mod:
     if isString mod
@@ -105,12 +139,14 @@ let
     else "    (" + mod.mod + concatMapStrings (arg: " +" + arg) mod.args + ")\n";
   init-el = pkgs.writeText "init.el" ''
     (doom!
-    ${concatStrings (mapAttrsToList (category: mods: "  :" + category + "\n" + concatMapStrings formatMod mods) cfg.initModules) }
+    ${concatStrings (mapAttrsToList (category: mods: "  :" + category + "\n" + concatMapStrings formatMod mods) cfg.initModules)}
       )
   '';
-  files = {
-    "init.el" = init-el;
-  } // modulesFiles "modules/";
+  files =
+    {
+      "init.el" = init-el;
+    }
+    // modulesFiles "modules/";
 
   config-derivation = pkgs.runCommand "doom-emacs-config" {} ''
     mkdir -p $out
@@ -118,7 +154,6 @@ let
     touch $out/packages.el
     ${concatStrings (mapAttrsToList (path: file: "mkdir -p $(dirname $out/${path}) && ln -s ${file} $out/${path}\n") files)}
   '';
-
 in {
   options = {
     programs.doom-emacs.config = {
@@ -128,36 +163,53 @@ in {
         description = "Modules to load";
         type = types.attrsOf (types.listOf (types.either
           types.str
-          (types.submodule
-            (args:
-              { options = {
-                  mod = mkOption {
-                    description = "Name of the module";
-                    type = types.str;
-                  };
-                  args = mkOption {
-                    description = "Arguments to the module";
-                    type = types.listOf types.str;
-                  };
+          (
+            types.submodule
+            (args: {
+              options = {
+                mod = mkOption {
+                  description = "Name of the module";
+                  type = types.str;
                 };
-              })
+                args = mkOption {
+                  description = "Arguments to the module";
+                  type = types.listOf types.str;
+                };
+              };
+            })
           )));
 
         default = {
-          config = [ { mod = "default"; args = [ "bindings" "smartparens" ]; } ];
+          config = [
+            {
+              mod = "default";
+              args = ["bindings" "smartparens"];
+            }
+          ];
         };
 
         example = {
-          completion = [ "company" ];
-          editor = [ { mod = "evil"; args = [ "everywhere" ]; } "file-templates" ];
-          config = [ { mod = "default"; args = [ "bindings" "smartparens" ]; } ];
+          completion = ["company"];
+          editor = [
+            {
+              mod = "evil";
+              args = ["everywhere"];
+            }
+            "file-templates"
+          ];
+          config = [
+            {
+              mod = "default";
+              args = ["bindings" "smartparens"];
+            }
+          ];
         };
       };
 
       modules = mkOption {
         description = "Additional configuration modules";
         type = types.attrsOf (types.attrsOf (types.submodule doomModule));
-        default = { };
+        default = {};
       };
 
       dir = mkOption {
@@ -168,7 +220,12 @@ in {
   };
 
   config = mkIf cfg.enable {
-    assertions = [ { assertion = config.programs.emacs.enable; message = "Emacs must be enabled for doom-emacs"; } ];
+    assertions = [
+      {
+        assertion = config.programs.emacs.enable;
+        message = "Emacs must be enabled for doom-emacs";
+      }
+    ];
 
     programs.doom-emacs.config.initModules = defaultModules;
     programs.doom-emacs.config.dir = "${config-derivation}";

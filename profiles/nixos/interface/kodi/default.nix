@@ -1,6 +1,9 @@
-{ config, pkgs, lib, ... }:
-
-let
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}: let
   kodi = pkgs.kodi-wayland;
 in {
   # Run kodi in wayland with cage kiosk

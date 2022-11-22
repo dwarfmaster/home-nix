@@ -1,66 +1,72 @@
-{ config, lib, pkgs, ... }:
-
-with lib;
-
-let
-
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+with lib; let
   user = "pixelfed";
   group = "pixelfed";
   home = "/var/www/pixelfed";
 
   dbtable = "pixelfed";
-  dbhost  = "/run/postgresql";
-  dbtype  = "pgsql";
+  dbhost = "/run/postgresql";
+  dbtype = "pgsql";
 
   hostName = "pixelfed.dwarfmaster.net";
   domain = "dwarfmaster.net";
 
   fpm = config.services.phpfpm.pools.pixelfed;
   phpPackage = pkgs.php74.buildEnv {
-    extensions = {enabled, all}:
-      (with all;
-        enabled
-        ++ optional (dbtype == "pgsql") pdo_pgsql
-        ++ optional (dbtype == "pgsql") pgsql
-        ++ optional (dbtype == "mysql") pdo_mysql
-        ++ optional (dbtype == "mysql") mysqli
-        ++ [ bcmath
-             ctype
-             curl
-             exif
-             gd
-             iconv
-             intl
-             json
-             mbstring
-             openssl
-             redis
-             tokenizer
-             xml
-             zip
-           ]);
+    extensions = {
+      enabled,
+      all,
+    }: (with all;
+      enabled
+      ++ optional (dbtype == "pgsql") pdo_pgsql
+      ++ optional (dbtype == "pgsql") pgsql
+      ++ optional (dbtype == "mysql") pdo_mysql
+      ++ optional (dbtype == "mysql") mysqli
+      ++ [
+        bcmath
+        ctype
+        curl
+        exif
+        gd
+        iconv
+        intl
+        json
+        mbstring
+        openssl
+        redis
+        tokenizer
+        xml
+        zip
+      ]);
     extraConfig = toKeyValue phpOptions;
   };
-  phpOptions = {
-    post_max_size = "8M";
-    file_uploads = "On";
-    upload_max_filesize = "2M";
-    max_file_uploads = 20;
-    max_execution_time = 600;
-  } // {
-    short_open_tag = "Off";
-    expose_php = "Off";
-    error_reporting = "E_ALL & ~E_DEPRECATED & ~E_STRICT";
-    display_errors = "stderr";
-    "opcache.enable_cli" = "1";
-    "opcache.interned_strings_buffer" = "8";
-    "opcache.max_accelerated_files" = "10000";
-    "opcache.memory_consumption" = "128";
-    "opcache.revalidate_freq" = "1";
-    "opcache.fast_shutdown" = "1";
-    "openssl.cafile" = "/etc/ssl/certs/ca-certificates.crt";
-    catch_workers_output = "yes";
-  };
+  phpOptions =
+    {
+      post_max_size = "8M";
+      file_uploads = "On";
+      upload_max_filesize = "2M";
+      max_file_uploads = 20;
+      max_execution_time = 600;
+    }
+    // {
+      short_open_tag = "Off";
+      expose_php = "Off";
+      error_reporting = "E_ALL & ~E_DEPRECATED & ~E_STRICT";
+      display_errors = "stderr";
+      "opcache.enable_cli" = "1";
+      "opcache.interned_strings_buffer" = "8";
+      "opcache.max_accelerated_files" = "10000";
+      "opcache.memory_consumption" = "128";
+      "opcache.revalidate_freq" = "1";
+      "opcache.fast_shutdown" = "1";
+      "openssl.cafile" = "/etc/ssl/certs/ca-certificates.crt";
+      catch_workers_output = "yes";
+    };
   toKeyValue = generators.toKeyValue {
     mkKeyValue = generators.mkKeyValueDefault {} " = ";
   };
@@ -73,7 +79,7 @@ let
     "pm.max_spare_servers" = "4";
     "pm.max_requests" = "500";
   };
-  poolConfig   = null;
+  poolConfig = null;
 
   pixelfed-config = {
     name = "DwarfMaster's Photo server";
@@ -101,24 +107,26 @@ let
     max_caption_length = 150;
     max_album_length = 10;
   };
-  pixelfed = with pkgs; callPackage ./pixelfed {
-    storage = home;
-    envConfig = pixelfed-config;
-    php = phpPackage;
-    phpPackages = php74Packages;
-    noDev = true;
-  };
-
+  pixelfed = with pkgs;
+    callPackage ./pixelfed {
+      storage = home;
+      envConfig = pixelfed-config;
+      php = phpPackage;
+      phpPackages = php74Packages;
+      noDev = true;
+    };
 in {
-  imports = [ ./redis.nix ];
+  imports = [./redis.nix];
 
   # Database
   services.postgresql = {
-    ensureDatabases = [ dbtable ];
-    ensureUsers = [ {
-      name = user;
-      ensurePermissions."DATABASE ${dbtable}" = "ALL PRIVILEGES";
-    } ];
+    ensureDatabases = [dbtable];
+    ensureUsers = [
+      {
+        name = user;
+        ensurePermissions."DATABASE ${dbtable}" = "ALL PRIVILEGES";
+      }
+    ];
   };
 
   # Packages
@@ -137,9 +145,9 @@ in {
     group = group;
     createHome = true;
     isSystemUser = true;
-    extraGroups = [ "redis" ];
+    extraGroups = ["redis"];
   };
-  users.groups.${group}.members = [ user config.services.nginx.user ];
+  users.groups.${group}.members = [user config.services.nginx.user];
 
   # PHP-FPM
   services.phpfpm = {
@@ -150,10 +158,12 @@ in {
       phpEnv = {
         PATH = "/run/wrappers/bin:/nix/var/nix/profiles/default/bin:/run/current-system/sw/bin:/usr/bin:/bin";
       };
-      settings = mapAttrs (name: mkDefault) {
-        "listen.owner" = config.services.nginx.user;
-        "listen.group" = config.services.nginx.group;
-      } // poolSettings;
+      settings =
+        mapAttrs (name: mkDefault) {
+          "listen.owner" = config.services.nginx.user;
+          "listen.group" = config.services.nginx.group;
+        }
+        // poolSettings;
       extraConfig = poolConfig;
     };
   };
@@ -162,13 +172,13 @@ in {
   # TODO
   systemd.services = {
     pixelfed-setup = {
-      wantedBy = [ "multi-user.target" ];
-      before = [ "phpfpm-pixelfed.service" ];
-                 #"pixelfed-horizon.service"
-                 #"pixelfed-queue-worker.service" ];
+      wantedBy = ["multi-user.target"];
+      before = ["phpfpm-pixelfed.service"];
+      #"pixelfed-horizon.service"
+      #"pixelfed-queue-worker.service" ];
       serviceConfig.Type = "oneshot";
       serviceConfig.User = user;
-      restartTriggers = [ pixelfed ];
+      restartTriggers = [pixelfed];
       # path = [  ];
       script = ''
         chmod 775 ${home}
@@ -208,9 +218,11 @@ in {
         ${phpPackage}/bin/php ${pixelfed}/artisan key:generate
         ${phpPackage}/bin/php ${pixelfed}/artisan migrate --force
         ${phpPackage}/bin/php ${pixelfed}/artisan import:cities
-        ${if pixelfed-config.enable_activity_pub
+        ${
+          if pixelfed-config.enable_activity_pub
           then "${phpPackage}/bin/php ${pixelfed}/artisan instance:actor"
-          else ""}
+          else ""
+        }
         ${phpPackage}/bin/php ${pixelfed}/artisan route:cache
         ${phpPackage}/bin/php ${pixelfed}/artisan view:cache
         ${phpPackage}/bin/php ${pixelfed}/artisan config:cache
@@ -219,32 +231,32 @@ in {
       '';
     };
 
-  #   pixelfed-horizon = {
-  #     wantedBy = [ "multi-user.target" ];
-  #     before = [ "phpfpm-pixelfed.service" ];
-  #     serviceConfig.Type = "simple";
-  #     serviceConfig.User = user;
-  #     serviceConfig.ExecStart = "${phpPackage}/bin/php ${home}/artisan horizon";
-  #   };
+    #   pixelfed-horizon = {
+    #     wantedBy = [ "multi-user.target" ];
+    #     before = [ "phpfpm-pixelfed.service" ];
+    #     serviceConfig.Type = "simple";
+    #     serviceConfig.User = user;
+    #     serviceConfig.ExecStart = "${phpPackage}/bin/php ${home}/artisan horizon";
+    #   };
 
-  #   pixelfed-queue-worker = {
-  #     wantedBy = [ "multi-user.target" ];
-  #     before = [ "phpfpm-pixelfed.service" ];
-  #     serviceConfig.Type = "simple";
-  #     serviceConfig.User = user;
-  #     serviceConfig.ExecStart = "${phpPackage}/bin/php ${home}/artisan queue:work";
-  #   };
+    #   pixelfed-queue-worker = {
+    #     wantedBy = [ "multi-user.target" ];
+    #     before = [ "phpfpm-pixelfed.service" ];
+    #     serviceConfig.Type = "simple";
+    #     serviceConfig.User = user;
+    #     serviceConfig.ExecStart = "${phpPackage}/bin/php ${home}/artisan queue:work";
+    #   };
 
-  #   pixelfed-cron = {
-  #     serviceConfig.Type = "oneshot";
-  #     serviceConfig.User = user;
-  #     serviceConfig.ExecStart = "${phpPackage}/bin/php ${home}/artisan schedule:run";
-  #   };
+    #   pixelfed-cron = {
+    #     serviceConfig.Type = "oneshot";
+    #     serviceConfig.User = user;
+    #     serviceConfig.ExecStart = "${phpPackage}/bin/php ${home}/artisan schedule:run";
+    #   };
   };
 
   systemd.timers = {
     pixelfed-cron = {
-      wantedBy = [ "timers.target" ];
+      wantedBy = ["timers.target"];
       timerConfig.OnBootSec = "5m";
       timerConfig.OnUnitActiveSec = "5m";
       timerConfig.Unit = "pixelfed-cron.service";

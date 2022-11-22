@@ -1,6 +1,9 @@
-{ config, lib, pkgs, ... }:
-
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}: {
   programs.cheat = {
     enable = true;
     enableCommunity = true;
@@ -13,5 +16,5 @@
     };
   };
 
-  home.packages = [ pkgs.tldr ];
+  home.packages = [pkgs.tldr];
 }

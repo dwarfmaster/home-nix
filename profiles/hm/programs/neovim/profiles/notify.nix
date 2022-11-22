@@ -1,6 +1,9 @@
-{ config, pkgs, lib, ... }:
-
 {
+  config,
+  pkgs,
+  lib,
+  ...
+}: {
   programs.nixvim = {
     plugins.notify = {
       enable = true;
@@ -14,9 +17,12 @@
       #   trace = "";
       # };
     };
-    plugins.telescope.enabledExtensions = [ "notify" ];
+    plugins.telescope.enabledExtensions = ["notify"];
     plugins.which-key.bindings.n."<leader>".subs."s".bindings = {
-      "N" = { cmd = "Telescope notify"; description = "Notifications"; };
+      "N" = {
+        cmd = "Telescope notify";
+        description = "Notifications";
+      };
     };
   };
 }

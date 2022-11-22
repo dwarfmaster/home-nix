@@ -1,7 +1,9 @@
-{ config, pkgs, ... }:
-
 {
+  config,
+  pkgs,
+  ...
+}: {
   home.packages = builtins.attrValues {
-    python = pkgs.python3.withPackages (ppkgs: [ ]);
+    python = pkgs.python3.withPackages (ppkgs: []);
   };
 }

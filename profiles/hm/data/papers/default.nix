@@ -1,11 +1,13 @@
-{ config, pkgs, ... }:
-
 {
-  home.packages = with pkgs; [ zotero ];
+  config,
+  pkgs,
+  ...
+}: {
+  home.packages = with pkgs; [zotero];
 
   programs.doom-emacs.config = {
     initModules = {
-      tools = [ "biblio" ];
+      tools = ["biblio"];
     };
     modules.dwarfmaster.papers = {
       config.source = ./config.el;

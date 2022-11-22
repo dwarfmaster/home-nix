@@ -1,8 +1,17 @@
-{ config, lib, pkgs, ... }:
-
-let
-  inherit (lib) mkEnableOption mkOption types
-    mkIf concatStringsSep;
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
+  inherit
+    (lib)
+    mkEnableOption
+    mkOption
+    types
+    mkIf
+    concatStringsSep
+    ;
   cfg = config.pkgconfig;
 in {
   options = {
@@ -12,8 +21,8 @@ in {
       path = mkOption {
         type = types.listOf types.path;
         description = "Paths to include in PKG_CONFIG_PATH";
-        example = [ "${pkgs.gmp.dev}/lib/pkgconfig" ];
-        default = [ ];
+        example = ["${pkgs.gmp.dev}/lib/pkgconfig"];
+        default = [];
       };
     };
   };

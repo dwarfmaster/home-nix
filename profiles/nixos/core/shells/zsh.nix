@@ -1,6 +1,9 @@
-{ config, lib, pkgs, ... }:
-
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}: {
   programs.zsh = {
     enable = true;
     shellInit = ''
@@ -9,5 +12,5 @@
   };
 
   # System completion for ZSH
-  environment.pathsToLink = [ "/share/zsh" ];
+  environment.pathsToLink = ["/share/zsh"];
 }

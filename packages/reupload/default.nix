@@ -1,5 +1,8 @@
-{ writeScriptBin, curl, ... }:
-
+{
+  writeScriptBin,
+  curl,
+  ...
+}:
 writeScriptBin "reupload" ''
   if test "$#" -ne 1; then
     echo "Usage: $0 path/to/pdf"

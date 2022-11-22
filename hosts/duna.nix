@@ -1,6 +1,9 @@
-{ config, lib, pkgs, ... }:
-
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}: {
   profiles = {
     users = {
       root.enable = true;
@@ -33,11 +36,11 @@
     };
 
     initrd = {
-        availableKernelModules = [ "xhci_pci" "thunderbolt" "vmd" "nvme" "usb_storage" "sd_mod" ];
-        kernelModules = [ ];
+      availableKernelModules = ["xhci_pci" "thunderbolt" "vmd" "nvme" "usb_storage" "sd_mod"];
+      kernelModules = [];
     };
-    kernelModules = [ "kvm-intel" "acpi_call" ];
-    extraModulePackages = [ config.boot.kernelPackages.acpi_call ];
+    kernelModules = ["kvm-intel" "acpi_call"];
+    extraModulePackages = [config.boot.kernelPackages.acpi_call];
     # Unnecessary since / is tmpfs
     cleanTmpDir = false;
   };
@@ -82,13 +85,13 @@
     "/" = {
       device = "none";
       fsType = "tmpfs";
-      options = [ "defaults" "size=16G" "mode=755" ];
+      options = ["defaults" "size=16G" "mode=755"];
     };
 
     "/home/luc" = {
       device = "none";
       fsType = "tmpfs";
-      options = [ "defaults" "size=4G" "mode=777" ];
+      options = ["defaults" "size=4G" "mode=777"];
     };
 
     "/boot" = {
@@ -99,7 +102,7 @@
     "/nix" = {
       device = "/dev/disk/by-uuid/04a48731-3ecd-4198-857c-718f10d126de";
       fsType = "f2fs";
-      options = [ "noatime" ];
+      options = ["noatime"];
     };
 
     "/persists" = {
@@ -113,5 +116,5 @@
       };
     };
   };
-  swapDevices = [ ];
+  swapDevices = [];
 }

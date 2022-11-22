@@ -1,7 +1,5 @@
-{ pkgs, ... }:
-
-{
-  imports = [ ../../system/xdg ];
+{pkgs, ...}: {
+  imports = [../../system/xdg];
 
   qt = {
     enable = true;
@@ -12,11 +10,11 @@
     enable = true;
     font = {
       package = null; # nerdfonts installed globally
-      name    = "FuraCode Nerd Font 14";
+      name = "FuraCode Nerd Font 14";
     };
     iconTheme = {
       package = pkgs.numix-icon-theme;
-      name    = "Numix";
+      name = "Numix";
     };
     enableBase16Theme = true;
     #theme = {
@@ -30,7 +28,7 @@
     fontconfig.enable = true;
   };
 
-  home.packages = [ pkgs.dconf ];
+  home.packages = [pkgs.dconf];
 
   # Tell firefox and XDG-compliant utilities to use my directories
   xdg.configFile."user-dirs.dirs".source = ./dirs;
@@ -43,7 +41,7 @@
     settings = {
       "org/gtk/settings/file-chooser" = {
         window-position = "(480, 270)";
-        window-size     = "(960, 540)";
+        window-size = "(960, 540)";
       };
     };
   };

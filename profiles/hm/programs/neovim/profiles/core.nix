@@ -1,6 +1,9 @@
-{ config, pkgs, lib, ... }:
-
-let
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}: let
   tab = 2;
 in {
   imports = [
@@ -20,13 +23,13 @@ in {
   colorScheme.nixvimIntegration = true;
 
   programs.nixvim = {
-    #  __  __ _        
-    # |  \/  (_)___ __ 
+    #  __  __ _
+    # |  \/  (_)___ __
     # | |\/| | (_-</ _|
     # |_|  |_|_/__/\__|
-    #                  
+    #
     # Misc
-    extraPlugins = [ pkgs.vimPlugins.vim-repeat ];
+    extraPlugins = [pkgs.vimPlugins.vim-repeat];
     extraConfigLua = ''
     '';
     # TODO basic settings
@@ -54,24 +57,22 @@ in {
     };
     plugins.surround.enable = true;
 
-
-    #  _____ _                  
-    # |_   _| |_  ___ _ __  ___ 
+    #  _____ _
+    # |_   _| |_  ___ _ __  ___
     #   | | | ' \/ -_) '  \/ -_)
     #   |_| |_||_\___|_|_|_\___|
-    #                           
+    #
     # Theme
     plugins.lualine = {
       enable = true;
       theme = "base16";
     };
 
-
-    # __      ___    _    _       _            
-    # \ \    / / |_ (_)__| |_ ___| |_____ _  _ 
+    # __      ___    _    _       _
+    # \ \    / / |_ (_)__| |_ ___| |_____ _  _
     #  \ \/\/ /| ' \| / _| ' \___| / / -_) || |
     #   \_/\_/ |_||_|_\__|_||_|  |_\_\___|\_, |
-    #                                     |__/ 
+    #                                     |__/
     # Which-key
     plugins.which-key = {
       enable = true;

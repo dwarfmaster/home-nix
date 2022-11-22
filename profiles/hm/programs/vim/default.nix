@@ -1,6 +1,9 @@
-{ config, pkgs, lib, ... }:
-
-let
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}: let
   base16-vim = pkgs.fetchFromGitHub {
     owner = "chriskempson";
     repo = "base16-vim";
@@ -15,7 +18,8 @@ let
   schemeName = "base16-${theme.slug}";
   colorscheme =
     config.lib.mustache.render "${schemeName}.vim" template
-      (colors // {
+    (colors
+      // {
         scheme-slug = theme.slug;
       });
 
@@ -35,15 +39,16 @@ let
   };
 in {
   programs.vim = {
-    enable      = true;
+    enable = true;
     # extraConfig = builtins.readFile ./vimrc;
     extraConfig = builtins.readFile "${vimrc}";
     plugins = builtins.attrValues {
-      inherit (pkgs.vimPlugins)
+      inherit
+        (pkgs.vimPlugins)
         lightline-vim # Status line
         vim-gitgutter # Display git information in the gutter
         vim-polyglot # Support for many languages
-      ;
+        ;
     };
   };
 }

@@ -1,7 +1,9 @@
-{ config, lib, pkgs, ... }:
-
-let
-
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
   inherit (lib) concatMapStrings;
 
   mkVer = builtins.replaceStrings ["."] ["_"];
@@ -11,7 +13,6 @@ let
     cp ${pkgs.arkenfox-doc-css} $out/style.css
     ${concatMapStrings (version: "cp ${pkgs."arkenfox-v${mkVer version}-doc"} $out/${version}.html\n") lib.arkenfox.supportedVersions}
   '';
-
 in {
   services.nginx.virtualHosts."arkenfox.dwarfmaster.net" = {
     forceSSL = true;

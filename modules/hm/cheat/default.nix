@@ -1,18 +1,25 @@
-{ config, lib, pkgs, ... }:
-
-let
-
-  inherit (lib) mkEnableOption mkOption types
-    mapAttrsToList;
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
+  inherit
+    (lib)
+    mkEnableOption
+    mkOption
+    types
+    mapAttrsToList
+    ;
   inherit (builtins) concatStringsSep;
   cfg = config.programs.cheat;
 
-  cheat = types.submodule ({config,...}: {
+  cheat = types.submodule ({config, ...}: {
     options = {
       tags = mkOption {
         type = types.listOf types.str;
         description = "Tags to add to the cheatsheet";
-        default = [ ];
+        default = [];
       };
       syntax = mkOption {
         type = types.nullOr types.str;
@@ -32,7 +39,7 @@ let
     };
   });
 
-  cheatpath = types.submodule ({config,...}: {
+  cheatpath = types.submodule ({config, ...}: {
     options = {
       name = mkOption {
         type = types.str;
@@ -50,21 +57,32 @@ let
       tags = mkOption {
         type = types.listOf types.str;
         description = "Tags to apply to all cheatsheets inside";
-        default = [ ];
+        default = [];
       };
     };
   });
 
-  mkCheatSheet = name: cheat: pkgs.writeTextFile {
-    name = "cheat-${name}";
-    destination = "/${name}";
-    text = ''
-      ---
-      ${if !(builtins.isNull cheat.syntax) then "syntax: ${cheat.syntax}" else ""}
-      tags: [ ${concatStringsSep ", " cheat.tags} ]
-      ---
-    '' + (if builtins.isNull cheat.text then builtins.readFile cheat.source else cheat.text);
-  };
+  mkCheatSheet = name: cheat:
+    pkgs.writeTextFile {
+      name = "cheat-${name}";
+      destination = "/${name}";
+      text =
+        ''
+          ---
+          ${
+            if !(builtins.isNull cheat.syntax)
+            then "syntax: ${cheat.syntax}"
+            else ""
+          }
+          tags: [ ${concatStringsSep ", " cheat.tags} ]
+          ---
+        ''
+        + (
+          if builtins.isNull cheat.text
+          then builtins.readFile cheat.source
+          else cheat.text
+        );
+    };
   personal-src = pkgs.symlinkJoin {
     name = "cheat-personal";
     paths = mapAttrsToList mkCheatSheet cfg.cheats;
@@ -73,7 +91,7 @@ let
     name = "personal";
     path = "${personal-src}";
     readonly = true;
-    tags = [ "personal" ];
+    tags = ["personal"];
   };
 
   community-src = pkgs.callPackage ./community.nix {};
@@ -81,20 +99,26 @@ let
     name = "community";
     path = "${community-src}";
     readonly = true;
-    tags = [ "community" ];
+    tags = ["community"];
   };
   cheatpaths =
-    [ personal ] ++ cfg.cheatpaths
-    ++ (if cfg.enableCommunity then [ community ] else []);
+    [personal]
+    ++ cfg.cheatpaths
+    ++ (
+      if cfg.enableCommunity
+      then [community]
+      else []
+    );
 
-  config-content = cfg.extraConfig // {
-    inherit cheatpaths;
-  };
-  config-file = pkgs.writeText "cheat-conf.yml"
+  config-content =
+    cfg.extraConfig
+    // {
+      inherit cheatpaths;
+    };
+  config-file =
+    pkgs.writeText "cheat-conf.yml"
     (builtins.toJSON config-content);
-
-in
-{
+in {
   options = {
     programs.cheat = {
       enable = mkEnableOption "Cheatsheets for the command line";
@@ -105,12 +129,12 @@ in
       };
       cheats = mkOption {
         type = types.attrsOf cheat;
-        default = { };
+        default = {};
         description = "Additional cheatsheets added to a personal database";
       };
       cheatpaths = mkOption {
         type = types.listOf cheatpath;
-        default = [ ];
+        default = [];
         description = "Cheatpaths to add";
       };
       extraConfig = mkOption {
@@ -128,7 +152,7 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    home.packages = [ pkgs.cheat ];
+    home.packages = [pkgs.cheat];
     home.sessionVariables = {
       CHEAT_CONFIG_PATH = "${config-file}";
     };

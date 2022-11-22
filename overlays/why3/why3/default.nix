@@ -1,6 +1,15 @@
-{ callPackage, fetchurl, fetchpatch, stdenv, lib
-, ocamlPackages, coqPackages, rubber, hevea, emacs }:
-
+{
+  callPackage,
+  fetchurl,
+  fetchpatch,
+  stdenv,
+  lib,
+  ocamlPackages,
+  coqPackages,
+  rubber,
+  hevea,
+  emacs,
+}:
 stdenv.mkDerivation {
   pname = "why3";
   version = "1.3.3";
@@ -11,22 +20,30 @@ stdenv.mkDerivation {
   };
 
   buildInputs = with ocamlPackages; [
-    ocaml findlib ocamlgraph zarith menhir
+    ocaml
+    findlib
+    ocamlgraph
+    zarith
+    menhir
     # Compressed Sessions
     # Emacs compilation of why3.el
     emacs
     # Documentation
-    rubber hevea
+    rubber
+    hevea
     # GUI
     lablgtk3
     lablgtk3-sourceview3
     # WebIDE
-    js_of_ocaml js_of_ocaml-ppx
+    js_of_ocaml
+    js_of_ocaml-ppx
     # Coq Support
-    coqPackages.coq coqPackages.flocq ocamlPackages.camlp5
+    coqPackages.coq
+    coqPackages.flocq
+    ocamlPackages.camlp5
   ];
 
-  propagatedBuildInputs = with ocamlPackages; [ camlzip num ];
+  propagatedBuildInputs = with ocamlPackages; [camlzip num];
 
   enableParallelBuilding = true;
 
@@ -34,17 +51,17 @@ stdenv.mkDerivation {
     substituteInPlace Makefile.in --replace js_of_ocaml.ppx js_of_ocaml-ppx
   '';
 
-  configureFlags = [ "--enable-verbose-make" ];
+  configureFlags = ["--enable-verbose-make"];
 
-  installTargets = [ "install" "install-lib" ];
+  installTargets = ["install" "install-lib"];
 
   passthru.withProvers = callPackage ./with-provers.nix {};
 
   meta = with lib; {
     description = "A platform for deductive program verification";
-    homepage    = "http://why3.lri.fr/";
-    license     = licenses.lgpl21;
-    platforms   = platforms.unix;
-    maintainers = with maintainers; [ thoughtpolice vbgl ];
+    homepage = "http://why3.lri.fr/";
+    license = licenses.lgpl21;
+    platforms = platforms.unix;
+    maintainers = with maintainers; [thoughtpolice vbgl];
   };
 }

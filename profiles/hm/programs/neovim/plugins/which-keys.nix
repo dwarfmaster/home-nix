@@ -1,23 +1,35 @@
-{ config, pkgs, lib, ... }:
-
-let
-
-  inherit (lib)
-    mkIf mkMerge mkOption mkEnableOption types;
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}: let
+  inherit
+    (lib)
+    mkIf
+    mkMerge
+    mkOption
+    mkEnableOption
+    types
+    ;
 
   cfg = config.plugins.which-key;
 
-  mkSelect = default: name: mkOption {
-    inherit default;
-    description = lib.mdDoc "Wether to enable ${name}";
-    type = types.bool;
-  };
+  mkSelect = default: name:
+    mkOption {
+      inherit default;
+      description = lib.mdDoc "Wether to enable ${name}";
+      type = types.bool;
+    };
 
-  printB = b: if b then "true" else "false";
+  printB = b:
+    if b
+    then "true"
+    else "false";
 
   renderList = lib.concatMapStringsSep ", " (v: "\"${v}\"");
 
-  bindingType = types.submodule ({ config, ...}: {
+  bindingType = types.submodule ({config, ...}: {
     options = {
       binding = mkOption {
         description = lib.mdDoc "The binding";
@@ -60,12 +72,12 @@ let
     };
 
     config = mkMerge [
-      (mkIf (!(builtins.isNull config.cmd)) { binding = "<cmd>${config.cmd}<cr>"; })
-      (mkIf (!(builtins.isNull config.lua)) { binding = "function() ${config.lua} end"; })
+      (mkIf (!(builtins.isNull config.cmd)) {binding = "<cmd>${config.cmd}<cr>";})
+      (mkIf (!(builtins.isNull config.lua)) {binding = "function() ${config.lua} end";})
     ];
   });
 
-  bindingTreeType = types.submodule ({ config, ...}: {
+  bindingTreeType = types.submodule ({config, ...}: {
     options = {
       name = mkOption {
         description = "Name of the category";
@@ -75,58 +87,83 @@ let
       bindings = mkOption {
         description = "Bindings at this level";
         type = types.attrsOf bindingType;
-        default = { };
+        default = {};
       };
       subs = mkOption {
         description = "Sub-trees";
         type = types.attrsOf bindingTreeType;
-        default = { };
+        default = {};
       };
     };
   });
 
   mergeAll = lib.foldr (as1: as2: as1 // as2) {};
-  prepareMapping = opts: prefix: key: bd: 
-    let
-      nullOr = v1: v2: if builtins.isNull v1 then v2 else v1;
-      inherit (bd) description binding;
-      silent = nullOr bd.silent opts.silent;
-      noremap = nullOr bd.noremap opts.noremap;
-      buffer = nullOr bd.buffer opts.buffer;
-    in lib.nameValuePair (prefix + key) (
-      { inherit binding description silent noremap; }
-      // (if builtins.isNull buffer then {} else { inherit buffer; })
-      // { lua = !(builtins.isNull bd.lua); });
-  accumulateMapping = opts: prefix: name: tree:
-    let
-      category = { "${prefix}" = if builtins.isNull tree.name then name else tree.name; };
-      bindings = lib.mapAttrs' (prepareMapping opts prefix) tree.bindings;
-      subs = lib.mapAttrsToList (k: accumulateMapping opts (prefix + k) k) tree.subs;
-    in mergeAll ([ category bindings ] ++ subs);
-  mappings =
-    let
-      opts = { silent = true; noremap = true; buffer = null; };
-    in lib.mapAttrs (_: maps: mergeAll (lib.mapAttrsToList (key: accumulateMapping opts key key) maps)) cfg.bindings;
+  prepareMapping = opts: prefix: key: bd: let
+    nullOr = v1: v2:
+      if builtins.isNull v1
+      then v2
+      else v1;
+    inherit (bd) description binding;
+    silent = nullOr bd.silent opts.silent;
+    noremap = nullOr bd.noremap opts.noremap;
+    buffer = nullOr bd.buffer opts.buffer;
+  in
+    lib.nameValuePair (prefix + key) (
+      {inherit binding description silent noremap;}
+      // (
+        if builtins.isNull buffer
+        then {}
+        else {inherit buffer;}
+      )
+      // {lua = !(builtins.isNull bd.lua);}
+    );
+  accumulateMapping = opts: prefix: name: tree: let
+    category = {
+      "${prefix}" =
+        if builtins.isNull tree.name
+        then name
+        else tree.name;
+    };
+    bindings = lib.mapAttrs' (prepareMapping opts prefix) tree.bindings;
+    subs = lib.mapAttrsToList (k: accumulateMapping opts (prefix + k) k) tree.subs;
+  in
+    mergeAll ([category bindings] ++ subs);
+  mappings = let
+    opts = {
+      silent = true;
+      noremap = true;
+      buffer = null;
+    };
+  in
+    lib.mapAttrs (_: maps: mergeAll (lib.mapAttrsToList (key: accumulateMapping opts key key) maps)) cfg.bindings;
 
-  escapeCmd = m: 
-    if m.lua then m.binding
-    else "\"" + builtins.replaceStrings [ "\"" ] [ "\\\"" ] m.binding + "\"";
+  escapeCmd = m:
+    if m.lua
+    then m.binding
+    else "\"" + builtins.replaceStrings ["\""] ["\\\""] m.binding + "\"";
   renderMapping = m:
     if builtins.isString m
-    then "{ name = \"${m}\" }" 
-    else (if builtins.isNull m.binding 
-      then "\"${m.description}\""
-      else "{ ${escapeCmd m}, \"${m.description}\", " 
-         + "silent=${printB m.silent}, noremap=${printB m.noremap}"
-         + (if m ? "buffer" then ", buffer${toString m.buffer} }" else "}"));
+    then "{ name = \"${m}\" }"
+    else
+      (
+        if builtins.isNull m.binding
+        then "\"${m.description}\""
+        else
+          "{ ${escapeCmd m}, \"${m.description}\", "
+          + "silent=${printB m.silent}, noremap=${printB m.noremap}"
+          + (
+            if m ? "buffer"
+            then ", buffer${toString m.buffer} }"
+            else "}"
+          )
+      );
   renderMappings = mode: mappings: ''
-      require('which-key').register({
-        ${lib.concatStringsSep ",\n  "
-            (lib.mapAttrsToList (k: m: "[\"${k}\"] = ${renderMapping m}") mappings)}
-      }, { mode = "${mode}" })
-    '';
+    require('which-key').register({
+      ${lib.concatStringsSep ",\n  "
+      (lib.mapAttrsToList (k: m: "[\"${k}\"] = ${renderMapping m}") mappings)}
+    }, { mode = "${mode}" })
+  '';
   renderedMappings = lib.concatStringsSep "\n" (lib.mapAttrsToList renderMappings mappings);
-
 in {
   options.plugins.which-key = {
     enable = mkEnableOption "which-key.nvim plugin";
@@ -157,17 +194,20 @@ in {
     operators = mkOption {
       description = lib.mdDoc "Operators to trigger motion and text object completion for";
       type = types.attrsOf types.str;
-      default = { };
-      example = { gc = "Comments"; };
+      default = {};
+      example = {gc = "Comments";};
     };
 
     labels = mkOption {
       description = lib.mdDoc "Change label used to display some keys";
       type = types.attrsOf types.str;
-      default = { };
-      example = { "<spaces>" = "SPC"; "<cr>" = "RET"; };
+      default = {};
+      example = {
+        "<spaces>" = "SPC";
+        "<cr>" = "RET";
+      };
     };
-    
+
     icons = {
       breadcrumb = mkOption {
         description = lib.mdDoc "Symbol used to show active key combo";
@@ -203,32 +243,34 @@ in {
       window = {
         border = mkOption {
           description = lib.mdDoc "The border of the popup window";
-          type = types.enum [ "none" "single" "double" "shadow" ];
+          type = types.enum ["none" "single" "double" "shadow"];
           default = "none";
         };
         position = mkOption {
           description = lib.mdDoc "Position of the popup window";
-          type = types.enum [ "bottom" "top" ];
+          type = types.enum ["bottom" "top"];
           default = "bottom";
         };
-        margin = let 
-          mkMargin = def: desc: mkOption {
-            default = def;
-            description = lib.mdDoc "${desc} window margin";
-            type = types.int;
-          };
+        margin = let
+          mkMargin = def: desc:
+            mkOption {
+              default = def;
+              description = lib.mdDoc "${desc} window margin";
+              type = types.int;
+            };
         in {
           top = mkMargin 1 "Top";
           bottom = mkMargin 1 "Bottom";
           left = mkMargin 0 "Left";
           right = mkMargin 0 "Right";
         };
-        padding = let 
-          mkPadding = def: desc: mkOption {
-            default = def;
-            description = lib.mdDoc "${desc} window padding";
-            type = types.int;
-          };
+        padding = let
+          mkPadding = def: desc:
+            mkOption {
+              default = def;
+              description = lib.mdDoc "${desc} window padding";
+              type = types.int;
+            };
         in {
           top = mkPadding 2 "Top";
           bottom = mkPadding 2 "Bottom";
@@ -242,12 +284,13 @@ in {
         };
       };
 
-      layout = let 
-        mkMinMax = m: cat: def: mkOption {
-          description = lib.mdDoc "${m} ${cat} of the columns";
-          type = types.ints.positive;
-          default = def;
-        };
+      layout = let
+        mkMinMax = m: cat: def:
+          mkOption {
+            description = lib.mdDoc "${m} ${cat} of the columns";
+            type = types.ints.positive;
+            default = def;
+          };
       in {
         height = {
           min = mkMinMax "Min" "height" 4;
@@ -265,7 +308,7 @@ in {
         align = mkOption {
           description = lib.mdDoc "Align columns";
           default = "left";
-          type = types.enum [ "left" "center" "right" ];
+          type = types.enum ["left" "center" "right"];
         };
       };
     };
@@ -278,7 +321,7 @@ in {
     hidden = mkOption {
       description = lib.mdDoc "Hide mapping boilerplate";
       type = types.listOf types.str;
-      default = [ "<silent>" "<cmd>" "<Cmd>" "<CR>" "call" "lua" "^:" "^ " ];
+      default = ["<silent>" "<cmd>" "<Cmd>" "<CR>" "call" "lua" "^:" "^ "];
     };
     help = mkOption {
       description = lib.mdDoc "Show help messages when popup is visible";
@@ -288,16 +331,16 @@ in {
     triggers = {
       setup = mkOption {
         description = lib.mdDoc "Prefixes hooked by which-key";
-        type = types.either (types.enum [ "auto" ]) (types.listOf types.str);
+        type = types.either (types.enum ["auto"]) (types.listOf types.str);
         default = "auto";
-        example = [ "<leader>" ];
+        example = ["<leader>"];
       };
       blacklist = mkOption {
         description = lib.mdDoc "Modes + prefixes that shouldn't be hooked by which-key";
         type = types.attrsOf (types.listOf types.str);
         default = {
-          i = [ "j" "k" ];
-          v = [ "j" "k" ];
+          i = ["j" "k"];
+          v = ["j" "k"];
         };
       };
     };
@@ -310,16 +353,17 @@ in {
       filetypes = mkOption {
         description = lib.mdDoc "File types to disable which-key in";
         type = types.listOf types.str;
-        default = [ "TelescopePromp" ];
+        default = ["TelescopePromp"];
       };
     };
 
     bindings = let
-      mkBindings = name: mkOption {
-        description = lib.mdDoc "Bindings for ${name} mode.";
-        type = types.attrsOf bindingTreeType;
-        default = {};
-      };
+      mkBindings = name:
+        mkOption {
+          description = lib.mdDoc "Bindings for ${name} mode.";
+          type = types.attrsOf bindingTreeType;
+          default = {};
+        };
     in {
       n = mkBindings "normal";
       i = mkBindings "insert";
@@ -328,7 +372,7 @@ in {
   };
 
   config = mkIf cfg.enable {
-    # Assertions are not supported in submodules 
+    # Assertions are not supported in submodules
     # assertions = [
     #   { assertion = cfg.popup.layout.height.min <= cfg.popup.layout.height.max
     #   ; message = "which-key.nvim max column height must be greater than min column height"; }
@@ -336,8 +380,8 @@ in {
     #   ; message = "which-key.nvim max column width must be greater than min column width"; }
     # ];
 
-    extraPlugins = [ pkgs.vimPlugins.which-key-nvim ];
-    extraConfigLua = let 
+    extraPlugins = [pkgs.vimPlugins.which-key-nvim];
+    extraConfigLua = let
       triggers =
         if builtins.isString cfg.triggers.setup
         then "\"${cfg.triggers.setup}\""
@@ -378,10 +422,12 @@ in {
         window = {
           border = "${cfg.popup.window.border}",
           position = "${cfg.popup.window.position}",
-          margin = { ${let m = cfg.popup.window.margin; in 
-                         "${toString m.top}, ${toString m.right}, ${toString m.bottom}, ${toString m.left}"} },
-          padding = { ${let m = cfg.popup.window.padding; in 
-                          "${toString m.top}, ${toString m.right}, ${toString m.bottom}, ${toString m.left}"} },
+          margin = { ${let
+        m = cfg.popup.window.margin;
+      in "${toString m.top}, ${toString m.right}, ${toString m.bottom}, ${toString m.left}"} },
+          padding = { ${let
+        m = cfg.popup.window.padding;
+      in "${toString m.top}, ${toString m.right}, ${toString m.bottom}, ${toString m.left}"} },
           winblend = ${toString cfg.popup.window.blend}
         },
         layout = {
@@ -396,9 +442,9 @@ in {
         triggers = ${triggers},
         triggers_blacklist = {
           ${lib.concatStringsSep ",\n    "
-             (lib.mapAttrsToList
-               (n: v: "${n} = { ${renderList v} }")
-               cfg.triggers.blacklist)}
+        (lib.mapAttrsToList
+          (n: v: "${n} = { ${renderList v} }")
+          cfg.triggers.blacklist)}
         },
         disable = {
           buftypes = { ${renderList cfg.disable.buftypes} },
@@ -412,6 +458,5 @@ in {
 
       --- }}}
     '';
-    
   };
 }

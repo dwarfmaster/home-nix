@@ -1,6 +1,9 @@
-{ config, lib, pkgs, ... }:
-
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}: {
   # Conflicts with pipewire
   sound.enable = false;
   # TODO find precisely what it does

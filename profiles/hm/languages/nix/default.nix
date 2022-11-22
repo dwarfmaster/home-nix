@@ -1,8 +1,11 @@
-{ config, lib, pkgs, ... }:
-
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}: {
   programs.doom-emacs.config = {
-    initModules = { lang = [ "nix" ]; };
+    initModules = {lang = ["nix"];};
     modules.dwarfmaster.nix.config.text = ''
       (after! nix-mode
         (add-hook! 'nix-mode-hook #'lsp!))
@@ -10,9 +13,10 @@
   };
 
   home.packages = builtins.attrValues {
-    inherit (pkgs)
+    inherit
+      (pkgs)
       rnix-lsp
-      nixfmt
-    ;
+      alejandra # Formatter
+      ;
   };
 }

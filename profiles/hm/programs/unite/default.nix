@@ -1,6 +1,8 @@
-{ config, lib, ... }:
-
-let
+{
+  config,
+  lib,
+  ...
+}: let
   inherit (config.pkgsets) pkgs;
 in {
   home.packages = with pkgs; [

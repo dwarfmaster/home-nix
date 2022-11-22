@@ -1,6 +1,9 @@
-{ config, lib, pkgs, ... }:
-
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}: {
   programs.beets = {
     enable = true;
     #package = (pkgs.beets.override {
@@ -42,7 +45,7 @@
         quiet_fallback = "skip";
         none_rec_action = "ask";
         log = "${config.xdg.cacheHome}/beets/import.log";
-        languages = [ "en" "fr" ];
+        languages = ["en" "fr"];
         group_albums = false;
         bell = true;
       };

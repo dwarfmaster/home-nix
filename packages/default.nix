@@ -1,7 +1,5 @@
-self: super:
-
-let
+self: super: let
   inherit (super) callPackage;
 in {
-  reupload = callPackage ./reupload { };
+  reupload = callPackage ./reupload {};
 }

@@ -1,6 +1,9 @@
-{ config, lib, pkgs, ... }:
-
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}: {
   profiles = {
     users = {
       root.enable = true;
@@ -34,12 +37,12 @@
     };
 
     initrd = {
-      availableKernelModules = [ "xhci_pci" "nvme" "usb_storage" "sd_mod" ];
-      kernelModules = [ ];
+      availableKernelModules = ["xhci_pci" "nvme" "usb_storage" "sd_mod"];
+      kernelModules = [];
     };
-    kernelModules = [ "kvm-intel" "thunderbolt" ];
-    blacklistedKernelModules = [ "nouveau" ];
-    extraModulePackages = [ ];
+    kernelModules = ["kvm-intel" "thunderbolt"];
+    blacklistedKernelModules = ["nouveau"];
+    extraModulePackages = [];
     cleanTmpDir = true;
   };
   hardware = {
@@ -57,7 +60,7 @@
   '';
 
   # # Graphic card
-  services.xserver.videoDrivers = [ "intel" ];
+  services.xserver.videoDrivers = ["intel"];
   hardware.opengl = {
     enable = true;
     driSupport = true;

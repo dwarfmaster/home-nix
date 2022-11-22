@@ -1,6 +1,9 @@
-{ config, lib, pkgs, ... }:
-
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}: {
   services.imacs = {
     enable = true;
     hostName = "imacs.dwarfmaster.net";

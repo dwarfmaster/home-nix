@@ -1,6 +1,9 @@
-{ config, lib, pkgs, ... }:
-
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}: {
   # By default, no window manager nor DE is installed, and the display manager
   # only allows to log in  to xterm. The display manager installed is lightdm.
   # By setting startx as the display manager, I can run the graphic session

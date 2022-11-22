@@ -1,6 +1,9 @@
-{ config, lib, pkgs, ... }:
-
-let
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
   physlock = "${pkgs.physlock}/bin/physlock";
   i3lock = builtins.replaceStrings ["%%"] ["%"] "${config.services.screen-locker.lockCmd}";
   vlock = "${pkgs.vlock}/bin/vlock";
@@ -8,7 +11,8 @@ let
   bctl = "${pkgs.brightnessctl}/bin/brightnessctl";
 
   # TODO Make it a program somewhere else
-  unsetxkbmap = pkgs.writeScript "unsetxkbmap"
+  unsetxkbmap =
+    pkgs.writeScript "unsetxkbmap"
     ''
       #!${config.programs.nushell.package}/bin/nu
 
@@ -21,7 +25,8 @@ let
       echo $options | where $it !~ $toremove | each { ${setxkbmap} -option $it }
     '';
 
-  dim-screen = pkgs.writeShellScriptBin "dim_screen"
+  dim-screen =
+    pkgs.writeShellScriptBin "dim_screen"
     ''
       BRIGHTNESS=$(${bctl} --class=backlight get)
       trap "${bctl} --class=backlight set $BRIGHTNESS; exit 1" SIGINT SIGTERM
@@ -31,7 +36,8 @@ let
       done
     '';
 
-  locker = pkgs.writeShellScriptBin "lock-xsession"
+  locker =
+    pkgs.writeShellScriptBin "lock-xsession"
     ''
       # Activate systemctl target
       systemctl --user start xsession-lock.target
@@ -44,10 +50,9 @@ let
       # De-activate systemctl target
       systemctl --user stop xsession-lock.target
     '';
-
 in {
   services.screen-locker.enableBase16Theme = true;
-  home.packages = [ locker dim-screen pkgs.vlock pkgs.brightnessctl ];
+  home.packages = [locker dim-screen pkgs.vlock pkgs.brightnessctl];
   applications.locker = "${pkgs.systemd}/bin/loginctl lock-session";
 
   xdg.dataFile."applications/screen-locker.desktop".text = ''
@@ -64,11 +69,11 @@ in {
     dpms-setup = {
       Unit = {
         Description = "Set up DPMS configuration for X11 session";
-        After = [ "graphical-session-pre.target" ];
-        PartOf = [ "graphical-session.target" ];
+        After = ["graphical-session-pre.target"];
+        PartOf = ["graphical-session.target"];
       };
 
-      Install = { WantedBy = [ "graphical-session.target" ]; };
+      Install = {WantedBy = ["graphical-session.target"];};
 
       Service = {
         Type = "oneshot";
@@ -79,11 +84,11 @@ in {
     xsession-locker-setup = {
       Unit = {
         Description = "Screen locker";
-        After = [ "graphical-session-pre.target" "dpms-setup.service" ];
-        PartOf = [ "graphical-session.target" ];
+        After = ["graphical-session-pre.target" "dpms-setup.service"];
+        PartOf = ["graphical-session.target"];
       };
 
-      Install = { WantedBy = [ "graphical-session.target" ]; };
+      Install = {WantedBy = ["graphical-session.target"];};
 
       Service = {
         Type = "simple";

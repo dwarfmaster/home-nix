@@ -1,6 +1,9 @@
-{ config, lib, pkgs, ... }:
-
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}: {
   programs.doom-emacs.config = {
     modules.apps.caldav = {
       config.source = ./config.el;
@@ -13,6 +16,6 @@
     };
   };
 
-  home.packages = [ pkgs.khal ];
+  home.packages = [pkgs.khal];
   xdg.configFile."khal/config".source = ./khal.conf;
 }

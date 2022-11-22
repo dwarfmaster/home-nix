@@ -1,6 +1,4 @@
-{ lib, ... }:
-
-{
+{lib, ...}: {
   main = {
     "0000".enable = true;
     "0100" = {
@@ -35,7 +33,7 @@
       enable = true;
       # Enable disk cache for performance reasons
       "1001"."browser.cache.disk.enable".enable = true;
-      "1001"."browser.cache.disk.enable".value  = true;
+      "1001"."browser.cache.disk.enable".value = true;
     };
     "1200".enable = true;
     # I don't use container tabs

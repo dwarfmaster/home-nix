@@ -1,6 +1,9 @@
-{ config, lib, pkgs, ... }:
-
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}: {
   services.grocy = {
     enable = true;
     hostName = "grocy.dwarfmaster.net";

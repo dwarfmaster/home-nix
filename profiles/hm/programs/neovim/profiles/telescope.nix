@@ -1,6 +1,9 @@
-{ config, pkgs, lib, ... }:
-
 {
+  config,
+  pkgs,
+  lib,
+  ...
+}: {
   programs.nixvim = {
     plugins.telescope = {
       enable = true;
@@ -10,8 +13,10 @@
       };
     };
     plugins.which-key.bindings.n = let
-      picker = name: desc:
-        { lua = "require'telescope.builtin'.${name}{}"; description = desc; };
+      picker = name: desc: {
+        lua = "require'telescope.builtin'.${name}{}";
+        description = desc;
+      };
     in {
       "<leader>" = {
         bindings = {
