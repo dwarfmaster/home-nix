@@ -4,7 +4,7 @@
   pkgs,
   ...
 }: {
-  services.redis = {
+  services.redis.servers.pixelfed = {
     enable = true;
     # port = 0;
     # unixSocket = "/run/redis/redis.sock";
