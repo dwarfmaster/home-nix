@@ -6,23 +6,21 @@
 }: let
   tab = 2;
 in {
-  imports = [
-    ./telescope.nix
-    ./treesitter.nix
-    ./windows.nix
-    ./projects.nix
-    ./comments.nix
-    ./escape.nix
-    ./notify.nix
-    ./gitgutter.nix
-    ./lsp.nix
-    ./direnv.nix
-    ./cmp.nix
-  ];
-
   colorScheme.nixvimIntegration = true;
 
   programs.nixvim = {
+    profiles.telescope.enable = true;
+    profiles.treesitter.enable = true;
+    profiles.windows.enable = true;
+    profiles.projects.enable = true;
+    profiles.comments.enable = true;
+    profiles.escape.enable = true;
+    profiles.notify.enable = true;
+    profiles.gitgutter.enable = true;
+    profiles.lsp.enable = true;
+    profiles.direnv.enable = true;
+    profiles.cmp.enable = true;
+
     #  __  __ _
     # |  \/  (_)___ __
     # | |\/| | (_-</ _|

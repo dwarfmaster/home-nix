@@ -120,6 +120,7 @@
           colors = colors.homeManagerModules.colorScheme;
           impermanence = impermanence.nixosModules.home-manager.impermanence;
         };
+      nixvim = self.nixvimModules // {profiles = {...}: {imports = profiles.nixvim;};};
     };
     # All attributes to add to lib in modules
     extraLib = {
@@ -149,6 +150,7 @@
     profiles = {
       nixos = importProfiles ./profiles/nixos;
       hm = importProfiles ./profiles/hm;
+      nixvim = importProfiles ./profiles/nixvim;
     };
 
     pkgImport = system: unfree: pkgs:
@@ -224,6 +226,13 @@
 
     hmModules = let
       modulesDir = ./modules/hm;
+      fullPath = name: modulesDir + "/${name}";
+      modulesPaths = map fullPath (attrNames (readVisible modulesDir));
+    in
+      pathsToImportedAttrs modulesPaths;
+
+    nixvimModules = let
+      modulesDir = ./modules/nixvim;
       fullPath = name: modulesDir + "/${name}";
       modulesPaths = map fullPath (attrNames (readVisible modulesDir));
     in

@@ -6,10 +6,7 @@
 }: {
   imports = [
     # Profiles
-    ./profiles/core.nix
-
-    # HM Plugins
-    ./plugins/nix-colors.nix
+    ./config.nix
   ];
 
   home.packages = [
@@ -18,13 +15,6 @@
     pkgs.fzy
   ];
 
-  # The functional syntax is necessary because of https://github.com/NixOS/nixpkgs/issues/70638
-  programs.nixvim = {...}: {
-    enable = true;
-    imports = [
-      # Nixvim plugins
-      ./plugins/which-keys.nix
-    ];
-  };
+  programs.nixvim.enable = true;
   # programs.neovim.package = pkgs.neovim-nightly;
 }
