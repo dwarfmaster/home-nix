@@ -17,8 +17,6 @@ let
   inherit (lib) mkOption types;
   cfg = config.xdg;
 in {
-  config = {
-    xdg.enable = true;
-    xdg.stateHome = "${config.home.homeDirectory}/.local/state";
-  };
+  xdg.enable = true;
+  xdg.stateHome = "${config.home.homeDirectory}/.local/state";
 }

@@ -34,33 +34,47 @@
     content = readDir dir;
   in
     if content ? "default.nix"
-    then wrapProfile path (import "${dir}")
+    then wrap true path (import "${dir}")
     else importProfilesDir path dir content;
 
   importProfiles = dir: lib.flatten (importProfilesRec [] dir);
 
-  wrapProfile = path: profile: {
+  wrap = main: path: profile: {
     lib,
     pkgs,
     config,
     nixosConfig,
     ...
   } @ args: let
-    prf = profile args;
+    prf =
+      if builtins.isAttrs profile
+      then profile
+      else profile args;
     cfg = builtins.removeAttrs prf ["imports"];
+    prepImport = imp:
+      if builtins.isAttrs imp
+      then imp
+      else import imp;
     imports =
       if prf ? "imports"
-      then prf.imports
+      then builtins.map (p: wrap false path (prepImport p)) prf.imports
+      # then prf.imports
       else [];
-  in {
-    inherit imports;
+  in
+    {
+      inherit imports;
 
-    options.profiles = lib.setAttrByPath path {
-      enable = lib.mkEnableOption "Enable profile ${lib.concatMapStrings "/" path}";
-    };
-
-    config = lib.mkIf (lib.attrByPath path {enable = false;} config.profiles).enable cfg;
-  };
+      config = lib.mkIf (lib.attrByPath path {enable = false;} config.profiles).enable cfg;
+    }
+    // (
+      if !main
+      then {}
+      else {
+        options.profiles = lib.setAttrByPath path {
+          enable = lib.mkEnableOption "Enable profile ${lib.concatMapStrings "/" path}";
+        };
+      }
+    );
 in {
   inherit mapFilterAttrs genAttrs' importProfiles;
 
