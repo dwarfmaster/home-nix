@@ -13,11 +13,16 @@
 
       home-manager.useGlobalPkgs = true;
       home-manager.useUserPackages = true;
-      home-manager.sharedModules = (builtins.attrValues modules.hm) ++ [{
-        programs.nixvim = { ... }: {
-          imports = builtins.attrValues modules.nixvim;
-        };
-      }];
+      home-manager.sharedModules =
+        (builtins.attrValues modules.hm)
+        ++ [
+          {
+            profiles.core.enable = true;
+            programs.nixvim = {...}: {
+              imports = builtins.attrValues modules.nixvim;
+            };
+          }
+        ];
 
       networking.hostName = hostName;
       nix.nixPath = let
