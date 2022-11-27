@@ -71,6 +71,7 @@
         nix.enable = true;
         ocaml.enable = true;
         python3.enable = true;
+        ruby.enable = true;
         rust.enable = true;
         tools.enable = true;
         why3.enable = true;
