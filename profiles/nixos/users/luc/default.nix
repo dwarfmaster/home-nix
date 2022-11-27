@@ -9,50 +9,50 @@
         android.enable = true;
         direnv.enable = true;
         encryption.enable = true;
-        xdg.enable = true;
-        templates.enable = true;
         network.enable = true;
+        templates.enable = true;
+        xdg.enable = true;
       };
 
       interface = {
+        brightness.enable = true;
+        locking.enable = true;
+        visualisation.enable = true;
         x11.enable = true;
         xmonad.enable = true;
-        visualisation.enable = true;
-        locking.enable = true;
-        brightness.enable = true;
       };
 
       programs = {
-        firefox.enable = true;
-        emacs.enable = true;
         audio.enable = true;
         blender.enable = true;
+        cheat.enable = true;
         documents.enable = true;
         drawing.enable = false;
+        emacs.enable = true;
         engineering.enable = false;
+        firefox.enable = true;
+        games.enable = true;
         git-annex.enable = true;
         maps.enable = true;
         messaging.enable = true;
         multimedia.enable = true;
         neovim.enable = true;
         passwords.enable = true;
-        games.enable = true;
-        cheat.enable = true;
         vim.enable = true;
       };
 
       data = {
-        mail.enable = true;
-        photos.enable = true;
-        music.enable = true;
-        book.enable = true;
-        papers.enable = true;
         accounting.enable = true;
-        feeds.enable = true;
-        wiki.enable = true;
+        book.enable = true;
         calendar.enable = true;
-        nextcloud.enable = true;
         contacts.enable = true;
+        feeds.enable = true;
+        mail.enable = true;
+        music.enable = true;
+        nextcloud.enable = true;
+        papers.enable = true;
+        photos.enable = true;
+        wiki.enable = true;
       };
 
       languages = {
