@@ -2,10 +2,10 @@
   config,
   pkgs,
   lib,
+  hardware,
   ...
 }: {
-  # TODO will fail with infinite recursion
-  imports = [config.lib.hardware.raspberry-pi-4];
+  imports = [hardware.raspberry-pi-4];
 
   profiles = {
     users.root.enable = true;
@@ -16,14 +16,15 @@
   };
 
   nixpkgs = {
-    localSystem = "x86_64-linux";
-    crossSystem = "aarch64-linux";
+    localSystem.system = "x86_64-linux";
+    crossSystem.system = "aarch64-linux";
   };
 
   boot.loader.raspberryPi = {
     enable = true;
     version = 4;
   };
+  boot.loader.generic-extlinux-compatible.enable = false;
   hardware.specs = {
     cores = 4;
     threads = 8;

@@ -124,7 +124,6 @@
     };
     # All attributes to add to lib in modules
     extraLib = {
-      hardware = nixos-hardware.nixosModules;
       system = flake-utils.lib.system;
       allSystems = flake-utils.lib.allSystems;
       arkenfox = arkenfox.lib.arkenfox;
@@ -241,6 +240,9 @@
     nixosConfigurations = builtins.mapAttrs (_: config:
       lib.nixosSystem {
         inherit (config) modules;
+        specialArgs = {
+          hardware = nixos-hardware.nixosModules;
+        };
       })
     hosts;
   };
