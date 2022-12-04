@@ -16,10 +16,7 @@
     };
   };
 
-  nixpkgs = {
-    localSystem.system = "x86_64-linux";
-    crossSystem.system = "aarch64-linux";
-  };
+  nixpkgs.localSystem.system = "aarch64-linux";
 
   boot.loader.raspberryPi = {
     enable = true;
@@ -30,7 +27,7 @@
     cores = 4;
     threads = 8;
   };
-  system.stateVersion = "21.11";
+  system.stateVersion = "22.11";
   # Enable GPU acceleration
   hardware.raspberry-pi."4".fkms-3d.enable = true;
 

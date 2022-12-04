@@ -63,4 +63,5 @@ in {
   duna = mkHost "duna";
   vraccas = mkHost "vraccas";
   sharindlar = mkHost "sharindlar";
+  helzvog = mkHost "helzvog";
 }

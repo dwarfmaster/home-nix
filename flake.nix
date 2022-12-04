@@ -200,17 +200,27 @@
       inherit overlays modules;
     };
   in {
-    packages = eachSupportedSystem (system: let
-      pkgs = import nixos {
-        inherit system;
-        overlays = [packages];
+    packages =
+      eachSupportedSystem (system: let
+        pkgs = import nixos {
+          inherit system;
+          overlays = [packages];
+        };
+      in {
+        inherit
+          (pkgs)
+          reupload
+          ;
+      })
+      // {
+        x86_64-linux = {
+          helzvog-sd-image = nixos-generators.nixosGenerate {
+            system = "aarch64-linux";
+            format = "sd-aarch64";
+            modules = hosts.helzvog.modules;
+          };
+        };
       };
-    in {
-      inherit
-        (pkgs)
-        reupload
-        ;
-    });
 
     lib = import ./utils.nix {inherit lib;};
 
