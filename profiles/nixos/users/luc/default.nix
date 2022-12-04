@@ -70,6 +70,7 @@
         lua.enable = true;
         nix.enable = true;
         ocaml.enable = true;
+        prolog.enable = true;
         python3.enable = true;
         ruby.enable = true;
         rust.enable = true;
