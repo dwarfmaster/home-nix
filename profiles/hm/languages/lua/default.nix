@@ -10,9 +10,9 @@ in {
     lua.lua
     pkgs.sumneko-lua-language-server
   ];
-  
+
   programs.nixvim = {
-    plugins.lsp.enabledServers = [ "sumneko_lua" ];
+    plugins.lsp.enabledServers = ["sumneko_lua"];
   };
 
   programs.doom-emacs.config = {

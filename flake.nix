@@ -4,20 +4,24 @@
   inputs = {
     master.url = "nixpkgs/master";
     unstable.url = "nixpkgs/nixos-unstable";
-    nixos.url = "nixpkgs/release-22.05";
+    nixos.url = "nixpkgs/release-22.11";
     home = {
-      url = "github:nix-community/home-manager/release-22.05";
+      url = "github:nix-community/home-manager/release-22.11";
       inputs.nixpkgs.follows = "nixos";
     };
     nur.url = "github:nix-community/NUR";
     flake-utils.url = "github:numtide/flake-utils";
     nixos-hardware.url = "github:NixOS/nixos-hardware";
+    nixos-generators = {
+      url = "github:nix-community/nixos-generators";
+      inputs.nixpkgs.follows = "nixos";
+    };
 
     impermanence.url = "github:nix-community/impermanence";
     simple-mailserver = {
-      url = "gitlab:simple-nixos-mailserver/nixos-mailserver/nixos-22.05";
+      url = "gitlab:simple-nixos-mailserver/nixos-mailserver/nixos-22.11";
       inputs.nixpkgs.follows = "unstable";
-      inputs.nixpkgs-22_05.follows = "nixos";
+      inputs.nixpkgs-22_11.follows = "nixos";
     };
     django.url = "github:pnmadelaine/django-nixos/main";
     imacs = {
@@ -65,6 +69,7 @@
     nur,
     flake-utils,
     nixos-hardware,
+    nixos-generators,
     impermanence,
     simple-mailserver,
     django,

@@ -52,6 +52,7 @@
     specs = {
       cores = 4;
       threads = 8;
+      kvm = true;
     };
     acpilight.enable = true;
     enableRedistributableFirmware = true;

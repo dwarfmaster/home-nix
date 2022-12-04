@@ -18,6 +18,8 @@ in {
         type = types.int;
         default = config.hardware.specs.cores * 2;
       };
+
+      kvm = lib.mkEnableOption "Machine has kvm support";
     };
   };
 }

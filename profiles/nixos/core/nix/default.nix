@@ -5,19 +5,29 @@
 }: {
   nix = {
     package = pkgs.nixFlakes;
-    systemFeatures = ["nixos-test" "benchmark" "big-parallel" "kvm"];
-    maxJobs = config.hardware.specs.threads;
 
-    useSandbox = true;
-    autoOptimiseStore = true;
     gc.automatic = true;
     optimise.automatic = true;
+    settings = {
+      sandbox = true;
+      auto-optimise-store = true;
+      max-jobs = config.hardware.specs.threads;
+      system-features =
+        ["nixos-test" "benchmark" "big-parallel"]
+        ++ (
+          if config.hardware.specs.kvm
+          then ["kvm"]
+          else []
+        );
 
-    binaryCaches = [
-      "https://cache.nixos.org"
-    ];
-    binaryCachePublicKeys = [
-    ];
+      binary-caches = [
+        "https://cache.nixos.org"
+      ];
+
+      allowed-users = ["@wheel"];
+      # Users that can import closures
+      trusted-users = ["root" "@wheel"];
+    };
 
     extraOptions = ''
       keep-outputs = true
@@ -25,9 +35,5 @@
       experimental-features = nix-command flakes
       min-free = 536870912
     '';
-
-    allowedUsers = ["@wheel"];
-    # Users that can import closures
-    trustedUsers = ["root" "@wheel"];
   };
 }

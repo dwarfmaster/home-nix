@@ -1,7 +1,9 @@
-{ config, pkgs, ... }:
-
 {
+  config,
+  pkgs,
+  ...
+}: {
   programs.nixvim = {
-    plugins.lsp.enabledServers = [ "prolog_ls" ];
+    plugins.lsp.enabledServers = ["prolog_ls"];
   };
 }

@@ -11,7 +11,7 @@
     mkdir -p $out
     cp ${pkgs.arkenfox-vmaster-doc} $out/index.html
     cp ${pkgs.arkenfox-doc-css} $out/style.css
-    ${concatMapStrings (version: "cp ${pkgs."arkenfox-v${mkVer version}-doc"} $out/${version}.html\n") lib.arkenfox.supportedVersions}
+    ${concatMapStrings (version: "cp ${pkgs."arkenfox-v${mkVer version}-doc"} $out/${version}.html\n") config.lib.arkenfox.supportedVersions}
   '';
 in {
   services.nginx.virtualHosts."arkenfox.dwarfmaster.net" = {

@@ -17,7 +17,7 @@
       xserver.enable = true;
       graphical.enable = true;
       sound.enable = true;
-      grafana.enable = true;
+      # grafana.enable = true;
     };
   };
 
@@ -49,6 +49,7 @@
     specs = {
       cores = 6;
       threads = 12;
+      kvm = true;
     };
     enableRedistributableFirmware = true;
   };

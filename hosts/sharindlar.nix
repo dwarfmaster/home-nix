@@ -9,6 +9,7 @@
 
   profiles = {
     users.root.enable = true;
+    users.luc-rpi4.enable = true;
     interface = {
       sound.enable = true;
       kodi.enable = true;

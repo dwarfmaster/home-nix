@@ -17,7 +17,7 @@
     web = {
       matrix.enable = true;
       nextcloud.enable = true;
-      imacs.enable = true;
+      imacs.enable = false;
       wallabag.enable = false;
       grocy.enable = false;
       arkenfox.enable = true;
@@ -53,6 +53,7 @@
   hardware.specs = {
     cores = 4;
     threads = 8;
+    kvm = true;
   };
 
   powerManagement.cpuFreqGovernor = "ondemand";

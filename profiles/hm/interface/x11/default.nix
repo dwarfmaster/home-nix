@@ -125,14 +125,6 @@
       dconf = pkgs.gnome3.dconf-editor; # GTK configuration editor
     };
   };
-
-  # To experiment with arcan
-  arcan = {
-    home.packages = [
-      pkgs.arcan.durden
-      pkgs.arcan.arcan
-    ];
-  };
 in {
-  imports = [../graphic-theme xinit keyboard ./dunst.nix ./rofi.nix terminal fonts tools arcan];
+  imports = [../graphic-theme xinit keyboard ./dunst.nix ./rofi.nix terminal fonts tools];
 }
