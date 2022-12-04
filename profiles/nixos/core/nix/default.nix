@@ -15,12 +15,8 @@
 
     binaryCaches = [
       "https://cache.nixos.org"
-      "https://hydra.iohk.io"
-      "https://nixpkgs-wayland.cachix.org"
     ];
     binaryCachePublicKeys = [
-      "hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ="
-      "nixpkgs-wayland.cachix.org-1:3lwxaILxMRkVhehr5StQprHdEo4IrE8sRho9R9HOLYA="
     ];
 
     extraOptions = ''
