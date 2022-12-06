@@ -5,7 +5,7 @@
  *
  * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
  */
-static char *font = "FuraCode Nerd Font Mono:pixelsize=14:antialias=true";
+static char *font = "FiraCode Nerd Font Mono:pixelsize=14:antialias=true";
 static int borderpx = 2;
 
 /*

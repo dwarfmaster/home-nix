@@ -42,7 +42,7 @@ in {
         padding = 5;
         horizontal_padding = 5;
         frame_width = 3;
-        font = "FuraCode Nerd Font 12";
+        font = "FiraCode Nerd Font 12";
         format = "<b>%s</b>\\n%b";
       };
 

@@ -15,7 +15,7 @@ in {
       inherit (pkgs) rofi-emoji rofi-calc;
     };
 
-    font = "FuraCode Nerd Font Bold 20";
+    font = "FiraCode Nerd Font Bold 20";
     location = "center";
     theme = "hm-base16";
 

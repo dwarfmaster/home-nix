@@ -10,7 +10,7 @@
     enable = true;
     font = {
       package = null; # nerdfonts installed globally
-      name = "FuraCode Nerd Font 14";
+      name = "FiraCode Nerd Font 14";
     };
     iconTheme = {
       package = pkgs.numix-icon-theme;
