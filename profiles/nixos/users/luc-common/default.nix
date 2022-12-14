@@ -34,4 +34,7 @@
       manpages.enable = true;
     };
   };
+
+  # Enable support for Ergodox EZ
+  hardware.keyboard.zsa.enable = true;
 }
