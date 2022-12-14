@@ -58,6 +58,7 @@
       languages = {
         agda.enable = true;
         andromeda.enable = true;
+        asciidoc.enable = true;
         coq.enable = true;
         cpp.enable = true;
         dedukti.enable = true;
