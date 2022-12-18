@@ -4,7 +4,7 @@
     hashedPassword = import ./password.nix;
     description = "default";
     isNormalUser = true;
-    extraGroups = ["wheel" "luc" "networkmanager" "adbusers" "video"];
+    extraGroups = ["wheel" "luc" "networkmanager" "adbusers" "video" "dialout"];
     shell = "/run/current-system/sw/bin/zsh";
   };
 
