@@ -122,7 +122,7 @@
     ''
     + concatMapStrings (profile: "echo \"${profile.name}\"\n") (attrNameValuePairs profiles));
 
-  launcher = pkgs.writeScriptBin "firefox-launcher" ''
+  launcher = pkgs.writeShellScriptBin "firefox-launcher" ''
     if test "$#" -eq 1; then
       url="$@"
     else
