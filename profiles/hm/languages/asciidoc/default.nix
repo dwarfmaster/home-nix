@@ -1,6 +1,8 @@
-{ pkgs, config, ... }:
-
-let
+{
+  pkgs,
+  config,
+  ...
+}: let
   vim-asciidoctor = pkgs.vimUtils.buildVimPluginFrom2Nix {
     name = "vim-asciidoctor";
     src = pkgs.fetchFromGitHub {
@@ -12,17 +14,17 @@ let
   };
 in {
   programs.nixvim = {
-    extraPlugins = [ vim-asciidoctor ];
+    extraPlugins = [vim-asciidoctor];
     globals = {
       asciidoctor_executable = "${pkgs.asciidoctor}/bin/asciidoctor";
       asciidoctor_folding = 1;
       asciidoctor_fold_options = 0;
       asciidoctor_syntax_conceal = 1;
       asciidoctor_syntax_indented = 1;
-      asciidoctor_fenced_languages = [ "c" "cpp" "haskell" "rust" "ruby" "prolog" ];
+      asciidoctor_fenced_languages = ["c" "cpp" "haskell" "rust" "ruby" "prolog"];
     };
     extraConfigLua = builtins.readFile ./utils.lua;
   };
 
-  home.packages = [ pkgs.asciidoctor ];
+  home.packages = [pkgs.asciidoctor];
 }
