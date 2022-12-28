@@ -89,12 +89,15 @@
       // {
         nur = nur.overlay;
         arkenfox = arkenfox.overlay;
+        neovim-nightly = neovim-nightly.overlay;
         packages = self: super:
           {
             lean4 = lean4.defaultPackage.x86_64-linux;
             opam2nix = opam2nix.defaultPackage.x86_64-linux;
             nix-colors = colors.colorSchemes;
-            neovim-nightly = neovim-nightly.packages.default;
+            tree-sitter-make-grammar =
+              super.callPackage
+              (nixos + "/pkgs/development/tools/parsing/tree-sitter/grammar.nix") {};
           }
           // packages self super;
         variants = self: super: pkgs-variants super.system;

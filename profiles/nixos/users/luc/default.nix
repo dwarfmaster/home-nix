@@ -70,6 +70,7 @@
         lean.enable = true;
         lua.enable = true;
         nix.enable = true;
+        norg.enable = true;
         ocaml.enable = true;
         prolog.enable = true;
         python3.enable = true;

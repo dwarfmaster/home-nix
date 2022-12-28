@@ -10,6 +10,10 @@
     ensureInstalled = "all";
     incrementalSelection.enable = true;
     indent = true;
+    grammarPackages =
+      builtins.filter
+      (grammar: grammar.pname != "tree-sitter-norg-grammar")
+      pkgs.tree-sitter.allGrammars;
   };
   plugins.which-key.bindings = {
     n."g".subs."n".bindings."n" = {description = "Select treesitter node";};
