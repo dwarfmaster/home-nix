@@ -3,6 +3,7 @@ import XMonad.Layout hiding ((|||))
 import XMonad.Operations
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
+import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Actions.CycleWS
 import XMonad.Actions.Volume
@@ -119,6 +120,7 @@ loghk xmp = dynamicLogWithPP xmobarPP
 
 myManageHook = composeAll
     [ title =? "Property Browser — SolveSpace" --> doFloat
+    , className =? "strun" --> doRectFloat (W.RationalRect 0.25 0.25 0.5 0.5)
     --, role =? "GtkFileChooserDialog" --> doFloat -- role is not defined
     ]
 
