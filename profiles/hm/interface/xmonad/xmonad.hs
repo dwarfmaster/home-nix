@@ -69,11 +69,7 @@ wkkeys = [xK_j, xK_f, xK_q, xK_s, xK_d, xK_g, xK_h, xK_k, xK_l, xK_m]
 rofi_calc = Nix.calculator
 
 keybinds = M.fromList $ foldl kwk
-         [ ((modkey, xK_Return),           spawn Nix.terminal)
-         , ((modkey, xK_r),                spawn Nix.launcher)
-         , ((modkey, xK_c),                spawn Nix.calculator)
-         , ((modkey, xK_p),                spawn Nix.locker)
-         , ((modkey .|. shiftMask, xK_n),  io (exitWith ExitSuccess))
+         [ ((modkey .|. shiftMask, xK_n),  io (exitWith ExitSuccess))
          -- Client focus control
          , ((modkey, xK_x),                         kill)
          , ((modkey, xK_Tab),                       windows W.focusDown)
@@ -95,13 +91,6 @@ keybinds = M.fromList $ foldl kwk
          , ((modkey .|. shiftMask, xK_z), sendMessage ToggleLayout)
          , ((modkey, xK_z), sendMessage $ JumpToLayout "Tiled")
          , ((modkey, xK_e), sendMessage $ JumpToLayout "Circle")
-         -- Audio control
-         , ((0, xF86XK_AudioLowerVolume), spawn $ Nix.volume ++ " down")
-         , ((0, xF86XK_AudioRaiseVolume), spawn $ Nix.volume ++ " up")
-         , ((0, xF86XK_AudioMute),        spawn $ Nix.volume ++ " toggle")
-         -- Brightness control
-         , ((0, xF86XK_MonBrightnessUp),   spawn $ Nix.brightness ++ " up")
-         , ((0, xF86XK_MonBrightnessDown), spawn $ Nix.brightness ++ " down")
          -- TODO Media players control
          ] $ zip mworkspaces wkkeys
  where kwk l (wk,k) = l ++
@@ -120,7 +109,7 @@ loghk xmp = dynamicLogWithPP xmobarPP
 
 myManageHook = composeAll
     [ title =? "Property Browser — SolveSpace" --> doFloat
-    , className =? "strun" --> doRectFloat (W.RationalRect 0.25 0.25 0.5 0.5)
+    , className =? "popup" --> doRectFloat (W.RationalRect 0.1 0.1 0.8 0.8)
     --, role =? "GtkFileChooserDialog" --> doFloat -- role is not defined
     ]
 
