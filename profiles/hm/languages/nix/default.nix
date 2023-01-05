@@ -13,13 +13,20 @@
   };
 
   programs.nixvim = {
-    plugins.lsp.enabledServers = ["rnix"];
+    plugins.lsp.enabledServers = [
+      {
+        name = "nil_ls";
+        extraOptions = {
+          formatting.command = ["alejandra" "--quiet"];
+        };
+      }
+    ];
   };
 
   home.packages = builtins.attrValues {
     inherit
       (pkgs)
-      rnix-lsp
+      nil
       alejandra # Formatter
       ;
   };
