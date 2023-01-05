@@ -41,7 +41,7 @@
       ${xmodmap} -e "keycode 65 = space space space space" # shift+space -> 4*space
     '';
   in {
-    imports = [ ./sxhkd.nix ];
+    imports = [./sxhkd.nix];
     home.keyboard.layout = "fr";
     systemd.user.services = {
       xkbmappings = {

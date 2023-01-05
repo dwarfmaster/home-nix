@@ -1,14 +1,23 @@
-{ config, pkgs, ... }:
-
-let
+{
+  config,
+  pkgs,
+  ...
+}: let
   colors = config.colorScheme.colors;
 in {
   xsession.windowManager.bspwm = {
     enable = true;
     monitors."eDP-1" = [
-      "l4" "l3" "l2" "l1"
-      "music" "misc"
-      "r1" "r2" "r3" "r4"
+      "l4"
+      "l3"
+      "l2"
+      "l1"
+      "music"
+      "misc"
+      "r1"
+      "r2"
+      "r3"
+      "r4"
     ];
     settings = {
       # Borders
@@ -60,8 +69,7 @@ in {
     # Preselect direction
     "super + alt + {h,j,k,l}" = "bspc node -p {west,south,north,east}";
     "super + {_,shift + }Tab" = "bspc node -f {next,prev}.local.!hidden.window";
-    "super + {_,shift + }{q,s,d,f,g,h,j,k,l,m}" =
-      "bspc {desktop -f,node -d} '^{1,2,3,4,5,6,7,8,9,10}'";
+    "super + {_,shift + }{q,s,d,f,g,h,j,k,l,m}" = "bspc {desktop -f,node -d} '^{1,2,3,4,5,6,7,8,9,10}'";
   };
 
   services.picom = {
