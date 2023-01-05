@@ -3,7 +3,6 @@
   pkgs,
   ...
 }: let
-  background-picture = pkgs.copyPathToStore ./bg.png;
   scheme = config.colorScheme;
   fromHex = hex: {
     hex = {
@@ -77,7 +76,7 @@ in {
       Service = {
         Type = "oneshot";
         RemainAfterExit = true;
-        ExecStart = "${pkgs.imlibsetroot}/bin/imlibsetroot ${background-picture}";
+        ExecStart = "${pkgs.imlibsetroot}/bin/imlibsetroot ${./bg.png}";
       };
     };
   };

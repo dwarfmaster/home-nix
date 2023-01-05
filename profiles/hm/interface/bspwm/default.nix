@@ -81,6 +81,8 @@ in {
 
     extraArgs = [
       "--corner-radius=10"
+      "--blur-method=dual_kawase"
+      "--blur-strength=7"
     ];
   };
 }
