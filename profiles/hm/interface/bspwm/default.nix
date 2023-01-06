@@ -4,21 +4,18 @@
   ...
 }: let
   colors = config.colorScheme.colors;
+  bspdesk-bin = pkgs.writeShellScriptBin "bspdesk" (builtins.readFile ./bspdesk.sh);
+  bspdesk = "${bspdesk-bin}/bin/bspdesk";
 in {
+  home.packages = [bspdesk-bin];
   xsession.windowManager.bspwm = {
     enable = true;
-    monitors."eDP-1" = [
-      "l4"
-      "l3"
-      "l2"
-      "l1"
-      "music"
-      "misc"
-      "r1"
-      "r2"
-      "r3"
-      "r4"
-    ];
+    extraConfigEarly = ''
+      ${bspdesk} create-workspace personal
+      ${bspdesk} create-workspace settings
+      bspc desktop "personal^r1" -f
+      bspc desktop Desktop -r
+    '';
     settings = {
       # Borders
       normal_border_color = "#${colors.base01}";
@@ -64,12 +61,14 @@ in {
     "super + shift n" = "bspc quit";
     "super + x" = "bspc node -c";
     # Alternate between tiled and monocle layouts
-    "super + a" = "bspc desktop -l next";
-    "super + shift + Enter" = "bspc node -s biggest.window";
+    "super + {a,z}" = "bspc desktop -l {monocle,tiled}";
     # Preselect direction
     "super + alt + {h,j,k,l}" = "bspc node -p {west,south,north,east}";
     "super + {_,shift + }Tab" = "bspc node -f {next,prev}.local.!hidden.window";
-    "super + {_,shift + }{q,s,d,f,g,h,j,k,l,m}" = "bspc {desktop -f,node -d} '^{1,2,3,4,5,6,7,8,9,10}'";
+    # Switch workspace
+    "super + {_,shift + }{q,s,d,f,g,h,j,k,l,m}" = "${bspdesk} {focus,send-to} '{l4,l3,l2,l1,l0,r0,r1,r2,r3,r4}'";
+    "super + {_,shift + }space" = "${bspdesk} {focus-select,send-to-select}";
+    "super + {_,shift + }c" = "${bspdesk} {create-select,remove-select}";
   };
 
   services.picom = {
