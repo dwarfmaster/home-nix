@@ -17,6 +17,7 @@
       interface = {
         brightness.enable = true;
         bspwm.enable = true;
+        eww.enable = true;
         locking.enable = true;
         visualisation.enable = true;
         x11.enable = true;

@@ -1,0 +1,20 @@
+
+(defwindow statusbar
+           :monitor 0
+           :geometry
+             (geometry :x "0%"
+                       :y "5px"
+                       :width "90%"
+                       :height "30px"
+                       :anchor "top center")
+           :stacking "fg"
+           :reserve (struts :distance "40px" :side "top")
+           :windowtype "dock"
+           :wm-ignore false
+  (greeter :text "Say hello" :name "DwarfMaster"))
+
+(defwidget greeter [?text name]
+  (box :orientation "horizontal"
+       :halign "center"
+    text
+    (button :onclick "notify-send 'Hello' 'Hello ${name}'" "Greet")))
