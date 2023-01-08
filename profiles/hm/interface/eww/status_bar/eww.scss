@@ -46,6 +46,14 @@ $base0f: #{{{base0F}}};
 
 .workspace {
   min-width: 200px;
+  border-left-style: solid;
+  border-right-style: solid;
+  border-width: 1px;
+}
+
+.workspace :hover {
+  background-color: $base04;
+  color: $base01;
 }
 
 .desktop {

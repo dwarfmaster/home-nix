@@ -57,6 +57,9 @@ remove-workspace() {
 }
 
 create-workspace() {
+  if has_workspace $1; then
+    return 0
+  fi
   for desktop in ${desktops[@]}; do
     bspc monitor -a "$1$sep$desktop"
   done
@@ -101,7 +104,10 @@ case $1 in
     if [ "$#" -eq 2 ]; then
       desk="$2"
     fi
-    focus_desk "$(all_workspaces | rofi -dmenu)$sep$desk"
+    focus_desk "$(all_workspaces | rofi -dmenu -p "Workspace")$sep$desk"
+    ;;
+  "focus-select-or-create")
+    workspace=$(all_workspaces | rofi -dmenu -p "Workspace(c)")
     ;;
   "send-to-workspace")
     DESK="$2$sep$(get_desktop)"
@@ -118,7 +124,7 @@ case $1 in
     create-workspace $2
     ;;
   "create-select")
-    workspace="$(all_workspaces | rofi -dmenu)"
+    workspace="$(all_workspaces | rofi -dmenu -p "New workspace")"
     if [ $? -eq 0 ]; then
       create-workspace "$workspace"
     fi

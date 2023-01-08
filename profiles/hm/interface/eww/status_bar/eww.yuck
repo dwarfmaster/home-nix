@@ -38,6 +38,7 @@
   `bspdesk watch-workspace`)
 (deflisten desktop :initial "r1"
   `bspdesk watch-desktop`)
+(defvar hovered-desktop "none")
 
 (defvar desktop-color-0 "#{{{base08}}}")
 (defvar desktop-color-1 "#{{{base09}}}")
@@ -82,16 +83,27 @@
 (defwidget workspaces []
   (box :width "50"
        :class "workspace"
-    (label
-      :text "${workspace}")))
+    (button
+      :onclick "bspdesk focus-select"
+      :onmiddleclick "bspdesk send-to-select"
+      :onrightclick "bspdesk create-select"
+      (label
+        :text "${workspace}"))))
 
 (defwidget desktop [name color]
   (box :class "desktop"
        :style "background-color: ${color}"
-    (label
-      :xalign 0.4
-      :wrap true
-      :text {name == desktop ? "" : ""})))
+    (eventbox
+      :onhover "eww update hovered-desktop=${name}"
+      :onhoverlost "eww update hovered-desktop=none"
+      (button
+        :onclick "bspdesk focus ${name}"
+        :onmiddleclick "bspdesk send-to ${name}"
+        :onrightclick "bspdesk focus-select ${name}"
+        (label
+          :xalign 0.4
+          :wrap true
+          :text {name == desktop ? "" : (name == hovered-desktop ? "" : "")})))))
 
 
 
