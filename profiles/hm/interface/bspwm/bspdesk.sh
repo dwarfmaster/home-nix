@@ -75,8 +75,20 @@ case $1 in
   "workspace")
     get_current
     ;;
+  "watch-workspace")
+    get_current
+    bspc subscribe desktop | while read -r line; do
+      get_current
+    done
+    ;;
   "desktop")
     get_desktop
+    ;;
+  "watch-desktop")
+    get_desktop
+    bspc subscribe desktop | while read -r line; do
+      get_desktop
+    done
     ;;
   "workspaces")
     all_workspaces
