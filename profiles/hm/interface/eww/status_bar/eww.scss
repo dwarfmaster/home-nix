@@ -49,6 +49,7 @@ $base0f: #{{{base0F}}};
   border-left-style: solid;
   border-right-style: solid;
   border-width: 1px;
+  border-color: $base01;
 }
 
 .workspace :hover {
@@ -61,6 +62,7 @@ $base0f: #{{{base0F}}};
   border-left-style: solid;
   border-right-style: solid;
   border-width: 1px;
+  border-color: $base01;
   font-size: 13px;
   color: $base01;
 }

@@ -15,14 +15,17 @@
   };
 
   colors = config.colorScheme.colors;
-  eww-config = config.lib.mustache.renderDir "eww" ./status_bar colors;
-
   json = pkgs.writeText "base16.json" (builtins.toJSON colors);
-  eww-builder = pkgs.writeShellScriptBin "eww-builder" ''
-    rm -rf $2 || true
-    mkdir -p $2
-    ${pkgs.mustache-go}/bin/mustache ${json} $1/eww.yuck > $2/eww.yuck
-    ${pkgs.mustache-go}/bin/mustache ${json} $1/eww.scss > $2/eww.scss
+  eww-builder-script = config.lib.mustache.render "eww-builder" ./eww-builder.sh {
+    json = "${json}";
+    mustache = "${pkgs.mustache-go}/bin/mustache";
+    inkscape = "${pkgs.inkscape}/bin/inkscape";
+    jq = "${pkgs.jq}/bin/jq";
+  };
+  eww-builder = pkgs.writeShellScriptBin "eww-builder" (builtins.readFile "${eww-builder-script}");
+
+  eww-config = pkgs.runCommandLocal "eww" {} ''
+    ${eww-builder}/bin/eww-builder ${./status_bar} $out
   '';
 in {
   programs.eww = {

@@ -100,10 +100,11 @@
         :onclick "bspdesk focus ${name}"
         :onmiddleclick "bspdesk send-to ${name}"
         :onrightclick "bspdesk focus-select ${name}"
-        (label
-          :xalign 0.4
-          :wrap true
-          :text {name == desktop ? "" : (name == hovered-desktop ? "" : "")})))))
+        (image
+          :image-width 13
+          :image-height 13
+          :path { name == desktop ? "center/selected.png" : "center/hovered.png" }
+          :visible { name == desktop || name == hovered-desktop })))))
 
 
 
