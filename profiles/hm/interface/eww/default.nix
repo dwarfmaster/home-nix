@@ -16,11 +16,20 @@
 
   colors = config.colorScheme.colors;
   eww-config = config.lib.mustache.renderDir "eww" ./status_bar colors;
+
+  json = pkgs.writeText "base16.json" (builtins.toJSON colors);
+  eww-builder = pkgs.writeShellScriptBin "eww-builder" ''
+    rm -rf $2 || true
+    mkdir -p $2
+    ${pkgs.mustache-go}/bin/mustache ${json} $1/eww.yuck > $2/eww.yuck
+    ${pkgs.mustache-go}/bin/mustache ${json} $1/eww.scss > $2/eww.scss
+  '';
 in {
   programs.eww = {
     enable = true;
     configDir = eww-config;
   };
+  home.packages = [ eww-builder ];
   xsession.windowManager.bspwm.extraConfig = ''
     ${config.programs.eww.package}/bin/eww open-many \
         statusbar-left \
