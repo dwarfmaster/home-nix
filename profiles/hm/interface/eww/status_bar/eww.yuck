@@ -39,11 +39,11 @@
 (deflisten desktop :initial "r1"
   `bspdesk watch-desktop`)
 
-(defvar desktop-color-0 "#d35c5c")
-(defvar desktop-color-1 "#ca7f32")
-(defvar desktop-color-2 "#e0ac16")
-(defvar desktop-color-3 "#b7ba53")
-(defvar desktop-color-4 "#6eb958")
+(defvar desktop-color-0 "#{{{base08}}}")
+(defvar desktop-color-1 "#{{{base09}}}")
+(defvar desktop-color-2 "#{{{base0A}}}")
+(defvar desktop-color-3 "#{{{base0B}}}")
+(defvar desktop-color-4 "#{{{base0C}}}")
 
 (defwindow statusbar-center
            :monitor 0

@@ -1,4 +1,21 @@
 
+$base00: #{{{base00}}};
+$base01: #{{{base01}}};
+$base02: #{{{base02}}};
+$base03: #{{{base03}}};
+$base04: #{{{base04}}};
+$base05: #{{{base05}}};
+$base06: #{{{base06}}};
+$base07: #{{{base07}}};
+$base08: #{{{base08}}};
+$base09: #{{{base09}}};
+$base0a: #{{{base0A}}};
+$base0b: #{{{base0B}}};
+$base0c: #{{{base0C}}};
+$base0d: #{{{base0D}}};
+$base0e: #{{{base0E}}};
+$base0f: #{{{base0F}}};
+
 * {
   all: unset;
 }
@@ -6,11 +23,12 @@
 .bar {
   margin: 0px;
   border-style: solid;
-  border-color: #b49368;
+  border-color: $base0f;
   border-width: 2px;
   border-radius: 7px;
   min-height: 21px;
-  background-color: #231e18;
+  background-color: $base01;
+  color: $base04;
   font-size: 15px;
 }
 
@@ -36,7 +54,7 @@
   border-right-style: solid;
   border-width: 1px;
   font-size: 13px;
-  color: #231e18;
+  color: $base01;
 }
 
 

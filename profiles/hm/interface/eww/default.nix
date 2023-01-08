@@ -13,11 +13,20 @@
       sha256 = "1mkf0vd8vvw1njlczlgai80djw1n1a7dl1k940l089d3vvqr5dhp";
     };
   };
+
+  colors = config.colorScheme.colors;
+  eww-config = config.lib.mustache.renderDir "eww" ./status_bar colors;
 in {
+  programs.eww = {
+    enable = true;
+    configDir = eww-config;
+  };
   xsession.windowManager.bspwm.extraConfig = ''
-    ${pkgs.eww}/bin/eww -c ${./status_bar} open-many statusbar-left statusbar-center statusbar-right
+    ${config.programs.eww.package}/bin/eww open-many \
+        statusbar-left \
+        statusbar-center \
+        statusbar-right
   '';
-  home.packages = [pkgs.eww];
 
   programs.nixvim = {
     extraPlugins = [yuck-vim];
