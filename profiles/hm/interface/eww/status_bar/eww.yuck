@@ -1,20 +1,141 @@
 
-(defwindow statusbar
+;  _          __ _   
+; | |    ___ / _| |_ 
+; | |   / _ \ |_| __|
+; | |__|  __/  _| |_ 
+; |_____\___|_|  \__|
+;                    
+; Left
+
+(defwindow statusbar-left
            :monitor 0
            :geometry
-             (geometry :x "0%"
-                       :y "5px"
-                       :width "90%"
-                       :height "30px"
-                       :anchor "top center")
+             (geometry :x "5px"
+                       :y "0px"
+                       :width "712px"
+                       :anchor "top left")
            :stacking "fg"
-           :reserve (struts :distance "40px" :side "top")
            :windowtype "dock"
            :wm-ignore false
-  (greeter :text "Say hello" :name "DwarfMaster"))
+           :reserve (struts :distance "25px" :side "top")
+  (box :class "bar"
+       :orientation "horizontal"
+    (box :class "topleft"
+         :valign "center"
+         :halign "start")))
 
-(defwidget greeter [?text name]
+
+
+;   ____           _            
+;  / ___|___ _ __ | |_ ___ _ __ 
+; | |   / _ \ '_ \| __/ _ \ '__|
+; | |__|  __/ | | | ||  __/ |   
+;  \____\___|_| |_|\__\___|_|   
+;                               
+; Center
+
+(defpoll workspace :interval "1s"
+                   :initial "personal"
+  `bspdesk workspace`)
+(defpoll desktop :interval "1s"
+                 :initial "r1"
+  `bspdesk desktop`)
+
+(defvar desktop-color-0 "#d35c5c")
+(defvar desktop-color-1 "#ca7f32")
+(defvar desktop-color-2 "#e0ac16")
+(defvar desktop-color-3 "#b7ba53")
+(defvar desktop-color-4 "#6eb958")
+
+(defwindow statusbar-center
+           :monitor 0
+           :geometry
+             (geometry :x "722px"
+                       :y "0px"
+                       :width "476px"
+                       :anchor "top left")
+           :stacking "fg"
+           :windowtype "dock"
+           :wm-ignore false
+           :reserve (struts :distance "25px" :side "top")
+  (box :class "bar"
+       :orientation "horizontal"
+    (box :class "topcenter"
+         :valign "fill"
+         :halign "fill"
+         :hexpand true
+         :vexpand true
+         :space-evenly false
+         :spacing 0
+      (box :hexpand true)
+      (desktop :name "l4" :color "${desktop-color-4}")
+      (desktop :name "l3" :color "${desktop-color-3}")
+      (desktop :name "l2" :color "${desktop-color-2}")
+      (desktop :name "l1" :color "${desktop-color-1}")
+      (desktop :name "l0" :color "${desktop-color-0}")
+      (workspaces)
+      (desktop :name "r0" :color "${desktop-color-0}")
+      (desktop :name "r1" :color "${desktop-color-1}")
+      (desktop :name "r2" :color "${desktop-color-2}")
+      (desktop :name "r3" :color "${desktop-color-3}")
+      (desktop :name "r4" :color "${desktop-color-4}")
+      (box :hexpand true))))
+
+(defwidget workspaces []
+  (box :width "50"
+       :class "workspace"
+    (label
+      :text "${workspace}")))
+
+(defwidget desktop [name color]
+  (box :class "desktop"
+       :style "background-color: ${color}"
+    (label
+      :xalign 0.4
+      :wrap true
+      :text {name == desktop ? "" : ""})))
+
+
+
+
+;  ____  _       _     _   
+; |  _ \(_) __ _| |__ | |_ 
+; | |_) | |/ _` | '_ \| __|
+; |  _ <| | (_| | | | | |_ 
+; |_| \_\_|\__, |_| |_|\__|
+;          |___/           
+; Right
+
+(defpoll hour :interval "15s"
+              :initial "00"
+  `date +%H`)
+(defpoll minute :interval "15s"
+                :initial "00"
+  `date +%M`)
+
+(defwindow statusbar-right
+           :monitor 0
+           :geometry
+             (geometry :x "1203px"
+                       :y "0px"
+                       :width "712px"
+                       :anchor "top left")
+           :stacking "fg"
+           :windowtype "dock"
+           :wm-ignore false
+           :reserve (struts :distance "25px" :side "top")
+  (box :class "bar"
+       :orientation "horizontal"
+    (box :class "topright"
+         :valign "center"
+         :halign "end"
+      (right))))
+
+(defwidget time []
   (box :orientation "horizontal"
        :halign "center"
-    text
-    (button :onclick "notify-send 'Hello' 'Hello ${name}'" "Greet")))
+    " ${hour}:${minute}"))
+
+(defwidget right []
+  (time))
+

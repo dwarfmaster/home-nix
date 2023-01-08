@@ -1,0 +1,68 @@
+
+* {
+  all: unset;
+}
+
+.bar {
+  margin: 0px;
+  border-style: solid;
+  border-color: #b49368;
+  border-width: 2px;
+  border-radius: 7px;
+  min-height: 21px;
+  background-color: #231e18;
+  font-size: 15px;
+}
+
+
+//   ____           _            
+//  / ___|___ _ __ | |_ ___ _ __ 
+// | |   / _ \ '_ \| __/ _ \ '__|
+// | |__|  __/ | | | ||  __/ |   
+//  \____\___|_| |_|\__\___|_|   
+//                               
+// Center
+
+.topcenter {
+}
+
+.workspace {
+  min-width: 200px;
+}
+
+.desktop {
+  min-width: 19px;
+  border-left-style: solid;
+  border-right-style: solid;
+  border-width: 1px;
+  font-size: 13px;
+  color: #231e18;
+}
+
+
+
+//  _          __ _   
+// | |    ___ / _| |_ 
+// | |   / _ \ |_| __|
+// | |__|  __/  _| |_ 
+// |_____\___|_|  \__|
+//                    
+// Left
+
+.topleft {
+  background-color: #231e18;
+}
+
+
+
+//  ____  _       _     _   
+// |  _ \(_) __ _| |__ | |_ 
+// | |_) | |/ _` | '_ \| __|
+// |  _ <| | (_| | | | | |_ 
+// |_| \_\_|\__, |_| |_|\__|
+//          |___/           
+// Right
+
+.topright {
+  padding-right: 5px;
+}

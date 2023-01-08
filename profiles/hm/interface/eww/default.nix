@@ -14,10 +14,9 @@
     };
   };
 in {
-  programs.eww = {
-    enable = false;
-    configDir = ./status_bar;
-  };
+  xsession.windowManager.bspwm.extraConfig = ''
+    ${pkgs.eww}/bin/eww -c ${./status_bar} open-many statusbar-left statusbar-center statusbar-right
+  '';
   home.packages = [pkgs.eww];
 
   programs.nixvim = {
