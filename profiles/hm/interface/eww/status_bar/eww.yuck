@@ -84,6 +84,7 @@
   (box :width "50"
        :class "workspace"
     (button
+      :timeout "60s"
       :onclick "bspdesk focus-select"
       :onmiddleclick "bspdesk send-to-select"
       :onrightclick "bspdesk create-select"
@@ -97,6 +98,7 @@
       :onhover "eww update hovered-desktop=${name}"
       :onhoverlost "eww update hovered-desktop=none"
       (button
+        :timeout "60s"
         :onclick "bspdesk focus ${name}"
         :onmiddleclick "bspdesk send-to ${name}"
         :onrightclick "bspdesk focus-select ${name}"
