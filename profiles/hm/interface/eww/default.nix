@@ -24,16 +24,23 @@
       '';
     };
 
+  context = {
+    # TODO should be in config-hardware, along with the battery
+    backlight_device = "/sys/class/backlight/intel_backlight";
+    inotifywait = "${pkgs.inotify-tools}/bin/inotifywait";
+    acpi = "${pkgs.acpi}/bin/acpi";
+    bctl = "${pkgs.brightnessctl}/bin/brightnessctl";
+  };
+  makeScript = name: file:
+    writeRakuScript name (builtins.readFile (config.lib.mustache.render name file context));
+
   scripts = {
-    # mute-listener = "${pkgs.writeShellScript "mute" (builtins.readFile ./scripts/mute.sh)}";
-    # volume-listener = "${pkgs.writeShellScript "volume" (builtins.readFile ./scripts/volume.sh)}";
-    volume-listener = "${writeRakuScript "volume" (builtins.readFile ./scripts/volume.raku)}";
+    volume-listener = "${makeScript "volume" ./scripts/volume.raku}";
+    backlight-listener = "${makeScript "backlight" ./scripts/backlight.raku}";
   };
 
   colors = config.colorScheme.colors;
-  variables = colors // (import ./constants.nix) // scripts // {
-    acpi = "${pkgs.acpi}/bin/acpi";
-  };
+  variables = colors // (import ./constants.nix) // scripts // context;
   json = pkgs.writeText "base16.json" (builtins.toJSON variables);
   eww-builder-script = config.lib.mustache.render "eww-builder" ./eww-builder.sh {
     json = "${json}";

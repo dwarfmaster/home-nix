@@ -40,7 +40,7 @@
   `bspdesk watch-desktop`)
 (defvar hovered-desktop "none")
 
-(defvar desktop-color-0 "#{{{base08}}}")
+(defvar desktop-color-0 "#{{{base0F}}}")
 (defvar desktop-color-1 "#{{{base09}}}")
 (defvar desktop-color-2 "#{{{base0A}}}")
 (defvar desktop-color-3 "#{{{base0B}}}")
@@ -125,9 +125,15 @@
 (defpoll minute :interval "15s"
                 :initial "00"
   `date +%M`)
+
+(deflisten backlight :initial "{ \"light\": 50, \"show\": false }"
+  `{{{backlight-listener}}}`)
+(defvar hover-backlight false)
+
 (deflisten volume :initial "{ \"volume\": 50, \"muted\": false, \"show\": false }"
   `{{{volume-listener}}}`)
 (defvar hover-volume false)
+
 (defpoll battery-time :interval "15s"
                       :initial "No data"
   `{{{acpi}}} -b | cut -d, -f 3`)
@@ -154,8 +160,11 @@
          :space-evenly false
          :spacing 2
       (box :hexpand true)
+      (backlight)
       (volume)
-      ; (backlight)
+      ; TODO USB ?
+      ; TODO bluetooth ?
+      ; TODO screens ?
       ; (wifi)
       (battery)
       (time))))
@@ -237,4 +246,32 @@
           (box)
           (label :text battery-time))))))
 
+(defwidget backlight []
+  (eventbox
+    :onhover "eww update -c /tmp/eww hover-backlight=true"
+    :onhoverlost "eww update -c /tmp/eww hover-backlight=false"
+    (box :orientation "horizontal"
+         :class "backlight"
+         :space-evenly false
+         :spacing 0
+      (box :class "taskitem"
+        (image :image-width {{{item-size}}}
+               :image-height {{{item-size}}}
+          :path "right/light.png"))
+      (revealer :transition "slideright"
+                :duration "300ms"
+                :reveal {hover-backlight || backlight.show}
+        (box :orientation "horizontal"
+             :space-evenly false
+             :spacing 2
+          (box)
+          (scale :orientation "horizontal"
+                 :onchange "{{{bctl}}} -q s {}%"
+                 :min 0
+                 :max 100
+                 :value {backlight.light}
+                 :draw-value false
+                 :halign "center"
+                 :hexpand "true"
+                 :width {{{scale-length}}}))))))
 
