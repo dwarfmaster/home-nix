@@ -22,14 +22,20 @@
         #!${pkgs.rakudo}/bin/raku
         ${text}
       '';
+      checkPhase = ''
+        ${pkgs.rakudo}/bin/raku -c "$target"
+      '';
     };
 
   context = {
-    # TODO should be in config-hardware, along with the battery
+    # TODO should be in config-hardware, along with the battery and the wifi
     backlight_device = "/sys/class/backlight/intel_backlight";
+    wifi_device = "wlp0s20f3";
     inotifywait = "${pkgs.inotify-tools}/bin/inotifywait";
     acpi = "${pkgs.acpi}/bin/acpi";
     bctl = "${pkgs.brightnessctl}/bin/brightnessctl";
+    jq = "${pkgs.jq}/bin/jq";
+    nmcli = "${pkgs.networkmanager}/bin/nmcli";
   };
   makeScript = name: file:
     writeRakuScript name (builtins.readFile (config.lib.mustache.render name file context));
@@ -37,6 +43,7 @@
   scripts = {
     volume-listener = "${makeScript "volume" ./scripts/volume.raku}";
     backlight-listener = "${makeScript "backlight" ./scripts/backlight.raku}";
+    wifi-listener = "${makeScript "wifi" ./scripts/wifi.raku}";
   };
 
   colors = config.colorScheme.colors;

@@ -134,6 +134,10 @@
   `{{{volume-listener}}}`)
 (defvar hover-volume false)
 
+(deflisten wifi :initial "{ \"wiki\": \"--\", \"connected\": false, \"blocked\": true }"
+  `{{{wifi-listener}}}`)
+(defvar hover-wifi false)
+
 (defpoll battery-time :interval "15s"
                       :initial "No data"
   `{{{acpi}}} -b | cut -d, -f 3`)
@@ -165,7 +169,8 @@
       ; TODO USB ?
       ; TODO bluetooth ?
       ; TODO screens ?
-      ; (wifi)
+      ; TODO plane mode ?
+      (wifi)
       (battery)
       (time))))
 
@@ -274,4 +279,27 @@
                  :halign "center"
                  :hexpand "true"
                  :width {{{scale-length}}}))))))
+
+(defwidget wifi []
+  (eventbox
+    :onhover "eww update -c /tmp/eww hover-wifi=true"
+    :onhoverlost "eww update -c /tmp/eww hover-wifi=false"
+    (box :orientation "horizontal"
+         :class "wifi"
+         :space-evenly false
+         :spacing 0
+      (box :class "taskitem"
+        (image :image-width {{{item-size}}}
+               :image-height {{{item-size}}}
+          :path { wifi.blocked ? "right/wifi/off.png"
+                : (wifi.connected ? "right/wifi/connected.png"
+                : "right/wifi/no.png") }))
+      (revealer :transition "slideright"
+                :duration "300ms"
+                :reveal { hover-wifi && wifi.connected }
+        (box :orientation "horizontal"
+             :space-evenly false
+             :spacing 2
+          (box)
+          (label :text { wifi.wifi }))))))
 
