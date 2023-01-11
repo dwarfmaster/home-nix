@@ -188,8 +188,8 @@
 
 (defwidget volume []
   (eventbox
-    :onhover "eww update -c /tmp/eww hover-volume=true"
-    :onhoverlost "eww update -c /tmp/eww hover-volume=false"
+    :onhover "eww update hover-volume=true"
+    :onhoverlost "eww update hover-volume=false"
     (box :orientation "horizontal"
          :class "volume"
          :space-evenly false
@@ -222,8 +222,8 @@
 
 (defwidget battery []
   (eventbox
-    :onhover "eww update -c /tmp/eww hover-battery=true"
-    :onhoverlost "eww update -c /tmp/eww hover-battery=false"
+    :onhover "eww update hover-battery=true"
+    :onhoverlost "eww update hover-battery=false"
     (box :orientation "horizontal"
          :class "battery"
          :space-evenly false
@@ -254,8 +254,8 @@
 
 (defwidget backlight []
   (eventbox
-    :onhover "eww update -c /tmp/eww hover-backlight=true"
-    :onhoverlost "eww update -c /tmp/eww hover-backlight=false"
+    :onhover "eww update hover-backlight=true"
+    :onhoverlost "eww update hover-backlight=false"
     (box :orientation "horizontal"
          :class "backlight"
          :space-evenly false
@@ -283,8 +283,8 @@
 
 (defwidget wifi []
   (eventbox
-    :onhover "eww update -c /tmp/eww hover-wifi=true"
-    :onhoverlost "eww update -c /tmp/eww hover-wifi=false"
+    :onhover "eww update hover-wifi=true"
+    :onhoverlost "eww update hover-wifi=false"
     (box :orientation "horizontal"
          :class "wifi"
          :space-evenly false
