@@ -125,6 +125,9 @@
 (defpoll minute :interval "15s"
                 :initial "00"
   `date +%M`)
+(deflisten volume :initial "{ \"volume\": 50, \"muted\": false, \"show\": false }"
+  `{{{volume-listener}}}`)
+(defvar hover-volume false)
 
 (defwindow statusbar-right
            :monitor 0
@@ -140,15 +143,58 @@
   (box :class "bar"
        :orientation "horizontal"
     (box :class "topright"
-         :valign "center"
-         :halign "end"
-      (right))))
+         :valign "fill"
+         :halign "fill"
+         :hexpand true
+         :vexpand true
+         :space-evenly false
+         :spacing 2
+      (box :hexpand true)
+      (volume)
+      ; (backlight)
+      ; (wifi)
+      ; (battery)
+      (time))))
 
 (defwidget time []
   (box :orientation "horizontal"
-       :halign "center"
-    " ${hour}:${minute}"))
+       :class "time"
+       :space-evenly false
+       :spacing 2
+    (box :class "taskitem"
+      (image :image-width {{{item-size}}}
+             :image-height {{{item-size}}}
+        :path "right/time.png"))
+    "${hour}:${minute}"))
 
-(defwidget right []
-  (time))
+(defwidget volume []
+  (eventbox
+    :onhover "eww update -c /tmp/eww hover-volume=true"
+    :onhoverlost "eww update -c /tmp/eww hover-volume=false"
+    (box :orientation "horizontal"
+         :class "volume"
+         :space-evenly false
+         :spacing 2
+      (box :class "taskitem"
+        (button
+          :onclick "pamixer --toggle-mute"
+          (image :image-width {{{item-size}}}
+                 :image-height {{{item-size}}}
+            :path { volume.muted ? "right/muted.png" 
+                  : (volume.volume > 33 ? "right/vol_up.png"
+                  : (volume.volume > 0 ? "right/vol_low.png"
+                  : "right/vol_zero.png"))})))
+      (revealer :transition "slideright"
+                :duration "300ms"
+                :reveal {hover-volume || volume.show}
+        (scale :orientation "horizontal"
+               :onchange "pamixer --set-volume {}"
+               :min 0
+               :max 100
+               :value {volume.volume}
+               :draw-value false
+               :halign "center"
+               :hexpand "true"
+               :width {{{scale-length}}})))))
+
 

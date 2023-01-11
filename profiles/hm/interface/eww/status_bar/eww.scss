@@ -32,6 +32,21 @@ $base0f: #{{{base0F}}};
   font-size: 15px;
 }
 
+scale trough {
+  background-color: $base02;
+  min-height: 13px;
+  border: solid 2px;
+  border-radius: 5px;
+  border-color: $base0f;
+}
+
+scale trough highlight {
+  all: unset;
+  border: solid 1px;
+  border-color: $base02;
+  border-radius: 5px;
+}
+
 
 //   ____           _            
 //  / ___|___ _ __ | |_ ___ _ __ 
@@ -78,7 +93,7 @@ $base0f: #{{{base0F}}};
 // Left
 
 .topleft {
-  background-color: #231e18;
+  padding-left: 10px;
 }
 
 
@@ -92,5 +107,16 @@ $base0f: #{{{base0F}}};
 // Right
 
 .topright {
-  padding-right: 5px;
+  padding-right: 10px;
+}
+
+.taskitem {
+  background-color: $base0f;
+  border-style: none;
+  min-width: 21px;
+  min-height: 21px;
+}
+
+.volume scale trough highlight {
+  background-color: $base0a;
 }

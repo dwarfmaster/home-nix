@@ -1,0 +1,10 @@
+{
+  "width": {{{item-size}}},
+  "height": {{{item-size}}},
+  "color": "#{{{base01}}}",
+  "path": {
+    "width": 48,
+    "height": 48,
+    "content": "M14 30V18h8L32 8v32L22 30Zm3-3h6.35L29 32.45V15.6L23.35 21H17Zm5.95-3Z"
+  }
+}

@@ -14,8 +14,25 @@
     };
   };
 
+  writeRakuScript = name: text:
+    pkgs.writeTextFile {
+      inherit name;
+      executable = true;
+      text = ''
+        #!${pkgs.rakudo}/bin/raku
+        ${text}
+      '';
+    };
+
+  scripts = {
+    # mute-listener = "${pkgs.writeShellScript "mute" (builtins.readFile ./scripts/mute.sh)}";
+    # volume-listener = "${pkgs.writeShellScript "volume" (builtins.readFile ./scripts/volume.sh)}";
+    volume-listener = "${writeRakuScript "volume" (builtins.readFile ./scripts/volume.raku)}";
+  };
+
   colors = config.colorScheme.colors;
-  json = pkgs.writeText "base16.json" (builtins.toJSON colors);
+  variables = colors // (import ./constants.nix) // scripts;
+  json = pkgs.writeText "base16.json" (builtins.toJSON variables);
   eww-builder-script = config.lib.mustache.render "eww-builder" ./eww-builder.sh {
     json = "${json}";
     mustache = "${pkgs.mustache-go}/bin/mustache";
