@@ -24,7 +24,6 @@
        # TODO
        ;;
     esac
-    ${config.applications.notifier} progress Brightness $(($(${bctl} get) * 100 / $(${bctl} max)))
   '';
 in {
   applications.brightness = "${brightness-manager}/bin/brightness";

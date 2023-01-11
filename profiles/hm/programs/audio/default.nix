@@ -28,11 +28,6 @@
         ${pamixer} -u
        ;;
     esac
-    if [[ $(${pamixer} --get-mute) = "true" ]]; then
-      ${config.applications.notifier} normal Volume Muted
-    else
-      ${config.applications.notifier} progress Volume $(${pamixer} --get-volume)
-    fi
   '';
 in {
   home.packages = builtins.attrValues {
