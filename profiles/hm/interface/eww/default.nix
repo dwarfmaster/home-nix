@@ -31,7 +31,9 @@
   };
 
   colors = config.colorScheme.colors;
-  variables = colors // (import ./constants.nix) // scripts;
+  variables = colors // (import ./constants.nix) // scripts // {
+    acpi = "${pkgs.acpi}/bin/acpi";
+  };
   json = pkgs.writeText "base16.json" (builtins.toJSON variables);
   eww-builder-script = config.lib.mustache.render "eww-builder" ./eww-builder.sh {
     json = "${json}";

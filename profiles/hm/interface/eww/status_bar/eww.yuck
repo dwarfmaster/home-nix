@@ -128,6 +128,10 @@
 (deflisten volume :initial "{ \"volume\": 50, \"muted\": false, \"show\": false }"
   `{{{volume-listener}}}`)
 (defvar hover-volume false)
+(defpoll battery-time :interval "15s"
+                      :initial "No data"
+  `{{{acpi}}} -b | cut -d, -f 3`)
+(defvar hover-battery false)
 
 (defwindow statusbar-right
            :monitor 0
@@ -153,14 +157,14 @@
       (volume)
       ; (backlight)
       ; (wifi)
-      ; (battery)
+      (battery)
       (time))))
 
 (defwidget time []
   (box :orientation "horizontal"
        :class "time"
        :space-evenly false
-       :spacing 2
+       :spacing 4
     (box :class "taskitem"
       (image :image-width {{{item-size}}}
              :image-height {{{item-size}}}
@@ -174,7 +178,7 @@
     (box :orientation "horizontal"
          :class "volume"
          :space-evenly false
-         :spacing 2
+         :spacing 0
       (box :class "taskitem"
         (button
           :onclick "pamixer --toggle-mute"
@@ -187,14 +191,50 @@
       (revealer :transition "slideright"
                 :duration "300ms"
                 :reveal {hover-volume || volume.show}
-        (scale :orientation "horizontal"
-               :onchange "pamixer --set-volume {}"
-               :min 0
-               :max 100
-               :value {volume.volume}
-               :draw-value false
-               :halign "center"
-               :hexpand "true"
-               :width {{{scale-length}}})))))
+        (box :orientation "horizontal"
+             :space-evenly false
+             :spacing 2
+          (box)
+          (scale :orientation "horizontal"
+                 :onchange "pamixer --set-volume {}"
+                 :min 0
+                 :max 100
+                 :value {volume.volume}
+                 :draw-value false
+                 :halign "center"
+                 :hexpand "true"
+                 :width {{{scale-length}}}))))))
+
+(defwidget battery []
+  (eventbox
+    :onhover "eww update -c /tmp/eww hover-battery=true"
+    :onhoverlost "eww update -c /tmp/eww hover-battery=false"
+    (box :orientation "horizontal"
+         :class "battery"
+         :space-evenly false
+         :spacing 0
+      (box :class "taskitem"
+           :style { EWW_BATTERY.{{{bat}}}.status == "Full" ? "background-color: #{{{base0B}}}"
+                  : (EWW_BATTERY.{{{bat}}}.capacity < 12.5 ? "background-color: #{{{base08}}}"
+                  : "background-color: #{{{base0F}}}")}
+        (image :image-width {{{item-size}}}
+               :image-height {{{item-size}}}
+          :path { EWW_BATTERY.{{{bat}}}.status == "Full" ? "right/battery/full.png" 
+                : (EWW_BATTERY.{{{bat}}}.status == "Charging" ? "right/battery/charging.png"
+                : (EWW_BATTERY.{{{bat}}}.capacity < 12.5 ? "right/battery/alert.png"
+                : (EWW_BATTERY.{{{bat}}}.capacity < 25 ? "right/battery/1.png"
+                : (EWW_BATTERY.{{{bat}}}.capacity < 37.5 ? "right/battery/2.png"
+                : (EWW_BATTERY.{{{bat}}}.capacity < 50 ? "right/battery/3.png"
+                : (EWW_BATTERY.{{{bat}}}.capacity < 62.5 ? "right/battery/4.png"
+                : (EWW_BATTERY.{{{bat}}}.capacity < 75 ? "right/battery/5.png"
+                : "right/battery/6.png")))))))}))
+      (revealer :transition "slideright"
+                :duration "300ms"
+                :reveal { hover-battery && EWW_BATTERY.{{{bat}}}.status != "Full" }
+        (box :orientation "horizontal"
+             :space-evenly false
+             :spacing 2
+          (box)
+          (label :text battery-time))))))
 
 
