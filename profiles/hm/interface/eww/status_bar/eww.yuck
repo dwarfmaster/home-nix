@@ -172,7 +172,8 @@
       ; TODO plane mode ?
       (wifi)
       (battery)
-      (time))))
+      (time)
+      (lock))))
 
 (defwidget time []
   (box :orientation "horizontal"
@@ -302,4 +303,15 @@
              :spacing 2
           (box)
           (label :text { wifi.wifi }))))))
+
+(defwidget lock []
+  (box :orientation "horizontal"
+       :class "lock"
+       :space-evenly false
+       :spacing 0
+    (box :class "taskitem"
+      (button :onclick "{{{locker}}}"
+        (image :image-width {{{item-size}}}
+               :image-height {{{item-size}}}
+          :path "right/lock.png")))))
 

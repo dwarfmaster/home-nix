@@ -44,6 +44,7 @@
     volume-listener = "${makeScript "volume" ./scripts/volume.raku}";
     backlight-listener = "${makeScript "backlight" ./scripts/backlight.raku}";
     wifi-listener = "${makeScript "wifi" ./scripts/wifi.raku}";
+    locker = "${config.applications.locker}";
   };
 
   colors = config.colorScheme.colors;
