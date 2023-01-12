@@ -143,6 +143,10 @@
   `{{{acpi}}} -b | cut -d, -f 3`)
 (defvar hover-battery false)
 
+(defpoll notification-paused :interval "15s"
+                             :initial false
+  `{{{dunstctl}}} is-paused`)
+
 (defwindow statusbar-right
            :monitor 0
            :geometry
@@ -172,6 +176,7 @@
       ; TODO plane mode ?
       (wifi)
       (battery)
+      (notification)
       (time)
       (lock))))
 
@@ -314,4 +319,15 @@
         (image :image-width {{{item-size}}}
                :image-height {{{item-size}}}
           :path "right/lock.png")))))
+
+(defwidget notification []
+  (box :orientation "horizontal"
+       :class "notification"
+       :space-evenly false
+       :spacing 0
+    (box :class "taskitem"
+      (button :onclick "{{{dunstctl}}} set-paused toggle && eww update notification-paused=$({{{dunstctl}}} is-paused)"
+        (image :image-width {{{item-size}}}
+               :image-height {{{item-size}}}
+          :path { notification-paused ? "right/not_off.png" : "right/not_on.png" })))))
 

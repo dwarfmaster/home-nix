@@ -36,6 +36,7 @@
     bctl = "${pkgs.brightnessctl}/bin/brightnessctl";
     jq = "${pkgs.jq}/bin/jq";
     nmcli = "${pkgs.networkmanager}/bin/nmcli";
+    dunstctl = "${pkgs.dunst}/bin/dunstctl";
   };
   makeScript = name: file:
     writeRakuScript name (builtins.readFile (config.lib.mustache.render name file context));

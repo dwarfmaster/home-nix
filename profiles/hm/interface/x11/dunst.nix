@@ -3,7 +3,7 @@
   pkgs,
   ...
 }: let
-  cols = config.theme.colors;
+  cols = config.colorScheme.colors;
   cfg = config.services.dunst;
 
   pauseDunst =
@@ -32,23 +32,49 @@
 in {
   services.dunst = {
     enable = true;
-    enableBase16Theme = true;
     settings = {
       global = {
         monitor = 0;
-        geometry = "385x5-20+40";
-        separator_height = 3;
-        transparency = 0;
+        follow = "none";
+        history_length = 1000;
+        notification_limit = 7;
+        indicate_hidden = true;
+
+        width = 706;
+        height = 100;
+        origin = "top-right";
+        offset = "5x30";
+
+        separator_height = 2;
+        separator_color = "#${cols.base02}";
+        frame_width = 2;
+        corner_radius = 7;
+        transparency = 20;
+
         padding = 5;
         horizontal_padding = 5;
-        frame_width = 3;
         font = "FiraCode Nerd Font 12";
         format = "<b>%s</b>\\n%b";
       };
 
-      urgency_low.timeout = 10;
-      urgency_normal.timeout = 10;
-      urgency_critical.timeout = 15;
+      urgency_low = {
+        timeout = 10;
+        background = "#${cols.base01}";
+        foreground = "#${cols.base05}";
+        frame_color = "#${cols.base0B}";
+      };
+      urgency_normal = {
+        timeout = 10;
+        background = "#${cols.base01}";
+        foreground = "#${cols.base05}";
+        frame_color = "#${cols.base0E}";
+      };
+      urgency_critical = {
+        timeout = 15;
+        background = "#${cols.base01}";
+        foreground = "#${cols.base05}";
+        frame_color = "#${cols.base08}";
+      };
     };
   };
 
