@@ -4,6 +4,11 @@
   pkgs,
   ...
 }: {
+  services.korrvigs = {
+    enable = true;
+    dataDir = "/home/luc/downloads/wiki";
+  };
+
   programs.doom-emacs.config = {
     initModules = {
       lang = [

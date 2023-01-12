@@ -708,6 +708,26 @@
         "type": "github"
       }
     },
+    "korrvigs": {
+      "inputs": {
+        "nixpkgs": [
+          "nixos"
+        ]
+      },
+      "locked": {
+        "lastModified": 1673560835,
+        "narHash": "sha256-Jgz82Ebr7kPSgijNM91AvDfU6jzx9yrIv5TJHtQwJXc=",
+        "owner": "dwarfmaster",
+        "repo": "korrvigs",
+        "rev": "e77adae4771e077fb42b05062a359690a08d95f0",
+        "type": "github"
+      },
+      "original": {
+        "owner": "dwarfmaster",
+        "repo": "korrvigs",
+        "type": "github"
+      }
+    },
     "lean4": {
       "inputs": {
         "flake-utils": "flake-utils_2",
@@ -1290,6 +1310,7 @@
         "home": "home",
         "imacs": "imacs",
         "impermanence": "impermanence",
+        "korrvigs": "korrvigs",
         "lean4": "lean4",
         "master": "master_2",
         "neovim-nightly": "neovim-nightly",

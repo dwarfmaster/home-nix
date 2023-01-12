@@ -30,6 +30,10 @@
       inputs.django-nixos.follows = "django";
     };
     colors.url = "github:Misterio77/nix-colors";
+    korrvigs = {
+      url = "github:dwarfmaster/korrvigs";
+      inputs.nixpkgs.follows = "nixos";
+    };
 
     lean4 = {
       url = "github:leanprover/lean4";
@@ -75,6 +79,7 @@
     django,
     imacs,
     colors,
+    korrvigs,
     lean4,
     opam2nix,
     emacs-overlay,
@@ -90,6 +95,7 @@
         nur = nur.overlay;
         arkenfox = arkenfox.overlay;
         neovim-nightly = neovim-nightly.overlay;
+        korrvigs = korrvigs.overlays.default;
         packages = self: super:
           {
             lean4 = lean4.defaultPackage.x86_64-linux;
@@ -127,6 +133,7 @@
           nixvim = nixvim.homeManagerModules.nixvim;
           colors = colors.homeManagerModules.colorScheme;
           impermanence = impermanence.nixosModules.home-manager.impermanence;
+          korrvigs = korrvigs.hmModules.default;
         };
       nixvim = self.nixvimModules // {profiles = {...}: {imports = profiles.nixvim;};};
     };
