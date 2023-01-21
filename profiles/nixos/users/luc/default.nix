@@ -18,6 +18,7 @@
         brightness.enable = true;
         bspwm.enable = true;
         eww.enable = true;
+        korrvigs.enable = true;
         locking.enable = true;
         visualisation.enable = true;
         x11.enable = true;
@@ -54,6 +55,7 @@
         nextcloud.enable = true;
         papers.enable = true;
         photos.enable = true;
+        webcomics.enable = true;
         wiki.enable = true;
       };
 

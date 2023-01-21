@@ -19,4 +19,14 @@
   home.packages = [
     pkgs.gtk4.dev # Some utilities, most importantly gtk4-icon-browser
   ];
+
+  services.korrvigs = {
+    constants = {
+      xdg-config = "${config.xdg.configHome}";
+      xdg-cache = "${config.xdg.cacheHome}";
+      xdg-data = "${config.xdg.dataHome}";
+      xdg-state = "${config.xdg.stateHome}";
+    };
+    extraModules.xdg = ./xdg.pl;
+  };
 }

@@ -1,4 +1,4 @@
-{pkgs, ...}: let
+{config, pkgs, ...}: let
   fd = pkgs.fd;
 in {
   programs.fzf = {
@@ -14,5 +14,10 @@ in {
     enable = true;
     settings.modal = true;
     enableZshIntegration = true;
+  };
+
+  services.korrvigs = {
+    constants.fzf = "${config.programs.fzf.package}/bin/fzf";
+    extraModules.fzf = ./fzf.pl;
   };
 }

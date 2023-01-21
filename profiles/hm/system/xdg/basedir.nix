@@ -13,10 +13,7 @@
 # - XDG_CONFIG_DIRS: handled by system config
 # - XDG_CACHE_HOME: handled by home-manager
 # - XDG_RUNTIME_DIR: handled by system config
-let
-  inherit (lib) mkOption types;
-  cfg = config.xdg;
-in {
+{
   xdg.enable = true;
   xdg.stateHome = "${config.home.homeDirectory}/.local/state";
 }
