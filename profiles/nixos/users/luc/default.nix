@@ -26,7 +26,6 @@
       };
 
       programs = {
-        alacritty.enable = true;
         audio.enable = true;
         blender.enable = true;
         cheat.enable = true;
@@ -37,6 +36,7 @@
         firefox.enable = true;
         games.enable = true;
         git-annex.enable = true;
+        kitty.enable = true;
         maps.enable = true;
         messaging.enable = true;
         multimedia.enable = true;
