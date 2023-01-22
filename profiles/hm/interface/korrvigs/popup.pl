@@ -16,16 +16,16 @@ server_is_ready(_).
 %  PRED.
 with(CMD_DESC, ARGS, PRED, RES) :-
   absolute_file_name(CMD_DESC, CMD),
-  nix_constant(st, ST),
+  nix_constant(term, TERM),
   piper(PIPER), current_prolog_flag(system_thread_id, CPID),
-  append([ "-c", "popup", PIPER, SPATH, CPID, CMD ], ARGS, NARGS),
+  append([ "--class", "popup", "-e", PIPER, SPATH, CPID, CMD ], ARGS, NARGS),
   unix_domain_socket(SOCK),
   setup_call_cleanup(
     ( temp_sock(SPATH) ),
     (setup_call_cleanup(
       ( on_signal(usr1, _, server_is_ready) ),
       (setup_call_cleanup(
-        ( process_create(ST, NARGS, [ process(PID), stdout(null), stderr(null) ]) ),
+        ( process_create(TERM, NARGS, [ process(PID), stdout(null), stderr(null) ]) ),
         ( % Wait for server to be ready
           pause(),
           on_signal(usr1, _, default),

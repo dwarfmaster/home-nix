@@ -26,6 +26,7 @@
       };
 
       programs = {
+        alacritty.enable = true;
         audio.enable = true;
         blender.enable = true;
         cheat.enable = true;

@@ -2,7 +2,7 @@
 
 {
   services.korrvigs = {
-    constants.st = "${config.applications.terminal}";
+    constants.term = "${config.applications.terminal}";
     extraModules.popup = ./popup.pl;
   };
   xsession.windowManager.bspwm.rules = {
