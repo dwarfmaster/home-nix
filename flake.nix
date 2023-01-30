@@ -115,7 +115,6 @@
         // {
           inherit libModule;
           profiles = {...}: {imports = profiles.nixos;};
-          nur = nur.nixosModules.nur;
           mailserver = simple-mailserver.nixosModules.mailserver;
           home-manager = home.nixosModules.home-manager;
           imacs = imacs.nixosModules.imacs;
@@ -126,7 +125,6 @@
         // {
           inherit libModule;
           profiles = {...}: {imports = profiles.hm;};
-          nur = nur.hmModules.nur;
           rycee-base16 = nur-modules.repos.rycee.hmModules.theme-base16;
           nix-doom-emacs = nix-doom-emacs.hmModule;
           arkenfox = arkenfox.hmModules.default;
