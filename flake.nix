@@ -30,6 +30,11 @@
       inputs.django-nixos.follows = "django";
     };
     colors.url = "github:Misterio77/nix-colors";
+    stylix = {
+      url = "/home/luc/repos/stylix";
+      inputs.nixpkgs.follows = "nixos";
+      inputs.home-manager.follows = "home";
+    };
     korrvigs = {
       url = "github:dwarfmaster/korrvigs";
       inputs.nixpkgs.follows = "nixos";
@@ -79,6 +84,7 @@
     django,
     imacs,
     colors,
+    stylix,
     korrvigs,
     lean4,
     opam2nix,
@@ -117,6 +123,7 @@
           profiles = {...}: {imports = profiles.nixos;};
           mailserver = simple-mailserver.nixosModules.mailserver;
           home-manager = home.nixosModules.home-manager;
+          stylix = stylix.nixosModules.stylix;
           imacs = imacs.nixosModules.imacs;
           impermanence = impermanence.nixosModule;
         };
@@ -130,6 +137,7 @@
           arkenfox = arkenfox.hmModules.default;
           nixvim = nixvim.homeManagerModules.nixvim;
           colors = colors.homeManagerModules.colorScheme;
+          stylix = stylix.homeManagerModules.stylix;
           impermanence = impermanence.nixosModules.home-manager.impermanence;
           korrvigs = korrvigs.hmModules.default;
         };

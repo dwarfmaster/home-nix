@@ -17,6 +17,7 @@
       xserver.enable = true;
       graphical.enable = true;
       sound.enable = true;
+      theme.enable = true;
     };
   };
 
