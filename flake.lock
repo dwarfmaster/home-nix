@@ -1439,8 +1439,8 @@
         ]
       },
       "locked": {
-        "lastModified": 1675103127,
-        "narHash": "sha256-uFYQTQWtTxSRhUbfZjub0tBZY03bHLQYRcFHX054Kck=",
+        "lastModified": 1675293767,
+        "narHash": "sha256-ip5P1m16IJJV5bGmRyiVmaG+U9ihiGzK27j8iYa855M=",
         "type": "git",
         "url": "file:///home/luc/repos/stylix"
       },
