@@ -9,18 +9,30 @@ split_and_num(COUNT, [[OPT,D]|TL], [OPT|OPTS], [[COUNT, D]|DS]) :-
   split_and_num(NC, TL, OPTS, DS).
 split_and_num(_, [], [], []).
 
+%! read_all(+STREAM, -RES)
+%  Read all line from STREAM, and take the first word from each, returning
+%  the list of all those words.
+read_all(STREAM, []) :-
+  at_end_of_stream(STREAM).
+read_all(STREAM, [WD|TL]) :-
+  read_string(STREAM, " ", "", _, WD),
+  read_string(STREAM, "\n", "", _, _),
+  read_all(STREAM, TL).
+
 handler_split(CHOICES, IN, OUT, RES) :-
   split_and_num(0, CHOICES, RESULTS, TO_CHOOSE),
   forall(member([OPT, DESC], TO_CHOOSE), format(IN, "~w ~w\0", [ OPT, DESC ])),
   close(IN),
-  read_string(OUT, " ", "", _, ID_STR), !,
-  number_string(ID, ID_STR),
-  nth0(ID, RESULTS, RES).
+  read_all(OUT, IDS_STR), !,
+  maplist(
+    {RESULTS}/[ID_STR,ID_RES]>> (number_string(ID, ID_STR), nth0(ID, RESULTS, ID_RES)),
+    IDS_STR,
+    RES).
 
 handler(CHOICES, IN, OUT, RES) :-
   forall(member([OPT, DESC], CHOICES), format(IN, "~w ~w\0", [ OPT, DESC ])),
   close(IN),
-  read_string(OUT, " ", "", _, RES).
+  read_all(OUT, RES).
 
 %! run(+CHOICES, +OPTS, -R)
 %! run_any(+CHOICES, +OPTS, -R)
@@ -28,26 +40,32 @@ handler(CHOICES, IN, OUT, RES) :-
 %  on the descriptions and return the selected associated value. Additional
 %  options can be given to fzf with OPTS. Values may not include spaces. In run_any,
 %  values may include spaces (and can be any prolog term), but the previewer won't
-%  have access to them.
+%  have access to them. R is a list of all selected items (or just a singleton if fzf
+%  is not launched in multi mode).
 run(CHOICES, OPTS, R) :-
   append([ "--read0", "--with-nth=2.." ], OPTS, FZF_OPTS),
   nix_constant(fzf, FZF),
-  popup:with(FZF, FZF_OPTS, fzf:handler(CHOICES), R).
+  popup:with(FZF, FZF_OPTS, fzf:handler(CHOICES), R), !.
 run_any(CHOICES, OPTS, R) :-
   append([ "--read0", "--with-nth=2.." ], OPTS, FZF_OPTS),
   nix_constant(fzf, FZF),
-  popup:with(FZF, FZF_OPTS, fzf:handler_split(CHOICES), R).
+  popup:with(FZF, FZF_OPTS, fzf:handler_split(CHOICES), R), !.
 
 %! select(+CHOICES, -CHOICE)
 %  Given a list of choices, run fzf to get a choice
 select(CHOICES, CHOICE) :-
-  run_any(CHOICES, [], CHOICE).
+  run_any(CHOICES, [], [CHOICE]).
 
 %! select_text(+CHOICES, -CHOICE)
 %  Same as select, but assume the values are path to text files, enabling
-%  a previewer in fzf
+%  a previewer in fzf. Paths must not have spaces in them.
 select_text(CHOICES, CHOICE) :-
-  run(CHOICES, [ "--preview", "bat --color=always {+1}" ], CHOICE).
+  run(CHOICES, [ "--preview", "bat --color=always --line-range=:500 {+1}" ], [CHOICE]).
+
+%! select_multi(+CHOICES, -SELECTED)
+%  Same as select, except it allows for multiple selection
+select_multi(CHOICES, SELECTED) :-
+  run_any(CHOICES, [ "--multi", "--marker=" ], SELECTED).
 
 %! select_action
 %  Use fzf to select an action to run
