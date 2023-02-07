@@ -51,27 +51,47 @@ run_any(CHOICES, OPTS, R) :-
   nix_constant(fzf, FZF),
   popup:with(FZF, FZF_OPTS, fzf:handler_split(CHOICES), R), !.
 
+preview_cmd(text, "bat --color=always --line-range=:500 {1}").
+preview_cmd(dir, "lsd --color=always --tree -d {1}").
+preview_cmd(cmd(CMD), CMD).
+
+opts_to_args([], [], true, false).
+opts_to_args([preview(P)|OPTS], ["--preview" | [ CMD | ARGS ] ], false, MULTI) :- !,
+  preview_cmd(P, CMD),
+  opts_to_args(OPTS, ARGS, _, MULTI).
+opts_to_args([multi(true)|OPTS], NARGS, ANY, true) :- !,
+  append(["--multi", "--marker="], ARGS, NARGS),
+  opts_to_args(OPTS, ARGS, ANY, _).
+opts_to_args([multi(false)|OPTS], ARGS, ANY, MULTI) :- !,
+  opts_to_args(OPTS, ARGS, ANY, MULTI).
+opts_to_args([extra(EXTRA)|OPTS], NARGS, ANY, MULTI) :- !,
+  append(EXTRA, ARGS, NARGS),
+  opts_to_args(OPTS, ARGS, ANY, MULTI).
+opts_to_args([OPT|_], _, _, _) :-
+  throw(fzf_unknown_option(OPT)).
+
+%! select(+CHOICES, -CHOICE, +OPTS)
+%  Given a list of choices, run fzf to get a choice, but assume the values are
+%  path to text files, enabling a previewer in fzf. Paths must not have spaces
+%  in them. OPTS is a list of options. Supported options are:
+%  - preview(P): setup a previewer for fzf. When using a previewer, the values
+%    must not contain spaces. The supported values for P are:
+%    - text: assumes values are path to text files, print them with colors
+%    - dir: assumes values are path to directories, print their tree
+%    - cmd(CMD): CMD must be a string that will be passed as the preview option
+%      to fzf
+%  - multi(B): Enable multiple selection if B=true (if not set it is assumed
+%    to be false), in which case CHOICE will be the list a selected values,
+%    instead of a single ones.
+%  - extra(OPTS): A list of extra options to give to fzf.
+select(CHOICES, CHOICE, OPTS) :-
+  opts_to_args(OPTS, ARGS, ANY, MULTI),
+  (ANY = true -> run_any(CHOICES, ARGS, RES) ; run(CHOICES, ARGS, RES)),
+  (MULTI = true -> CHOICE = RES ; [ CHOICE ] = RES).
+
 %! select(+CHOICES, -CHOICE)
-%  Given a list of choices, run fzf to get a choice
-select(CHOICES, CHOICE) :-
-  run_any(CHOICES, [], [CHOICE]).
-
-%! select_text(+CHOICES, -CHOICE)
-%  Same as select, but assume the values are path to text files, enabling
-%  a previewer in fzf. Paths must not have spaces in them.
-select_text(CHOICES, CHOICE) :-
-  run(CHOICES, [ "--preview", "bat --color=always --line-range=:500 {+1}" ], [CHOICE]).
-
-%! select_dir(+CHOICES, -CHOICE)
-%  Same as select, but assume the values are paths to directories, enabling
-%  a previewer in fzf. Paths must not have spaces in them.
-select_dir(CHOICES, CHOICE) :-
-  run(CHOICES, [ "--preview", "lsd --color=always --tree -d {+1}" ], [CHOICE]).
-
-%! select_multi(+CHOICES, -SELECTED)
-%  Same as select, except it allows for multiple selection
-select_multi(CHOICES, SELECTED) :-
-  run_any(CHOICES, [ "--multi", "--marker=" ], SELECTED).
+%  Same as select/3 but with empty options list.
+select(CHOICES, CHOICE) :- select(CHOICES, CHOICE, []).
 
 %! select_action
 %  Use fzf to select an action to run
