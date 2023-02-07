@@ -62,6 +62,12 @@ select(CHOICES, CHOICE) :-
 select_text(CHOICES, CHOICE) :-
   run(CHOICES, [ "--preview", "bat --color=always --line-range=:500 {+1}" ], [CHOICE]).
 
+%! select_dir(+CHOICES, -CHOICE)
+%  Same as select, but assume the values are paths to directories, enabling
+%  a previewer in fzf. Paths must not have spaces in them.
+select_dir(CHOICES, CHOICE) :-
+  run(CHOICES, [ "--preview", "lsd --color=always --tree -d {+1}" ], [CHOICE]).
+
 %! select_multi(+CHOICES, -SELECTED)
 %  Same as select, except it allows for multiple selection
 select_multi(CHOICES, SELECTED) :-
