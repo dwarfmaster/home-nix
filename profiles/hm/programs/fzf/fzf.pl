@@ -104,5 +104,5 @@ select_action :-
 %! register(+PRIORITY, +DESC, +CODE)
 %  Each success is an action with a priority, a description and a code
 %  to execute. It should fail if the action is not meant to be applied.
-actions:register(0, "Select an action to run", fzf:select_action) :- ctx:get(desktop, true).
+actions:register(0, "Select an action to run", fzf:select_action) :- ctx:desktop.
 :- server:register("select", fzf:select_action).

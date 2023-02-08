@@ -29,14 +29,14 @@
 
 %! wiki(-UUID)
 %  Get the current wiki
-ctx_wiki(UUID) :- ctx:get(wiki,UUID_STR), atom_string(UUID, UUID_STR).
+ctx_wiki(UUID) :- wiki:current(UUID_STR, _), atom_string(UUID, UUID_STR).
 
 % TODO
 view_url(_).
 
 % Open last rad page
 actions:register(100, DESC, webcomics:view_url(URL)) :-
-  ctx:get(desktop, true),
+  ctx:desktop,
   ctx_wiki(UUID),
   wiki:attr(UUID, [ atom('webcomic'), 'last-read' ], [ _, URL ]),
   wiki:title(UUID, TITLE),
@@ -66,13 +66,13 @@ jump_to_page(COMIC) :-
 
 % Jump to page
 actions:register(50, DESC, webcomics:jump_to_page(COMIC)) :-
-  ctx:get(desktop, true),
+  ctx:desktop,
   ctx_wiki(UUID),
   wiki:attr(UUID, atom('webcomic'), COMIC),
   wiki:title(UUID, TITLE),
   concat("Jump to page of ", TITLE, DESC).
 actions:register(10, "Jump to a webcomic page", webcomics:remote_call(jump_to_page)) :-
-  ctx:get(desktop, true).
+  ctx:desktop.
 
 %! jump_to_chapter(+COMIC)
 %  Fuzzy select a chapter in a comic and jump to it
@@ -85,13 +85,13 @@ jump_to_chapter(COMIC) :-
 
 % Jump to chapter
 actions:register(50, DESC, webcomics:jump_to_chapter(COMIC)) :-
-  ctx:get(desktop, true),
+  ctx:desktop,
   ctx_wiki(UUID),
   wiki:attr(UUID, atom('webcomic'), COMIC),
   wiki:title(UUID, TITLE),
   concat("Jump to chapter of ", TITLE, DESC).
 actions:register(10, "Jump to a webcomic chapter", webcomics:remote_call(jump_to_chapter)) :-
-  ctx:get(desktop, true).
+  ctx:desktop.
 
 %! update_metrics(-COMIC)
 %  Update the metrics for the comic COMIC
@@ -107,7 +107,7 @@ update_metrics(COMIC) :-
 
 % Update metrics from last read page
 actions:register(80, DESC, webcomics:update_metrics(COMIC)) :-
-  ctx:get(desktop, true),
+  ctx:desktop,
   ctx_wiki(UUID),
   wiki:attr(UUID, [ atom('webcomic'), 'last-read' ], [ COMIC, _ ]),
   wiki:title(UUID, TITLE),
@@ -115,14 +115,15 @@ actions:register(80, DESC, webcomics:update_metrics(COMIC)) :-
 
 
 % Save currently open page as last-read
-actions:register(100, DESC, wiki:set_attr(UUID, 'last-read', URL)) :-
-  ctx:get(desktop, true),
-  ctx:get(web, URL),
-  identify(COMIC, URL),
-  atom_string(COMIC, COMIC_STR),
-  wiki:attr(UUID, atom('webcomic'), COMIC_STR),
-  wiki:title(UUID, TITLE),
-  concat("Bookmark for ", TITLE, DESC).
+% TODO need for web
+% actions:register(100, DESC, wiki:set_attr(UUID, 'last-read', URL)) :-
+%   ctx:desktop,
+% ? web:browsing(URL),
+%   identify(COMIC, URL),
+%   atom_string(COMIC, COMIC_STR),
+%   wiki:attr(UUID, atom('webcomic'), COMIC_STR),
+%   wiki:title(UUID, TITLE),
+%   concat("Bookmark for ", TITLE, DESC).
 
 %  _   _ _   _ _ _ _   _           
 % | | | | |_(_) (_) |_(_) ___  ___ 

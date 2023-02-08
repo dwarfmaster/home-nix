@@ -117,31 +117,17 @@ clients(MON, WORKSPACE, DESKTOP, ID, CLASS, INSTANCE, FOCUS) :-
 %                                    
 % Context
 
-% Declare a monitor option, that gives the current monitor
-ctx:declare(focused_monitor, str, "The currently focused monitor").
-ctx:context_stored(focused_monitor, M) :- ctx:get(desktop, true), get_focused_monitor(M).
+%! focused_monitor(MON)
+%  Get the currently focused monitor
+focused_monitor(MON) :-
+  ctx:desktop,
+  ctx:memoise(bspwm_focused_monitor, get_focused_monitor, MON).
 
-% Declare a client option, that gives the current focused option
-ctx:declare(
-  focused_window,
-  attrs([
-    [monitor, str],
-    [workspace, str],
-    [desktop, str],
-    [id, str],
-    [class, str],
-    [instance, str]
-  ]),
-  "The currently focused window").
-ctx:context_stored(focused_window,
-  _{ monitor: M,
-     workspace: W,
-     desktop: D,
-     id: ID,
-     class: C,
-     instance: I }) :-
-  ctx:get(desktop, true),
-  clients(M, W, D, ID, C, I, 1), !.
+%! focused_window(MON, WORK, DESK, ID, CLASS, INSTANCE)
+%  Get the informations about the currently focused window
+focused_window(MON, WORK, DESK, ID, CLASS, INSTANCE) :-
+  ctx:desktop,
+  clients(MON, WORK, DESK, ID, CLASS, INSTANCE, 1).
 
 
 
@@ -185,7 +171,7 @@ focus_window :-
   nix_constant(bspc, BSPC),
   process_create(BSPC, [ "node", "-f", C ], []).
 actions:register(40, DESC, bspwm:focus_window) :-
-  ctx:get(desktop, true),
+  ctx:desktop,
   get_focused_desktop(WORK, _),
   format(string(DESC), "Focus window in ~s", WORK).
 :- server:register("focus_window", bspwm:focus_window).

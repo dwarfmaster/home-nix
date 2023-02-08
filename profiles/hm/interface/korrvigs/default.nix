@@ -64,6 +64,12 @@ in {
   services.korrvigs = {
     constants.term = "${config.programs.kitty.package}/bin/kitty";
     extraModules.popup = ./popup.pl;
+    extraModules.korrvigs-config = pkgs.writeText "korrvigs-config.pl" ''
+      :- module('korrvigs-config', []).
+      :- use_module(korrvigs(ctx)).
+
+      ctx:desktop().
+    '';
   };
   home.packages = [ korrvigs-builder korrvigs-to-nix ];
   xsession.windowManager.bspwm.rules = {
