@@ -11,63 +11,87 @@ split_and_num(_, [], [], []).
 
 %! read_all(+STREAM, -RES)
 %  Read all line from STREAM, and take the first word from each, returning
-%  the list of all those words.
+%  the list of all those words. Has a specific case for the first line, as
+%  it is the printed query.
 read_all(STREAM, []) :-
   at_end_of_stream(STREAM).
 read_all(STREAM, [WD|TL]) :-
+  read_string(STREAM, "\n", "", _, WD),
+  read_all_rec(STREAM, TL).
+read_all_rec(STREAM, []) :-
+  at_end_of_stream(STREAM).
+read_all_rec(STREAM, [WD|TL]) :-
   read_string(STREAM, " ", "", _, WD),
   read_string(STREAM, "\n", "", _, _),
-  read_all(STREAM, TL).
+  read_all_rec(STREAM, TL).
 
-handler_split(CHOICES, IN, OUT, RES) :-
+handler_split(NEW, CHOICES, IN, OUT, RES) :-
   split_and_num(0, CHOICES, RESULTS, TO_CHOOSE),
   forall(member([OPT, DESC], TO_CHOOSE), format(IN, "~w ~w\0", [ OPT, DESC ])),
   close(IN),
   read_all(OUT, IDS_STR), !,
-  maplist(
-    {RESULTS}/[ID_STR,ID_RES]>> (number_string(ID, ID_STR), nth0(ID, RESULTS, ID_RES)),
-    IDS_STR,
-    RES).
+  process_result(NEW, IDS_STR, PROCESSED),
+  ( PROCESSED = new(_) -> RES = PROCESSED
+  ; maplist(
+      {RESULTS}/[ID_STR,ID_RES]>> (number_string(ID, ID_STR), nth0(ID, RESULTS, ID_RES)),
+      PROCESSED,
+      RES) ).
 
-handler(CHOICES, IN, OUT, RES) :-
+handler(NEW, CHOICES, IN, OUT, RES) :-
   forall(member([OPT, DESC], CHOICES), format(IN, "~w ~w\0", [ OPT, DESC ])),
   close(IN),
-  read_all(OUT, RES).
+  read_all(OUT, RQ),
+  process_result(NEW, RQ, RES).
 
-%! run(+CHOICES, +OPTS, -R)
-%! run_any(+CHOICES, +OPTS, -R)
+process_result(true, [QUERY], new(QUERY)) :- !.
+process_result(false, [_], []) :- !.
+process_result(_, [_|R], R).
+process_result(_, [], []).
+
+%! run(+CHOICES, +OPTS, +NEW, -R)
+%! run_any(+CHOICES, +OPTS, +NEW, -R)
 %  Given a list CHOICES of pair of values and description, open a fuzzy finder
 %  on the descriptions and return the selected associated value. Additional
-%  options can be given to fzf with OPTS. Values may not include spaces. In run_any,
-%  values may include spaces (and can be any prolog term), but the previewer won't
-%  have access to them. R is a list of all selected items (or just a singleton if fzf
-%  is not launched in multi mode).
-run(CHOICES, OPTS, R) :-
-  append([ "--read0", "--with-nth=2.." ], OPTS, FZF_OPTS),
+%  options can be given to fzf with OPTS. Values may not include spaces. In
+%  run_any, values may include spaces (and can be any prolog term), but the
+%  previewer won't have access to them. R is a list of all selected items (or
+%  just a singleton if fzf is not launched in multi mode). If NEW=true, can
+%  succeed on a new query entered by the user, which will be given wrapped on
+%  the new(...) functor instead of a list.
+run(CHOICES, OPTS, NEW, R) :-
+  append([ "--read0", "--with-nth=2..", "--print-query" ], OPTS, FZF_OPTS),
   nix_constant(fzf, FZF),
-  popup:with(FZF, FZF_OPTS, fzf:handler(CHOICES), R), !.
-run_any(CHOICES, OPTS, R) :-
-  append([ "--read0", "--with-nth=2.." ], OPTS, FZF_OPTS),
+  popup:with(FZF, FZF_OPTS, fzf:handler(NEW, CHOICES), R), !.
+run_any(CHOICES, OPTS, NEW, R) :-
+  append([ "--read0", "--with-nth=2..", "--print-query" ], OPTS, FZF_OPTS),
   nix_constant(fzf, FZF),
-  popup:with(FZF, FZF_OPTS, fzf:handler_split(CHOICES), R), !.
+  popup:with(FZF, FZF_OPTS, fzf:handler_split(NEW, CHOICES), R), !.
 
+%! preview_cmd(-PREV, +CMD)
+%  Given the value of the preview option to select, give the command to run.
+:- multifile preview_cmd/2.
 preview_cmd(text, "bat --color=always --line-range=:500 {1}").
 preview_cmd(dir, "lsd --color=always --tree -d {1}").
 preview_cmd(cmd(CMD), CMD).
 
-opts_to_args([], [], true, false).
-opts_to_args([preview(P)|OPTS], ["--preview" | [ CMD | ARGS ] ], false, MULTI) :- !,
+opts_to_args([], [], true, false, false).
+opts_to_args([preview(P)|OPTS], ["--preview" | [ CMD | ARGS ] ], false, MULTI, NEW) :- !,
   preview_cmd(P, CMD),
-  opts_to_args(OPTS, ARGS, _, MULTI).
-opts_to_args([multi(true)|OPTS], NARGS, ANY, true) :- !,
+  opts_to_args(OPTS, ARGS, _, MULTI, NEW).
+opts_to_args([multi(true)|OPTS], NARGS, ANY, true, NEW) :- !,
   append(["--multi", "--marker="], ARGS, NARGS),
-  opts_to_args(OPTS, ARGS, ANY, _).
-opts_to_args([multi(false)|OPTS], ARGS, ANY, MULTI) :- !,
-  opts_to_args(OPTS, ARGS, ANY, MULTI).
-opts_to_args([extra(EXTRA)|OPTS], NARGS, ANY, MULTI) :- !,
+  opts_to_args(OPTS, ARGS, ANY, _, NEW).
+opts_to_args([multi(false)|OPTS], ARGS, ANY, MULTI, NEW) :- !,
+  opts_to_args(OPTS, ARGS, ANY, MULTI, NEW).
+opts_to_args([extra(EXTRA)|OPTS], NARGS, ANY, MULTI, NEW) :- !,
   append(EXTRA, ARGS, NARGS),
-  opts_to_args(OPTS, ARGS, ANY, MULTI).
-opts_to_args([OPT|_], _, _, _) :-
+  opts_to_args(OPTS, ARGS, ANY, MULTI, NEW).
+opts_to_args([new(true)|OPTS], NARGS, ANY, MULTI, true) :- !,
+  append(["--bind", "ctrl-j:print-query"], ARGS, NARGS),
+  opts_to_args(OPTS, ARGS, ANY, MULTI, _).
+opts_to_args([new(false)|OPTS], ARGS, ANY, MULTI, NEW) :- !,
+  opts_to_args(OPTS, ARGS, ANY, MULTI, NEW).
+opts_to_args([OPT|_], _, _, _, _) :-
   throw(fzf_unknown_option(OPT)).
 
 %! select(+CHOICES, -CHOICE, +OPTS)
@@ -80,14 +104,22 @@ opts_to_args([OPT|_], _, _, _) :-
 %    - dir: assumes values are path to directories, print their tree
 %    - cmd(CMD): CMD must be a string that will be passed as the preview option
 %      to fzf
+%    - can be extended using the preview_cmd predicate
 %  - multi(B): Enable multiple selection if B=true (if not set it is assumed
 %    to be false), in which case CHOICE will be the list a selected values,
 %    instead of a single ones.
+%  - new(B): Enable user to enter a new value (and use ctrl+j to select it).
 %  - extra(OPTS): A list of extra options to give to fzf.
+%  CHOICE will be:
+%  - A list of selected values if multi is true
+%  - The single selected value if multi is false
+%  - The query wrapped in the functor new(...) if new is true and the user
+%    entered a new string (otherwise the result follows the above rules).
 select(CHOICES, CHOICE, OPTS) :-
-  opts_to_args(OPTS, ARGS, ANY, MULTI),
-  (ANY = true -> run_any(CHOICES, ARGS, RES) ; run(CHOICES, ARGS, RES)),
-  (MULTI = true -> CHOICE = RES ; [ CHOICE ] = RES).
+  opts_to_args(OPTS, ARGS, ANY, MULTI, NEW),
+  (ANY = true -> run_any(CHOICES, ARGS, NEW, RES) ; run(CHOICES, ARGS, NEW, RES)),
+  (MULTI = true -> CHOICE = RES ;
+    (is_list(RES) -> [ CHOICE ] = RES ; CHOICE = RES)).
 
 %! select(+CHOICES, -CHOICE)
 %  Same as select/3 but with empty options list.
