@@ -140,13 +140,10 @@ in {
     # Need to be manually enabled when first launching a new profile
     # To do so, go to about:addons
     extensions = builtins.attrValues {
-      # Missing : dont-fuck-with-paste, zotero and wallabagger
-
       # Security
       inherit
         (pkgs.nur.repos.rycee.firefox-addons)
         ublock-origin # Efficient light-wieght ad-blocking
-        https-everywhere # Force HTTPS for all connections that supports it
         decentraleyes # Protects against tracking by CDN
         privacy-badger # Auto-learn to block third party trackers and ads
         temporary-containers # Allow opening webpages in specific, temporary containers
@@ -156,10 +153,8 @@ in {
       inherit
         (pkgs.nur.repos.rycee.firefox-addons)
         darkreader
-        # vim-vixen
-        
         i-dont-care-about-cookies # Prevent most cookies popups
-        reddit-enhancement-suite # Improve reddit browsing exprerience
+        don-t-fuck-with-paste
         ;
       inherit
         (unfree.nur.repos.rycee.firefox-addons)
@@ -169,11 +164,7 @@ in {
       # Interaction with the system
       inherit
         (pkgs.nur.repos.rycee.firefox-addons)
-        org-capture
-        # keepassxc-browser
-        
-        # wallabagger
-        
+        keepassxc-browser
         ;
     };
 
