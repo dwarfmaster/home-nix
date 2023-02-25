@@ -37,7 +37,8 @@ in {
         vim-polyglot # Support for many languages
         ;
       inherit
-        lightline-theme-plugin;
+        lightline-theme-plugin
+        ;
     };
   };
 }

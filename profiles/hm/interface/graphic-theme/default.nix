@@ -1,5 +1,9 @@
-{pkgs, lib, config, ...}: 
-let
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}: let
   # TODO upstream to stylix
   rycee-nur = pkgs.fetchFromSourcehut {
     owner = "~rycee";
@@ -30,7 +34,7 @@ let
       base0F.hex.rgb = colors.base0F;
     };
   };
-  theme = (import rycee-nur { inherit pkgs; }).materia-theme.override {
+  theme = (import rycee-nur {inherit pkgs;}).materia-theme.override {
     inherit configBase16;
   };
 in {

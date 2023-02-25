@@ -1,7 +1,9 @@
-{ config, pkgs, ... }:
-
-let
-  nerdfonts = pkgs.nerdfonts.override { fonts = [ "FiraCode" ]; };
+{
+  config,
+  pkgs,
+  ...
+}: let
+  nerdfonts = pkgs.nerdfonts.override {fonts = ["FiraCode"];};
   schemes = pkgs.fetchFromGitHub {
     owner = "tinted-theming";
     repo = "base16-schemes";

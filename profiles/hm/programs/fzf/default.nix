@@ -1,4 +1,8 @@
-{config, pkgs, ...}: let
+{
+  config,
+  pkgs,
+  ...
+}: let
   fd = pkgs.fd;
 in {
   programs.fzf = {

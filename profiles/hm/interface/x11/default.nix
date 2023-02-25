@@ -4,7 +4,6 @@
   lib,
   ...
 }: let
-
   keyboard = let
     xmodmap = "${pkgs.xorg.xmodmap}/bin/xmodmap";
     remappings = pkgs.writeShellScript "xkb-remap-keys" ''

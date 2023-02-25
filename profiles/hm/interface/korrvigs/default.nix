@@ -1,6 +1,9 @@
-{ config, pkgs, lib, ... }:
-
-let
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}: let
   cfg = config.services.korrvigs;
   korrvigs-builder = pkgs.writeShellScriptBin "korrvigs-builder" ''
     out=$1
@@ -9,15 +12,15 @@ let
     fi
     mkdir -p $out
     mkdir $out/modules
-    
+
     sed '/user:file_search_path(korrvigs, "\/nix\/store\/.*-korrvigs-modules")\./d' \
       ${cfg.configFile} > $out/config.pl
     cat << EOF >> $out/config.pl
     user:file_search_path(korrvigs, "$(realpath $out)/modules").
     EOF
-    
+
     ${lib.concatStringsSep "\n"
-        (lib.mapAttrsToList (name: v: "install -m666 ${v} $out/modules/${name}.pl") cfg.extraModules)}
+      (lib.mapAttrsToList (name: v: "install -m666 ${v} $out/modules/${name}.pl") cfg.extraModules)}
 
     cat << EOF > $out/test.pl
     :- [config].
@@ -71,7 +74,7 @@ in {
       ctx:desktop().
     '';
   };
-  home.packages = [ korrvigs-builder korrvigs-to-nix ];
+  home.packages = [korrvigs-builder korrvigs-to-nix];
   xsession.windowManager.bspwm.rules = {
     "popup" = {
       center = true;

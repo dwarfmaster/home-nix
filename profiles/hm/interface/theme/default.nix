@@ -2,9 +2,7 @@
   config,
   pkgs,
   ...
-}:
-
-{
+}: {
   # Set the background using feh
   stylix.targets.feh.enable = true;
 

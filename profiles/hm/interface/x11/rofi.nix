@@ -2,8 +2,7 @@
   config,
   pkgs,
   ...
-}:
-let
+}: let
   themefile = config.lib.stylix.colors {
     template = builtins.readFile ./rofi-theme.mustache;
     extension = "rasi";
