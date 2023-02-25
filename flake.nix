@@ -68,7 +68,7 @@
     arkenfox.url = "github:dwarfmaster/arkenfox-nixos";
   };
 
-  outputs = inputs @ {
+  outputs = {
     self,
     home,
     nixos,
@@ -184,11 +184,6 @@
     };
 
     packages = import ./packages;
-
-    nur-modules = import nur {
-      # Architecture is hardcoded since it won't be used by modules
-      nurpkgs = import nixos {system = "x86_64-linux";};
-    };
 
     libModule = {
       pkgs,
