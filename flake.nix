@@ -216,17 +216,18 @@
         inherit
           (pkgs)
           reupload
+          fvim
           ;
-      })
-      // {
-        x86_64-linux = {
-          helzvog-sd-image = nixos-generators.nixosGenerate {
-            system = "aarch64-linux";
-            format = "sd-aarch64";
-            modules = hosts.helzvog.modules;
-          };
-        };
-      };
+      });
+      # // {
+      #   x86_64-linux = {
+      #     helzvog-sd-image = nixos-generators.nixosGenerate {
+      #       system = "aarch64-linux";
+      #       format = "sd-aarch64";
+      #       modules = hosts.helzvog.modules;
+      #     };
+      #   };
+      # };
 
     lib = import ./utils.nix {inherit lib;};
 
