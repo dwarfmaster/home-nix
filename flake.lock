@@ -310,22 +310,6 @@
         "type": "github"
       }
     },
-    "base16-schemes": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1665690101,
-        "narHash": "sha256-J2ZvNaVFkqaTXzYO5L+jyRORfIOavFPKvWItP6UTMKs=",
-        "owner": "tinted-theming",
-        "repo": "base16-schemes",
-        "rev": "a3dc916cf90471a422c0bfe1bb4b1bdd12185ced",
-        "type": "github"
-      },
-      "original": {
-        "owner": "tinted-theming",
-        "repo": "base16-schemes",
-        "type": "github"
-      }
-    },
     "beautysh": {
       "inputs": {
         "nixpkgs": [
@@ -363,25 +347,6 @@
         "owner": "simple-nixos-mailserver",
         "repo": "blobs",
         "type": "gitlab"
-      }
-    },
-    "colors": {
-      "inputs": {
-        "base16-schemes": "base16-schemes",
-        "nixpkgs-lib": "nixpkgs-lib"
-      },
-      "locked": {
-        "lastModified": 1670210028,
-        "narHash": "sha256-2VpxobYICB+l6n963nR37r0ongTtvHfHQvsPGgMWDmw=",
-        "owner": "Misterio77",
-        "repo": "nix-colors",
-        "rev": "fcd345bd1c9e7c203c3320ee6ca39814c97ac1fe",
-        "type": "github"
-      },
-      "original": {
-        "owner": "Misterio77",
-        "repo": "nix-colors",
-        "type": "github"
       }
     },
     "coricamu": {
@@ -591,6 +556,22 @@
         "owner": "edolstra",
         "repo": "flake-compat",
         "rev": "009399224d5e398d03b22badca40a37ac85412a1",
+        "type": "github"
+      },
+      "original": {
+        "owner": "edolstra",
+        "repo": "flake-compat",
+        "type": "github"
+      }
+    },
+    "flake-compat_3": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1673956053,
+        "narHash": "sha256-4gtG9iQuiKITOjNQQeQIpoIB6b16fm+504Ch3sNKLd8=",
+        "owner": "edolstra",
+        "repo": "flake-compat",
+        "rev": "35bb57c0c8d8b62bbfd284272c928ceb64ddbde9",
         "type": "github"
       },
       "original": {
@@ -1082,21 +1063,6 @@
         "type": "indirect"
       }
     },
-    "nixpkgs-lib": {
-      "locked": {
-        "lastModified": 1655599917,
-        "narHash": "sha256-kjZbt5WdTrnjMxL79okg9TCoRUdADG50x/TWozbyTsE=",
-        "owner": "nix-community",
-        "repo": "nixpkgs.lib",
-        "rev": "5fb55578aa2f1a502d636a8ac71aece57cb730bb",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nix-community",
-        "repo": "nixpkgs.lib",
-        "type": "github"
-      }
-    },
     "nixpkgs-regression": {
       "locked": {
         "lastModified": 1643052045,
@@ -1346,7 +1312,6 @@
     "root": {
       "inputs": {
         "arkenfox": "arkenfox",
-        "colors": "colors",
         "django": "django",
         "emacs-overlay": "emacs-overlay",
         "flake-utils": "flake-utils",
@@ -1431,6 +1396,7 @@
       "inputs": {
         "base16": "base16",
         "coricamu": "coricamu",
+        "flake-compat": "flake-compat_3",
         "home-manager": [
           "home"
         ],
@@ -1439,14 +1405,17 @@
         ]
       },
       "locked": {
-        "lastModified": 1675293767,
-        "narHash": "sha256-ip5P1m16IJJV5bGmRyiVmaG+U9ihiGzK27j8iYa855M=",
-        "type": "git",
-        "url": "file:///home/luc/repos/stylix"
+        "lastModified": 1677339292,
+        "narHash": "sha256-rFlS2pS5UePu3+NWQwFDGhn0iDfUCFJ1l0Q6sxSYSfM=",
+        "owner": "danth",
+        "repo": "stylix",
+        "rev": "94a441c9e28c77e149da22814d7d5546b0ffcc5b",
+        "type": "github"
       },
       "original": {
-        "type": "git",
-        "url": "file:///home/luc/repos/stylix"
+        "owner": "danth",
+        "repo": "stylix",
+        "type": "github"
       }
     },
     "ts-fold": {

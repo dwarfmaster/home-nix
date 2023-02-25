@@ -8,7 +8,7 @@
   inherit (lib) mapAttrs' nameValuePair concatMapStrings;
   inherit (config.lib.utils) foldOverAttrs attrNameValuePairs;
 
-  colors = config.theme.base16.colors;
+  colors = config.lib.stylix.colors;
   icons = "${pkgs.numix-icon-theme}/share/icons/Numix/scalable";
   arkenfox = import ./arkenfox.nix {inherit lib;};
 
@@ -16,25 +16,25 @@
     "Personal" = {
       homepage = "about:blank";
       default = true;
-      color = colors.base0F.hex.rgb;
+      color = colors.base0F;
       icon = "${icons}/categories/applications-games-symbolic.svg";
       arkenfox = [arkenfox.main arkenfox.safe];
     };
     "Thesis" = {
       homepage = "about:blank";
-      color = colors.base0D.hex.rgb;
+      color = colors.base0D;
       icon = "${icons}/categories/applications-education-symbolic.svg";
       arkenfox = [arkenfox.main arkenfox.safe];
     };
     "Media" = {
       homepage = "about:blank";
-      color = colors.base0E.hex.rgb;
+      color = colors.base0E;
       icon = "${icons}/categories/applications-multimedia-symbolic.svg";
       arkenfox = [arkenfox.main];
     };
     "Private" = {
       homepage = "about:blank";
-      color = colors.base07.hex.rgb;
+      color = colors.base07;
       icon = "${icons}/emotes/emote-love-symbolic.svg";
       arkenfox = [
         arkenfox.main
@@ -43,19 +43,19 @@
     };
     "Config" = {
       homepage = "about:blank";
-      color = colors.base0C.hex.rgb;
+      color = colors.base0C;
       icon = "${icons}/categories/applications-system-symbolic.svg";
       arkenfox = [arkenfox.main arkenfox.safe];
     };
     "Shopping" = {
       homepage = "about:blank";
-      color = colors.base0A.hex.rgb;
+      color = colors.base0A;
       icon = "${icons}/emblems/emblem-system-symbolic.svg";
       arkenfox = [arkenfox.main];
     };
     "Secure" = {
       homepage = "about:blank";
-      color = colors.base08.hex.rgb;
+      color = colors.base08;
       icon = "${icons}/status/security-high-symbolic.svg";
       arkenfox = [arkenfox.main arkenfox.hardened];
     };
@@ -67,7 +67,7 @@
       color =
         if profile ? color
         then profile.color
-        else colors.base07.hex.rgb;
+        else colors.base07;
     in {
       inherit name id;
       settings =
@@ -91,7 +91,7 @@
           background: #${color} !important;
         }
         .tabbrowser-tab[selected="true"] {
-          color: #${colors.base00.hex.rgb} !important;
+          color: #${colors.base00} !important;
         }
       '';
       arkenfox = lib.mkMerge ([

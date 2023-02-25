@@ -6,7 +6,7 @@
 }: let
   tab = 2;
 in {
-  colorScheme.nixvimIntegration = true;
+  stylix.targets.nixvim.enable = true;
 
   programs.nixvim = {
     profiles.telescope.enable = true;

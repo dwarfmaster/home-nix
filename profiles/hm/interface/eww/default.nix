@@ -48,7 +48,11 @@
     locker = "${config.applications.locker}";
   };
 
-  colors = config.colorScheme.colors;
+  colors = {
+    inherit (config.lib.stylix.colors)
+      base00 base01 base02 base03 base04 base05 base06 base07
+      base08 base09 base0A base0B base0C base0D base0E base0F;
+  };
   variables = colors // (import ./constants.nix) // scripts // context;
   json = pkgs.writeText "base16.json" (builtins.toJSON variables);
   eww-builder-script = config.lib.mustache.render "eww-builder" ./eww-builder.sh {

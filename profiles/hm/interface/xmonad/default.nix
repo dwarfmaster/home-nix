@@ -5,14 +5,7 @@
   pkgs,
   ...
 }: let
-  xmonad = pkgs.xmonad-with-packages.override {
-    packages = hpkgs:
-      builtins.attrValues {
-        inherit (hpkgs) xmonad-contrib xmonad-extras xmobar;
-      };
-  };
-
-  xmobarrc = config.lib.mustache.render "xmobarrc" ./xmobarrc (config.colorScheme.colors
+  xmobarrc = config.lib.mustache.render "xmobarrc" ./xmobarrc (config.lib.stylix.colors
     // {
       cores =
         lib.concatMapStringsSep "-" (id: "<core${toString id}>")

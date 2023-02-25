@@ -3,7 +3,7 @@
   pkgs,
   ...
 }: let
-  colors = config.colorScheme.colors;
+  colors = config.lib.stylix.colors;
   bspdesk-bin = pkgs.writeShellScriptBin "bspdesk" (builtins.readFile ./bspdesk.sh);
   bspdesk = "${bspdesk-bin}/bin/bspdesk";
 in {

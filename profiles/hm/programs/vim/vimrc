@@ -1,6 +1,4 @@
 
-set runtimepath^={{extraRtp}}
-
 "  __  __ _          
 " |  \/  (_)___  ___ 
 " | |\/| | / __|/ __|
@@ -37,11 +35,8 @@ let maplocalleader=','                  " Local leader is ,
 "                                                             
 let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
 let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
-set termguicolors
-let base16colorspace=256
-colorscheme {{colorscheme}}            " Set the colorscheme, make the background option useless
 let g:lightline = {
-    \ 'colorscheme': 'base16',
+    \ 'colorscheme': 'stylix',
     \ }
 
 "  ____                      _     

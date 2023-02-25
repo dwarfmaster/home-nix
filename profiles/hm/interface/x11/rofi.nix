@@ -2,10 +2,12 @@
   config,
   pkgs,
   ...
-}: let
-  theme =
-    pkgs.writeText "hm-base16.rasi"
-    (import ./rofi-theme.nix config.theme.base16.colors);
+}:
+let
+  themefile = config.lib.stylix.colors {
+    template = builtins.readFile ./rofi-theme.mustache;
+    extension = "rasi";
+  };
 in {
   programs.rofi = {
     enable = true;
@@ -15,16 +17,16 @@ in {
       inherit (pkgs) rofi-emoji rofi-calc;
     };
 
-    font = "FiraCode Nerd Font Bold 20";
+    font = "${config.stylix.fonts.monospace.name} 20";
     location = "center";
-    theme = "hm-base16";
+    theme = "stylix";
 
     configPath = "${config.xdg.configHome}/rofi/config.rasi";
     extraConfig = {
       matching = "fuzzy";
     };
   };
-  xdg.configFile."rofi/themes/hm-base16.rasi".source = theme;
+  xdg.configFile."rofi/themes/stylix.rasi".source = themefile;
 
   applications.launcher = "${config.programs.rofi.package}/bin/rofi -modi drun -show drun -show-icons";
   applications.calculator = "${config.programs.rofi.package}/bin/rofi -modi calc -show calc -no-show-match -no-sort -calc-command \"echo '{result}' | ${pkgs.xclip}/bin/xclip -i\"";

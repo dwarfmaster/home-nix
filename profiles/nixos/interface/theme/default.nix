@@ -2,10 +2,6 @@
 
 let
   nerdfonts = pkgs.nerdfonts.override { fonts = [ "FiraCode" ]; };
-  font = {
-    package = nerdfonts;
-    name = "FiraCode Nerd Font Mono";
-  };
   schemes = pkgs.fetchFromGitHub {
     owner = "tinted-theming";
     repo = "base16-schemes";
@@ -37,14 +33,31 @@ let
 in {
   stylix = {
     autoEnable = false;
-    homeManagerIntegration.enable = true;
-    homeManagerIntegration.disableImport = true;
+    homeManagerIntegration.followSystem = true;
+    homeManagerIntegration.autoImport = false;
     fonts = {
-      serif = font;
-      sansSerif = font;
-      monospace = font;
+      # I dont care about serif fonts, I'll reuse the sans-serif one
+      serif = {
+        name = "Manrope3 Medium";
+        package = pkgs.manrope;
+      };
+      sansSerif = {
+        name = "Manrope3 Medium";
+        package = pkgs.manrope;
+      };
+      monospace = {
+        name = "FiraCode Nerd Font Mono";
+        package = nerdfonts;
+      };
+      emoji = {
+        name = "OpenMoji Color";
+        package = pkgs.openmoji-color;
+      };
     };
     image = "${bg}";
-    base16Scheme = "${schemes}/woodland.yaml";
+    base16Scheme = "${schemes}/monokai.yaml";
+    polarity = "dark";
+
+    targets.console.enable = true;
   };
 }

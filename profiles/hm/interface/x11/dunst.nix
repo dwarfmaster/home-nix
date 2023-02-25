@@ -3,7 +3,6 @@
   pkgs,
   ...
 }: let
-  cols = config.colorScheme.colors;
   cfg = config.services.dunst;
 
   pauseDunst =
@@ -46,37 +45,21 @@ in {
         offset = "5x30";
 
         separator_height = 2;
-        separator_color = "#${cols.base02}";
         frame_width = 2;
         corner_radius = 7;
         transparency = 20;
 
         padding = 5;
         horizontal_padding = 5;
-        font = "FiraCode Nerd Font 12";
         format = "<b>%s</b>\\n%b";
       };
 
-      urgency_low = {
-        timeout = 10;
-        background = "#${cols.base01}";
-        foreground = "#${cols.base05}";
-        frame_color = "#${cols.base0B}";
-      };
-      urgency_normal = {
-        timeout = 10;
-        background = "#${cols.base01}";
-        foreground = "#${cols.base05}";
-        frame_color = "#${cols.base0E}";
-      };
-      urgency_critical = {
-        timeout = 15;
-        background = "#${cols.base01}";
-        foreground = "#${cols.base05}";
-        frame_color = "#${cols.base08}";
-      };
+      urgency_low.timeout = 10;
+      urgency_normal.timeout = 10;
+      urgency_critical.timeout = 15;
     };
   };
+  stylix.targets.dunst.enable = true;
 
   home.packages = [pkgs.libnotify notifier]; # For notify-send
   applications.notifier = "${notifier}/bin/notify";

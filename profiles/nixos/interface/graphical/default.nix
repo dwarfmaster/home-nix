@@ -6,6 +6,6 @@
 }:
 # Generic options for  all graphical-enabled machines
 {
-  # Add dconf as dbus service
-  services.dbus.packages = [pkgs.dconf];
+  # Necessary for most of gtk configuration as user
+  programs.dconf.enable = true;
 }

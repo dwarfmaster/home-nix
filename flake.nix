@@ -29,9 +29,8 @@
       inputs.nixpkgs.follows = "nixos";
       inputs.django-nixos.follows = "django";
     };
-    colors.url = "github:Misterio77/nix-colors";
     stylix = {
-      url = "/home/luc/repos/stylix";
+      url = "github:danth/stylix";
       inputs.nixpkgs.follows = "nixos";
       inputs.home-manager.follows = "home";
     };
@@ -83,7 +82,6 @@
     simple-mailserver,
     django,
     imacs,
-    colors,
     stylix,
     korrvigs,
     lean4,
@@ -106,7 +104,6 @@
           {
             lean4 = lean4.defaultPackage.x86_64-linux;
             opam2nix = opam2nix.defaultPackage.x86_64-linux;
-            nix-colors = colors.colorSchemes;
             tree-sitter-make-grammar =
               super.callPackage
               (nixos + "/pkgs/development/tools/parsing/tree-sitter/grammar.nix") {};
@@ -132,11 +129,9 @@
         // {
           inherit libModule;
           profiles = {...}: {imports = profiles.hm;};
-          rycee-base16 = nur-modules.repos.rycee.hmModules.theme-base16;
           nix-doom-emacs = nix-doom-emacs.hmModule;
           arkenfox = arkenfox.hmModules.default;
           nixvim = nixvim.homeManagerModules.nixvim;
-          colors = colors.homeManagerModules.colorScheme;
           stylix = stylix.homeManagerModules.stylix;
           impermanence = impermanence.nixosModules.home-manager.impermanence;
           korrvigs = korrvigs.hmModules.default;
