@@ -1,6 +1,8 @@
 {
   config,
+  osConfig,
   pkgs,
+  lib,
   ...
 }: let
   yuck-vim = pkgs.vimUtils.buildVimPluginFrom2Nix {
@@ -37,6 +39,8 @@
     jq = "${pkgs.jq}/bin/jq";
     nmcli = "${pkgs.networkmanager}/bin/nmcli";
     dunstctl = "${pkgs.dunst}/bin/dunstctl";
+    cpus = map (cpu: { inherit cpu; })
+               (lib.range 0 (osConfig.hardware.specs.threads - 1));
   };
   makeScript = name: file:
     writeRakuScript name (builtins.readFile (config.lib.mustache.render name file context));

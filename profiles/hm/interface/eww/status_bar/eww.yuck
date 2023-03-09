@@ -22,8 +22,33 @@
        :orientation "horizontal"
     (box :class "topleft"
          :valign "center"
-         :halign "start")))
+         :halign "start"
+      (cpu))))
 
+(defwidget cpu []
+  (box :orientation "horizontal"
+       :class "cpu"
+       :space-evenly false
+       :spacing 2
+    (box :class "taskitem"
+      (image :image-width {{{item-size}}}
+             :image-height {{{item-size}}}
+        :path "left/cpu.png"))
+    {{#cpus}}
+    (circular-progress
+      :class "cpuprogress"
+      :style
+        { EWW_CPU.cores[{{cpu}}].usage > 90 ? "color: #{{{base08}}}"
+        : EWW_CPU.cores[{{cpu}}].usage > 15 ? "color: #{{{base09}}}"
+        : "color: #{{{base0B}}}"
+        }
+      :start-at 25
+      :value { EWW_CPU.cores[{{cpu}}].usage }
+      ; TODO replace tooltip by real window with more data
+      :tooltip { EWW_CPU.cores[{{cpu}}].usage }
+      :clockwise false
+      :thickness 8)
+    {{/cpus}}))
 
 
 ;   ____           _            
