@@ -21,9 +21,17 @@
   (box :class "bar"
        :orientation "horizontal"
     (box :class "topleft"
-         :valign "center"
-         :halign "start"
-      (cpu))))
+         :valign "fill"
+         :halign "fill"
+         :hexpand true
+         :vexpand true
+         :space-evenly false
+         :spacing 2
+      (cpu)
+      (temperature)
+      (ram)
+      (upload)
+      (download))))
 
 (defwidget cpu []
   (box :orientation "horizontal"
@@ -34,21 +42,111 @@
       (image :image-width {{{item-size}}}
              :image-height {{{item-size}}}
         :path "left/cpu.png"))
-    {{#cpus}}
+    {{#threads}}
     (circular-progress
       :class "cpuprogress"
       :style
-        { EWW_CPU.cores[{{cpu}}].usage > 90 ? "color: #{{{base08}}}"
-        : EWW_CPU.cores[{{cpu}}].usage > 15 ? "color: #{{{base09}}}"
-        : "color: #{{{base0B}}}"
-        }
+        { EWW_CPU.cores[{{thread}}].usage > 90 ? "color: #{{{base08}}}"
+        : EWW_CPU.cores[{{thread}}].usage > 15 ? "color: #{{{base09}}}"
+        : "color: #{{{base0B}}}" }
       :start-at 25
-      :value { EWW_CPU.cores[{{cpu}}].usage }
+      :value { EWW_CPU.cores[{{thread}}].usage }
       ; TODO replace tooltip by real window with more data
-      :tooltip { EWW_CPU.cores[{{cpu}}].usage }
+      :tooltip { EWW_CPU.cores[{{thread}}].usage }
       :clockwise false
       :thickness 8)
-    {{/cpus}}))
+    {{/threads}}))
+
+(defwidget temperature []
+  (box :orientation "horizontal"
+       :class "temp"
+       :space-evenly false
+       :spacing 2
+    (box :class "taskitem"
+      (image :image-width {{{item-size}}}
+             :image-height {{{item-size}}}
+        :path "left/temp.png"))
+    {{#cores}}
+    (circular-progress
+      :class "cputemp"
+      :style
+        { EWW_TEMPS.CORETEMP_CORE_{{core}} > 85 ? "color: #{{{base08}}}"
+        : EWW_TEMPS.CORETEMP_CORE_{{core}} > 50 ? "color: #{{{base09}}}"
+        : "color: #{{{base0B}}}" }
+      :start-at 25
+      :value { EWW_TEMPS.CORETEMP_CORE_{{core}} > 100 ? 100
+             : EWW_TEMPS.CORETEMP_CORE_{{core}} }
+      :tooltip { EWW_TEMPS.CORETEMP_CORE_{{core}} }
+      :clockwise false
+      :thickness 8)
+    {{/cores}}))
+
+(defwidget ram []
+  (box :orientation "horizontal"
+       :class "ram"
+       :space-evenly false
+       :spacing 2
+    (box :class "taskitem"
+      (image :image-width {{{item-size}}}
+             :image-height {{{item-size}}}
+        :path "left/memory.png"))
+    (circular-progress
+      :class "ramusage"
+      :style
+        { EWW_RAM.used_mem_perc > 75 ? "color: #{{{base08}}}"
+        : EWW_RAM.used_mem_perc > 25 ? "color: #{{{base09}}}"
+        : "color: #{{{base0B}}}" }
+      :start-at 25
+      :value { EWW_RAM.used_mem_perc }
+      :tooltip { EWW_RAM.used_mem_perc }
+      :clockwise false
+      :thickness 8)))
+
+(defwidget upload []
+  (box :orientation "horizontal"
+       :class "upload"
+       :space-evenly false
+       :spacing 2
+    (box :class "taskitem"
+      (image :image-width {{{item-size}}}
+             :image-height {{{item-size}}}
+        :path "left/upload.png"))
+    (label
+      :style
+        { EWW_NET.{{wifi_device}}.NET_UP > 1000000 ? "color: #{{{base08}}}"
+        : EWW_NET.{{wifi_device}}.NET_UP > 200000 ? "color: #{{{base09}}}"
+        : EWW_NET.{{wifi_device}}.NET_UP > 1000 ? "color: #{{{base04}}}"
+        : "color: #{{{base0B}}}" }
+      :text
+        { EWW_NET.{{wifi_device}}.NET_UP > 1000000 ?
+            replace("XMbps", "X", round(EWW_NET.{{wifi_device}}.NET_UP / 1000000, 1))
+        : EWW_NET.{{wifi_device}}.NET_UP > 1000 ?
+            replace("Xkbps", "X", round(EWW_NET.{{wifi_device}}.NET_UP / 1000, 1))
+        : replace("Xbps", "X", EWW_NET.{{wifi_device}}.NET_UP)
+        })))
+
+(defwidget download []
+  (box :orientation "horizontal"
+       :class "download"
+       :space-evenly false
+       :spacing 2
+    (box :class "taskitem"
+      (image :image-width {{{item-size}}}
+             :image-height {{{item-size}}}
+        :path "left/download.png"))
+    (label
+      :style
+        { EWW_NET.{{wifi_device}}.NET_DOWN > 1000000 ? "color: #{{{base08}}}"
+        : EWW_NET.{{wifi_device}}.NET_DOWN > 200000 ? "color: #{{{base09}}}"
+        : EWW_NET.{{wifi_device}}.NET_DOWN > 1000 ? "color: #{{{base04}}}"
+        : "color: #{{{base0B}}}" }
+      :text
+        { EWW_NET.{{wifi_device}}.NET_DOWN > 1000000 ?
+            replace("XMbps", "X", round(EWW_NET.{{wifi_device}}.NET_DOWN / 1000000, 1))
+        : EWW_NET.{{wifi_device}}.NET_DOWN > 1000 ?
+            replace("Xkbps", "X", round(EWW_NET.{{wifi_device}}.NET_DOWN / 1000, 1))
+        : replace("Xbps", "X", EWW_NET.{{wifi_device}}.NET_DOWN)
+        })))
 
 
 ;   ____           _            
