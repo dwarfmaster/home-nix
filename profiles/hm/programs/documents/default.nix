@@ -16,7 +16,6 @@ in {
         (pkgs)
         # Viewers
         
-        zathura # lightweight pdf reader
         abiword # Graphical text editor
         libreoffice
         # Conversion
@@ -29,14 +28,18 @@ in {
         fanficfare # Download and convert to epub fanfiction from the web
         ;
     };
-  xdg.configFile."zathura/zathurarc".text = ''
-    map u exec ${pkgs.reupload}/bin/reupload\ "$FILE"
-    map C exec ${copier}\ "$FILE"
-
-    set database null
-    # For SyncTex
-    set dbus-service true
-    set dbus-raise-window true
-    set synctex true
-  '';
+  programs.zathura = {
+    enable = true;
+    mappings = {
+      "u" = "exec ${pkgs.reupload}/bin/reupload\ \"$FILE\"";
+      "C" = "exec ${copier}\ \"$FILE\"";
+    };
+    options = {
+      database = "null";
+      # For syntex
+      dbus-service = true;
+      dbus-raise-window = true;
+      synctex = true;
+    };
+  };
 }

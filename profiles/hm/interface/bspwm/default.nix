@@ -53,6 +53,10 @@ in {
       remove_unplugged_monitors = true;
       merge_overlapping_monitors = true;
     };
+    rules = {
+      # For some reason this is necessary
+      "Zathura".state = "tiled";
+    };
   };
 
   services.sxhkd.keybindings = {
@@ -70,7 +74,7 @@ in {
     "super + {_,shift + }space" = "${bspdesk} {focus-select,send-to-select}";
     "super + {_,shift + }c" = "${bspdesk} {create-select,remove-select}";
   };
-  
+
   services.korrvigs = {
     extraModules.bspwm = ./bspwm.pl;
     constants = {
