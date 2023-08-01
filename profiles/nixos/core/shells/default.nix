@@ -16,4 +16,7 @@
   security.sudo.extraConfig = ''
     Defaults lecture = never
   '';
+
+  # Support kitty on ssh
+  environment.systemPackages = [ pkgs.kitty.terminfo ];
 }
