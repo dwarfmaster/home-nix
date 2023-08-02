@@ -4,9 +4,10 @@
   inputs = {
     master.url = "nixpkgs/master";
     unstable.url = "nixpkgs/nixos-unstable";
-    nixos.url = "nixpkgs/release-22.11";
+    nixos.url = "nixpkgs/release-23.05";
     home = {
-      url = "github:nix-community/home-manager/release-22.11";
+      url = "github:nix-community/home-manager/release-23.05";
+      # url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixos";
     };
     nur.url = "github:nix-community/NUR";
@@ -19,9 +20,9 @@
 
     impermanence.url = "github:nix-community/impermanence";
     simple-mailserver = {
-      url = "gitlab:simple-nixos-mailserver/nixos-mailserver/nixos-22.11";
+      url = "gitlab:simple-nixos-mailserver/nixos-mailserver/nixos-23.05";
       inputs.nixpkgs.follows = "unstable";
-      inputs.nixpkgs-22_11.follows = "nixos";
+      inputs.nixpkgs-23_05.follows = "nixos";
     };
     django.url = "github:pnmadelaine/django-nixos/main";
     imacs = {
@@ -30,7 +31,8 @@
       inputs.django-nixos.follows = "django";
     };
     stylix = {
-      url = "github:danth/stylix";
+      url = "github:danth/stylix/release-23.05";
+      # url = "/home/luc/repos/stylix";
       inputs.nixpkgs.follows = "nixos";
       inputs.home-manager.follows = "home";
     };
@@ -102,8 +104,8 @@
         korrvigs = korrvigs.overlays.default;
         packages = self: super:
           {
-            lean4 = lean4.defaultPackage.x86_64-linux;
-            opam2nix = opam2nix.defaultPackage.x86_64-linux;
+            lean4 = lean4.defaultPackage.${super.system};
+            opam2nix = opam2nix.defaultPackage.${super.system};
             tree-sitter-make-grammar =
               super.callPackage
               (nixos + "/pkgs/development/tools/parsing/tree-sitter/grammar.nix") {};
@@ -210,7 +212,7 @@
       eachSupportedSystem (system: let
         pkgs = import nixos {
           inherit system;
-          overlays = [packages];
+          overlays = builtins.attrValues overlays ++ [packages];
         };
       in {
         inherit

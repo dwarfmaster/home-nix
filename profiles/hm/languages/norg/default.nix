@@ -17,7 +17,7 @@
   };
   tree-sitter-norg = pkgs.tree-sitter-make-grammar {
     language = "norg";
-    source = pkgs.fetchFromGitHub {
+    src = pkgs.fetchFromGitHub {
       owner = "nvim-neorg";
       repo = "tree-sitter-norg";
       rev = "600874e0825a62c3822ff04e5d0efbac8d7e380c";
@@ -27,7 +27,7 @@
   };
   tree-sitter-norg-meta = pkgs.tree-sitter-make-grammar {
     language = "norg-meta";
-    source = pkgs.fetchFromGitHub {
+    src = pkgs.fetchFromGitHub {
       owner = "nvim-neorg";
       repo = "tree-sitter-norg-meta";
       rev = "4696d8ec5a67926085e3740a69b3e925419798fc";

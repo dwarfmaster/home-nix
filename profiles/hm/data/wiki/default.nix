@@ -5,7 +5,8 @@
   ...
 }: {
   services.korrvigs = {
-    enable = true;
+    # Broken due to openssl-1.1.1u deprecation
+    # enable = true;
     dataDir = "/home/luc/downloads/wiki";
   };
 

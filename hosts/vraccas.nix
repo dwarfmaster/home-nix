@@ -158,7 +158,7 @@
 
       Welcome !
     '';
-    forwardX11 = false;
+    settings.X11Forwarding = false;
     logLevel = "VERBOSE";
     passwordAuthentication = false;
     kbdInteractiveAuthentication = false;

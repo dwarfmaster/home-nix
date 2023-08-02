@@ -43,7 +43,7 @@
     kernelModules = ["kvm-intel" "thunderbolt"];
     blacklistedKernelModules = ["nouveau"];
     extraModulePackages = [];
-    cleanTmpDir = true;
+    tmp.cleanOnBoot = true;
   };
   hardware = {
     specs = {

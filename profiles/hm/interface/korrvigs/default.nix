@@ -74,7 +74,11 @@ in {
       ctx:desktop().
     '';
   };
-  home.packages = [korrvigs-builder korrvigs-to-nix];
+  home.packages = [
+    # Cause error with openssl 1.1.1u
+    # korrvigs-builder
+    korrvigs-to-nix
+  ];
   xsession.windowManager.bspwm.rules = {
     "popup" = {
       center = true;

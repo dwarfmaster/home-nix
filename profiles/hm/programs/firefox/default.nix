@@ -61,6 +61,37 @@
     };
   };
 
+  # Need to be manually enabled when first launching a new profile
+  # To do so, go to about:addons
+  extensions = builtins.attrValues {
+    # Security
+    inherit
+      (pkgs.nur.repos.rycee.firefox-addons)
+      ublock-origin # Efficient light-wieght ad-blocking
+      decentraleyes # Protects against tracking by CDN
+      privacy-badger # Auto-learn to block third party trackers and ads
+      temporary-containers # Allow opening webpages in specific, temporary containers
+      ;
+
+    # Interface
+    inherit
+      (pkgs.nur.repos.rycee.firefox-addons)
+      darkreader
+      i-dont-care-about-cookies # Prevent most cookies popups
+      don-t-fuck-with-paste
+      ;
+    inherit
+      (unfree.nur.repos.rycee.firefox-addons)
+      languagetool
+      ;
+
+    # Interaction with the system
+    inherit
+      (pkgs.nur.repos.rycee.firefox-addons)
+      keepassxc-browser
+      ;
+  };
+
   buildProfile = id: name: profile: {
     acc = id + 1;
     value = let
@@ -69,7 +100,7 @@
         then profile.color
         else colors.base07;
     in {
-      inherit name id;
+      inherit name id extensions;
       settings =
         {
           "browser.startup.homepage" = profile.homepage;
@@ -137,37 +168,6 @@ in {
       enable = true;
       version = "107.0";
     };
-    # Need to be manually enabled when first launching a new profile
-    # To do so, go to about:addons
-    extensions = builtins.attrValues {
-      # Security
-      inherit
-        (pkgs.nur.repos.rycee.firefox-addons)
-        ublock-origin # Efficient light-wieght ad-blocking
-        decentraleyes # Protects against tracking by CDN
-        privacy-badger # Auto-learn to block third party trackers and ads
-        temporary-containers # Allow opening webpages in specific, temporary containers
-        ;
-
-      # Interface
-      inherit
-        (pkgs.nur.repos.rycee.firefox-addons)
-        darkreader
-        i-dont-care-about-cookies # Prevent most cookies popups
-        don-t-fuck-with-paste
-        ;
-      inherit
-        (unfree.nur.repos.rycee.firefox-addons)
-        languagetool
-        ;
-
-      # Interaction with the system
-      inherit
-        (pkgs.nur.repos.rycee.firefox-addons)
-        keepassxc-browser
-        ;
-    };
-
     profiles = foldOverAttrs 0 buildProfile profiles;
   };
   xdg.dataFile =
@@ -190,6 +190,12 @@ in {
     pkgs.nyxt # Minimalistic browser (replace firefox ?)
   ];
   applications.browser = "${launcher}/bin/firefox-launcher";
+
+  lib.firefox.all-profiles = attr:
+    builtins.listToAttrs
+      (builtins.map 
+        (name: { inherit name; value = attr; })
+        (builtins.attrNames profiles));
 
   # Save profiles
 }

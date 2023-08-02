@@ -16,7 +16,7 @@
   services.ntp.enable = true;
   services.openssh = {
     enable = true;
-    forwardX11 = true;
+    settings.X11Forwarding = true;
   };
   services.gvfs.enable = true;
 }

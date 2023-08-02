@@ -43,7 +43,7 @@
     kernelModules = ["kvm-intel" "acpi_call"];
     extraModulePackages = [config.boot.kernelPackages.acpi_call];
     # Unnecessary since / is tmpfs
-    cleanTmpDir = false;
+    tmp.cleanOnBoot = false;
 
     # Enable aarch64 emulation
     binfmt.emulatedSystems = ["aarch64-linux"];
