@@ -39,10 +39,12 @@
     jq = "${pkgs.jq}/bin/jq";
     nmcli = "${pkgs.networkmanager}/bin/nmcli";
     dunstctl = "${pkgs.dunst}/bin/dunstctl";
-    threads = map (thread: { inherit thread; })
-                  (lib.range 0 (osConfig.hardware.specs.threads - 1));
-    cores = map (core: { inherit core; })
-                (lib.range 0 (osConfig.hardware.specs.cores - 1));
+    threads =
+      map (thread: {inherit thread;})
+      (lib.range 0 (osConfig.hardware.specs.threads - 1));
+    cores =
+      map (core: {inherit core;})
+      (lib.range 0 (osConfig.hardware.specs.cores - 1));
   };
   makeScript = name: file:
     writeRakuScript name (builtins.readFile (config.lib.mustache.render name file context));

@@ -193,9 +193,12 @@ in {
 
   lib.firefox.all-profiles = attr:
     builtins.listToAttrs
-      (builtins.map 
-        (name: { inherit name; value = attr; })
-        (builtins.attrNames profiles));
+    (builtins.map
+      (name: {
+        inherit name;
+        value = attr;
+      })
+      (builtins.attrNames profiles));
 
   # Save profiles
 }

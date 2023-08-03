@@ -18,5 +18,5 @@
   '';
 
   # Support kitty on ssh
-  environment.systemPackages = [ pkgs.kitty.terminfo ];
+  environment.systemPackages = [pkgs.kitty.terminfo];
 }

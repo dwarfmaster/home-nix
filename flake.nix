@@ -7,7 +7,6 @@
     nixos.url = "nixpkgs/release-23.05";
     home = {
       url = "github:nix-community/home-manager/release-23.05";
-      # url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixos";
     };
     nur.url = "github:nix-community/NUR";
@@ -63,7 +62,10 @@
       # url = "/home/luc/repos/nixvim";
       inputs.nixpkgs.follows = "nixos";
     };
-    arkenfox.url = "github:dwarfmaster/arkenfox-nixos";
+    arkenfox = {
+      url = "github:dwarfmaster/arkenfox-nixos";
+      inputs.nixpkgs.follows = "nixos";
+    };
   };
 
   outputs = {
@@ -94,7 +96,7 @@
       self.overlays
       // {
         nur = nur.overlay;
-        arkenfox = arkenfox.overlay;
+        arkenfox = arkenfox.overlays.default;
         neovim-nightly = neovim-nightly.overlay;
         korrvigs = korrvigs.overlays.default;
         packages = self: super:
@@ -103,10 +105,12 @@
             tree-sitter-make-grammar =
               super.callPackage
               (nixos + "/pkgs/development/tools/parsing/tree-sitter/grammar.nix") {};
-              inherit (unstable.legacyPackages.${super.system}) 
-                csharp-ls
-                vscode-langservers-extracted
-                nixd;
+            inherit
+              (unstable.legacyPackages.${super.system})
+              csharp-ls
+              vscode-langservers-extracted
+              nixd
+              ;
           }
           // packages self super;
         variants = self: super: pkgs-variants super.system;
@@ -206,28 +210,27 @@
       inherit overlays modules;
     };
   in {
-    packages =
-      eachSupportedSystem (system: let
-        pkgs = import nixos {
-          inherit system;
-          overlays = builtins.attrValues overlays ++ [packages];
-        };
-      in {
-        inherit
-          (pkgs)
-          reupload
-          fvim
-          ;
-      });
-      # // {
-      #   x86_64-linux = {
-      #     helzvog-sd-image = nixos-generators.nixosGenerate {
-      #       system = "aarch64-linux";
-      #       format = "sd-aarch64";
-      #       modules = hosts.helzvog.modules;
-      #     };
-      #   };
-      # };
+    packages = eachSupportedSystem (system: let
+      pkgs = import nixos {
+        inherit system;
+        overlays = builtins.attrValues overlays ++ [packages];
+      };
+    in {
+      inherit
+        (pkgs)
+        reupload
+        fvim
+        ;
+    });
+    # // {
+    #   x86_64-linux = {
+    #     helzvog-sd-image = nixos-generators.nixosGenerate {
+    #       system = "aarch64-linux";
+    #       format = "sd-aarch64";
+    #       modules = hosts.helzvog.modules;
+    #     };
+    #   };
+    # };
 
     lib = import ./utils.nix {inherit lib;};
 

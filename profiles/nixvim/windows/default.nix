@@ -5,9 +5,9 @@
   ...
 }: {
   maps.normal = let
-    cmd = cmd: desc: { 
+    cmd = cmd: desc: {
       action = "<cmd>${cmd}<cr>";
-      inherit desc; 
+      inherit desc;
     };
   in {
     "<leader>ww" = cmd "wincmd p" "Jump to recent";
