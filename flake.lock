@@ -1123,22 +1123,6 @@
         "type": "github"
       }
     },
-    "niv-util": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1668947898,
-        "narHash": "sha256-yzovEKUdPiNS3g5tmF/hGxAKZIwDfCtRFqOvLDXp28c=",
-        "owner": "dwarfmaster",
-        "repo": "niv-util",
-        "rev": "efdcc288fda719f13f7596d89fddbae78f59a46d",
-        "type": "github"
-      },
-      "original": {
-        "owner": "dwarfmaster",
-        "repo": "niv-util",
-        "type": "github"
-      }
-    },
     "nix": {
       "inputs": {
         "lowdown-src": "lowdown-src",
@@ -1469,27 +1453,6 @@
         "type": "github"
       }
     },
-    "opam2nix": {
-      "inputs": {
-        "niv-util": "niv-util",
-        "nixpkgs": [
-          "nixos"
-        ]
-      },
-      "locked": {
-        "lastModified": 1668948202,
-        "narHash": "sha256-7aOXc3JupPrt8D3XIIxVBUrXjxcni26LlxiNRUgwUSk=",
-        "owner": "dwarfmaster",
-        "repo": "opam2nix",
-        "rev": "e667b47290f31fabc574ef5bc331d0d2fef7a0da",
-        "type": "github"
-      },
-      "original": {
-        "owner": "dwarfmaster",
-        "repo": "opam2nix",
-        "type": "github"
-      }
-    },
     "org": {
       "flake": false,
       "locked": {
@@ -1641,7 +1604,6 @@
         "nixos-hardware": "nixos-hardware",
         "nixvim": "nixvim",
         "nur": "nur",
-        "opam2nix": "opam2nix",
         "simple-mailserver": "simple-mailserver",
         "stylix": "stylix",
         "unstable": "unstable"

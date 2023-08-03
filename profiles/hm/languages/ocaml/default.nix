@@ -10,7 +10,6 @@
       opam
       dune_2
       ocamlformat
-      opam2nix
       ;
     inherit
       (pkgs.ocamlPackages)

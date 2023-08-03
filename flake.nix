@@ -45,10 +45,6 @@
       url = "github:leanprover/lean4";
       inputs.nixpkgs.follows = "unstable";
     };
-    opam2nix = {
-      url = "github:dwarfmaster/opam2nix";
-      inputs.nixpkgs.follows = "nixos";
-    };
     # Forces more recent emacs-overlay, fixes https://github.com/vlaci/nix-doom-emacs/issues/401
     emacs-overlay = {
       url = "github:nix-community/emacs-overlay";
@@ -88,7 +84,6 @@
     stylix,
     korrvigs,
     lean4,
-    opam2nix,
     emacs-overlay,
     nix-doom-emacs,
     neovim-nightly,
@@ -106,7 +101,6 @@
         packages = self: super:
           {
             lean4 = lean4.defaultPackage.${super.system};
-            opam2nix = opam2nix.defaultPackage.${super.system};
             tree-sitter-make-grammar =
               super.callPackage
               (nixos + "/pkgs/development/tools/parsing/tree-sitter/grammar.nix") {};
