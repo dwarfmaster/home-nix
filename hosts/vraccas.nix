@@ -24,6 +24,9 @@
       pixelfed.enable = false;
       miniflux.enable = true;
     };
+    interface = {
+      theme.enable = true;
+    };
   };
 
   nixpkgs.localSystem.system = "x86_64-linux";

@@ -4,7 +4,6 @@
   lib,
   ...
 }: let
-  inherit (pkgs) unstable;
   lsd = "${pkgs.lsd}/bin/lsd";
   bat = "${pkgs.bat}/bin/bat";
 in {
@@ -20,7 +19,6 @@ in {
       inherit
         (pkgs)
         lsd
-        bat
         du-dust
         dua
         duf
@@ -35,6 +33,8 @@ in {
       batdiff = pkgs.bat-extras.batdiff;
     };
   };
+  programs.bat.enable = true;
+  stylix.targets.bat.enable = true;
 
   # Bash
   programs.bash = {

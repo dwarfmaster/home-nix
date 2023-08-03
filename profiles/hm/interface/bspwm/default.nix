@@ -3,7 +3,6 @@
   pkgs,
   ...
 }: let
-  colors = config.lib.stylix.colors;
   bspdesk-bin = pkgs.writeShellScriptBin "bspdesk" (builtins.readFile ./bspdesk.sh);
   bspdesk = "${bspdesk-bin}/bin/bspdesk";
 in {
@@ -18,10 +17,6 @@ in {
     '';
     settings = {
       # Borders
-      normal_border_color = "#${colors.base01}";
-      active_border_color = "#${colors.base03}";
-      focused_border_color = "#${colors.base0A}";
-      presel_feedback_color = "#${colors.base0A}";
       border_width = 2;
       # Spacing
       window_gap = 5;
@@ -58,6 +53,7 @@ in {
       "Zathura".state = "tiled";
     };
   };
+  stylix.targets.bspwm.enable = true;
 
   services.sxhkd.keybindings = {
     # Reload config file
