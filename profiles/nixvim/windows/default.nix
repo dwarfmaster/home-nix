@@ -4,58 +4,27 @@
   pkgs,
   ...
 }: {
-  plugins.which-key.bindings.n."<leader>".subs."w".bindings = {
-    "w" = {
-      cmd = "wincmd p";
-      description = "Jump to recent";
+  maps.normal = let
+    cmd = cmd: desc: { 
+      action = "<cmd>${cmd}<cr>";
+      inherit desc; 
     };
-    "v" = {
-      cmd = "vsplit";
-      description = "Split vertically";
+  in {
+    "<leader>ww" = cmd "wincmd p" "Jump to recent";
+    "<leader>wv" = cmd "vsplit" "Split vertically";
+    "<leader>w-" = cmd "split" "Split horizontally";
+    "<leader>wD" = {
+      action = "<c-w>ge";
+      desc = "Detach current window";
     };
-    "-" = {
-      cmd = "split";
-      description = "Split horizontally";
-    };
-    "D" = {
-      binding = "<c-w>ge";
-      description = "Detach current window";
-    };
-    "c" = {
-      cmd = "close";
-      description = "Close current window";
-    };
-    "j" = {
-      cmd = "wincmd j";
-      description = "Jump down";
-    };
-    "k" = {
-      cmd = "wincmd k";
-      description = "Jump up";
-    };
-    "h" = {
-      cmd = "wincmd h";
-      description = "Jump left";
-    };
-    "l" = {
-      cmd = "wincmd l";
-      description = "Jump right";
-    };
-    "J" = {
-      cmd = "resize -5";
-      description = "Decrease height";
-    };
-    "K" = {
-      cmd = "resize +5";
-      description = "Increase height";
-    };
-    "H" = {
-      cmd = "vertical resize -5";
-      description = "Decrease width";
-    };
-    "L" = {
-      cmd = "vertical resize +5";
-      description = "Increase width";
-    };
+    "<leader>wc" = cmd "close" "Close current window";
+    "<leader>wj" = cmd "wincmd j" "Jump down";
+    "<leader>wk" = cmd "wincmd k" "Jump up";
+    "<leader>wh" = cmd "wincmd h" "Jump left";
+    "<leader>wl" = cmd "wincmd l" "Jump right";
+    "<leader>wJ" = cmd "resize -5" "Decrease height";
+    "<leader>wK" = cmd "resize +5" "Increase height";
+    "<leader>wH" = cmd "vertical resize -5" "Decrease width";
+    "<leader>wL" = cmd "vertical resize +5" "Increase width";
   };
 }

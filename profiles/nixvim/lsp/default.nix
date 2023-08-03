@@ -13,60 +13,52 @@
     borderStyle = "rounded";
   };
 
-  plugins.which-key.bindings.n = let
+  maps.normal = let
     picker = name: desc: {
-      lua = "require'telescope.builtin'.${name}{}";
-      description = desc;
+      action = "function() require'telescope.builtin'.${name}{} end";
+      lua = true;
+      inherit desc;
     };
     saga = action: desc: {
-      cmd = "Lspsaga ${action}";
-      description = desc;
+      action = "<cmd>Lspsaga ${action}<cr>";
+      inherit desc;
     };
   in {
-    "g".bindings = {
-      "d" = picker "lsp_definitions" "Jump to definition";
-      "D" = picker "lsp_implementations" "Jump to implementation";
-      "t" = picker "lsp_type_definition" "Jump to type definition";
+    "gd" = picker "lsp_definitions" "Jump to definition";
+    "gD" = picker "lsp_implementations" "Jump to implementation";
+    "gt" = picker "lsp_type_definition" "Jump to type definition";
+    "]e" = saga "diagnostic_jump_next" "Next diagnostic";
+    "[e" = saga "diagnostic_jump_prev" "Prev diagnostic";
+    "<leader>cl".desc = "lsp";
+    "<leader>cli" = {
+      action = "LspInfo";
+      desc = "Info";
     };
-    "]".bindings."e" = saga "diagnostic_jump_next" "Next diagnostic";
-    "[".bindings."e" = saga "diagnostic_jump_prev" "Prev diagnostic";
-    "<leader>".subs."c".subs."l".name = "lsp";
-    "<leader>".subs."c".subs."l".bindings = {
-      "i" = {
-        cmd = "LspInfo";
-        description = "Info";
-      };
-      "S" = {
-        cmd = "LspStop";
-        description = "Stop";
-      };
-      "s" = {
-        cmd = "LspStart";
-        description = "Start";
-      };
-      "R" = {
-        cmd = "LspRestart";
-        description = "Restart";
-      };
+    "<leader>clS" = {
+      action = "LspStop";
+      desc = "Stop";
     };
-    "<leader>".subs."c".bindings = {
-      "r" = picker "lsp_references" "References to current symbol";
-      "s" = picker "lsp_document_symbols" "List symbols in document";
-      "S" = picker "lsp_workspace_symbols" "List symbols in workspace";
-      "k" = saga "hover_doc" "Doc";
-      "p" = saga "preview_definition" "Preview definition";
-      "g" = saga "show_cursor_diagnostics" "Diagnostics at cursor";
-      "G" = picker "diagnostics" "Diagnostics";
-      "a" = saga "code_action" "Code actions";
-      "R" = saga "rename" "Rename";
+    "<leader>cls" = {
+      action = "LspStart";
+      desc = "Start";
     };
-    "<leader>".subs."c".subs."d".name = "diagnostics";
-    "<leader>".subs."c".subs."d".bindings = {
-      "d" = saga "show_line_diagnostics" "At line";
-      "c" = saga "show_cursor_diagnostics" "At cursor";
-      "f" = picker "diagnostics" "All file";
+    "<leader>clR" = {
+      action = "LspRestart";
+      desc = "Restart";
     };
-    "<leader>".subs."t".bindings."d" = saga "toggle_virtual_text" "Inline diagnostics";
+    "<leader>cr" = picker "lsp_references" "References to current symbol";
+    "<leader>cs" = picker "lsp_document_symbols" "List symbols in document";
+    "<leader>cS" = picker "lsp_workspace_symbols" "List symbols in workspace";
+    "<leader>ck" = saga "hover_doc" "Doc";
+    "<leader>cp" = saga "preview_definition" "Preview definition";
+    "<leader>cg" = saga "show_cursor_diagnostics" "Diagnostics at cursor";
+    "<leader>cG" = picker "diagnostics" "Diagnostics";
+    "<leader>ca" = saga "code_action" "Code actions";
+    "<leader>cR" = saga "rename" "Rename";
+    "<leader>cd".desc = "diagnostics";
+    "<leader>cdd" = saga "show_line_diagnostics" "At line";
+    "<leader>cdc" = saga "show_cursor_diagnostics" "At cursor";
+    "<leader>cdf" = picker "diagnostics" "All file";
+    "<leader>td" = saga "toggle_virtual_text" "Inline diagnostics";
   };
-  # TODO setup float terminal
 }

@@ -15,16 +15,17 @@
       (grammar: grammar.pname != "tree-sitter-norg-grammar")
       pkgs.tree-sitter.allGrammars;
   };
-  plugins.which-key.bindings = {
-    n."g".subs."n".bindings."n" = {description = "Select treesitter node";};
-    n."<leader>".subs."c".bindings."T" = {
-      lua = "require'telescope.builtin'.treesitter{}";
-      description = "Treesitter symbols";
+  maps.normal = {
+    "gnn".desc = "Select treesitter node";
+    "<leader>cT" = {
+      action = "function() require'telescope.builtin'.treesitter{} end";
+      lua = true;
+      desc = "Treesitter symbols";
     };
-    v."g".subs."r".bindings = {
-      "n" = {description = "Increment treesitter node";};
-      "c" = {description = "Increment treesitter scope";};
-      "m" = {description = "Decrement treesitter node";};
-    };
+  };
+  maps.visual = {
+    "grn".desc = "Increment treesitter node";
+    "grc".desc = "Increment treesitter scope";
+    "grm".desc = "Decrement treesitter node";
   };
 }

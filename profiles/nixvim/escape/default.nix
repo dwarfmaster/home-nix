@@ -14,17 +14,9 @@
     };
     easyescape_timeout = 100;
   };
-  plugins.which-key = {
-    bindings.i = {
-      "j".bindings."k" = {
-        binding = "<esc>";
-        description = "Exits insert mode";
-      };
-      "k".bindings."j" = {
-        binding = "<esc>";
-        description = "Exits insert mode";
-      };
-    };
-    triggers.blacklist.i = ["j" "k"];
+  maps.insert = {
+    "jk".desc = "Exits insert mode";
+    "kj".desc = "Exits insert mode";
   };
+  plugins.which-key.triggersBlackList.i = ["j" "k"];
 }

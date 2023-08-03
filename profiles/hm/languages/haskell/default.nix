@@ -9,10 +9,6 @@
       cabal-install
       cabal2nix
       ;
-    inherit
-      (pkgs.haskellPackages)
-      structured-haskell-mode
-      ;
     ghc =
       pkgs.haskellPackages.ghcWithHoogle
       (hpkgs: [hpkgs.diagrams]);
@@ -27,5 +23,9 @@
         }
       ];
     };
+  };
+
+  programs.nixvim = {
+    plugins.lsp.servers.hls.enable = true;
   };
 }

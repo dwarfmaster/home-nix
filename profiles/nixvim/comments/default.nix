@@ -8,29 +8,21 @@
     enable = true;
     sticky = true; # Avoid moving the cursor
   };
-  plugins.which-key = {
-    bindings = {
-      n."g".subs = {
-        "c" = {
-          name = "Comments";
-          bindings = {
-            "c" = {description = "Toggle comment";};
-            "o" = {description = "Insert comment next line";};
-            "O" = {description = "Insert comment previous line";};
-            "A" = {description = "Insert comment end of line";};
-          };
-        };
-        "b".name = "Block comments";
-        "b".bindings."c" = {description = "Toggle block comment";};
-      };
-      v."g".bindings = {
-        "c" = {description = "Toggle comment";};
-        "b" = {description = "Toggle block comment";};
-      };
-    };
-    operators = {
-      "gc" = "Comment";
-      "gb" = "Block comment";
-    };
+  maps.normal = {
+    "gc".desc = "Comments";
+    "gcc".desc = "Toggle comment";
+    "gco".desc = "Insert comment next line";
+    "gcO".desc = "Insert comment previous line";
+    "gcA".desc = "Insert comment end of line";
+    "gb".desc = "Block comments";
+    "gbc".desc = "Toggle block comment";
+  };
+  maps.visual = {
+    "gc".desc = "Toggle comment";
+    "gb".desc = "Toggle block comment";
+  };
+  plugins.which-key.operators = {
+    "gc" = "Comments";
+    "gb" = "Block comments";
   };
 }

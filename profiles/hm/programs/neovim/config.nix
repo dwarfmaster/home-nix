@@ -74,32 +74,31 @@ in {
     # Which-key
     plugins.which-key = {
       enable = true;
-      popup.window = {
+      window = {
         border = "none";
         margin.left = 2;
         margin.right = 2;
         margin.bottom = 0;
-        blend = 10;
+        margin.top = 1;
+        winblend = 10;
       };
-      labels = {
+      keyLabels = {
         " " = "<space>";
       };
-      bindings.n = {
-        "<leader>".subs = {
-          "f".name = "file";
-          "c".name = "code";
-          "j".name = "jump";
-          "b".name = "buffer";
-          "o".name = "open/close";
-          "v".name = "git";
-          "s".name = "search";
-          "d".name = "debug";
-          "w".name = "window";
-          "h".name = "help";
-          "t".name = "toggle";
-          " ".name = "local";
-        };
-      };
+    };
+    maps.normal = {
+      "<leader>f".desc = "file";
+      "<leader>c".desc = "code";
+      "<leader>j".desc = "jump";
+      "<leader>b".desc = "buffer";
+      "<leader>o".desc = "open/close";
+      "<leader>v".desc = "git";
+      "<leader>s".desc = "search";
+      "<leader>d".desc = "debug";
+      "<leader>w".desc = "window";
+      "<leader>h".desc = "help";
+      "<leader>t".desc = "toggle";
+      "<leader> ".desc = "local";
     };
   };
 }

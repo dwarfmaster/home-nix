@@ -12,11 +12,12 @@
   plugins.nvim-cmp = {
     enable = true;
     mappingPresets = ["insert" "cmdline"];
-    snippet.expand = ''
-      function(args)
-        require('luasnip').lsp_expand(args.body)
-      end
-    '';
+    snippet.expand = "luasnip";
+    # TODO
+    #   function(args)
+    #     require('luasnip').lsp_expand(args.body)
+    #   end
+    # '';
     sources = [
       {name = "nvim_lsp";}
       {name = "buffer";}

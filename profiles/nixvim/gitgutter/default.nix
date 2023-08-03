@@ -10,64 +10,59 @@
     defaultMaps = false;
     previewWinFloating = true;
   };
-  plugins.which-key.bindings = let
+  maps.normal = let
     picker = name: desc: {
-      lua = "require'telescope.builtin'.${name}{}";
-      description = desc;
+      action = "function() require'telescope.builtin'.${name}{} end";
+      lua = true;
+      inherit desc;
     };
   in {
-    n = {
-      "]".bindings."c" = {
-        binding = "<Plug>(GitGutterNextHunk)";
-        description = "Next git hunk";
-      };
-      "[".bindings."c" = {
-        binding = "<Plug>(GitGutterPrevHunk)";
-        description = "Prev git hunk";
-      };
-      "<leader>".subs."t".bindings = {
-        "G" = {
-          cmd = "GitGutterToggle";
-          description = "Toggle gitgutter";
-        };
-        "g" = {
-          cmd = "GitGutterBufferToggle";
-          description = "Toggle gitgutter on buffer";
-        };
-      };
-      "<leader>".subs."v".bindings = {
-        "s" = {
-          cmd = "GitGutterStageHunk";
-          description = "Stage hunk";
-        };
-        "u" = {
-          cmd = "GitGutterUndoHunk";
-          description = "Undo staging";
-        };
-        "p" = {
-          cmd = "GitGutterPreviewHunk";
-          description = "Preview hunk";
-        };
-        "D" = {
-          cmd = "GitGutterDiffOrig";
-          description = "View diff";
-        };
-        "F" = {
-          cmd = "GitGutterFold";
-          description = "Fold unchanged";
-        };
-        "c" = picker "git_commits" "List commits";
-        "C" = picker "git_bcommits" "Diff to commits";
-        "B" = picker "git_branches" "List branches";
-        "S" = picker "git_status" "List changes";
-        "Z" = picker "git_stash" "List stash items";
-      };
+    "]c" = {
+      action = "<Plug>(GitGutterNextHunk)";
+      desc = "Next git hunk";
     };
-    v."<leader>".subs."v".bindings = {
-      "s" = {
-        cmd = "GitGutterStageHunk";
-        description = "Stage hunk";
-      };
+    "[c" = {
+      action = "<Plug>(GitGutterPrevHunk)";
+      desc = "Prev git hunk";
+    };
+    "<leader>tG" = {
+      action = "<cmd>GitGutterToggle<cr>";
+      desc = "Toggle gitgutter";
+    };
+    "<leader>tg" = {
+      action = "<cmd>GitGutterBufferToggle<cr>";
+      desc = "Toggle gitgutter on buffer";
+    };
+    "<leader>vs" = {
+      action = "<cmd>GitGutterStageHunk<cr>";
+      desc = "Stage hunk";
+    };
+    "<leader>vu" = {
+      action = "<cmd>GitGutterUndoHunk<cr>";
+      desc = "Undo staging";
+    };
+    "<leader>vp" = {
+      action = "<cmd>GitGutterPreviewHunk<cr>";
+      desc = "Preview hunk";
+    };
+    "<leader>vD" = {
+      action = "<cmd>GitGutterDiffOrig<cr>";
+      desc = "View diff";
+    };
+    "<leader>vF" = {
+      action = "<cmd>GitGutterFold<cr>";
+      desc = "Fold unchanged";
+    };
+    "<leader>vc" = picker "git_commits" "List commits";
+    "<leader>vC" = picker "git_bcommits" "Diff to commits";
+    "<leader>vB" = picker "git_branches" "List branches";
+    "<leader>vS" = picker "git_status" "List changes";
+    "<leader>vZ" = picker "git_stash" "List stash items";
+  };
+  maps.visual = {
+    "<leader>vs" = {
+      action = "<cmd>GitGutterStageHunk<cr>";
+      desc = "Stage hunk";
     };
   };
 }

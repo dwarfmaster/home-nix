@@ -64,7 +64,8 @@
       inputs.nixpkgs.follows = "nixos";
     };
     nixvim = {
-      url = "github:pta2002/nixvim";
+      url = "github:nix-community/nixvim";
+      # url = "/home/luc/repos/nixvim";
       inputs.nixpkgs.follows = "nixos";
     };
     arkenfox.url = "github:dwarfmaster/arkenfox-nixos";
@@ -109,6 +110,10 @@
             tree-sitter-make-grammar =
               super.callPackage
               (nixos + "/pkgs/development/tools/parsing/tree-sitter/grammar.nix") {};
+              inherit (unstable.legacyPackages.${super.system}) 
+                csharp-ls
+                vscode-langservers-extracted
+                nixd;
           }
           // packages self super;
         variants = self: super: pkgs-variants super.system;

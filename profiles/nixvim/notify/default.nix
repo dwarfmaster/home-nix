@@ -17,10 +17,10 @@
     # };
   };
   plugins.telescope.enabledExtensions = ["notify"];
-  plugins.which-key.bindings.n."<leader>".subs."s".bindings = {
-    "N" = {
-      cmd = "Telescope notify";
-      description = "Notifications";
+  maps.normal = {
+    "<leader>sN" = {
+      action = "<cmd>Telescope notify<cr>";
+      desc = "Notifications";
     };
   };
 }
