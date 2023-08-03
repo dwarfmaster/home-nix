@@ -5,7 +5,8 @@
   ...
 }: {
   home.packages = with pkgs; [
-    calibre
+    # TODO cause rebuild times to explode due to dependency on qtwebengine
+    # calibre
     okular # Heavy full featured pdf reader
   ];
 
