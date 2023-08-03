@@ -3,8 +3,6 @@
   pkgs,
   ...
 }: let
-  inherit (pkgs) unstable;
-
   pamixer = "${pkgs.pamixer}/bin/pamixer";
 
   # TODO icons for volume notifications
@@ -39,14 +37,9 @@ in {
       pavucontrol # CLI sound interface
       pipewire # For the pipewire CLI tools
       pulseaudio # For the pulseaudio CLI tools
-      ;
-    inherit
-      (unstable)
       helvum # GUI for pipewire
       # TODO doesn't work on aarch64
-      
       # easyeffects # GUI for effects on pipewire
-      
       ;
     volume = volume-manager;
   };

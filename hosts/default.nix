@@ -38,14 +38,7 @@
       # Will use the nixpkgs from which nixosSystem is called
       nixpkgs = {
         overlays =
-          builtins.attrValues overlays
-          ++ [
-            # Necessary for nixvim to work until lua-language-server is available
-            # in stable.
-            (self: super: {
-              lua-language-server = pkgs.unstable.lua-language-server;
-            })
-          ];
+          builtins.attrValues overlays;
         config = {
           allowUnfree = false;
         };

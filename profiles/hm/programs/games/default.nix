@@ -5,6 +5,6 @@
   ...
 }: {
   home.packages = [
-    pkgs.unstable.cataclysm-dda
+    pkgs.cataclysm-dda
   ];
 }

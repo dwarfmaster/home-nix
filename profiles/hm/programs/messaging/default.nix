@@ -3,7 +3,7 @@
   pkgs,
   ...
 }: let
-  inherit (pkgs) unfree unstable-unfree;
+  inherit (pkgs) unfree;
 in {
   home.packages = builtins.attrValues {
     inherit
@@ -11,14 +11,10 @@ in {
       signal-desktop # Access signal
       element-desktop # Chat client for matrix
       # ferdi            # Meta-messenger system
-      
-      ;
-    inherit
-      (unstable-unfree)
-      discord # Audio and chat
       ;
     inherit
       (unfree)
+      discord # Audio and chat
       zoom-us # Video meeting
       ;
   };
