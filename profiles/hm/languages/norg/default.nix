@@ -42,20 +42,20 @@ in {
       tree-sitter-norg-meta
     ];
     extraPlugins = [
-      neorg
+      # neorg
       /*
       neorg-telescope
       */
     ];
-    extraConfigLua = ''
-      require('neorg').setup {
-        load = {
-          ["core.defaults"] = {},
-          ["core.norg.completion"] = {
-            config = { engine = "nvim-cmp" }
-          },
-        }
-      }
-    '';
+    # extraConfigLua = ''
+    #   require('neorg').setup {
+    #     load = {
+    #       ["core.defaults"] = {},
+    #       ["core.norg.completion"] = {
+    #         config = { engine = "nvim-cmp" }
+    #       },
+    #     }
+    #   }
+    # '';
   };
 }

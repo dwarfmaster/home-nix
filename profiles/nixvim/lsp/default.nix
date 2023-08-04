@@ -31,19 +31,19 @@
     "[e" = saga "diagnostic_jump_prev" "Prev diagnostic";
     "<leader>cl".desc = "lsp";
     "<leader>cli" = {
-      action = "LspInfo";
+      action = "<cmd>LspInfo<cr>";
       desc = "Info";
     };
     "<leader>clS" = {
-      action = "LspStop";
+      action = "<cmd>LspStop<cr>";
       desc = "Stop";
     };
     "<leader>cls" = {
-      action = "LspStart";
+      action = "<cmd>LspStart<cr>";
       desc = "Start";
     };
     "<leader>clR" = {
-      action = "LspRestart";
+      action = "<cmd>LspRestart<cr>";
       desc = "Restart";
     };
     "<leader>cr" = picker "lsp_references" "References to current symbol";

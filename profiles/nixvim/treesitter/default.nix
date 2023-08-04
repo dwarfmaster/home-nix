@@ -5,7 +5,8 @@
   ...
 }: {
   plugins.treesitter = {
-    enable = true;
+    # TODO re-enable when error on starting about loop is fixed
+    enable = false;
     nixGrammars = true;
     ensureInstalled = "all";
     incrementalSelection.enable = true;
@@ -14,6 +15,7 @@
       builtins.filter
       (grammar: grammar.pname != "tree-sitter-norg-grammar")
       pkgs.tree-sitter.allGrammars;
+    nixvimInjections = true;
   };
   maps.normal = {
     "gnn".desc = "Select treesitter node";
