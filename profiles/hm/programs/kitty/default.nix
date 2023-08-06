@@ -6,7 +6,6 @@
 }: {
   programs.kitty = {
     enable = true;
-    font.size = 12;
     settings = {
       force_ltr = true;
       disable_ligatures = "cursor";
