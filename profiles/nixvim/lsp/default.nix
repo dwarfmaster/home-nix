@@ -7,11 +7,23 @@
   plugins.lsp = {
     enable = true;
   };
-  plugins.lspsaga = {
-    enable = true;
-    signs.use = true;
-    borderStyle = "rounded";
-  };
+
+  extraPlugins = [ pkgs.vimPlugins.lspsaga-nvim-original ];
+  # TODO get outline floating window working
+  extraConfigLua = ''
+    require('lspsaga').setup({
+      lightbulb = {
+        enable = true;
+        sign = false;
+        virtual_text = true;
+      };
+      symbols_in_winbar = { enable = true; };
+      outline = {
+        auto_preview = false;
+        auto_close = true;
+      };
+    })
+  '';
 
   maps.normal = let
     picker = name: desc: {
@@ -27,6 +39,7 @@
     "gd" = picker "lsp_definitions" "Jump to definition";
     "gD" = picker "lsp_implementations" "Jump to implementation";
     "gt" = picker "lsp_type_definition" "Jump to type definition";
+    "gI" = saga "finder imp" "Jump to implementation";
     "]e" = saga "diagnostic_jump_next" "Next diagnostic";
     "[e" = saga "diagnostic_jump_prev" "Prev diagnostic";
     "<leader>cl".desc = "lsp";
@@ -48,10 +61,12 @@
     };
     "<leader>cr" = picker "lsp_references" "References to current symbol";
     "<leader>cs" = picker "lsp_document_symbols" "List symbols in document";
-    "<leader>cS" = picker "lsp_workspace_symbols" "List symbols in workspace";
+    "<leader>co" = saga "outline" "Show outline";
+    "<leader>cS" = saga "finder" "List symbols in workspace";
     "<leader>ck" = saga "hover_doc" "Doc";
-    "<leader>cp" = saga "preview_definition" "Preview definition";
-    "<leader>cg" = saga "show_cursor_diagnostics" "Diagnostics at cursor";
+    "<leader>cp" = saga "peek_definition" "Preview definition";
+    "<leader>cP" = saga "peek_type_definition" "Preview type definition";
+    "<leader>cg" = saga "show_line_diagnostics" "Diagnostics on line";
     "<leader>cG" = picker "diagnostics" "Diagnostics";
     "<leader>ca" = saga "code_action" "Code actions";
     "<leader>cR" = saga "rename" "Rename";
