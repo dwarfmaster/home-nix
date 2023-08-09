@@ -4,9 +4,8 @@
   lib,
   ...
 }: {
-  plugins.lsp = {
-    enable = true;
-  };
+  plugins.lsp.enable = true;
+  plugins.neogen.enable = true;
 
   extraPlugins = [ pkgs.vimPlugins.lspsaga-nvim-original ];
   # TODO get outline floating window working
@@ -75,5 +74,9 @@
     "<leader>cdc" = saga "show_cursor_diagnostics" "At cursor";
     "<leader>cdf" = picker "diagnostics" "All file";
     "<leader>td" = saga "toggle_virtual_text" "Inline diagnostics";
+    "<leader>cn" = {
+      action = "<cmd>Neogen<cr>";
+      desc = "Generate annotations";
+    };
   };
 }
