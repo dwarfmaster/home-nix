@@ -66,6 +66,7 @@
         coq.enable = true;
         cpp.enable = true;
         dedukti.enable = true;
+        go.enable = true;
         haskell.enable = true;
         idris.enable = true;
         java.enable = true;
