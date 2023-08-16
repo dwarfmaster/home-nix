@@ -4,12 +4,6 @@
   pkgs,
   ...
 }: {
-  services.korrvigs = {
-    # Broken due to openssl-1.1.1u deprecation
-    # enable = true;
-    dataDir = "/home/luc/downloads/wiki";
-  };
-
   programs.doom-emacs.config = {
     initModules = {
       lang = [

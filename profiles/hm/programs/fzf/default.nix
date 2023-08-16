@@ -19,9 +19,4 @@ in {
     settings.modal = true;
     enableZshIntegration = true;
   };
-
-  services.korrvigs = {
-    constants.fzf = "${config.programs.fzf.package}/bin/fzf";
-    extraModules.fzf = ./fzf.pl;
-  };
 }

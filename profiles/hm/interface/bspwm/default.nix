@@ -71,14 +71,6 @@ in {
     "super + {_,shift + }c" = "${bspdesk} {create-select,remove-select}";
   };
 
-  services.korrvigs = {
-    extraModules.bspwm = ./bspwm.pl;
-    constants = {
-      bspc = "${config.xsession.windowManager.bspwm.package}/bin/bspc";
-      xprop = "${pkgs.xorg.xprop}/bin/xprop";
-    };
-  };
-
   services.picom = {
     enable = true;
     package = pkgs.picom-next;

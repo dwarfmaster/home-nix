@@ -18,9 +18,4 @@
     enable = true;
     wrapRc = false;
   };
-
-  services.korrvigs = {
-    constants.nvim = "${config.programs.neovim.package}/bin/nvim";
-    extraModules.nvim = ./nvim.pl;
-  };
 }

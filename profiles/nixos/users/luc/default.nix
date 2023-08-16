@@ -56,7 +56,6 @@
         nextcloud.enable = true;
         papers.enable = true;
         photos.enable = true;
-        webcomics.enable = true;
         wiki.enable = true;
       };
 
