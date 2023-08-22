@@ -57,6 +57,9 @@
       cores = 6;
       threads = 12;
       kvm = true;
+      battery = "BAT1";
+      wifiDevice = "wlo1";
+      backlightDevice = "/sys/class/backlight/intel_backlight";
     };
     enableRedistributableFirmware = true;
   };

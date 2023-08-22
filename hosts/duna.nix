@@ -57,6 +57,9 @@
       cores = 4;
       threads = 8;
       kvm = true;
+      battery = "BAT0";
+      wifiDevice = "wlpOs20f3";
+      backlightDevice = "/sys/class/backlight/intel_backlight";
     };
     acpilight.enable = true;
     enableRedistributableFirmware = true;

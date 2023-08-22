@@ -20,6 +20,24 @@ in {
       };
 
       kvm = lib.mkEnableOption "Machine has kvm support";
+
+      battery = lib.mkOption {
+        description = "Name of the battery device";
+        type = types.nullOr types.str;
+        default = null;
+      };
+
+      wifiDevice = lib.mkOption {
+        description = "Name of the wifi device";
+        type = types.nullOr types.str;
+        default = null;
+      };
+
+      backlightDevice = lib.mkOption {
+        description = "Name of the backlight device";
+        type = types.nullOr types.str;
+        default = null;
+      };
     };
   };
 }

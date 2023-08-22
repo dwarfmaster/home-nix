@@ -30,9 +30,8 @@
     };
 
   context = {
-    # TODO should be in config-hardware, along with the battery and the wifi
-    backlight_device = "/sys/class/backlight/intel_backlight";
-    wifi_device = "wlp0s20f3";
+    backlight_device = osConfig.hardware.specs.backlightDevice;
+    wifi_device = osConfig.hardware.specs.wifiDevice;
     inotifywait = "${pkgs.inotify-tools}/bin/inotifywait";
     acpi = "${pkgs.acpi}/bin/acpi";
     bctl = "${pkgs.brightnessctl}/bin/brightnessctl";
@@ -45,6 +44,7 @@
     cores =
       map (core: {inherit core;})
       (lib.range 0 (osConfig.hardware.specs.cores - 1));
+    bat = osConfig.hardware.specs.battery;
   };
   makeScript = name: file:
     writeRakuScript name (builtins.readFile (config.lib.mustache.render name file context));
