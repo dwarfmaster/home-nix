@@ -17,12 +17,18 @@
       xserver.enable = true;
       graphical.enable = true;
       sound.enable = true;
+      theme.enable = true;
       # grafana.enable = true;
     };
   };
 
   system.stateVersion = "21.11";
   nixpkgs.localSystem.system = "x86_64-linux";
+  # Disable persistence
+  environment.persistence = lib.mkForce {};
+  home-manager.sharedModules = [{
+    home.persistence = lib.mkForce {};
+  }];
 
   boot = {
     # TODO re-enable latest_hardened
