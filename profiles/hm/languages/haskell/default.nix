@@ -11,7 +11,15 @@
       ;
     ghc =
       pkgs.haskellPackages.ghcWithHoogle
-      (hpkgs: [hpkgs.diagrams]);
+      (hpkgs: builtins.attrValues {
+        inherit (hpkgs)
+        diagrams
+        xmonad
+        xmonad-utils
+        xmonad-extras
+        xmonad-contrib
+        ;
+      });
   };
 
   programs.doom-emacs.config = {

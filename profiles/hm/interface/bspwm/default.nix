@@ -15,6 +15,12 @@ in {
       bspc desktop "personal^r1" -f
       bspc desktop Desktop -r
     '';
+    extraConfig = ''
+      ${config.programs.eww.package}/bin/eww open-many \
+          statusbar-left \
+          statusbar-center \
+          statusbar-right
+    '';
     settings = {
       # Borders
       border_width = 2;
@@ -69,27 +75,5 @@ in {
     "super + {_,shift + }{q,s,d,f,g,h,j,k,l,m}" = "${bspdesk} {focus,send-to} '{l4,l3,l2,l1,l0,r0,r1,r2,r3,r4}'";
     "super + {_,shift + }space" = "${bspdesk} {focus-select,send-to-select}";
     "super + {_,shift + }c" = "${bspdesk} {create-select,remove-select}";
-  };
-
-  services.picom = {
-    enable = true;
-    package = pkgs.picom-next;
-    backend = "glx";
-    vSync = true;
-
-    fade = true;
-    fadeDelta = 3;
-
-    shadow = false;
-
-    activeOpacity = 1.0;
-    inactiveOpacity = 0.9;
-    menuOpacity = 0.9;
-
-    extraArgs = [
-      "--corner-radius=10"
-      "--blur-method=dual_kawase"
-      "--blur-strength=7"
-    ];
   };
 }

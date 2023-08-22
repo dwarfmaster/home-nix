@@ -157,10 +157,10 @@
 ;                               
 ; Center
 
-(deflisten workspace :initial "personal"
-  `bspdesk watch-workspace`)
 (deflisten desktop :initial "r1"
   `bspdesk watch-desktop`)
+(defvar xmonad 
+  "{\"workspace\": \"personal\", \"view\": \"l1\"}")
 (defvar hovered-desktop "none")
 
 (defvar desktop-color-0 "#{{{base0F}}}")
@@ -212,11 +212,12 @@
       :onmiddleclick "bspdesk send-to-select"
       :onrightclick "bspdesk create-select"
       (label
-        :text "${workspace}"))))
+        :text "${xmonad.workspace}"))))
 
 (defwidget desktop [name color]
   (box :class "desktop"
-       :style "background-color: ${color}"
+       :style { name == hovered-desktop ? "background-color: #{{{base08}}}" 
+                                        : "background-color: ${color}" }
     (eventbox
       :onhover "eww update hovered-desktop=${name}"
       :onhoverlost "eww update hovered-desktop=none"
@@ -228,8 +229,8 @@
         (image
           :image-width 13
           :image-height 13
-          :path { name == desktop ? "center/selected.png" : "center/hovered.png" }
-          :visible { name == desktop || name == hovered-desktop })))))
+          :path "center/selected.png"
+          :visible { name == xmonad.view })))))
 
 
 

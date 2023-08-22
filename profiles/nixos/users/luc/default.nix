@@ -16,13 +16,14 @@
 
       interface = {
         brightness.enable = true;
-        bspwm.enable = true;
+        bspwm.enable = false;
         eww.enable = true;
         korrvigs.enable = true;
         locking.enable = true;
+        picom.enable = true;
         visualisation.enable = true;
         x11.enable = true;
-        xmonad.enable = false;
+        xmonad.enable = true;
       };
 
       programs = {

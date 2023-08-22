@@ -1,20 +1,10 @@
 {
   config,
-  nixosConfig,
   lib,
   pkgs,
   ...
 }: let
-  xmobarrc = config.lib.mustache.render "xmobarrc" ./xmobarrc (config.lib.stylix.colors
-    // {
-      cores =
-        lib.concatMapStringsSep "-" (id: "<core${toString id}>")
-        (lib.range 0 (nixosConfig.hardware.specs.cores - 1));
-      cpus =
-        lib.concatMapStringsSep "-" (id: "<total${toString id}>")
-        (lib.range 0 (nixosConfig.hardware.specs.threads - 1));
-      notify-send = "${pkgs.libnotify}/bin/notify-send";
-    });
+  colors = config.lib.stylix.colors;
 
   xmonad-compiled =
     pkgs.writers.writeHaskell
@@ -52,9 +42,11 @@
       volume
       brightness
       ;
-    xmobarCmd = "${pkgs.haskellPackages.xmobar}/bin/xmobar ${xmobarrc}";
+    focusedColor = "#${colors.base0F}";
+    normalColor = "#${colors.base02}";
+    rofi = "${pkgs.rofi}/bin/rofi";
+    eww = "${config.programs.eww.package}/bin/eww";
   };
 in {
   xsession.windowManager.command = "${xmonad-compiled}";
-  home.file."xmobarrc".source = "${xmobarrc}";
 }

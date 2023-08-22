@@ -96,12 +96,6 @@ in {
     configDir = eww-config;
   };
   home.packages = [eww-builder];
-  xsession.windowManager.bspwm.extraConfig = ''
-    ${config.programs.eww.package}/bin/eww open-many \
-        statusbar-left \
-        statusbar-center \
-        statusbar-right
-  '';
 
   programs.nixvim = {
     extraPlugins = [yuck-vim];
