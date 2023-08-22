@@ -32,7 +32,8 @@
 
   boot = {
     # TODO re-enable latest_hardened
-    kernelPackages = pkgs.linuxPackages_latest;
+    # There is a bug on latest regarding the screen
+    # kernelPackages = pkgs.linuxPackages_latest;
     kernel.sysctl = {
       "kernel.unprivileged_userns_clone" = 1;
     };
@@ -43,7 +44,7 @@
     };
 
     initrd = {
-      availableKernelModules = ["xhci_pci" "nvme" "usb_storage" "sd_mod"];
+      availableKernelModules = ["xhci_pci" "nvme" "usb_storage" "sd_mod" "i915" "intel_agp"];
       kernelModules = [];
     };
     kernelModules = ["kvm-intel" "thunderbolt"];
@@ -67,7 +68,7 @@
   '';
 
   # # Graphic card
-  services.xserver.videoDrivers = ["intel"];
+  services.xserver.videoDrivers = ["i915" "modesetting"];
   hardware.opengl = {
     enable = true;
     driSupport = true;
