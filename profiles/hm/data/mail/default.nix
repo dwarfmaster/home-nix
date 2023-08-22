@@ -30,9 +30,6 @@ in {
     search.excludeTags = ["spam"];
     hooks = {
       postNew = "${pkgs.afew}/bin/afew --tag --new";
-      preNew = ''
-        ${pkgs.getmail6}/bin/getmail --rcfile getmailinria --rcfile getmailmailoo --rcfile getmaillsv --rcfile getmailuniversite-paris-saclay
-      '';
     };
   };
 
@@ -148,9 +145,9 @@ in {
       astroid.sendMailCommand = "${pkgs.msmtp}/bin/msmtp --read-envelope-from --read-recipients --account lsv";
 
       imap = {
-        host = "imaps.lsv.ens-cachan.fr";
-        port = 993;
-        tls.enable = true;
+        host = "imap.lsv.ens-cachan.fr";
+        port = 143;
+        # tls.enable = true;
       };
 
       msmtp.enable = true;
