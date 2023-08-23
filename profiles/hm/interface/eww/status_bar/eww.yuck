@@ -217,7 +217,7 @@
       (image
         :image-width 13
         :image-height 13
-        :path "center/selected.png"
+        :path "center/active.png"
         :visible { name == xmonad.view }))))
 
 

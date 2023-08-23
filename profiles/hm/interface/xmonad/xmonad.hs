@@ -27,8 +27,8 @@ import System.IO
 import System.Exit
 import qualified Data.Map as M
 import Data.Char (isSpace)
-import Data.Maybe (isNothing)
-import Data.List (find)
+import Data.Maybe (isJust, isNothing)
+import Data.List (find, intersperse)
 import Control.Monad (forM_, foldM)
 import Graphics.X11.ExtraTypes.XF86
 
@@ -150,9 +150,11 @@ deleteWorkspace = do
         focusWorkView prev current_view
         XS.put =<< Workspaces prev . filter (\ws -> ws /= workspace && ws /= prev) <$> listWorkspaces
         
-
-updateEww :: String -> String -> X ()
-updateEww workspace view =
+-- onscreen list all view that are displayed on other monitors than the focused one
+updateEww :: String -> String -> [String] -> X ()
+updateEww workspace view onscreen =
+  let status = fmap prepareView onscreen in
+  let viewing = intersperse "," (render <$> status) >>= id in
   safeSpawn Nix.eww 
             [ "update"
             , "xmonad={\"workspace\": \"" 
@@ -161,8 +163,26 @@ updateEww workspace view =
               ++ view 
               ++ "\"}" 
             ]
+  -- >> safeSpawn Nix.eww
+  --              [ "update"
+  --              , "xmonad-onscreen={"
+  --                ++ viewing
+  --                ++ "}"
+  --              ]
+  where
+    prepareView view =
+      if isJust (find (== view) onscreen)
+        then (view, True)
+        else (view, False)
+    render (view, active) = 
+      "\"" ++ view ++ "\": " ++ (if active then "true" else "false")
+
 updateEwwHook :: X ()
-updateEwwHook = currentWorkView >>= uncurry updateEww
+updateEwwHook = do
+  onscreen <- (fmap $ snd . splitWorkName . W.tag . W.workspace) 
+           <$> withWindowSet (\ws -> pure $ W.current ws : W.visible ws)
+  (workspace,view) <- currentWorkView
+  updateEww workspace view onscreen
 
 
 keybinds = M.fromList $

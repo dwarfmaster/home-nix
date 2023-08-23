@@ -45,6 +45,9 @@
       map (core: {inherit core;})
       (lib.range 0 (osConfig.hardware.specs.cores - 1));
     bat = osConfig.hardware.specs.battery;
+    desktops = 
+      map (desktop: {inherit desktop;})
+      ["l4" "l3" "l2" "l1" "l0" "r0" "r1" "r2" "r3" "r4"];
   };
   makeScript = name: file:
     writeRakuScript name (builtins.readFile (config.lib.mustache.render name file context));
@@ -94,6 +97,7 @@ in {
   programs.eww = {
     enable = true;
     configDir = eww-config;
+    package = pkgs.unstable.eww;
   };
   home.packages = [eww-builder];
 
