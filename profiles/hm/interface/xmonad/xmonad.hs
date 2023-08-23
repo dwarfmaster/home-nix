@@ -7,6 +7,7 @@ import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.EwmhDesktops
+import XMonad.Hooks.Rescreen (addAfterRescreenHook)
 
 import XMonad.Util.Run (runProcessWithInput, safeSpawn)
 import XMonad.Util.EZConfig (additionalKeys)
@@ -103,14 +104,24 @@ focusWorkView workspace view = do
   XS.put =<< Workspaces workspace . filter (/= workspace) <$> listWorkspaces
   jumpToView view
 
+focusWorkspaceOnAllScreens :: String -> X ()
+focusWorkspaceOnAllScreens workspace = do
+  (_,current_view) <- 
+    withWindowSet (pure . splitWorkName . W.tag . W.workspace . W.current)
+  screens <- withWindowSet (\ws -> pure $ W.current ws : W.visible ws)
+  XS.put =<< Workspaces workspace . filter (/= workspace) <$> listWorkspaces
+  forM_ screens $ \screen -> do
+    let (_,sview) = splitWorkName $ W.tag $ W.workspace screen
+    windows (W.view $ W.tag $ W.workspace screen)
+    jumpToView sview
+  windows (W.view $ workspace ++ "^" ++ current_view)
+
 focusWorkspace :: Bool -> X ()
 focusWorkspace create = do
   workspace <- askWorkspace "Workspace" create
   case workspace of
     Nothing -> return ()
-    Just workspace -> do
-      (_,current) <- currentWorkView
-      focusWorkView workspace current
+    Just workspace -> focusWorkspaceOnAllScreens workspace
 
 sendToWorkspace :: X ()
 sendToWorkspace = do
@@ -184,6 +195,19 @@ updateEwwHook = do
   (workspace,view) <- currentWorkView
   updateEww workspace view onscreen
 
+rescreenHook :: X ()
+rescreenHook = do
+  screens <- withWindowSet (\ws -> pure $ W.current ws : W.visible ws)
+  let used = snd . splitWorkName . W.tag . W.workspace <$> screens
+  forM_ screens $ \screen -> do
+    let (swork,sview) = splitWorkName $ W.tag $ W.workspace screen
+    Workspaces current _ <- XS.get
+    if current == swork
+      then return ()
+      else do
+        let nview = head $ filter (\view -> isNothing $ find (== view) used) views
+        windows (W.view $ W.tag $ W.workspace screen)
+        jumpToView nview
 
 keybinds = M.fromList $
          [ ((modkey .|. shiftMask, xK_n),  io (exitWith ExitSuccess))
@@ -217,7 +241,7 @@ myManageHook = composeAll
     --, role =? "GtkFileChooserDialog" --> doFloat -- role is not defined
     ]
 
-mconfig = ewmh $ docks $ def
+mconfig = addAfterRescreenHook rescreenHook $ ewmh $ docks $ def
         { borderWidth        = 2
         , terminal           = Nix.terminal
         , normalBorderColor  = Nix.normalColor
