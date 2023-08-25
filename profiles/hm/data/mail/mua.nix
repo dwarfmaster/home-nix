@@ -19,8 +19,15 @@
 
   programs.astroid = {
     enable = true;
-    # externalEditor = "${config.programs.emacs.finalPackage}/bin/emacsclient -q -c %1";
-    externalEditor = "st -f \"Monospace\" -w %3 -e nvim %1";
+    externalEditor = "${config.programs.kitty.package}/bin/kitty -e nvim %1";
     pollScript = "${pkgs.notmuch}/bin/notmuch new";
   };
+
+  programs.nixvim.autoCmd = [
+    {
+      event = [ "BufNewFile" "BufRead" ];
+      pattern = [ "${config.xdg.cacheHome}/astroid/*" ];
+      command = "set ft=mail";
+    }
+  ];
 }
