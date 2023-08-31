@@ -814,11 +814,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1692206536,
-        "narHash": "sha256-od304ynDwfm/FkQMUIkF3DtU9xBuK+dOg32BCjApyHI=",
+        "lastModified": 1693514825,
+        "narHash": "sha256-ZjXIdpGt7JRBXR4DqKO2rVO2TuQQipeKIHw5HvSL4/s=",
         "owner": "dwarfmaster",
         "repo": "korrvigs",
-        "rev": "6f78d9222312516659460aec01d168fbac2ff6fa",
+        "rev": "5192e800b35dbbf69ff8c20ae4b30736c7ca9013",
         "type": "github"
       },
       "original": {
