@@ -85,7 +85,7 @@
     neovim-nightly,
     nixvim,
     arkenfox,
-  }: let
+  } @ inputs: let
     # All overlays to apply
     overlays =
       self.overlays
@@ -202,6 +202,7 @@
     hosts = import ./hosts {
       inherit self lib;
       inherit overlays modules;
+      inputs = builtins.removeAttrs inputs [ "self" ];
     };
   in {
     packages = eachSupportedSystem (system: let
