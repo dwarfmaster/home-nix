@@ -35,7 +35,8 @@
       inputs.home-manager.follows = "home";
     };
     korrvigs = {
-      url = "github:dwarfmaster/korrvigs";
+      # url = "github:dwarfmaster/korrvigs";
+      url = "/home/luc/repos/korrvigs";
       inputs.nixpkgs.follows = "nixos";
     };
 

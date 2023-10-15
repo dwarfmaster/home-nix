@@ -814,17 +814,14 @@
         ]
       },
       "locked": {
-        "lastModified": 1693514825,
-        "narHash": "sha256-ZjXIdpGt7JRBXR4DqKO2rVO2TuQQipeKIHw5HvSL4/s=",
-        "owner": "dwarfmaster",
-        "repo": "korrvigs",
-        "rev": "5192e800b35dbbf69ff8c20ae4b30736c7ca9013",
-        "type": "github"
+        "lastModified": 1694735727,
+        "narHash": "sha256-vUFN7NzW+deQjfefIXQe+a1bHYu8M0D8xAMRdI7KLXc=",
+        "type": "git",
+        "url": "file:///home/luc/repos/korrvigs"
       },
       "original": {
-        "owner": "dwarfmaster",
-        "repo": "korrvigs",
-        "type": "github"
+        "type": "git",
+        "url": "file:///home/luc/repos/korrvigs"
       }
     },
     "lowdown-src": {

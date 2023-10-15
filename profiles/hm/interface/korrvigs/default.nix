@@ -6,11 +6,10 @@
 }: {
   services.korrvigs = {
     enable = true;
-    predicates = {
-      "title" = [ "entry" "string" ];
-      "instance-of" = [ "entry" "entry" ];
-      "subclass-of" = [ "entry" "entry" ];
-    };
+    wikiDir = "/home/luc/downloads/wiki";
+    # The rels.json and rules.json files are exported by the running korrvigs instance
+    predicates = builtins.fromJSON (builtins.readFile ./rels.json);
+    rules = builtins.fromJSON (builtins.readFile ./rules.json);
   };
   xsession.windowManager.bspwm.rules = {
     "popup" = {
