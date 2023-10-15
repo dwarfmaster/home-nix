@@ -8,6 +8,7 @@ import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.Rescreen (addAfterRescreenHook)
+import XMonad.Hooks.RefocusLast (isFloat)
 
 import XMonad.Util.Run (runProcessWithInput, safeSpawn)
 import XMonad.Util.EZConfig (additionalKeys)
@@ -238,7 +239,7 @@ keybinds = M.fromList $
 myManageHook = composeAll
     [ title =? "Property Browser — SolveSpace" --> doFloat
     , className =? "popup" --> doRectFloat (W.RationalRect 0.1 0.1 0.8 0.8)
-    --, role =? "GtkFileChooserDialog" --> doFloat -- role is not defined
+    , isFloat --> doCenterFloat
     ]
 
 mconfig = addAfterRescreenHook rescreenHook $ ewmh $ docks $ def
