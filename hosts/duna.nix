@@ -79,6 +79,13 @@
       "/var/lib/systemd/coredump"
       # Network manager connections
       "/etc/NetworkManager/system-connections"
+      # Postgresql
+      {
+        directory = "/data/postgresql";
+        user = "postgres";
+        group = "postgres";
+        mode = "0700";
+      }
     ];
     files = [
       # Systemd specific
@@ -125,4 +132,17 @@
     };
   };
   swapDevices = [];
+
+  # Enable postgresql for playing as user
+  services.postgresql = {
+    enable = true;
+    dataDir = "/data/postgresql/${config.services.postgresql.package.psqlSchema}";
+    ensureDatabases = ["korrvigs"];
+    ensureUsers = [
+      {
+        name = "luc";
+        ensurePermissions."DATABASE korrvigs" = "ALL PRIVILEGES";
+      }
+    ];
+  };
 }
