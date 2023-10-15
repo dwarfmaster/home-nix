@@ -84,6 +84,7 @@
         python3.enable = true;
         ruby.enable = true;
         rust.enable = true;
+        sql.enable = true;
         tools.enable = true;
         why3.enable = true;
       };
