@@ -20,7 +20,7 @@
     # Use modern openssl
     enableBrokenCiphersForSSE = false;
 
-    package = pkgs.nextcloud25;
+    package = pkgs.nextcloud26;
 
     # Auto-update Nextcloud apps
     autoUpdateApps.enable = true;

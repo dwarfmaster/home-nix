@@ -19,7 +19,7 @@ args @ {
       };
     };
 
-    certificateScheme = 3;
+    certificateScheme = "acme-nginx";
 
     enableImap = true;
     enablePop3 = true;

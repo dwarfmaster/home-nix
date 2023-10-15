@@ -32,7 +32,7 @@
   nixpkgs.localSystem.system = "x86_64-linux";
   # Disable persistence
   environment.persistence = lib.mkForce {};
-  home.home-manager.sharedModules = [{
+  home-manager.sharedModules = [{
     home.persistence = lib.mkForce {};
   }];
 
@@ -52,7 +52,6 @@
 
     loader.grub = {
       enable = true;
-      version = 2;
       efiSupport = false;
       device = "/dev/sda";
     };
@@ -166,11 +165,13 @@
 
       Welcome !
     '';
-    settings.X11Forwarding = false;
-    logLevel = "VERBOSE";
-    passwordAuthentication = false;
-    kbdInteractiveAuthentication = false;
-    permitRootLogin = "no";
+    settings = {
+      X11Forwarding = false;
+      LogLevel = "VERBOSE";
+      PasswordAuthentication = false;
+      KbdInteractiveAuthentication = false;
+      PermitRootLogin = "no";
+    };
     ports = [2222];
   };
   programs.mosh.enable = true;
