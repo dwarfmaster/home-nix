@@ -10,5 +10,6 @@
 
   home.persistence."/persists/luc".directories = [
     ".cataclysm-dda"
+    ".factorio"
   ];
 }
