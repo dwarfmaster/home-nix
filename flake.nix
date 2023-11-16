@@ -196,7 +196,7 @@
     hosts = import ./hosts {
       inherit self lib;
       inherit overlays modules;
-      inputs = builtins.removeAttrs inputs [ "self" ];
+      inputs = builtins.removeAttrs inputs ["self"];
     };
   in {
     packages = eachSupportedSystem (system: let

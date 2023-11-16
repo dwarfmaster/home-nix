@@ -39,7 +39,9 @@ in {
       pulseaudio # For the pulseaudio CLI tools
       helvum # GUI for pipewire
       # TODO doesn't work on aarch64
+      
       # easyeffects # GUI for effects on pipewire
+      
       ;
     volume = volume-manager;
   };

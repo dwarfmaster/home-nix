@@ -1,12 +1,9 @@
-{
-  pkgs,
-  ...
-}: {
+{pkgs, ...}: {
   plugins.lsp.enable = true;
   # TODO enable again when migrating to 23.11
   # plugins.neogen.enable = true;
 
-  extraPlugins = [ pkgs.vimPlugins.lspsaga-nvim ];
+  extraPlugins = [pkgs.vimPlugins.lspsaga-nvim];
   # TODO get outline floating window working
   extraConfigLua = ''
     require('lspsaga').setup({

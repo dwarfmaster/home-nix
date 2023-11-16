@@ -9,13 +9,17 @@
   inherit (builtins) attrValues removeAttrs;
 
   host-modules = hostName: let
-    global = {pkgs, lib, ...}: {
+    global = {
+      pkgs,
+      lib,
+      ...
+    }: {
       profiles.core.enable = lib.mkDefault true;
 
       # Add flake inputs to system closure to prevent garbage collection
       environment.etc."flake-inputs".text =
         lib.concatStringsSep "\n"
-          (lib.mapAttrsToList (k: v: "${k} -> ${v}") inputs);
+        (lib.mapAttrsToList (k: v: "${k} -> ${v}") inputs);
 
       home-manager.useGlobalPkgs = true;
       home-manager.useUserPackages = true;

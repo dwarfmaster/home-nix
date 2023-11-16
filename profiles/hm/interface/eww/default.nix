@@ -45,7 +45,7 @@
       map (core: {inherit core;})
       (lib.range 0 (osConfig.hardware.specs.cores - 1));
     bat = osConfig.hardware.specs.battery;
-    desktops = 
+    desktops =
       map (desktop: {inherit desktop;})
       ["l4" "l3" "l2" "l1" "l0" "r0" "r1" "r2" "r3" "r4"];
   };

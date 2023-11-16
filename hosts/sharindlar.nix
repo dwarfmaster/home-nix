@@ -19,9 +19,11 @@
   nixpkgs.localSystem.system = "aarch64-linux";
   # Disable persistence
   environment.persistence = lib.mkForce {};
-  home-manager.sharedModules = [{
-    home.persistence = lib.mkForce {};
-  }];
+  home-manager.sharedModules = [
+    {
+      home.persistence = lib.mkForce {};
+    }
+  ];
 
   boot.loader.raspberryPi = {
     enable = true;

@@ -1,7 +1,4 @@
-{
-  pkgs,
-  ...
-}: let
+{pkgs, ...}: let
   vim-shakespeare = pkgs.vimUtils.buildVimPlugin {
     name = "vim-syntax-shakespeare";
     src = pkgs.fetchFromGitHub {
@@ -20,15 +17,17 @@ in {
       ;
     ghc =
       pkgs.haskellPackages.ghcWithHoogle
-      (hpkgs: builtins.attrValues {
-        inherit (hpkgs)
-        diagrams
-        xmonad
-        xmonad-utils
-        xmonad-extras
-        xmonad-contrib
-        ;
-      });
+      (hpkgs:
+        builtins.attrValues {
+          inherit
+            (hpkgs)
+            diagrams
+            xmonad
+            xmonad-utils
+            xmonad-extras
+            xmonad-contrib
+            ;
+        });
   };
 
   programs.doom-emacs.config = {
@@ -44,7 +43,7 @@ in {
 
   programs.nixvim = {
     plugins.lsp.servers.hls.enable = true;
-    extraPlugins = [ vim-shakespeare ];
+    extraPlugins = [vim-shakespeare];
     globals = {
       hamlet_prevent_invalid_nesting = 0;
       hamlet_highlight_trailing_space = 0;

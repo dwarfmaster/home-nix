@@ -16,7 +16,7 @@ in {
 
   # Neovim
   programs.nixvim = {
-    extraPlugins = [ pkgs.vimPlugins.Coqtail ];
+    extraPlugins = [pkgs.vimPlugins.Coqtail];
     globals = {
       coqtail_nomap = 1;
       coqtail_coq_path = "${config.programs.coq.package}/bin";

@@ -25,8 +25,8 @@
 
   programs.nixvim.autoCmd = [
     {
-      event = [ "BufNewFile" "BufRead" ];
-      pattern = [ "${config.xdg.cacheHome}/astroid/*" ];
+      event = ["BufNewFile" "BufRead"];
+      pattern = ["${config.xdg.cacheHome}/astroid/*"];
       command = "set ft=mail";
     }
   ];

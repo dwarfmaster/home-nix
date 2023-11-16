@@ -1,6 +1,4 @@
-{ pkgs, ... }:
-
-let
+{pkgs, ...}: let
   tree-sitter-nu = pkgs.tree-sitter-make-grammar {
     language = "nu";
     src = pkgs.fetchFromGitHub {
@@ -24,8 +22,8 @@ in {
     ];
     autoCmd = [
       {
-        event = [ "BufNewFile" "BufRead" ];
-        pattern = [ "*.nu" ];
+        event = ["BufNewFile" "BufRead"];
+        pattern = ["*.nu"];
         command = "set ft=nu";
       }
     ];

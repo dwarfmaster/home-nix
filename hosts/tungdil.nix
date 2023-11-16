@@ -26,9 +26,11 @@
   nixpkgs.localSystem.system = "x86_64-linux";
   # Disable persistence
   environment.persistence = lib.mkForce {};
-  home-manager.sharedModules = [{
-    home.persistence = lib.mkForce {};
-  }];
+  home-manager.sharedModules = [
+    {
+      home.persistence = lib.mkForce {};
+    }
+  ];
 
   boot = {
     # TODO re-enable latest_hardened

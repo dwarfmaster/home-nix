@@ -16,9 +16,11 @@
   sdImage.compressImage = false;
   # Disable persistence
   environment.persistence = lib.mkForce {};
-  home-manager.sharedModules = [{
-    home.persistence = lib.mkForce {};
-  }];
+  home-manager.sharedModules = [
+    {
+      home.persistence = lib.mkForce {};
+    }
+  ];
 
   nixpkgs.localSystem.system = "aarch64-linux";
   system.stateVersion = "22.11";

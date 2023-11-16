@@ -1,8 +1,6 @@
-{ pkgs, ... }:
-
-{
-  home.packages = [ pkgs.postgresql ];
+{pkgs, ...}: {
+  home.packages = [pkgs.postgresql];
   programs.nixvim = {
-    extraPlugins = [ pkgs.vimPlugins.pgsql-vim ];
+    extraPlugins = [pkgs.vimPlugins.pgsql-vim];
   };
 }

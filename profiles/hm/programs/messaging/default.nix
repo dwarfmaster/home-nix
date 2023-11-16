@@ -11,6 +11,7 @@ in {
       signal-desktop # Access signal
       element-desktop # Chat client for matrix
       # ferdi            # Meta-messenger system
+      
       ;
     inherit
       (unfree)
