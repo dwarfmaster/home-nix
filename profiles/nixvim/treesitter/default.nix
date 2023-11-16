@@ -5,16 +5,12 @@
   ...
 }: {
   plugins.treesitter = {
-    # TODO re-enable when error on starting about loop is fixed
-    enable = false;
+    enable = true;
     nixGrammars = true;
     ensureInstalled = "all";
     incrementalSelection.enable = true;
     indent = true;
-    grammarPackages =
-      builtins.filter
-      (grammar: grammar.pname != "tree-sitter-norg-grammar")
-      pkgs.tree-sitter.allGrammars;
+    grammarPackages = pkgs.tree-sitter.allGrammars;
     nixvimInjections = true;
   };
   keymaps = [
