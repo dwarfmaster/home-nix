@@ -13,6 +13,7 @@
     enable = true;
     mappingPresets = ["insert" "cmdline"];
     snippet.expand = "luasnip";
+    preselect = "None";
     # TODO
     #   function(args)
     #     require('luasnip').lsp_expand(args.body)
