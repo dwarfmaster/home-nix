@@ -9,9 +9,12 @@
     silentChdir = false;
   };
   plugins.telescope.extensions.project-nvim.enable = true;
-  maps.normal."<leader>fp" = {
-    action = "function() require('telescope').extensions.projects.projects{} end";
-    lua = true;
-    desc = "Select project";
-  };
+  keymaps = [
+    {
+      key = "<leader>fp";
+      action = "function() require('telescope').extensions.projects.projects{} end";
+      lua = true;
+      options.desc = "Select project";
+    }
+  ];
 }

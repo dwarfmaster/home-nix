@@ -7,13 +7,10 @@
   stylix.targets.feh.enable = true;
 
   # Cursor theme
-  home.pointerCursor = {
+  stylix.cursor = {
     package = pkgs.bibata-cursors;
     name = "Bibata-Modern-Amber";
     size = 24;
-
-    gtk.enable = true;
-    x11.enable = true;
   };
 
   # Setup doom-emacs theme

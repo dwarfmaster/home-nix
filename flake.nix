@@ -3,10 +3,10 @@
 
   inputs = {
     master.url = "nixpkgs/master";
-    unstable.url = "nixpkgs/nixos-unstable";
-    nixos.url = "nixpkgs/release-23.05";
+    nixos.url = "nixpkgs/nixos-unstable";
+    stable.url = "nixpkgs/release-23.05";
     home = {
-      url = "github:nix-community/home-manager/release-23.05";
+      url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixos";
     };
     nur.url = "github:nix-community/NUR";
@@ -19,9 +19,9 @@
 
     impermanence.url = "github:nix-community/impermanence";
     simple-mailserver = {
-      url = "gitlab:simple-nixos-mailserver/nixos-mailserver/nixos-23.05";
-      inputs.nixpkgs.follows = "unstable";
-      inputs.nixpkgs-23_05.follows = "nixos";
+      url = "gitlab:simple-nixos-mailserver/nixos-mailserver";
+      inputs.nixpkgs.follows = "nixos";
+      inputs.nixpkgs-23_05.follows = "stable";
     };
     django.url = "github:pnmadelaine/django-nixos/main";
     imacs = {
@@ -30,7 +30,7 @@
       inputs.django-nixos.follows = "django";
     };
     stylix = {
-      url = "github:danth/stylix/release-23.05";
+      url = "github:danth/stylix";
       inputs.nixpkgs.follows = "nixos";
       inputs.home-manager.follows = "home";
     };
@@ -56,7 +56,6 @@
     };
     nixvim = {
       url = "github:nix-community/nixvim";
-      # url = "/home/luc/repos/nixvim";
       inputs.nixpkgs.follows = "nixos";
     };
     arkenfox = {
@@ -70,7 +69,7 @@
     home,
     nixos,
     master,
-    unstable,
+    stable,
     nur,
     flake-utils,
     nixos-hardware,
@@ -100,12 +99,6 @@
             tree-sitter-make-grammar =
               super.callPackage
               (nixos + "/pkgs/development/tools/parsing/tree-sitter/grammar.nix") {};
-            inherit
-              (unstable.legacyPackages.${super.system})
-              csharp-ls
-              vscode-langservers-extracted
-              nixd
-              ;
           }
           // packages self super;
         variants = self: super: pkgs-variants super.system;
@@ -177,8 +170,8 @@
     pkgs-variants = system: {
       master = pkgImport system false master;
       master-unfree = pkgImport system true master;
-      unstable = pkgImport system false unstable;
-      unstable-unfree = pkgImport system true unstable;
+      stable = pkgImport system false stable;
+      stable-unfree = pkgImport system true stable;
       unfree = pkgImport system true nixos;
     };
 

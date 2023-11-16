@@ -17,17 +17,18 @@
       pkgs.tree-sitter.allGrammars;
     nixvimInjections = true;
   };
-  maps.normal = {
-    "gnn".desc = "Select treesitter node";
-    "<leader>cT" = {
+  keymaps = [
+    # "gnn".desc = "Select treesitter node";
+    {
+      key = "<leader>cT";
       action = "function() require'telescope.builtin'.treesitter{} end";
       lua = true;
-      desc = "Treesitter symbols";
-    };
-  };
-  maps.visual = {
-    "grn".desc = "Increment treesitter node";
-    "grc".desc = "Increment treesitter scope";
-    "grm".desc = "Decrement treesitter node";
-  };
+      options.desc = "Treesitter symbols";
+    }
+  ];
+  # maps.visual = {
+  #   "grn".desc = "Increment treesitter node";
+  #   "grc".desc = "Increment treesitter scope";
+  #   "grm".desc = "Decrement treesitter node";
+  # };
 }

@@ -17,10 +17,8 @@
     hostName = "nextcloud.dwarfmaster.net";
     # Use https
     https = true;
-    # Use modern openssl
-    enableBrokenCiphersForSSE = false;
 
-    package = pkgs.nextcloud26;
+    package = pkgs.nextcloud27;
 
     # Auto-update Nextcloud apps
     autoUpdateApps.enable = true;

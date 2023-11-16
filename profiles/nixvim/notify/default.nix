@@ -17,10 +17,11 @@
     # };
   };
   plugins.telescope.enabledExtensions = ["notify"];
-  maps.normal = {
-    "<leader>sN" = {
+  keymaps = [
+    {
+      key = "<leader>sN";
       action = "<cmd>Telescope notify<cr>";
-      desc = "Notifications";
-    };
-  };
+      options.desc = "Notifications";
+    }
+  ];
 }

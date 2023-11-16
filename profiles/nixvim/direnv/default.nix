@@ -10,14 +10,16 @@
     direnv_edit_mode = "edit"; # one of edit, split, vsplit
     direnv_silent_load = 1;
   };
-  maps.normal = {
-    "<leader>tD" = {
+  keymaps = [
+    {
+      key = "<leader>tD";
       action = "<cmd>DirenvExport<cr>";
-      desc = "Reload direnv";
-    };
-    "<leader>oD" = {
+      options.desc = "Reload direnv";
+    }
+    {
+      key = "<leader>oD";
       action = "<cmd>EditEnvrc<cr>";
-      desc = "Open loaded envrc";
-    };
-  };
+      options.desc = "Open loaded envrc";
+    }
+  ];
 }

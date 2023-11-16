@@ -6,7 +6,7 @@
   gmp,
   git,
   swig,
-  pkgconfig,
+  pkg-config,
   readline,
   libantlr3c,
   boost,
@@ -25,7 +25,7 @@ stdenv.mkDerivation rec {
     sha256 = "0mi3ym9j3y00h66115q3jsj7a1wcxjc94fcsw2lxq899mviywk2z";
   };
 
-  nativeBuildInputs = [pkgconfig cmake];
+  nativeBuildInputs = [pkg-config cmake];
   buildInputs = [gmp git python3.pkgs.toml cln readline swig libantlr3c antlr3_4 boost jdk python3];
   configureFlags = [
     "--enable-language-bindings=c,c++,java"

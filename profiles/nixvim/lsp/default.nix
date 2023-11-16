@@ -1,13 +1,12 @@
 {
-  config,
   pkgs,
-  lib,
   ...
 }: {
   plugins.lsp.enable = true;
-  plugins.neogen.enable = true;
+  # TODO enable again when migrating to 23.11
+  # plugins.neogen.enable = true;
 
-  extraPlugins = [ pkgs.vimPlugins.lspsaga-nvim-original ];
+  extraPlugins = [ pkgs.vimPlugins.lspsaga-nvim ];
   # TODO get outline floating window working
   extraConfigLua = ''
     require('lspsaga').setup({
@@ -24,59 +23,66 @@
     })
   '';
 
-  maps.normal = let
-    picker = name: desc: {
+  keymaps = let
+    picker = key: name: desc: {
+      inherit key;
       action = "function() require'telescope.builtin'.${name}{} end";
       lua = true;
-      inherit desc;
+      options.desc = desc;
     };
-    saga = action: desc: {
+    saga = key: action: desc: {
+      inherit key;
       action = "<cmd>Lspsaga ${action}<cr>";
-      inherit desc;
+      options.desc = desc;
     };
-  in {
-    "gd" = picker "lsp_definitions" "Jump to definition";
-    "gD" = picker "lsp_implementations" "Jump to implementation";
-    "gt" = picker "lsp_type_definition" "Jump to type definition";
-    "gI" = saga "finder imp" "Jump to implementation";
-    "]e" = saga "diagnostic_jump_next" "Next diagnostic";
-    "[e" = saga "diagnostic_jump_prev" "Prev diagnostic";
-    "<leader>cl".desc = "lsp";
-    "<leader>cli" = {
+  in [
+    (picker "gd" "lsp_definitions" "Jump to definition")
+    (picker "gD" "lsp_implementations" "Jump to implementation")
+    (picker "gt" "lsp_type_definition" "Jump to type definition")
+    (saga "gI" "finder imp" "Jump to implementation")
+    (saga "]e" "diagnostic_jump_next" "Next diagnostic")
+    (saga "[e" "diagnostic_jump_prev" "Prev diagnostic")
+    # "<leader>cl".desc = "lsp";
+    {
+      key = "<leader>cli";
       action = "<cmd>LspInfo<cr>";
-      desc = "Info";
-    };
-    "<leader>clS" = {
+      options.desc = "Info";
+    }
+    {
+      key = "<leader>clS";
       action = "<cmd>LspStop<cr>";
-      desc = "Stop";
-    };
-    "<leader>cls" = {
+      options.desc = "Stop";
+    }
+    {
+      key = "<leader>cls";
       action = "<cmd>LspStart<cr>";
-      desc = "Start";
-    };
-    "<leader>clR" = {
+      options.desc = "Start";
+    }
+    {
+      key = "<leader>clR";
       action = "<cmd>LspRestart<cr>";
-      desc = "Restart";
-    };
-    "<leader>cr" = picker "lsp_references" "References to current symbol";
-    "<leader>cs" = picker "lsp_document_symbols" "List symbols in document";
-    "<leader>co" = saga "outline" "Show outline";
-    "<leader>cS" = saga "finder" "List symbols in workspace";
-    "<leader>ck" = saga "hover_doc" "Doc";
-    "<leader>cp" = saga "peek_definition" "Preview definition";
-    "<leader>cP" = saga "peek_type_definition" "Preview type definition";
-    "<leader>cg" = saga "show_line_diagnostics" "Diagnostics on line";
-    "<leader>cG" = picker "diagnostics" "Diagnostics";
-    "<leader>ca" = saga "code_action" "Code actions";
-    "<leader>cR" = saga "rename" "Rename";
-    "<leader>cd".desc = "diagnostics";
-    "<leader>cdd" = saga "show_line_diagnostics" "At line";
-    "<leader>cdc" = saga "show_cursor_diagnostics" "At cursor";
-    "<leader>cdf" = picker "diagnostics" "All file";
-    "<leader>td" = saga "toggle_virtual_text" "Inline diagnostics";
-    "<leader>cn" = {
+      options.desc = "Restart";
+    }
+    (picker "<leader>cr" "lsp_references" "References to current symbol")
+    (picker "<leader>cs" "lsp_document_symbols" "List symbols in document")
+    (saga "<leader>co" "outline" "Show outline")
+    (saga "<leader>cS" "finder" "List symbols in workspace")
+    (saga "<leader>ck" "hover_doc" "Doc")
+    (saga "<leader>cp" "peek_definition" "Preview definition")
+    (saga "<leader>cP" "peek_type_definition" "Preview type definition")
+    (saga "<leader>cg" "show_line_diagnostics" "Diagnostics on line")
+    (picker "<leader>cG" "diagnostics" "Diagnostics")
+    (saga "<leader>ca" "code_action" "Code actions")
+    (saga "<leader>cR" "rename" "Rename")
+    # "<leader>cd".desc = "diagnostics";
+    (saga "<leader>cdd" "show_line_diagnostics" "At line")
+    (saga "<leader>cdc" "show_cursor_diagnostics" "At cursor")
+    (picker "<leader>cdf" "diagnostics" "All file")
+    (saga "<leader>td" "toggle_virtual_text" "Inline diagnostics")
+    {
+      key = "<leader>cn";
       action = "<cmd>Neogen<cr>";
-      desc = "Generate annotations";
-    };
-  };
+      options.desc = "Generate annotations";
+    }
+  ];
 }

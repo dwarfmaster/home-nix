@@ -16,6 +16,6 @@
     };
   };
 
-  home.packages = [pkgs.khal];
+  home.packages = [pkgs.stable.khal];
   xdg.configFile."khal/config".source = ./khal.conf;
 }

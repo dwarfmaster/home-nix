@@ -4,7 +4,7 @@
   ...
 }: let
   plugins = pkgs.vimPlugins;
-  neorg = pkgs.vimUtils.buildVimPluginFrom2Nix {
+  neorg = pkgs.vimUtils.buildVimPlugin {
     pname = "neorg";
     version = "2c18f831effb5f3f383b2049902be23ea0dd7a8e";
     src = pkgs.fetchFromGitHub {

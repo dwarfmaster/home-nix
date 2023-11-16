@@ -10,59 +10,63 @@
     defaultMaps = false;
     previewWinFloating = true;
   };
-  maps.normal = let
-    picker = name: desc: {
+  keymaps = let
+    picker = key: name: desc: {
+      inherit key;
       action = "function() require'telescope.builtin'.${name}{} end";
       lua = true;
-      inherit desc;
+      options.desc = desc;
     };
-  in {
-    "]c" = {
+  in [
+    {
+      key = "]c";
       action = "<Plug>(GitGutterNextHunk)";
-      desc = "Next git hunk";
-    };
-    "[c" = {
+      options.desc = "Next git hunk";
+    }
+    {
+      key = "[c";
       action = "<Plug>(GitGutterPrevHunk)";
-      desc = "Prev git hunk";
-    };
-    "<leader>tG" = {
+      options.desc = "Prev git hunk";
+    }
+    {
+      key = "<leader>tG";
       action = "<cmd>GitGutterToggle<cr>";
-      desc = "Toggle gitgutter";
-    };
-    "<leader>tg" = {
+      options.desc = "Toggle gitgutter";
+    }
+    {
+      key = "<leader>tg";
       action = "<cmd>GitGutterBufferToggle<cr>";
-      desc = "Toggle gitgutter on buffer";
-    };
-    "<leader>vs" = {
+      options.desc = "Toggle gitgutter on buffer";
+    }
+    {
+      key = "<leader>vs";
       action = "<cmd>GitGutterStageHunk<cr>";
-      desc = "Stage hunk";
-    };
-    "<leader>vu" = {
+      options.desc = "Stage hunk";
+    }
+    {
+      key = "<leader>vu";
       action = "<cmd>GitGutterUndoHunk<cr>";
-      desc = "Undo staging";
-    };
-    "<leader>vp" = {
+      options.desc = "Undo staging";
+    }
+    {
+      key = "<leader>vp";
       action = "<cmd>GitGutterPreviewHunk<cr>";
-      desc = "Preview hunk";
-    };
-    "<leader>vD" = {
+      options.desc = "Preview hunk";
+    }
+    {
+      key = "<leader>vD";
       action = "<cmd>GitGutterDiffOrig<cr>";
-      desc = "View diff";
-    };
-    "<leader>vF" = {
+      options.desc = "View diff";
+    }
+    {
+      key = "<leader>vF";
       action = "<cmd>GitGutterFold<cr>";
-      desc = "Fold unchanged";
-    };
-    "<leader>vc" = picker "git_commits" "List commits";
-    "<leader>vC" = picker "git_bcommits" "Diff to commits";
-    "<leader>vB" = picker "git_branches" "List branches";
-    "<leader>vS" = picker "git_status" "List changes";
-    "<leader>vZ" = picker "git_stash" "List stash items";
-  };
-  maps.visual = {
-    "<leader>vs" = {
-      action = "<cmd>GitGutterStageHunk<cr>";
-      desc = "Stage hunk";
-    };
-  };
+      options.desc = "Fold unchanged";
+    }
+    (picker "<leader>vc" "git_commits" "List commits")
+    (picker "<leader>vC" "git_bcommits" "Diff to commits")
+    (picker "<leader>vB" "git_branches" "List branches")
+    (picker "<leader>vS" "git_status" "List changes")
+    (picker "<leader>vZ" "git_stash" "List stash items")
+  ];
 }

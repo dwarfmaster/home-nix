@@ -35,7 +35,7 @@
         path = toString ../.;
       in [
         "nixpkgs=${self.inputs.nixos}"
-        "unstable=${self.inputs.unstable}"
+        "stable=${self.inputs.stable}"
         "master=${self.inputs.master}"
         "nixos=${self.inputs.nixos}"
         "nixpkgs-overlays=${path}/overlays"

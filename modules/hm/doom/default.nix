@@ -38,7 +38,7 @@ let
     options = {
       text = mkOption {
         description = "The content of the elisp file";
-        type = types.nullOr types.string;
+        type = types.nullOr types.str;
         default = null;
       };
       source = mkOption {

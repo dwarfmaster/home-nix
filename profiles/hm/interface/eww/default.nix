@@ -5,7 +5,7 @@
   lib,
   ...
 }: let
-  yuck-vim = pkgs.vimUtils.buildVimPluginFrom2Nix {
+  yuck-vim = pkgs.vimUtils.buildVimPlugin {
     pname = "yuck.vim";
     version = "9b5e0370f70cc30383e1dabd6c215475915fe5c3";
     src = pkgs.fetchFromGitHub {
@@ -97,7 +97,7 @@ in {
   programs.eww = {
     enable = true;
     configDir = eww-config;
-    package = pkgs.unstable.eww;
+    package = pkgs.eww;
   };
   home.packages = [eww-builder];
 

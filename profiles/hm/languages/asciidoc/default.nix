@@ -3,7 +3,7 @@
   config,
   ...
 }: let
-  vim-asciidoctor = pkgs.vimUtils.buildVimPluginFrom2Nix {
+  vim-asciidoctor = pkgs.vimUtils.buildVimPlugin {
     name = "vim-asciidoctor";
     src = pkgs.fetchFromGitHub {
       owner = "habamax";

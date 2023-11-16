@@ -25,7 +25,9 @@ in {
     # |_|  |_|_/__/\__|
     #
     # Misc
-    extraPlugins = [pkgs.vimPlugins.vim-repeat];
+    extraPlugins = [
+      pkgs.vimPlugins.vim-repeat
+    ];
     extraConfigLua = ''
     '';
     # TODO basic settings
@@ -108,19 +110,26 @@ in {
         " " = "<space>";
       };
     };
-    maps.normal = {
-      "<leader>f".desc = "file";
-      "<leader>c".desc = "code";
-      "<leader>j".desc = "jump";
-      "<leader>b".desc = "buffer";
-      "<leader>o".desc = "open/close";
-      "<leader>v".desc = "git";
-      "<leader>s".desc = "search";
-      "<leader>d".desc = "debug";
-      "<leader>w".desc = "window";
-      "<leader>h".desc = "help";
-      "<leader>t".desc = "toggle";
-      "<leader> ".desc = "local";
-    };
+    keymaps = let
+      mk = key: desc: {
+        inherit key;
+        options.desc = desc;
+      };
+    in [
+      # (mk "<leader>f" "file")
+      # (mk "<leader>c" "code")
+      # (mk "<leader>j" "jump")
+      # (mk "<leader>b" "buffer")
+      # (mk "<leader>o" "open/close")
+      # (mk "<leader>v" "git")
+      # (mk "<leader>s" "search")
+      # (mk "<leader>d" "debug")
+      # (mk "<leader>w" "window")
+      # (mk "<leader>h" "help")
+      # (mk "<leader>t" "toggle")
+      # (mk "<leader> " "local")
+    ];
+    # maps.normal = {
+    # };
   };
 }

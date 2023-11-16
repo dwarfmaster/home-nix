@@ -4,27 +4,29 @@
   pkgs,
   ...
 }: {
-  maps.normal = let
-    cmd = cmd: desc: {
+  keymaps = let
+    cmd = key: cmd: desc: {
+      inherit key;
       action = "<cmd>${cmd}<cr>";
-      inherit desc;
+      options.desc = desc;
     };
-  in {
-    "<leader>ww" = cmd "wincmd p" "Jump to recent";
-    "<leader>wv" = cmd "vsplit" "Split vertically";
-    "<leader>w-" = cmd "split" "Split horizontally";
-    "<leader>wD" = {
+  in [
+    (cmd "<leader>ww" "wincmd p" "Jump to recent")
+    (cmd "<leader>wv" "vsplit" "Split vertically")
+    (cmd "<leader>w-" "split" "Split horizontally")
+    {
+      key = "<leader>wD";
       action = "<c-w>ge";
-      desc = "Detach current window";
-    };
-    "<leader>wc" = cmd "close" "Close current window";
-    "<leader>wj" = cmd "wincmd j" "Jump down";
-    "<leader>wk" = cmd "wincmd k" "Jump up";
-    "<leader>wh" = cmd "wincmd h" "Jump left";
-    "<leader>wl" = cmd "wincmd l" "Jump right";
-    "<leader>wJ" = cmd "resize -5" "Decrease height";
-    "<leader>wK" = cmd "resize +5" "Increase height";
-    "<leader>wH" = cmd "vertical resize -5" "Decrease width";
-    "<leader>wL" = cmd "vertical resize +5" "Increase width";
-  };
+      options.desc = "Detach current window";
+    }
+    (cmd "<leader>wc" "close" "Close current window")
+    (cmd "<leader>wj" "wincmd j" "Jump down")
+    (cmd "<leader>wk" "wincmd k" "Jump up")
+    (cmd "<leader>wh" "wincmd h" "Jump left")
+    (cmd "<leader>wl" "wincmd l" "Jump right")
+    (cmd "<leader>wJ" "resize -5" "Decrease height")
+    (cmd "<leader>wK" "resize +5" "Increase height")
+    (cmd "<leader>wH" "vertical resize -5" "Decrease width")
+    (cmd "<leader>wL" "vertical resize +5" "Increase width")
+  ];
 }

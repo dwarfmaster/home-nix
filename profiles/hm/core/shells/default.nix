@@ -66,7 +66,7 @@ in {
     enable = true;
     enableAutosuggestions = true;
     enableCompletion = true;
-    enableSyntaxHighlighting = true;
+    syntaxHighlighting.enable = true;
     dotDir = "${lib.removePrefix config.home.homeDirectory config.xdg.configHome}/zsh";
     defaultKeymap = "viins";
 
