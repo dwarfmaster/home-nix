@@ -1,8 +1,6 @@
 {
-  config,
   lib,
   pkgs,
-  simple-nixos-mailserver,
   ...
 }: {
   profiles = {
@@ -13,6 +11,7 @@
     services = {
       mail-server.enable = true;
       torrent.enable = true;
+      sql.enable = true;
     };
     web = {
       matrix.enable = true;
@@ -175,10 +174,4 @@
     ports = [2222];
   };
   programs.mosh.enable = true;
-
-  # PostgreSQL
-  services.postgresql = {
-    enable = true;
-    dataDir = "/data/var/lib/postgresql/${config.services.postgresql.package.psqlSchema}";
-  };
 }
