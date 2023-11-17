@@ -3,14 +3,16 @@
   pkgs,
   lib,
   ...
-}: {
+}: let
+  cfg = config.plugins.treesitter;
+in {
   plugins.treesitter = {
     enable = true;
     nixGrammars = true;
     ensureInstalled = "all";
     incrementalSelection.enable = true;
     indent = true;
-    grammarPackages = pkgs.tree-sitter.allGrammars;
+    grammarPackages = cfg.package.passthru.allGrammars;
     nixvimInjections = true;
   };
   keymaps = [
