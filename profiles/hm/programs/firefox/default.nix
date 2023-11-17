@@ -118,8 +118,8 @@
         then profile.default
         else false;
       userChrome = ''
-        .tab-background[selected="true"] {
-          background: #${color} !important;
+        .tab-background:is([selected], [multiselected]) {
+          background-color: #${color} !important;
         }
         .tabbrowser-tab[selected="true"] {
           color: #${colors.base00} !important;
