@@ -50,10 +50,6 @@
       inputs.nixpkgs.follows = "nixos";
       inputs.emacs-overlay.follows = "emacs-overlay";
     };
-    neovim-nightly = {
-      url = "github:nix-community/neovim-nightly-overlay";
-      inputs.nixpkgs.follows = "nixos";
-    };
     nixvim = {
       url = "github:nix-community/nixvim";
       inputs.nixpkgs.follows = "nixos";
@@ -82,7 +78,6 @@
     korrvigs,
     emacs-overlay,
     nix-doom-emacs,
-    neovim-nightly,
     nixvim,
     arkenfox,
   } @ inputs: let
@@ -92,7 +87,6 @@
       // {
         nur = nur.overlay;
         arkenfox = arkenfox.overlays.default;
-        neovim-nightly = neovim-nightly.overlay;
         korrvigs = korrvigs.overlays.default;
         packages = self: super:
           {
