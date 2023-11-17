@@ -19,8 +19,6 @@
         ".ssh"
         ".password-store"
         ".local/share/direnv"
-        # Doom emacs needs its directory as long as the nix compilation is broken
-        ".emacs.d"
         # Firefox
         # TODO be more precise about what's saved
         ".mozilla/firefox/Personal"

@@ -10,15 +10,4 @@
   home.sessionVariables = {
     JULIA_DEPOT_PATH = "${config.xdg.dataHome}/julia";
   };
-
-  programs.doom-emacs.config = {
-    initModules = {
-      lang = [
-        {
-          mod = "julia";
-          args = ["lsp"];
-        }
-      ];
-    };
-  };
 }

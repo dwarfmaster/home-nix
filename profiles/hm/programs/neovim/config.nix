@@ -16,7 +16,6 @@ in {
     profiles.notify.enable = true;
     profiles.gitgutter.enable = true;
     profiles.lsp.enable = true;
-    profiles.direnv.enable = true;
     profiles.cmp.enable = true;
 
     #  __  __ _

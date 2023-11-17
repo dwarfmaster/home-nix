@@ -14,15 +14,4 @@ in {
   programs.nixvim = {
     plugins.lsp.enabledServers = ["lua_ls"];
   };
-
-  programs.doom-emacs.config = {
-    initModules = {
-      lang = [
-        {
-          mod = "lua";
-          args = ["lsp"];
-        }
-      ];
-    };
-  };
 }

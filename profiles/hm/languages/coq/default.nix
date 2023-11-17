@@ -12,7 +12,6 @@ in {
     libraries = [
     ];
   };
-  programs.doom-emacs.config.initModules.lang = ["coq"];
 
   # Neovim
   programs.nixvim = {

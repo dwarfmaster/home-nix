@@ -22,28 +22,4 @@
       ;
     perf = pkgs.linuxPackages.perf; # Profile programs
   };
-
-  programs.doom-emacs.config = {
-    initModules = {
-      tools = [
-        {
-          mod = "debugger";
-          args = ["lsp"];
-        }
-        {
-          mod = "eval";
-          args = ["overlay"];
-        }
-        {
-          mod = "lookup";
-          args = ["dictionary" "docsets"];
-        }
-        {
-          mod = "lsp";
-          args = ["peek"];
-        }
-        "make"
-      ];
-    };
-  };
 }

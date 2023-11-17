@@ -40,16 +40,6 @@
       inputs.nixpkgs.follows = "nixos";
     };
 
-    # Forces more recent emacs-overlay, fixes https://github.com/vlaci/nix-doom-emacs/issues/401
-    emacs-overlay = {
-      url = "github:nix-community/emacs-overlay";
-      flake = false;
-    };
-    nix-doom-emacs = {
-      url = "github:nix-community/nix-doom-emacs";
-      inputs.nixpkgs.follows = "nixos";
-      inputs.emacs-overlay.follows = "emacs-overlay";
-    };
     nixvim = {
       url = "github:nix-community/nixvim";
       inputs.nixpkgs.follows = "nixos";
@@ -76,8 +66,6 @@
     imacs,
     stylix,
     korrvigs,
-    emacs-overlay,
-    nix-doom-emacs,
     nixvim,
     arkenfox,
   } @ inputs: let
@@ -115,7 +103,6 @@
         // {
           inherit libModule;
           profiles = {...}: {imports = profiles.hm;};
-          nix-doom-emacs = nix-doom-emacs.hmModule;
           arkenfox = arkenfox.hmModules.default;
           nixvim = nixvim.homeManagerModules.nixvim;
           stylix = stylix.homeManagerModules.stylix;

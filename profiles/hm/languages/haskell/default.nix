@@ -30,17 +30,6 @@ in {
         });
   };
 
-  programs.doom-emacs.config = {
-    initModules = {
-      lang = [
-        {
-          mod = "haskell";
-          args = ["dante"];
-        }
-      ];
-    };
-  };
-
   programs.nixvim = {
     plugins.lsp.servers.hls.enable = true;
     extraPlugins = [vim-shakespeare];

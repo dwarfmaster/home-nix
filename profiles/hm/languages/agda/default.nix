@@ -14,15 +14,4 @@
   xdg.configFile."agda/defaults".text = ''
     standard-library
   '';
-
-  programs.doom-emacs.config = {
-    initModules = {
-      lang = [
-        {
-          mod = "agda";
-          args = ["local"];
-        }
-      ];
-    };
-  };
 }

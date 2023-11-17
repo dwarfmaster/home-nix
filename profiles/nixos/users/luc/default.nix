@@ -32,7 +32,6 @@
         cheat.enable = true;
         documents.enable = true;
         drawing.enable = false;
-        emacs.enable = true;
         engineering.enable = false;
         firefox.enable = true;
         games.enable = true;
@@ -51,7 +50,6 @@
         book.enable = true;
         calendar.enable = true;
         contacts.enable = true;
-        feeds.enable = true;
         mail.enable = true;
         music.enable = true;
         nextcloud.enable = true;

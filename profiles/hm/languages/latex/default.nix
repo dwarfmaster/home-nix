@@ -9,17 +9,6 @@
     pkgs.texlab # LSP for LaTeX
   ];
 
-  programs.doom-emacs.config = {
-    initModules = {
-      lang = [
-        {
-          mod = "latex";
-          args = ["latexmk" "cdlatex" "lsp"];
-        }
-      ];
-    };
-  };
-
   programs.nixvim = {
     extraPlugins = [pkgs.vimPlugins.vimtex];
     globals = {
