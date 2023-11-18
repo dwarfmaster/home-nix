@@ -31,8 +31,8 @@ import qualified Data.Map as M
 import Data.Char (isSpace)
 import Data.Maybe (isJust, isNothing)
 import Data.List (find, intersperse)
-import Data.Foldable (forM_)
-import Control.Monad (forM_, foldM)
+import Control.Monad (forM_, foldM, join)
+import Control.Arrow ((&&&))
 import Graphics.X11.ExtraTypes.XF86
 
 import XMonad.Prompt.ConfirmPrompt
@@ -51,7 +51,13 @@ data Workspaces = Workspaces String [String]
 instance ExtensionClass Workspaces where
   initialValue = Workspaces "personal" ["settings"]
 views = ["l4", "l3", "l2", "l1", "l0", "r0", "r1", "r2", "r3", "r4"]
+viewsWs = filter (uncurry (&&) . ((/= "l0") &&& (/= "r0"))) views
 viewKeys = [xK_q, xK_s, xK_d, xK_f, xK_g, xK_h, xK_j, xK_k, xK_l, xK_m]
+
+workspaceName :: String -> String -> String
+workspaceName _ "l0" = "l0"
+workspaceName _ "r0" = "r0"
+workspaceName ws view = ws ++ "^" ++ view
 
 currentWorkspace :: X String
 currentWorkspace = do
@@ -60,11 +66,11 @@ currentWorkspace = do
 jumpToView :: String -> X ()
 jumpToView view = do
   ws <- currentWorkspace
-  DW.addWorkspace $ ws ++ "^" ++ view
+  DW.addWorkspace $ workspaceName ws view
 sendToView :: String -> X ()
 sendToView view = do
   ws <- currentWorkspace
-  windows $ W.shift $ ws ++ "^" ++ view
+  windows $ W.shift $ workspaceName ws view
 
 runRofi :: String -> [String] -> X (Maybe String)
 runRofi prompt possibilities = do
@@ -76,14 +82,20 @@ runRofi prompt possibilities = do
     then Nothing
     else Just output
 
-splitWorkName :: String -> (String,String)
-splitWorkName name = let (ws,view) = span (/='^') name in (ws, safeTl view)
-  where safeTl [] = []
-        safeTl (_ : xs) = xs
+splitWorkName :: String -> (Maybe String,String)
+splitWorkName name = 
+  let (ws,view) = span (/='^') name in 
+  case view of
+  "" -> (Nothing, ws)
+  _ : vw -> (Just ws, vw)
 
 currentWorkView :: X (String,String)
-currentWorkView =
-  splitWorkName <$> withWindowSet (pure . W.currentTag)
+currentWorkView = do
+  (ws,view) <- splitWorkName <$> withWindowSet (pure . W.currentTag)
+  case ws of
+    Nothing -> (,view) <$> currentWorkspace
+    Just workspace -> pure (workspace,view)
+
 
 listWorkspaces :: X [String]
 listWorkspaces = do
@@ -115,7 +127,7 @@ focusWorkspaceOnAllScreens workspace = do
     let (_,sview) = splitWorkName $ W.tag $ W.workspace screen
     windows (W.view $ W.tag $ W.workspace screen)
     jumpToView sview
-  windows (W.view $ workspace ++ "^" ++ current_view)
+  windows (W.view $ workspaceName workspace current_view)
 
 focusWorkspace :: Bool -> X ()
 focusWorkspace create = do
@@ -129,7 +141,7 @@ sendToWorkspace = do
     Nothing -> return ()
     Just workspace -> do
       (_,current) <- currentWorkView
-      windows $ W.shift $ workspace ++ "^" ++ current
+      windows $ W.shift $ workspaceName workspace current
 
 deleteWorkspace :: X ()
 deleteWorkspace = do
@@ -150,10 +162,10 @@ deleteWorkspace = do
           wins <- withWindowSet (pure . length . W.integrate' . W.stack . W.workspace . W.current)
           return $ count + wins)
         0
-        views
+        viewsWs
       focusWorkView prev current_view
       confirmPrompt def ("Delete workspace " ++ workspace ++ " with " ++ show nbWins ++ " windows ?") $ do
-        forM_ views $ \view -> do
+        forM_ viewsWs $ \view -> do
           focusWorkView workspace view
           killAll
           DW.removeWorkspace
@@ -195,7 +207,7 @@ rescreenHook = do
   forM_ screens $ \screen -> do
     let (swork,sview) = splitWorkName $ W.tag $ W.workspace screen
     Workspaces current _ <- XS.get
-    if current == swork
+    if swork == Just current
       then return ()
       else do
         let nview = head $ filter (\view -> isNothing $ find (== view) used) views
@@ -223,8 +235,8 @@ keybinds = M.fromList $
          , ((modkey .|. shiftMask, xK_space), sendToWorkspace)
          , ((modkey, xK_c), focusWorkspace True)
          , ((modkey .|. shiftMask, xK_c), deleteWorkspace)
-         ] ++ (viewKeys =<< zip viewKeys views)
- where viewKeys (k,view) =
+         ] ++ (mkViewKeys =<< zip viewKeys views)
+ where mkViewKeys (k,view) =
          [ ((modkey, k),               jumpToView view)
          , ((modkey .|. shiftMask, k), sendToView view)]
 
@@ -234,19 +246,19 @@ myManageHook = composeAll
     , isFloat --> doCenterFloat
     ]
 
-mconfig = addAfterRescreenHook rescreenHook $ ewmh $ docks $ def
+mconfig = addAfterRescreenHook rescreenHook . ewmh . ewmhFullscreen . docks $ def
         { borderWidth        = 2
         , terminal           = Nix.terminal
         , normalBorderColor  = Nix.normalColor
         , focusedBorderColor = Nix.focusedColor
         , modMask            = modkey
         , layoutHook         = avoidStruts mlayout
-        , workspaces         = ("personal^" ++) <$> views
+        , workspaces         = workspaceName "personal" <$> views
         , keys               = const keybinds
         , manageHook         = manageDocks <+> myManageHook <+> manageHook def
         , logHook            = updatePointer (0.5,0.5) (0,0) >> updateEwwHook
         , startupHook        = jumpToView "l1"
-        , handleEventHook    = handleEventHook def <+> fullscreenEventHook
+        , handleEventHook    = handleEventHook def
         }
 
 main = safeSpawn Nix.eww
