@@ -3,25 +3,21 @@
   pkgs,
   lib,
   ...
-}: {
-  plugins.notify = {
-    enable = true;
-    stages = "slide";
-    # TODO
-    # icons = {
-    #   error = "";
-    #   warn = "";
-    #   info = "";
-    #   debug = "";
-    #   trace = "";
-    # };
+}: let
+  desktop-notify = pkgs.vimUtils.buildVimPlugin {
+    name = "desktop-notify.nvim";
+    src = pkgs.fetchFromGitLab {
+      owner = "HiPhish";
+      repo = "desktop-notify.nvim";
+      rev = "e1e684226d9b4a7313439bc7dd1be09d72bfb839";
+      sha256 = "sha256-cT5XxqGF3RNpQiVn0MXZUFd0PMnBPcE7ioegfqCiUnM=";
+    };
   };
-  plugins.telescope.enabledExtensions = ["notify"];
-  keymaps = [
-    {
-      key = "<leader>sN";
-      action = "<cmd>Telescope notify<cr>";
-      options.desc = "Notifications";
-    }
+in {
+  extraPlugins = [
+    desktop-notify
   ];
+  extraConfigLua = ''
+    vim.notify = require('desktop_notify').notify_send
+  '';
 }
