@@ -31,6 +31,7 @@ import qualified Data.Map as M
 import Data.Char (isSpace)
 import Data.Maybe (isJust, isNothing)
 import Data.List (find, intersperse)
+import Data.Foldable (forM_)
 import Control.Monad (forM_, foldM)
 import Graphics.X11.ExtraTypes.XF86
 
@@ -43,15 +44,14 @@ modkey = mod4Mask
 
 mlayout = tiled ||| Full
  where tiled   = renamed [Replace "Tiled"] inter
-       inter   = spacingRaw False (mkBord 0) False (mkBord 10) True
-               $ emptyBSP -- Use binary space partitioning
-       mkBord  = \n -> Border n n n n
+       inter   = spacingRaw False (mkBord 0) False (mkBord 10) True emptyBSP -- Use binary space partitioning
+       mkBord n = Border n n n n
 
 data Workspaces = Workspaces String [String]
 instance ExtensionClass Workspaces where
   initialValue = Workspaces "personal" ["settings"]
 views = ["l4", "l3", "l2", "l1", "l0", "r0", "r1", "r2", "r3", "r4"]
-view_keys = [xK_q, xK_s, xK_d, xK_f, xK_g, xK_h, xK_j, xK_k, xK_l, xK_m]
+viewKeys = [xK_q, xK_s, xK_d, xK_f, xK_g, xK_h, xK_j, xK_k, xK_l, xK_m]
 
 currentWorkspace :: X String
 currentWorkspace = do
@@ -83,7 +83,7 @@ splitWorkName name = let (ws,view) = span (/='^') name in (ws, safeTl view)
 
 currentWorkView :: X (String,String)
 currentWorkView =
-  splitWorkName <$> (withWindowSet $ pure . W.currentTag)
+  splitWorkName <$> withWindowSet (pure . W.currentTag)
 
 listWorkspaces :: X [String]
 listWorkspaces = do
@@ -96,13 +96,13 @@ askWorkspace query allowNew = do
   case workspace of
     Nothing -> return Nothing
     Just workspace ->
-      if (not allowNew) && (isNothing $ find (== workspace) workspaces)
+      if not allowNew && isNothing (find (== workspace) workspaces)
         then return Nothing
         else return (Just workspace)
 
 focusWorkView :: String -> String -> X ()
 focusWorkView workspace view = do
-  XS.put =<< Workspaces workspace . filter (/= workspace) <$> listWorkspaces
+  XS.put . Workspaces workspace . filter (/= workspace) =<< listWorkspaces
   jumpToView view
 
 focusWorkspaceOnAllScreens :: String -> X ()
@@ -110,7 +110,7 @@ focusWorkspaceOnAllScreens workspace = do
   (_,current_view) <- 
     withWindowSet (pure . splitWorkName . W.tag . W.workspace . W.current)
   screens <- withWindowSet (\ws -> pure $ W.current ws : W.visible ws)
-  XS.put =<< Workspaces workspace . filter (/= workspace) <$> listWorkspaces
+  XS.put . Workspaces workspace . filter (/= workspace) =<< listWorkspaces
   forM_ screens $ \screen -> do
     let (_,sview) = splitWorkName $ W.tag $ W.workspace screen
     windows (W.view $ W.tag $ W.workspace screen)
@@ -120,9 +120,7 @@ focusWorkspaceOnAllScreens workspace = do
 focusWorkspace :: Bool -> X ()
 focusWorkspace create = do
   workspace <- askWorkspace "Workspace" create
-  case workspace of
-    Nothing -> return ()
-    Just workspace -> focusWorkspaceOnAllScreens workspace
+  forM_ workspace focusWorkspaceOnAllScreens
 
 sendToWorkspace :: X ()
 sendToWorkspace = do
@@ -143,7 +141,7 @@ deleteWorkspace = do
     (_, Just workspace) -> do
       (current_ws,current_view) <- currentWorkView
       prev <-
-        if (current_ws == workspace)
+        if current_ws == workspace
           then return $ head $ filter (/= workspace) workspaces
           else return current_ws
       nbWins <- foldM 
@@ -160,13 +158,13 @@ deleteWorkspace = do
           killAll
           DW.removeWorkspace
         focusWorkView prev current_view
-        XS.put =<< Workspaces prev . filter (\ws -> ws /= workspace && ws /= prev) <$> listWorkspaces
+        XS.put . Workspaces prev . filter (\ws -> ws /= workspace && ws /= prev) =<< listWorkspaces
         
 -- onscreen list all view that are displayed on other monitors than the focused one
 updateEww :: String -> String -> [String] -> X ()
 updateEww workspace view onscreen =
   let status = fmap prepareView onscreen in
-  let viewing = intersperse "," (render <$> status) >>= id in
+  let viewing = join $ intersperse "," (render <$> status) in
   safeSpawn Nix.eww 
             [ "update"
             , "xmonad={\"workspace\": \"" 
@@ -175,12 +173,6 @@ updateEww workspace view onscreen =
               ++ view 
               ++ "\"}" 
             ]
-  -- >> safeSpawn Nix.eww
-  --              [ "update"
-  --              , "xmonad-onscreen={"
-  --                ++ viewing
-  --                ++ "}"
-  --              ]
   where
     prepareView view =
       if isJust (find (== view) onscreen)
@@ -191,7 +183,7 @@ updateEww workspace view onscreen =
 
 updateEwwHook :: X ()
 updateEwwHook = do
-  onscreen <- (fmap $ snd . splitWorkName . W.tag . W.workspace) 
+  onscreen <- fmap (snd . splitWorkName . W.tag . W.workspace) 
            <$> withWindowSet (\ws -> pure $ W.current ws : W.visible ws)
   (workspace,view) <- currentWorkView
   updateEww workspace view onscreen
@@ -211,7 +203,7 @@ rescreenHook = do
         jumpToView nview
 
 keybinds = M.fromList $
-         [ ((modkey .|. shiftMask, xK_n),  io (exitWith ExitSuccess))
+         [ ((modkey .|. shiftMask, xK_n),  io exitSuccess)
          -- Client focus control
          , ((modkey, xK_x),                         kill)
          , ((modkey, xK_Tab),                       windows W.focusDown)
@@ -231,7 +223,7 @@ keybinds = M.fromList $
          , ((modkey .|. shiftMask, xK_space), sendToWorkspace)
          , ((modkey, xK_c), focusWorkspace True)
          , ((modkey .|. shiftMask, xK_c), deleteWorkspace)
-         ] ++ (viewKeys =<< zip view_keys views)
+         ] ++ (viewKeys =<< zip viewKeys views)
  where viewKeys (k,view) =
          [ ((modkey, k),               jumpToView view)
          , ((modkey .|. shiftMask, k), sendToView view)]
@@ -248,7 +240,7 @@ mconfig = addAfterRescreenHook rescreenHook $ ewmh $ docks $ def
         , normalBorderColor  = Nix.normalColor
         , focusedBorderColor = Nix.focusedColor
         , modMask            = modkey
-        , layoutHook         = avoidStruts $ mlayout
+        , layoutHook         = avoidStruts mlayout
         , workspaces         = ("personal^" ++) <$> views
         , keys               = const keybinds
         , manageHook         = manageDocks <+> myManageHook <+> manageHook def
