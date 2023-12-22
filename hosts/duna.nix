@@ -19,6 +19,7 @@
       sound.enable = true;
       theme.enable = true;
     };
+    services.games.enable = true;
   };
 
   system.stateVersion = "22.05";
