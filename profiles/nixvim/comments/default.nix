@@ -4,9 +4,9 @@
   lib,
   ...
 }: {
-  plugins.comment-nvim = {
+  plugins.comment = {
     enable = true;
-    sticky = true; # Avoid moving the cursor
+    settings.sticky = true; # Avoid moving the cursor
   };
   # maps.normal = {
   #   "gc".desc = "Comments";

@@ -137,13 +137,15 @@
   # Enable postgresql for playing as user
   services.postgresql = {
     enable = true;
-    package = pkgs.postgresql.withPackages (p: [ p.postgis ]);
+    package = pkgs.postgresql;
+    extraPlugins = [ config.services.postgresql.package.pkgs.postgis ];
     dataDir = "/data/postgresql/${config.services.postgresql.package.psqlSchema}";
     ensureDatabases = ["korrvigs"];
     ensureUsers = [
       {
         name = "luc";
-        ensurePermissions."DATABASE korrvigs" = "ALL PRIVILEGES";
+        # ensureDBOwnership = true;
+        # ensurePermissions."DATABASE korrvigs" = "ALL PRIVILEGES";
       }
     ];
   };

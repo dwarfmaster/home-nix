@@ -4,6 +4,9 @@
   ...
 }: {
   programs.nixvim = {
-    plugins.lsp.enabledServers = ["prolog_ls"];
+    plugins.lsp.enabledServers = [{ 
+      name = "prolog_ls"; 
+      extraOptions = {};
+    }];
   };
 }

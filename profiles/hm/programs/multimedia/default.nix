@@ -11,6 +11,6 @@
     pkgs.ffmpeg-full # Convert any video/audio format to any other
 
     # Downloader
-    pkgs.python38Packages.youtube-dl # Video downloader
+    pkgs.python310Packages.youtube-dl # Video downloader
   ];
 }

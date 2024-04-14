@@ -9,6 +9,9 @@
     pkgs.rubyPackages.solargraph
   ];
   programs.nixvim = {
-    plugins.lsp.enabledServers = ["solargraph"];
+    plugins.lsp.enabledServers = [{ 
+      name = "solargraph"; 
+      extraOptions = {};
+    }];
   };
 }

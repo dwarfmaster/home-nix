@@ -6,9 +6,9 @@
 }: {
   plugins.project-nvim = {
     enable = true;
+    enableTelescope = true;
     silentChdir = false;
   };
-  plugins.telescope.extensions.project-nvim.enable = true;
   keymaps = [
     {
       key = "<leader>fp";

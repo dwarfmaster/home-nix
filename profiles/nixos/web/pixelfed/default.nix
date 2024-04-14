@@ -124,6 +124,7 @@ in {
     ensureUsers = [
       {
         name = user;
+# TODO fix
         ensurePermissions."DATABASE ${dbtable}" = "ALL PRIVILEGES";
       }
     ];

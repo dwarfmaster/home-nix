@@ -20,6 +20,9 @@
       ;
   };
   programs.nixvim = {
-    plugins.lsp.enabledServers = ["ocamllsp"];
+    plugins.lsp.enabledServers = [{ 
+      name = "ocamllsp"; 
+      extraOptions = {};
+    }];
   };
 }

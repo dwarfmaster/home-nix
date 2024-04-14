@@ -12,6 +12,9 @@ in {
   ];
 
   programs.nixvim = {
-    plugins.lsp.enabledServers = ["lua_ls"];
+    plugins.lsp.enabledServers = [{ 
+      name = "lua_ls"; 
+      extraOptions = {};
+    }];
   };
 }

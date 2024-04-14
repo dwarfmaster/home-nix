@@ -5,7 +5,7 @@
   ...
 }: {
   services.korrvigs = {
-    enable = true;
+    enable = false;
     wikiDir = "/home/luc/downloads/wiki";
     # The rels.json and rules.json files are exported by the running korrvigs instance
     predicates = builtins.fromJSON (builtins.readFile ./rels.json);

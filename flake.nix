@@ -21,7 +21,6 @@
     simple-mailserver = {
       url = "gitlab:simple-nixos-mailserver/nixos-mailserver";
       inputs.nixpkgs.follows = "nixos";
-      inputs.nixpkgs-23_05.follows = "stable";
     };
     django.url = "github:pnmadelaine/django-nixos/main";
     imacs = {
@@ -30,6 +29,7 @@
       inputs.django-nixos.follows = "django";
     };
     stylix = {
+      # url = "/home/luc/repos/stylix";
       url = "github:danth/stylix";
       inputs.nixpkgs.follows = "nixos";
       inputs.home-manager.follows = "home";

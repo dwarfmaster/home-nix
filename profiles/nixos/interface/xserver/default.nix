@@ -16,7 +16,7 @@
     enableTCP = false;
     enableCtrlAltBackspace = true;
 
-    layout = "fr";
+    xkb.layout = "fr";
 
     # Support for touchpad
     libinput.enable = true;

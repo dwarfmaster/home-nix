@@ -64,7 +64,7 @@ in {
   # Zsh
   programs.zsh = {
     enable = true;
-    enableAutosuggestions = true;
+    autosuggestion.enable = true;
     enableCompletion = true;
     syntaxHighlighting.enable = true;
     dotDir = "${lib.removePrefix config.home.homeDirectory config.xdg.configHome}/zsh";

@@ -20,7 +20,7 @@ in {
 
   programs.nixvim = {
     extraPlugins = [ cmp-hledger ];
-    plugins.nvim-cmp.sources = [
+    plugins.cmp.settings.sources = [
       {name = "hledger";}
     ];
   };

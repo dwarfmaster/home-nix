@@ -130,7 +130,7 @@ in {
     ensureUsers = [
       {
         name = "wallabag";
-        ensurePermissions."DATABASE wallabag" = "ALL PRIVILEGES";
+        ensureDBPermissions = true;
       }
     ];
   };

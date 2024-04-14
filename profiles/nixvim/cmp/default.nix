@@ -10,68 +10,67 @@
     pkgs.vimPlugins.cmp_luasnip
     pkgs.vimPlugins.lspkind-nvim
   ];
-  plugins.nvim-cmp = {
+  plugins.cmp = {
     enable = true;
     # mappingPresets = ["cmdline"];
-    snippet.expand = "luasnip";
-    preselect = "None";
-    # TODO
-    #   function(args)
-    #     require('luasnip').lsp_expand(args.body)
-    #   end
-    # '';
-    sources = [
-      {name = "nvim_lsp";}
-      {name = "buffer";}
-      {name = "dictionnary";}
-      {name = "calc";}
-      {name = "path";}
-      {name = "luasnip";}
-    ];
-    mapping = let
-      tabAction = ''
-        function(fallback)
-          if cmp.visible() then
-            if #cmp.get_entries() == 1 then
-              cmp.confirm({ select = true })
-            else
-              cmp.select_next_item()
-            end
-          -- TODO setup luasnip
-          -- elseif luasnip.expandable() then
-          --   luasnip.expand()
-          -- elseif luasnip.expand_or_jumpable() then
-          --   luasnip.expand_or_jump()
-          elseif has_words_before() then
-            cmp.complete()
-          else
-            fallback()
-          end
-        end
-      '';
-    in {
-      "<Tab>" = ''cmp.mapping({
-          i = ${tabAction},
-          s = ${tabAction},
-          c = function(_)
+    settings = {
+      preselect = "None";
+      # TODO
+      #   function(args)
+      #     require('luasnip').lsp_expand(args.body)
+      #   end
+      # '';
+      snippet.expand = "luasnip";
+      sources = [
+        {name = "nvim_lsp";}
+        {name = "buffer";}
+        {name = "dictionnary";}
+        {name = "calc";}
+        {name = "path";}
+        {name = "luasnip";}
+      ];
+      mapping = let
+        tabAction = ''
+          function(fallback)
             if cmp.visible() then
               if #cmp.get_entries() == 1 then
                 cmp.confirm({ select = true })
               else
                 cmp.select_next_item()
               end
-            else
+            -- TODO setup luasnip
+            -- elseif luasnip.expandable() then
+            --   luasnip.expand()
+            -- elseif luasnip.expand_or_jumpable() then
+            --   luasnip.expand_or_jump()
+            elseif has_words_before() then
               cmp.complete()
-              if #cmp.get_entries() == 1 then
-                cmp.config({ select = true })
-              end
+            else
+              fallback()
             end
           end
-        })
-      '';
-      "S-<Tab>" = {
-        modes = ["i" "s"];
-        action = ''
+        '';
+      in {
+        "<Tab>" = ''cmp.mapping({
+            i = ${tabAction},
+            s = ${tabAction},
+            c = function(_)
+              if cmp.visible() then
+                if #cmp.get_entries() == 1 then
+                  cmp.confirm({ select = true })
+                else
+                  cmp.select_next_item()
+                end
+              else
+                cmp.complete()
+                if #cmp.get_entries() == 1 then
+                  cmp.config({ select = true })
+                end
+              end
+            end
+          })
+        '';
+        "S-<Tab>" = ''
           function(fallback)
             if cmp.visible() then
               cmp.select_prev_item()
@@ -82,38 +81,38 @@
             end
           end
         '';
-      };
-      # If entry is selected, return selects it, otherwise inserts a new line
-      "<CR>" = ''
-        cmp.mapping({
-          i = function(fallback)
-            if cmp.visible() and cmp.get_active_entry() then
-              cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false })
-            else
-              fallback()
-            end
-          end,
-          s = cmp.mapping.confirm({ select = true }),
-          c = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = true }),
-        })
-      '';
-    };
-    formatting = {
-      fields = ["kind" "abbr" "menu"];
-      format = ''
-        require('lspkind').cmp_format({
-          mode = "symbol_text",
-          maxwidth = 50,
-          menu = ({
-            nvim_lsp = "[LSP]",
-            buffer = "[BUF]",
-            dictionnary = "[DIC]",
-            calc = "[CALC]",
-            path = "[PTH]",
-            luasnip = "[SNIP]",
+        # If entry is selected, return selects it, otherwise inserts a new line
+        "<CR>" = ''
+          cmp.mapping({
+            i = function(fallback)
+              if cmp.visible() and cmp.get_active_entry() then
+                cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false })
+              else
+                fallback()
+              end
+            end,
+            s = cmp.mapping.confirm({ select = true }),
+            c = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = true }),
           })
-        })
-      '';
+        '';
+      };
+      formatting = {
+        fields = ["kind" "abbr" "menu"];
+        format = ''
+          require('lspkind').cmp_format({
+            mode = "symbol_text",
+            maxwidth = 50,
+            menu = ({
+              nvim_lsp = "[LSP]",
+              buffer = "[BUF]",
+              dictionnary = "[DIC]",
+              calc = "[CALC]",
+              path = "[PTH]",
+              luasnip = "[SNIP]",
+            })
+          })
+        '';
+      };
     };
   };
   extraConfigLuaPost = ''
