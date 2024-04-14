@@ -19,8 +19,10 @@
 
       allow_remote_control = "socket-only";
       listen_on = "unix:\${XDG_RUNTIME_DIR}/kitty";
-
-      shell_integration = "no-cursor";
+    };
+    shellIntegration = {
+      mode = "no-cursor";
+      enableZshIntegration = true;
     };
   };
   stylix.targets.kitty.enable = true;
