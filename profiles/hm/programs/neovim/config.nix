@@ -7,6 +7,7 @@
   tab = 2;
 in {
   programs.nixvim = {
+    profiles.align.enable = true;
     profiles.telescope.enable = true;
     profiles.treesitter.enable = true;
     profiles.windows.enable = true;
