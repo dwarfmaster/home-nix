@@ -1,7 +1,9 @@
 {
-  config,
   pkgs,
   ...
 }: {
-  home.packages = [pkgs.android-udev-rules];
+  home.packages = [
+    pkgs.android-tools
+    pkgs.android-udev-rules
+  ];
 }
