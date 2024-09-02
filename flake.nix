@@ -29,7 +29,6 @@
       inputs.django-nixos.follows = "django";
     };
     stylix = {
-      # url = "/home/luc/repos/stylix";
       url = "github:danth/stylix";
       inputs.nixpkgs.follows = "nixos";
       inputs.home-manager.follows = "home";
@@ -105,7 +104,6 @@
           profiles = {...}: {imports = profiles.hm;};
           arkenfox = arkenfox.hmModules.default;
           nixvim = nixvim.homeManagerModules.nixvim;
-          stylix = stylix.homeManagerModules.stylix;
           impermanence = impermanence.nixosModules.home-manager.impermanence;
           # korrvigs = korrvigs.hmModules.default;
         };

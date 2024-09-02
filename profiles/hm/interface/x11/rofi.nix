@@ -28,6 +28,7 @@ in {
     };
   };
   xdg.configFile."rofi/themes/stylix.rasi".source = themefile;
+  stylix.targets.rofi.enable = false;
 
   applications.launcher = "${rofi} -modi drun -show drun -show-icons";
   applications.calculator = "${rofi} -modi calc -show calc -no-show-match -no-sort -qalc-binary ${pkgs.libqalculate}/bin/qalc | cut -d= -f2 | tr -d ' ' | ${pkgs.xclip}/bin/xclip -i";

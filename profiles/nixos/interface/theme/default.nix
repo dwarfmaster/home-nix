@@ -4,12 +4,6 @@
   ...
 }: let
   nerdfonts = pkgs.nerdfonts.override {fonts = ["FiraCode"];};
-  schemes = pkgs.fetchFromGitHub {
-    owner = "tinted-theming";
-    repo = "base16-schemes";
-    rev = "cf6bc892a24af19e11383adedc6ce7901f133ea7";
-    sha256 = "sha256-U9pfie3qABp5sTr3M9ga/jX8C807FeiXlmEZnC4ZM58=";
-  };
   colors = config.lib.stylix.colors;
   bg = pkgs.runCommand "bg.png" {} ''
     cp ${./bg.svg} bg.svg
@@ -34,9 +28,17 @@
   '';
 in {
   stylix = {
+    enable = true;
     autoEnable = false;
-    homeManagerIntegration.followSystem = true;
-    homeManagerIntegration.autoImport = false;
+    homeManagerIntegration = {
+      followSystem = true;
+      autoImport = true;
+    };
+    image = "${bg}";
+    base16Scheme = "${pkgs.base16-schemes}/share/themes/tomorrow-night.yaml";
+    polarity = "dark";
+
+    # Fonts
     fonts = {
       # I dont care about serif fonts, I'll reuse the sans-serif one
       serif = {
@@ -56,9 +58,13 @@ in {
         package = pkgs.openmoji-color;
       };
     };
-    image = "${bg}";
-    base16Scheme = "${schemes}/monokai.yaml";
-    polarity = "dark";
+
+    # Cursor theme
+    cursor = {
+      package = pkgs.bibata-cursors;
+      name = "Bibata-Modern-Amber";
+      size = 24;
+    };
 
     targets.console.enable = true;
   };
