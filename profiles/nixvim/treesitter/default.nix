@@ -9,9 +9,9 @@ in {
   plugins.treesitter = {
     enable = true;
     nixGrammars = true;
-    ensureInstalled = "all";
-    incrementalSelection.enable = true;
-    indent = true;
+    settings.ensure_installed = "all";
+    settings.incremental_selection.enable = true;
+    settings.indent.enable = true;
     grammarPackages = cfg.package.passthru.allGrammars;
     nixvimInjections = true;
   };

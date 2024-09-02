@@ -14,6 +14,6 @@ in {
     enable = true;
     port = 8009;
     homeserver = "http://localhost:${toString listener.port}";
-    package = pkgs.heisenbridge;
+    package = pkgs.stable.heisenbridge;
   };
 }

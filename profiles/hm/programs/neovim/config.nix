@@ -75,16 +75,15 @@ in {
     # Which-key
     plugins.which-key = {
       enable = true;
-      window = {
-        border = "none";
-        margin.left = 2;
-        margin.right = 2;
-        margin.bottom = 0;
-        margin.top = 1;
-        winblend = 10;
-      };
-      keyLabels = {
-        " " = "<space>";
+      settings = {
+        win = {
+          padding = [ 1 2 ];
+          border = "none";
+          wo.winblend = 10;
+        };
+        key_labels = {
+          " " = "<space>";
+        };
       };
     };
     keymaps = let

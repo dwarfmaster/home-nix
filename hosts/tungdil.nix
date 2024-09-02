@@ -74,10 +74,7 @@
 
   # # Graphic card
   services.xserver.videoDrivers = ["i915" "modesetting"];
-  hardware.opengl = {
-    enable = true;
-    driSupport = true;
-  };
+  hardware.graphics.enable = true;
   hardware.acpilight.enable = true;
 
   # RGB driver for keyboard

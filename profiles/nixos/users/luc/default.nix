@@ -75,7 +75,6 @@
         lean.enable = true;
         lua.enable = true;
         nix.enable = true;
-        norg.enable = true;
         nushell.enable = true;
         ocaml.enable = true;
         prolog.enable = true;

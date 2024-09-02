@@ -19,6 +19,13 @@
   '';
   irc = config.services.heisenbridge;
 in {
+  # Use stable synapse
+  nixpkgs.overlays = [
+    (self: super: {
+      matrix-synapse-unwrapped = pkgs.stable.matrix-synapse-unwrapped;
+    })
+  ];
+
   # Database
   services.postgresql.enable = true;
   # Must be manually setup

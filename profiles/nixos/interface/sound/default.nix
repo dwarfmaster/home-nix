@@ -4,8 +4,6 @@
   pkgs,
   ...
 }: {
-  # Conflicts with pipewire
-  sound.enable = false;
   # TODO find precisely what it does
   security.rtkit.enable = true;
   # Enable and setup PipeWire

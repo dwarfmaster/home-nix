@@ -37,10 +37,10 @@
   };
 in {
   programs.nixvim = {
-    plugins.treesitter.grammarPackages = [
-      tree-sitter-norg
-      tree-sitter-norg-meta
-    ];
+    # plugins.treesitter.grammarPackages = [
+    #   tree-sitter-norg
+    #   tree-sitter-norg-meta
+    # ];
     extraPlugins = [
       # neorg
       /*

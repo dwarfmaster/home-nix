@@ -74,6 +74,8 @@
   environment.persistence."/persists/system" = {
     hideMounts = true;
     directories = [
+      # Necessary system state
+      "/var/lib/nixos"
       # Logs
       "/var/log"
       # Systemd specific

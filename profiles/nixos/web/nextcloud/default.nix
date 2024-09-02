@@ -18,7 +18,7 @@
     # Use https
     https = true;
 
-    package = pkgs.nextcloud27;
+    package = pkgs.nextcloud29;
 
     # Auto-update Nextcloud apps
     autoUpdateApps.enable = true;
@@ -26,9 +26,6 @@
     autoUpdateApps.startAt = "05:00:00";
 
     config = {
-      # Further forces https
-      overwriteProtocol = "https";
-
       # PostgreSQL configuration
       dbtype = "pgsql";
       dbuser = "nextcloud";
@@ -38,6 +35,11 @@
 
       adminpassFile = "/data/var/nextcloud/admin-pass";
       adminuser = "admin";
+    };
+
+    settings = {
+      # Further forces https
+      overwriteprotocol = "https";
     };
   };
 

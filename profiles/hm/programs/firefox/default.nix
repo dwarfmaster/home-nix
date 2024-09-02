@@ -165,6 +165,7 @@ in {
   programs.firefox = {
     enable = true;
     arkenfox = {
+      # TODO update
       enable = true;
       version = "107.0";
     };
@@ -187,7 +188,6 @@ in {
 
   home.packages = [
     launcher
-    pkgs.nyxt # Minimalistic browser (replace firefox ?)
   ];
   applications.browser = "${launcher}/bin/firefox-launcher";
 

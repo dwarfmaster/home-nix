@@ -1,5 +1,4 @@
 {
-  config,
   pkgs,
   ...
 }: {
@@ -11,6 +10,6 @@
     pkgs.ffmpeg-full # Convert any video/audio format to any other
 
     # Downloader
-    pkgs.python310Packages.youtube-dl # Video downloader
+    pkgs.yt-dlp # Video downloader
   ];
 }

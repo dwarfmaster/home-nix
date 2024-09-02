@@ -13,6 +13,7 @@ in {
       EDITOR = "nvim";
       DIRSTACKSIZE = 16;
       NIX_SSHOPTS = "-t";
+      MANROFFOPT = "-c"; # Fix problems with using bat as pager
       MANPAGER = "sh -c 'col -bx | ${bat} -l man -p'";
     };
     packages = builtins.attrValues {
@@ -30,7 +31,6 @@ in {
         dogdns
         ;
       batgrep = pkgs.bat-extras.batgrep;
-      batdiff = pkgs.bat-extras.batdiff;
     };
   };
   programs.bat.enable = true;

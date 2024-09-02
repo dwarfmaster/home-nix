@@ -92,7 +92,7 @@
         xev # X11 event querying
         xprop # X11 properties querying
         ;
-      dconf = pkgs.gnome3.dconf-editor; # GTK configuration editor
+      dconf = pkgs.dconf-editor; # GTK configuration editor
     };
   };
 in {

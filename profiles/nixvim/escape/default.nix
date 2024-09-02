@@ -18,5 +18,5 @@
   #   "jk".desc = "Exits insert mode";
   #   "kj".desc = "Exits insert mode";
   # };
-  plugins.which-key.triggersBlackList.i = ["j" "k"];
+  plugins.which-key.settings.triggers_black_list.i = ["j" "k"];
 }

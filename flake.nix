@@ -4,7 +4,7 @@
   inputs = {
     master.url = "nixpkgs/master";
     nixos.url = "nixpkgs/nixos-unstable";
-    stable.url = "nixpkgs/release-23.05";
+    stable.url = "nixpkgs/release-24.05";
     home = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixos";
@@ -107,7 +107,7 @@
           nixvim = nixvim.homeManagerModules.nixvim;
           stylix = stylix.homeManagerModules.stylix;
           impermanence = impermanence.nixosModules.home-manager.impermanence;
-          korrvigs = korrvigs.hmModules.default;
+          # korrvigs = korrvigs.hmModules.default;
         };
       nixvim = self.nixvimModules // {profiles = {...}: {imports = profiles.nixvim;};};
     };

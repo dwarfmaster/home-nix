@@ -17,9 +17,11 @@
     enableCtrlAltBackspace = true;
 
     xkb.layout = "fr";
+  };
 
-    # Support for touchpad
-    libinput.enable = true;
-    libinput.touchpad.tapping = false;
+  # Support for touchpad
+  services.libinput = {
+    enable = true;
+    touchpad.tapping = false;
   };
 }
