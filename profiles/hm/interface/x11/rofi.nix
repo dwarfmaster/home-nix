@@ -2,11 +2,14 @@
   config,
   pkgs,
   ...
-}: {
+}: let
+  cfg = config.programs.rofi;
+  rofi = "${cfg.finalPackage}/bin/rofi";
+in {
   programs.rofi = {
     enable = true;
     cycle = true;
-    terminal = "${pkgs.st}/bin/st";
+    terminal = config.applications.terminal;
     plugins = builtins.attrValues {
       inherit (pkgs) rofi-emoji rofi-calc;
     };
@@ -19,6 +22,6 @@
     };
   };
 
-  applications.launcher = "${config.programs.rofi.package}/bin/rofi -modi drun -show drun -show-icons";
-  applications.calculator = "${config.programs.rofi.package}/bin/rofi -modi calc -show calc -no-show-match -no-sort -calc-command \"echo '{result}' | ${pkgs.xclip}/bin/xclip -i\"";
+  applications.launcher = "${rofi} -modi drun -show drun -show-icons";
+  applications.calculator = "${rofi} -modi calc -show calc -no-show-match -no-sort -qalc-binary ${pkgs.libqalculate}/bin/qalc | cut -d= -f2 | tr -d ' ' | ${pkgs.xclip}/bin/xclip -i";
 }
