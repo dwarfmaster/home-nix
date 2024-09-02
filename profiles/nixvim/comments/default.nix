@@ -21,8 +21,8 @@
   #   "gc".desc = "Toggle comment";
   #   "gb".desc = "Toggle block comment";
   # };
-  plugins.which-key.settings.operators = {
-    "gc" = "Comments";
-    "gb" = "Block comments";
-  };
+  # plugins.which-key.settings.operators = {
+  #   "gc" = "Comments";
+  #   "gb" = "Block comments";
+  # };
 }

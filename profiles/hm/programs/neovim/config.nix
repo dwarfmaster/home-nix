@@ -27,6 +27,7 @@ in {
     # Misc
     extraPlugins = [
       pkgs.vimPlugins.vim-repeat
+      pkgs.vimPlugins.mini-nvim
     ];
     extraConfigLua = ''
     '';
@@ -62,10 +63,7 @@ in {
     #
     # Theme
     # Theme is set by stylix
-    plugins.lualine = {
-      enable = true;
-      theme = "base16";
-    };
+    plugins.lualine.enable = true;
 
     # __      ___    _    _       _
     # \ \    / / |_ (_)__| |_ ___| |_____ _  _
@@ -80,9 +78,6 @@ in {
           padding = [ 1 2 ];
           border = "none";
           wo.winblend = 10;
-        };
-        key_labels = {
-          " " = "<space>";
         };
       };
     };
