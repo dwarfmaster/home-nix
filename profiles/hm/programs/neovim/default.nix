@@ -14,6 +14,7 @@
     pkgs.fzy
   ];
 
+  stylix.targets.nixvim.enable = true;
   programs.nixvim = {
     enable = true;
     wrapRc = false;

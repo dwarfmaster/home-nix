@@ -59,6 +59,7 @@ in {
       "Zathura".state = "tiled";
     };
   };
+  stylix.targets.bspwm.enable = true;
 
   services.sxhkd.keybindings = {
     # Reload config file

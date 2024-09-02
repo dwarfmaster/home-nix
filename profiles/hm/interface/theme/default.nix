@@ -4,7 +4,8 @@
   osConfig,
   ...
 }: {
-  # Set the background
+  # Set the background using feh
+  stylix.targets.feh.enable = true;
   stylix.image = osConfig.stylix.image;
 
   # Cursor theme

@@ -34,7 +34,7 @@
   '';
 in {
   stylix = {
-    autoEnable = true;
+    autoEnable = false;
     homeManagerIntegration.followSystem = true;
     homeManagerIntegration.autoImport = false;
     fonts = {
