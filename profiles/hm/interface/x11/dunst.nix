@@ -59,7 +59,6 @@ in {
       urgency_critical.timeout = 15;
     };
   };
-  stylix.targets.dunst.enable = true;
 
   home.packages = [pkgs.libnotify notifier]; # For notify-send
   applications.notifier = "${notifier}/bin/notify";

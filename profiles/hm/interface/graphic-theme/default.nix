@@ -20,7 +20,6 @@
       name = "Numix";
     };
   };
-  stylix.targets.gtk.enable = true;
 
   fonts.fontconfig.enable = true;
 

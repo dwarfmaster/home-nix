@@ -8,8 +8,8 @@
     templateRepo = pkgs.fetchFromGitHub {
       owner = "mike-hearn";
       repo = "base16-vim-lightline";
-      rev = "769ab1a87797fa7b510447c4d661b9192c3a7588";
-      sha256 = "0kydnm0iqvgp1y5nrrndg69pg17g7yvrh2fbs2ipl438yy2sjs7m";
+      rev = "cea11b7d0a407eccf0085feefb5e3be2ec99bdbb";
+      sha256 = "0lcxcikkbk03lvsjjjqv22ypl9wpa7zkb6ndbc2gasskckzk3fa9";
     };
   };
 
@@ -25,7 +25,6 @@
     '';
   };
 in {
-  stylix.targets.vim.enable = true;
   programs.vim = {
     enable = true;
     extraConfig = builtins.readFile ./vimrc;

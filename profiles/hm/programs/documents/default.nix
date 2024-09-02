@@ -42,5 +42,4 @@ in {
       synctex = true;
     };
   };
-  stylix.targets.zathura.enable = true;
 }

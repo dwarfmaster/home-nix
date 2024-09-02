@@ -25,7 +25,6 @@
       enableZshIntegration = true;
     };
   };
-  stylix.targets.kitty.enable = true;
   stylix.targets.kitty.variant256Colors = true;
 
   applications.terminal = "${config.programs.kitty.package}/bin/kitty -1";
