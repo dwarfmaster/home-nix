@@ -892,11 +892,10 @@
         "nixvim": "nixvim"
       },
       "locked": {
+        "dirtyRev": "7a01564f35dc6242a276f763f02e827dce6c9dcd-dirty",
+        "dirtyShortRev": "7a01564-dirty",
         "lastModified": 1724589854,
-        "narHash": "sha256-eTpe8Vro2jK4zWGpvOydVzzf8QdzbWWrK9DQZi02SOg=",
-        "ref": "refs/heads/main",
-        "rev": "7a01564f35dc6242a276f763f02e827dce6c9dcd",
-        "revCount": 327,
+        "narHash": "sha256-5KbJmX0rPFXF2NSuLgawtm5iSUnfuh4Y93h4396sqIA=",
         "type": "git",
         "url": "file:///home/luc/repos/korrvigs"
       },
