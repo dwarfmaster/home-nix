@@ -34,8 +34,7 @@
       inputs.home-manager.follows = "home";
     };
     korrvigs = {
-      # url = "github:dwarfmaster/korrvigs";
-      url = "/home/luc/repos/korrvigs";
+      url = "github:dwarfmaster/korrvigs";
       inputs.nixpkgs.follows = "nixos";
     };
 
@@ -74,7 +73,6 @@
       // {
         nur = nur.overlay;
         arkenfox = arkenfox.overlays.default;
-        korrvigs = korrvigs.overlays.default;
         packages = self: super:
           {
             tree-sitter-make-grammar =
@@ -96,6 +94,7 @@
           stylix = stylix.nixosModules.stylix;
           imacs = imacs.nixosModules.imacs;
           impermanence = impermanence.nixosModule;
+          korrvigs = korrvigs.nixosModule;
         };
       hm =
         self.hmModules

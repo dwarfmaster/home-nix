@@ -19,7 +19,10 @@
       sound.enable = true;
       theme.enable = true;
     };
-    services.games.enable = true;
+    services = {
+      games.enable = true;
+      korrvigs.enable = true;
+    };
   };
 
   system.stateVersion = "22.05";
@@ -142,13 +145,5 @@
     package = pkgs.postgresql;
     extraPlugins = [ config.services.postgresql.package.pkgs.postgis ];
     dataDir = "/data/postgresql/${config.services.postgresql.package.psqlSchema}";
-    ensureDatabases = ["korrvigs"];
-    ensureUsers = [
-      {
-        name = "luc";
-        # ensureDBOwnership = true;
-        # ensurePermissions."DATABASE korrvigs" = "ALL PRIVILEGES";
-      }
-    ];
   };
 }
