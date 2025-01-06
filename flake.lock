@@ -889,11 +889,11 @@
         "nixvim": "nixvim"
       },
       "locked": {
-        "lastModified": 1736072154,
-        "narHash": "sha256-ShDOc4COy4Y5tK3CbODzs9gt1gXQoXTIj0cBipOpDs4=",
+        "lastModified": 1736075740,
+        "narHash": "sha256-gwe3pp0SOZt9TsqRo8WV6i8Ufjx4sZ2R3Yp4Wyt7Rqg=",
         "owner": "dwarfmaster",
         "repo": "korrvigs",
-        "rev": "f4b2821d08d6a566e48ceaf451b6683d9b54d6f0",
+        "rev": "f9c0accda1feecf6f210c86e18573cf44ffd5fa1",
         "type": "github"
       },
       "original": {

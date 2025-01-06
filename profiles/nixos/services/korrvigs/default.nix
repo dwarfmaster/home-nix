@@ -7,7 +7,7 @@ in {
   programs.korrvigs = {
     enable = true;
     user = "luc";
-    root = "/persists/luc/data/annex/korrvigs/";
+    root = "/home/luc/data/annex/korrvigs/";
     postgresql.enable = true;
 
     server = {

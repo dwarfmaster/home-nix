@@ -52,6 +52,8 @@ in {
         navigate = true;
         light = false;
       };
+      # Enable pushing to checkout out branch on server
+      receive.denyCurrentBranch = "updateInstead";
     };
     ignores = ["*~" "*.swp" ".direnv"];
   };

@@ -19,6 +19,7 @@
       programs = {
         fzf.enable = true;
         git.enable = true;
+        git-annex.enable = true;
         vim.enable = true;
         neovim.enable = true;
       };

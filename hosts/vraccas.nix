@@ -12,6 +12,8 @@
       mail-server.enable = true;
       torrent.enable = true;
       sql.enable = true;
+      korrvigs.enable = true;
+      korrvigs-web.enable = true;
     };
     web = {
       matrix.enable = true;
@@ -70,6 +72,8 @@
   environment.systemPackages = with pkgs; [
     cryptsetup
     apacheHttpd # For htpasswd
+    gitAndTools.git-annex
+    polkit
   ];
   fileSystems = {
     "/" = {
@@ -87,6 +91,11 @@
     "/boot" = {
       device = "/dev/disk/by-uuid/c3075475-8a0a-4438-839f-4ee048e083ce";
       fsType = "ext4";
+    };
+
+    "/home/luc/data" = {
+      device = "/data/luc";
+      options = [ "bind" ];
     };
   };
 
