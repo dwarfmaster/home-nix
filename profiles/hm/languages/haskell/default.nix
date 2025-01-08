@@ -31,7 +31,10 @@ in {
   };
 
   programs.nixvim = {
-    plugins.lsp.servers.hls.enable = true;
+    plugins.lsp.servers.hls = {
+      enable = true;
+      installGhc = false; # GHC will be otherwise installed with nix
+    };
     extraPlugins = [vim-shakespeare];
     globals = {
       hamlet_prevent_invalid_nesting = 0;

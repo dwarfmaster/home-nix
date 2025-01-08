@@ -18,7 +18,7 @@
     # Use https
     https = true;
 
-    package = pkgs.nextcloud29;
+    package = pkgs.nextcloud30;
 
     # Auto-update Nextcloud apps
     autoUpdateApps.enable = true;

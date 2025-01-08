@@ -31,7 +31,7 @@ in {
   home.packages = builtins.attrValues {
     inherit
       (pkgs)
-      alsaUtils # Sound card control
+      alsa-utils # Sound card control
       audacity # sound and music editor
       pamixer # CLI sound control
       pavucontrol # CLI sound interface

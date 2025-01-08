@@ -76,7 +76,7 @@ in {
       postgresql # PGSQL database access and manipulation
       sqlite # SQlite database access and manipulation
       stress # System stress tester
-      inetutils # Net tools
+      iputils # Net tools
       tree # Display directories arborescence
       # TODO doesn't work on aarch64
       

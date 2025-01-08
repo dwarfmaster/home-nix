@@ -7,7 +7,7 @@
   plugins.project-nvim = {
     enable = true;
     enableTelescope = true;
-    silentChdir = false;
+    settings.silent_chdir = false;
   };
   keymaps = [
     {

@@ -6,9 +6,11 @@
 }: {
   plugins.gitgutter = {
     enable = true;
-    showMessageOnHunkJumping = false;
-    defaultMaps = false;
-    previewWinFloating = true;
+    settings = {
+      show_msg_on_hunk_jumping = false;
+      map_keys = false;
+      preview_win_floating = true;
+    };
   };
   keymaps = let
     picker = key: name: desc: {

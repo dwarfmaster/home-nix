@@ -55,7 +55,7 @@
   fonts = {
     home.packages = builtins.attrValues {
       # Fonts with icons
-      nerdfonts = pkgs.nerdfonts.override {fonts = ["FiraCode"];};
+      nerdfonts = pkgs.nerd-fonts.fira-code;
       inherit
         (pkgs)
         powerline-fonts

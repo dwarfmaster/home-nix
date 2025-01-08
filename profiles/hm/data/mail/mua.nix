@@ -17,17 +17,18 @@
     };
   };
 
-  programs.astroid = {
-    enable = true;
-    externalEditor = "${config.programs.kitty.package}/bin/kitty -e nvim %1";
-    pollScript = "${pkgs.notmuch}/bin/notmuch new";
-  };
-
-  programs.nixvim.autoCmd = [
-    {
-      event = ["BufNewFile" "BufRead"];
-      pattern = ["${config.xdg.cacheHome}/astroid/*"];
-      command = "set ft=mail";
-    }
-  ];
+  # TODO choose whether to fix or remove
+  # programs.astroid = {
+  #   enable = false;
+  #   externalEditor = "${config.programs.kitty.package}/bin/kitty -e nvim %1";
+  #   pollScript = "${pkgs.notmuch}/bin/notmuch new";
+  # };
+  #
+  # programs.nixvim.autoCmd = [
+  #   {
+  #     event = ["BufNewFile" "BufRead"];
+  #     pattern = ["${config.xdg.cacheHome}/astroid/*"];
+  #     command = "set ft=mail";
+  #   }
+  # ];
 }

@@ -19,7 +19,6 @@ in {
     exfat
     fd
     git
-    gnufdisk
     gotop
     gptfdisk
     htop

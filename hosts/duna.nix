@@ -22,6 +22,8 @@
     services = {
       games.enable = true;
       korrvigs.enable = true;
+      # Enable postgresql for playing as user
+      sql.enable = true;
     };
   };
 
@@ -138,12 +140,4 @@
     };
   };
   swapDevices = [];
-
-  # Enable postgresql for playing as user
-  services.postgresql = {
-    enable = true;
-    package = pkgs.postgresql;
-    extraPlugins = [ config.services.postgresql.package.pkgs.postgis ];
-    dataDir = "/data/postgresql/${config.services.postgresql.package.psqlSchema}";
-  };
 }

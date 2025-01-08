@@ -4,7 +4,7 @@
   inputs = {
     master.url = "nixpkgs/master";
     nixos.url = "nixpkgs/nixos-unstable";
-    stable.url = "nixpkgs/release-24.05";
+    stable.url = "nixpkgs/release-24.11";
     home = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixos";
@@ -71,7 +71,7 @@
     overlays =
       self.overlays
       // {
-        nur = nur.overlay;
+        nur = nur.overlays.default;
         arkenfox = arkenfox.overlays.default;
         packages = self: super:
           {

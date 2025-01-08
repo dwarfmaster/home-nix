@@ -3,7 +3,7 @@
   pkgs,
   ...
 }: let
-  nerdfonts = pkgs.nerdfonts.override {fonts = ["FiraCode"];};
+  nerdfonts = pkgs.nerd-fonts.fira-code;
   colors = config.lib.stylix.colors;
   bg = pkgs.runCommand "bg.png" {} ''
     cp ${./bg.svg} bg.svg

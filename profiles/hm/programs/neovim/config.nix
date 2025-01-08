@@ -13,7 +13,6 @@ in {
     profiles.windows.enable = true;
     profiles.projects.enable = true;
     profiles.comments.enable = true;
-    profiles.escape.enable = true;
     profiles.notify.enable = true;
     profiles.gitgutter.enable = true;
     profiles.lsp.enable = true;
@@ -27,8 +26,9 @@ in {
     # Misc
     extraPlugins = [
       pkgs.vimPlugins.vim-repeat
-      pkgs.vimPlugins.mini-nvim
     ];
+    plugins.mini.enable = true;
+    plugins.web-devicons.enable = true;
     extraConfigLua = ''
     '';
     # TODO basic settings
@@ -54,7 +54,7 @@ in {
       timeoutlen = 400;
       background = "dark";
     };
-    plugins.surround.enable = true;
+    plugins.vim-surround.enable = true;
 
     #  _____ _
     # |_   _| |_  ___ _ __  ___

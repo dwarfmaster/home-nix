@@ -11,5 +11,11 @@
     "steam"
     "steam-original"
     "steam-run"
+    "steam-unwrapped"
+  ];
+
+  home-manager.users.luc.home.persistence."/persists/luc".directories = [
+    ".steam"
+    ".local/share/Steam"
   ];
 }
