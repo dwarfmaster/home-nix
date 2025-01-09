@@ -4,7 +4,7 @@
   ...
 }: let
   cfg = config.services.postgresql;
-  newPostgres = pkgs.postgresql_14;
+  newPostgres = pkgs.postgresql_17;
   psqlData = schema: "/data/var/lib/postgresql/${schema}";
   # Taken from https://nixos.org/manual/nixos/stable/#module-services-postgres-upgrading
   update-pg = pkgs.writeScriptBin "upgrade-pg-cluster" ''
@@ -31,7 +31,7 @@
 in {
   services.postgresql = {
     enable = true;
-    package = pkgs.postgresql_14;
+    package = pkgs.postgresql_17;
     dataDir = psqlData cfg.package.psqlSchema;
   };
   environment.systemPackages =
