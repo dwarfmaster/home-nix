@@ -81,6 +81,11 @@
       fsType = "ext4";
     };
 
+    "/boot" = {
+      device = "/dev/disk/by-uuid/c3075475-8a0a-4438-839f-4ee048e083ce";
+      fsType = "ext4";
+    };
+
     # I must first luksOpen the right disk manually and then mount it by hand
     "/data" = {
       device = "/dev/mapper/data";
@@ -88,14 +93,10 @@
       options = ["defaults" "noauto"];
     };
 
-    "/boot" = {
-      device = "/dev/disk/by-uuid/c3075475-8a0a-4438-839f-4ee048e083ce";
-      fsType = "ext4";
-    };
-
+    # Should also be mounted by hand after the previous one
     "/home/luc/data" = {
       device = "/data/luc";
-      options = [ "bind" ];
+      options = [ "bind" "noauto" ];
     };
   };
 
