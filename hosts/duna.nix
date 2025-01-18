@@ -140,4 +140,9 @@
     };
   };
   swapDevices = [];
+
+  # Postgresql
+  services.postgresql.dataDir =
+    let schema = config.services.postgresql.package.psqlSchema;
+    in lib.mkForce "/persists/var/lib/postgresql/${schema}";
 }
