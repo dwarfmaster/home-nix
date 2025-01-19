@@ -33,14 +33,14 @@
     [pair nextcloud_calendars_pull]
     a = "calendars_local"
     b = "nextcloud_calendars_remote"
-    collections = [ "dedukteam", "jeux", "people", "personal", "sant", "sport", "clearsy", "dance" ]
+    collections = [ "dedukteam", "jeux", "people", "personal", "sant", "sport", "clearsy", "dance", "school" ]
     conflict_resolution = "b wins"
     metadata = [ "color" ]
 
     [pair nextcloud_calendars_push]
     a = "calendars_local"
     b = "nextcloud_calendars_remote"
-    collections = [ "dedukteam", "jeux", "people", "personal", "sant", "sport", "clearsy", "dance" ]
+    collections = [ "dedukteam", "jeux", "people", "personal", "sant", "sport", "clearsy", "dance", "school" ]
     conflict_resolution = "a wins"
     metadata = [ "color" ]
 
