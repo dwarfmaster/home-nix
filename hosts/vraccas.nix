@@ -16,7 +16,7 @@
       korrvigs-web.enable = true;
     };
     web = {
-      matrix.enable = true;
+      matrix.enable = false;
       nextcloud.enable = true;
       imacs.enable = false;
       wallabag.enable = false;
