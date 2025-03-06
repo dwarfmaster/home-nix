@@ -37,6 +37,10 @@
       url = "github:dwarfmaster/korrvigs";
       inputs.nixpkgs.follows = "nixos";
     };
+    wsl = {
+      url = "github:nix-community/NixOS-WSL";
+      inputs.nixpkgs.follows = "stable";
+    };
 
     nixvim = {
       url = "github:nix-community/nixvim";
@@ -64,6 +68,7 @@
     imacs,
     stylix,
     korrvigs,
+    wsl,
     nixvim,
     arkenfox,
   } @ inputs: let
@@ -95,6 +100,7 @@
           imacs = imacs.nixosModules.imacs;
           impermanence = impermanence.nixosModule;
           korrvigs = korrvigs.nixosModule;
+          wsl = wsl.nixosModules.default;
         };
       hm =
         self.hmModules

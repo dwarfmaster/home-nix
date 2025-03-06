@@ -75,4 +75,5 @@ in {
   vraccas = mkHost "vraccas";
   sharindlar = mkHost "sharindlar";
   helzvog = mkHost "helzvog";
+  labrad = mkHost "labrad";
 }
