@@ -955,11 +955,11 @@
         "nixvim": "nixvim"
       },
       "locked": {
-        "lastModified": 1736376875,
-        "narHash": "sha256-3zzTcGOOkgGurXHrLU5hSE5mnlk7U7TF23k7aDFrkWc=",
+        "lastModified": 1741200922,
+        "narHash": "sha256-zQiTVhDfuUXuiHYQ8Q0/bz6lzebaIWQpQD6MxKRtzhk=",
         "owner": "dwarfmaster",
         "repo": "korrvigs",
-        "rev": "f4f8fbbbb86b70e44a690d13da1261b4ddced173",
+        "rev": "08db16d0d96f5102dead1c9229dd76b37a522ad0",
         "type": "github"
       },
       "original": {
