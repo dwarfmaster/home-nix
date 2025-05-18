@@ -8,6 +8,7 @@ in {
     enable = true;
     user = "luc";
     root = "/home/luc/data/annex/korrvigs/";
+    calsync = "/home/luc/data/korrvigs-temp/calsync/korrvigs";
     postgresql.enable = true;
 
     server = {
