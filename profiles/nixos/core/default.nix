@@ -24,4 +24,8 @@
     "python-2.7.18.6"
     "openssl-1.1.1u"
   ];
+
+  # Enable PAM for screen locker
+  security.pam.services.i3lock.enable = true;
+  security.pam.services.i3lock-color.enable = true;
 }

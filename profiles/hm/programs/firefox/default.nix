@@ -100,7 +100,8 @@
         then profile.color
         else colors.base07;
     in {
-      inherit name id extensions;
+      inherit name id;
+      extensions.packages = extensions;
       settings =
         {
           "browser.startup.homepage" = profile.homepage;

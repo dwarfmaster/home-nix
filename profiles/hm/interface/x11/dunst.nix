@@ -40,9 +40,9 @@ in {
         indicate_hidden = true;
 
         width = 706;
-        height = 100;
+        height = "(0,100)";
         origin = "top-right";
-        offset = "5x30";
+        offset = "(5,30)";
 
         separator_height = 2;
         frame_width = 2;

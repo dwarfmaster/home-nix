@@ -13,7 +13,7 @@
 
   # Firefox setup
   programs.firefox.profiles = config.lib.firefox.all-profiles {
-    extensions = [
+    extensions.packages = [
       pkgs.nur.repos.rycee.firefox-addons.keepassxc-browser
     ];
   };

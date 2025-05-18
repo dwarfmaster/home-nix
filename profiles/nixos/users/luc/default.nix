@@ -47,7 +47,6 @@
 
       data = {
         accounting.enable = true;
-        book.enable = true;
         calendar.enable = true;
         contacts.enable = true;
         mail.enable = true;

@@ -84,34 +84,36 @@ in {
     # .zshrc. Initialization code that may require console input (password
     # prompts, [y/n] confirmations, etc.) must go above this block; everything
     # else may go below.
-    initExtraFirst = ''
-      source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme
-      if [[ -r "${config.xdg.cacheHome}/p10k-instant-prompt-''${(%):-%n}.zsh" ]]; then
-        source "${config.xdg.cacheHome}/p10k-instant-prompt-''${(%):-%n}.zsh"
-      fi
-    '';
-    initExtra = ''
-      # Using directory stacks as directory history : zsh.sourceforge.net/Intro/intro_6.html
-      setopt autopushd pushdminus pushdsilent pushdtohome
+    initContent = lib.mkMerge [
+      (lib.mkBefore ''
+        source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme
+        if [[ -r "${config.xdg.cacheHome}/p10k-instant-prompt-''${(%):-%n}.zsh" ]]; then
+          source "${config.xdg.cacheHome}/p10k-instant-prompt-''${(%):-%n}.zsh"
+        fi
+      '')
+      (''
+        # Using directory stacks as directory history : zsh.sourceforge.net/Intro/intro_6.html
+        setopt autopushd pushdminus pushdsilent pushdtohome
 
-      # Change up/down keys behaviour : match commands in history by first letters
-      bindkey 'OA' history-beginning-search-backward
-      bindkey 'OB' history-beginning-search-forward
+        # Change up/down keys behaviour : match commands in history by first letters
+        bindkey 'OA' history-beginning-search-backward
+        bindkey 'OB' history-beginning-search-forward
 
-      # LS_COLORS setting
-      eval $(dircolors ${./dircolors})
+        # LS_COLORS setting
+        eval $(dircolors ${./dircolors})
 
-      # P10K config
-      if zmodload zsh/terminfo && (( terminfo[colors] >= 256 )); then
-        # capable terminal
-        source ${./p10k.zsh}
-        alias ls=${lsd}
-      else
-        # might be TTY or some other not very capable terminal
-        source ${./p10k-tty.zsh}
-        alias ls='ls --color=auto'
-      fi
-    '';
+        # P10K config
+        if zmodload zsh/terminfo && (( terminfo[colors] >= 256 )); then
+          # capable terminal
+          source ${./p10k.zsh}
+          alias ls=${lsd}
+        else
+          # might be TTY or some other not very capable terminal
+          source ${./p10k-tty.zsh}
+          alias ls='ls --color=auto'
+        fi
+      '')
+    ];
     shellAliases = {
       dh = "dirs -v";
       ll = "ls -lrth";
