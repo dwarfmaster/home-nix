@@ -24,6 +24,7 @@
       arkenfox.enable = true;
       pixelfed.enable = false;
       miniflux.enable = true;
+      owncast.enable = true;
     };
     interface = {
       theme.enable = true;
