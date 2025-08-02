@@ -6,6 +6,7 @@ args @ {
 }: {
   mailserver = {
     enable = true;
+    stateVersion = 3;
     fqdn = "dwarfmaster.net";
     domains = ["dwarfmaster.net"];
     mailDirectory = "/data/var/vmail";
