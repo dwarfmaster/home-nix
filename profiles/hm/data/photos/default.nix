@@ -4,11 +4,12 @@
   pkgs,
   ...
 }: {
+  # TODO DarkTable and geeqie depend on broken libsoup
   home.packages = with pkgs; [
-    darktable # Image manager
-    geeqie # Image manager
+    # darktable # Image manager
+    # geeqie # Image manager
     imagemagick # Convert any image format to any other
   ];
 
-  xdg.configFile."darktable/luarc".source = ./darktable.lua;
+  # xdg.configFile."darktable/luarc".source = ./darktable.lua;
 }

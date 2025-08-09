@@ -31,7 +31,6 @@
     stylix = {
       url = "github:danth/stylix";
       inputs.nixpkgs.follows = "nixos";
-      inputs.home-manager.follows = "home";
     };
     korrvigs = {
       url = "github:dwarfmaster/korrvigs";
@@ -108,7 +107,7 @@
           inherit libModule;
           profiles = {...}: {imports = profiles.hm;};
           arkenfox = arkenfox.hmModules.default;
-          nixvim = nixvim.homeManagerModules.nixvim;
+          nixvim = nixvim.homeModules.nixvim;
           impermanence = impermanence.nixosModules.home-manager.impermanence;
           # korrvigs = korrvigs.hmModules.default;
         };

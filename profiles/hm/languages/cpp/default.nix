@@ -2,9 +2,7 @@
   config,
   pkgs,
   ...
-}: let
-  scan-build = pkgs.python310Packages.callPackage ./scan-build.nix {};
-in {
+}: {
   home.packages = builtins.attrValues {
     inherit
       (pkgs)
@@ -15,9 +13,6 @@ in {
       ccls # LSP server for CPP
       bazel # Build-system by google
       bazel-buildtools # buildifier, buildozer and unused_deps
-      ;
-    inherit
-      scan-build # Creates command database
       ;
   };
 
