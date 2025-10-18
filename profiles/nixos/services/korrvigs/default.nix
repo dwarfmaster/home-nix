@@ -8,7 +8,6 @@ in {
     enable = true;
     user = "luc";
     root = "/home/luc/data/annex/korrvigs/";
-    calsync = "/home/luc/data/korrvigs-temp/calsync/korrvigs";
     capture = "/home/luc/downloads/captured";
     credentialFile = "/home/luc/.config/korrvigs/credentials.json";
 

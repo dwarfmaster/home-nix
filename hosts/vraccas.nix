@@ -187,7 +187,4 @@
     ports = [2222];
   };
   programs.mosh.enable = true;
-
-  # Korrvigs
-  programs.korrvigs.calsync = lib.mkForce "/data/luc/korrvigs-temp/calsync/korrvigs";
 }

@@ -12,7 +12,6 @@ in {
     sessionVariables = {
       EDITOR = "nvim";
       DIRSTACKSIZE = 16;
-      NIX_SSHOPTS = "--ask-sudo-password";
       MANROFFOPT = "-c"; # Fix problems with using bat as pager
       MANPAGER = "sh -c 'col -bx | ${bat} -l man -p'";
     };
