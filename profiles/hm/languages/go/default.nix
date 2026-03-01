@@ -1,5 +1,5 @@
 {...}: {
   programs.nixvim = {
-    plugins.lsp.servers.gopls.enable = true;
+    lsp.servers.gopls.enable = true;
   };
 }

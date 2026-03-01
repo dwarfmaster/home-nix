@@ -19,8 +19,7 @@ in {
     # "gnn".desc = "Select treesitter node";
     {
       key = "<leader>cT";
-      action = "function() require'telescope.builtin'.treesitter{} end";
-      lua = true;
+      action = lib.nixvim.mkRaw "function() require'telescope.builtin'.treesitter{} end";
       options.desc = "Treesitter symbols";
     }
   ];

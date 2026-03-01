@@ -2,9 +2,9 @@
   description = "A highly structured configuration database.";
 
   inputs = {
-    master.url = "nixpkgs/master";
-    nixos.url = "nixpkgs/nixos-unstable";
-    stable.url = "nixpkgs/release-25.05";
+    master.url = "github:NixOS/nixpkgs/master";
+    nixos.url = "github:NixOS/nixpkgs/nixos-unstable";
+    stable.url = "github:NixOS/nixpkgs/release-25.11";
     home = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixos";
@@ -77,13 +77,7 @@
       // {
         nur = nur.overlays.default;
         arkenfox = arkenfox.overlays.default;
-        packages = self: super:
-          {
-            tree-sitter-make-grammar =
-              super.callPackage
-              (nixos + "/pkgs/development/tools/parsing/tree-sitter/grammar.nix") {};
-          }
-          // packages self super;
+        packages = packages;
         variants = self: super: pkgs-variants super.system;
       };
     # Modules to be made available to configs
@@ -108,7 +102,6 @@
           profiles = {...}: {imports = profiles.hm;};
           arkenfox = arkenfox.homeModules.default;
           nixvim = nixvim.homeModules.nixvim;
-          impermanence = impermanence.nixosModules.home-manager.impermanence;
           # korrvigs = korrvigs.hmModules.default;
         };
       nixvim = self.nixvimModules // {profiles = {...}: {imports = profiles.nixvim;};};

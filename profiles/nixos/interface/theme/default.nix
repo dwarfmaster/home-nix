@@ -42,12 +42,12 @@ in {
     fonts = {
       # I dont care about serif fonts, I'll reuse the sans-serif one
       serif = {
-        name = "Manrope3 Medium";
-        package = pkgs.manrope;
+        name = "CharisSILW Medium";
+        package = pkgs.charis;
       };
       sansSerif = {
-        name = "Manrope3 Medium";
-        package = pkgs.manrope;
+        name = "CharisSILW Medium";
+        package = pkgs.charis;
       };
       monospace = {
         name = "FiraCode Nerd Font Mono";

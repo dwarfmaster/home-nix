@@ -114,6 +114,7 @@
     "/home/luc" = {
       device = "none";
       fsType = "tmpfs";
+      neededForBoot = true;
       options = ["defaults" "size=4G" "mode=777"];
     };
 

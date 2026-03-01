@@ -8,6 +8,6 @@ in {
   home.packages = with pkgs; [
     glib.dev
     nss.dev
-    xorg.libX11.dev
+    libX11.dev
   ];
 }

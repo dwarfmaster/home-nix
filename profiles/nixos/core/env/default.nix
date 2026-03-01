@@ -1,39 +1,30 @@
 {
-  config,
-  lib,
   pkgs,
   ...
-}: let
-  system =
-    if config.nixpkgs.crossSystem ? system
-    then config.nixpkgs.crossSystem.system
-    else config.nixpkgs.localSystem.system;
-in {
-  environment.systemPackages = with pkgs; [
-    binutils
-    coreutils
-    curl
-    direnv
-    dnsutils
-    dosfstools
-    exfat
-    fd
-    git
-    gotop
-    gptfdisk
-    htop
-    iputils
-    jq
-    lm_sensors
-    moreutils
-    nmap
-    ntfs3g
-    ripgrep
-    utillinux
-    vim
-    wget
-    whois
+}: {
+  environment.systemPackages = [
+    pkgs.binutils
+    pkgs.coreutils
+    pkgs.curl
+    pkgs.direnv
+    pkgs.dnsutils
+    pkgs.dosfstools
+    pkgs.exfat
+    pkgs.fd
+    pkgs.git
+    pkgs.gotop
+    pkgs.gptfdisk
+    pkgs.htop
+    pkgs.iputils
+    pkgs.jq
+    pkgs.lm_sensors
+    pkgs.moreutils
+    pkgs.nmap
+    pkgs.ntfs3g
+    pkgs.ripgrep
+    pkgs.util-linux
+    pkgs.vim
+    pkgs.wget
+    pkgs.whois
   ];
-
-  programs.adb.enable = system == "x86_64-linux";
 }

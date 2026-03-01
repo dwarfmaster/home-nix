@@ -1,18 +1,9 @@
 {
-  config,
-  lib,
   pkgs,
   ...
 }: {
   programs.nixvim = {
-    plugins.lsp.enabledServers = [
-      {
-        name = "nil_ls";
-        extraOptions = {
-          formatting.command = ["alejandra" "--quiet"];
-        };
-      }
-    ];
+    lsp.servers.nil_ls.enable = true;
   };
 
   home.packages = builtins.attrValues {

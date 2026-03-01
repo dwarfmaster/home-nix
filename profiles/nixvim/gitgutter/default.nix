@@ -15,8 +15,7 @@
   keymaps = let
     picker = key: name: desc: {
       inherit key;
-      action = "function() require'telescope.builtin'.${name}{} end";
-      lua = true;
+      action = lib.nixvim.mkRaw "function() require'telescope.builtin'.${name}{} end";
       options.desc = desc;
     };
   in [

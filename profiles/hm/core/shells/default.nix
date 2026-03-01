@@ -19,7 +19,7 @@ in {
       inherit
         (pkgs)
         lsd
-        du-dust
+        dust
         dua
         duf
         choose
@@ -27,7 +27,7 @@ in {
         bottom
         hyperfine
         gping
-        dogdns
+        doggo
         ;
       batgrep = pkgs.bat-extras.batgrep;
     };

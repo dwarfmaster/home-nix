@@ -5,7 +5,7 @@
   ...
 }: let
   keyboard = let
-    xmodmap = "${pkgs.xorg.xmodmap}/bin/xmodmap";
+    xmodmap = "${pkgs.xmodmap}/bin/xmodmap";
     remappings = pkgs.writeShellScript "xkb-remap-keys" ''
       ${xmodmap} -e "keycode 65 = space space space space" # shift+space -> 4*space
     '';
@@ -46,7 +46,7 @@
       '';
     };
     home.packages =
-      [pkgs.xorg.xrandr]
+      [pkgs.xrandr]
       ++ builtins.attrValues {
         inherit (pkgs) imlibsetroot;
       };
@@ -82,13 +82,10 @@
     home.packages = builtins.attrValues {
       inherit
         (pkgs)
-        glxinfo # OpenGL info
+        mesa-demos # OpenGL info
         redshift # Color shift with the time of the day
         xclip # X11 copy-paste from the console
         networkmanagerapplet # GUI for network manager
-        ;
-      inherit
-        (pkgs.xorg)
         xev # X11 event querying
         xprop # X11 properties querying
         ;

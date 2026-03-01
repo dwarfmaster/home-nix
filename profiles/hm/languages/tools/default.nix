@@ -19,7 +19,7 @@
       ctags # Objects indexer for many languages
       autoconf # Makefile generator
       automake # Same
+      perf # Profile programs
       ;
-    perf = pkgs.linuxPackages.perf; # Profile programs
   };
 }

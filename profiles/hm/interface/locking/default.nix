@@ -39,7 +39,7 @@
   ];
 
   i3lock = "${pkgs.i3lock-color}/bin/i3lock-color ${toString args}";
-  setxkbmap = "${pkgs.xorg.setxkbmap}/bin/setxkbmap";
+  setxkbmap = "${pkgs.setxkbmap}/bin/setxkbmap";
   bctl = "${pkgs.brightnessctl}/bin/brightnessctl";
 
   # TODO Make it a program somewhere else
@@ -109,7 +109,7 @@ in {
       Service = {
         Type = "oneshot";
         RemainAfterExit = true;
-        ExecStart = "${pkgs.xorg.xset}/bin/xset s 300 60";
+        ExecStart = "${pkgs.xset}/bin/xset s 300 60";
       };
     };
     xsession-locker-setup = {

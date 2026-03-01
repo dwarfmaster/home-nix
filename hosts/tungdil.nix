@@ -68,12 +68,10 @@
 
   powerManagement.cpuFreqGovernor = "powersave";
 
-  systemd.extraConfig = ''
-    DefaultTimeoutStopSec = 10s
-  '';
+  systemd.settings.Manager.DefaultTimeoutStopSec = "10s";
 
   # # Graphic card
-  services.xserver.videoDrivers = ["i915" "modesetting"];
+  services.xserver.videoDrivers = ["amdgpu" "modesetting"];
   hardware.graphics.enable = true;
   hardware.acpilight.enable = true;
 

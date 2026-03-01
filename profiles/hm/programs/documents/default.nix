@@ -9,7 +9,7 @@
 in {
   home.packages =
     [
-      pkgs.libsForQt5.okular # Heavyweight pdf reader
+      pkgs.kdePackages.okular # Heavyweight pdf reader
     ]
     ++ builtins.attrValues {
       inherit
@@ -17,7 +17,6 @@ in {
         # Viewers
         
         abiword # Graphical text editor
-        libreoffice
         # Conversion
         
         qpdf # Content preserving pdf transformations

@@ -73,7 +73,6 @@
   environment.systemPackages = with pkgs; [
     cryptsetup
     apacheHttpd # For htpasswd
-    gitAndTools.git-annex
     polkit
   ];
   fileSystems = {

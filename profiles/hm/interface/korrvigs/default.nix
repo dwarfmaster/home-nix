@@ -1,5 +1,6 @@
 {
   pkgs,
+  lib,
   ...
 }: {
   home.persistence."/persists/luc".directories = [
@@ -22,19 +23,16 @@
     extraConfigLua = "require('korrvigs').setup()";
     keymaps = [
       { key = "<leader>nn";
-        action = "function() require('korrvigs').jump_to_note() end";
-        lua = true;
+        action.__raw = "function() require('korrvigs').jump_to_note() end";
         options.desc = "Jump to korrvigs note";
       }
       # TODO load only in korrvigs-note filetypes
       { key = "<leader> a";
-        action = "function() require('korrvigs').attach_file('/home/luc/downloads/') end";
-        lua = true;
+        action.__raw = "function() require('korrvigs').attach_file('/home/luc/downloads/') end";
         options.desc = "Attach file to korrvigs note";
       }
       { key = "<leader> l";
-        action = "function() require('korrvigs').insert_link() end";
-        lua = true;
+        action.__raw = "function() require('korrvigs').insert_link() end";
         options.desc = "Edit/insert link";
       }
     ];

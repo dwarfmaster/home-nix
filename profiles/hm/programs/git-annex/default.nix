@@ -4,6 +4,6 @@
   ...
 }: {
   home.packages = [
-    pkgs.gitAndTools.git-annex
+    pkgs.git-annex
   ];
 }

@@ -5,7 +5,7 @@
   ...
 }: {
   programs.beets = {
-    enable = true;
+    enable = false;
     #package = (pkgs.beets.override {
     #  keyfinder-cli = pkgs.keyfinder-cli;
     #  flac = pkgs.flac;

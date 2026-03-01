@@ -26,8 +26,8 @@
     };
 
     xdg.enable = true;
-    programs.git.userName = "DwarfMaster";
-    programs.git.userEmail = "luc@dwarfmaster.net";
+    programs.git.settings.user.name = "DwarfMaster";
+    programs.git.settings.user.email = "luc@dwarfmaster.net";
 
     manual = {
       html.enable = true;

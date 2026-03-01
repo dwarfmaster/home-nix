@@ -9,7 +9,6 @@
 
   home-manager.users.luc = {
     home.persistence."/persists/luc" = {
-      allowOther = true;
       directories = [
         "data"
         "downloads"

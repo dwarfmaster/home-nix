@@ -12,8 +12,7 @@
   keymaps = [
     {
       key = "<leader>fp";
-      action = "function() require('telescope').extensions.projects.projects{} end";
-      lua = true;
+      action = lib.nixvim.mkRaw "function() require('telescope').extensions.projects.projects{} end";
       options.desc = "Select project";
     }
   ];

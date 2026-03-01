@@ -47,7 +47,6 @@
     };
   };
 
-  networking.wireless.enable = false;
   services.openssh.enable = true;
   programs.mosh.enable = true;
 }

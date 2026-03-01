@@ -5,9 +5,6 @@
 }: {
   home.packages = [pkgs.swi-prolog];
   programs.nixvim = {
-    plugins.lsp.enabledServers = [{ 
-      name = "prolog_ls"; 
-      extraOptions = {};
-    }];
+    lsp.servers.prolog_ls.enable = true;
   };
 }

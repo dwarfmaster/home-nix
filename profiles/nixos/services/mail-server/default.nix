@@ -20,7 +20,7 @@ args @ {
       };
     };
 
-    certificateScheme = "acme-nginx";
+    x509.useACMEHost = config.mailserver.fqdn;
 
     enableImap = true;
     enablePop3 = true;

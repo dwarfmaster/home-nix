@@ -1,4 +1,4 @@
-{pkgs, ...}: {
+{pkgs, lib, ...}: {
   plugins.lsp.enable = true;
   # TODO enable again when migrating to 23.11
   # plugins.neogen.enable = true;
@@ -23,8 +23,7 @@
   keymaps = let
     picker = key: name: desc: {
       inherit key;
-      action = "function() require'telescope.builtin'.${name}{} end";
-      lua = true;
+      action = lib.nixvim.mkRaw "function() require'telescope.builtin'.${name}{} end";
       options.desc = desc;
     };
     saga = key: action: desc: {
