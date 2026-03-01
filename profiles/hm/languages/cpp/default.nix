@@ -15,9 +15,4 @@
       bazel-buildtools # buildifier, buildozer and unused_deps
       ;
   };
-
-  programs.cookiecutter.templates = {
-    # TODO add CCLS support to template
-    cpp = ./cmake;
-  };
 }

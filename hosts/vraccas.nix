@@ -16,15 +16,8 @@
       korrvigs-web.enable = true;
     };
     web = {
-      matrix.enable = false;
       nextcloud.enable = true;
-      imacs.enable = false;
-      wallabag.enable = false;
-      grocy.enable = false;
-      arkenfox.enable = false;
-      pixelfed.enable = false;
-      miniflux.enable = true;
-      owncast.enable = true;
+      arkenfox.enable = true;
     };
     interface = {
       theme.enable = true;

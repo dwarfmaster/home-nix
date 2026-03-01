@@ -22,12 +22,6 @@
       url = "gitlab:simple-nixos-mailserver/nixos-mailserver";
       inputs.nixpkgs.follows = "nixos";
     };
-    # django.url = "github:pnmadelaine/django-nixos/main";
-    # imacs = {
-    #   url = "github:TWal/imacs";
-    #   inputs.nixpkgs.follows = "nixos";
-    #   inputs.django-nixos.follows = "django";
-    # };
     stylix = {
       url = "github:danth/stylix";
       inputs.nixpkgs.follows = "nixos";
@@ -63,8 +57,6 @@
     nixos-generators,
     impermanence,
     simple-mailserver,
-    # django,
-    # imacs,
     stylix,
     korrvigs,
     wsl,
@@ -90,7 +82,6 @@
           mailserver = simple-mailserver.nixosModules.mailserver;
           home-manager = home.nixosModules.home-manager;
           stylix = stylix.nixosModules.stylix;
-          # imacs = imacs.nixosModules.imacs;
           impermanence = impermanence.nixosModule;
           korrvigs = korrvigs.nixosModule;
           wsl = wsl.nixosModules.default;

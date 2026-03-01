@@ -10,7 +10,6 @@
         direnv.enable = true;
         encryption.enable = true;
         network.enable = true;
-        templates.enable = true;
         xdg.enable = true;
       };
 
@@ -82,7 +81,6 @@
         rust.enable = true;
         sql.enable = true;
         tools.enable = true;
-        why3.enable = false;
       };
     };
   };
