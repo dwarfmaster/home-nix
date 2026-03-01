@@ -10,6 +10,7 @@ in {
     root = "/home/luc/data/annex/korrvigs/";
     capture = "/home/luc/downloads/captured";
     credentialFile = "/home/luc/.config/korrvigs/credentials.json";
+    installLanguages = false;
 
     postgresql.enable = true;
 

@@ -82,7 +82,7 @@
         rust.enable = true;
         sql.enable = true;
         tools.enable = true;
-        why3.enable = true;
+        why3.enable = false;
       };
     };
   };

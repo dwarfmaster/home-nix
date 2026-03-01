@@ -6,4 +6,9 @@
     domain = "korrvigs.dwarfmaster.net";
     staticDomain = "korrvigs-static.dwarfmaster.net";
   };
+
+  programs.korrvigs.autorun = {
+    enable = true;
+    timeWindow = 3 * 3600;
+  };
 }

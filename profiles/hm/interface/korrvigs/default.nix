@@ -18,7 +18,7 @@
       };
     };
 
-    extraPlugins = [ pkgs.nvim-korrvigs ];
+    extraPlugins = [ pkgs.nvim-korrvigs pkgs.vimPlugins.vim-markdown ];
     extraConfigLua = "require('korrvigs').setup()";
     keymaps = [
       { key = "<leader>nn";

@@ -106,7 +106,7 @@
         // {
           inherit libModule;
           profiles = {...}: {imports = profiles.hm;};
-          arkenfox = arkenfox.hmModules.default;
+          arkenfox = arkenfox.homeModules.default;
           nixvim = nixvim.homeModules.nixvim;
           impermanence = impermanence.nixosModules.home-manager.impermanence;
           # korrvigs = korrvigs.hmModules.default;
