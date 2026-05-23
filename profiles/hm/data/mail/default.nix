@@ -235,4 +235,8 @@ in {
     #   inherit realName getmail maildir;
     # };
   };
+
+  home.persistence."/persists/luc".directories = [
+    "mail"
+  ];
 }
