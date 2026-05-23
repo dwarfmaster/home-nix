@@ -119,6 +119,7 @@
   security.acme = {
     acceptTerms = true;
     defaults.email = "acme@dwarfmaster.net";
+    certs."dwarfmaster.net".listenHTTP = ":80";
   };
 
   services.nginx = {
@@ -129,15 +130,6 @@
     recommendedProxySettings = true;
 
     virtualHosts = {
-      "dwarfmaster.net" = {
-        forceSSL = true;
-        enableACME = true;
-        serverAliases = ["blog.dwarfmaster.net" "www.dwarfmaster.net"];
-        locations."/" = {
-          root = "/var/www/blog";
-        };
-      };
-
       "info16.dwarfmaster.net" = {
         forceSSL = true;
         enableACME = true;
