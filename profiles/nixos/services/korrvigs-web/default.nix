@@ -23,6 +23,10 @@ in {
     autopublish = "Mon *-*-* 3:00";
   };
 
+  programs.korrvigs.autocommit = {
+    enable = true;
+  };
+
   services.nginx.virtualHosts.${blogDomain}.serverAliases =
     [ "dwarfmaster.net" "www.dwarfmaster.net" ];
 }
