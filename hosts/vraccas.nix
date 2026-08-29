@@ -18,6 +18,7 @@
     web = {
       nextcloud.enable = true;
       arkenfox.enable = true;
+      pablo.enable = true;
     };
     interface = {
       theme.enable = true;
