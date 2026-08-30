@@ -1,7 +1,7 @@
 { pkgs, config, ... }:
 
 let
-  domain = "pablologician.dwarfmaster.net";
+  domain = "pablogician.net";
   directory = "/var/www/pablo";
   nginx = config.services.nginx;
   fcgi = config.services.fcgiwrap.instances.pablologician;
